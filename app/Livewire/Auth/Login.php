@@ -12,6 +12,15 @@ class Login extends Component
 {
     public $phone, $password;
 
+    protected $messages = [
+        'phone.required'    => 'Vui lòng nhập số điện thoại',
+        'phone.digits_between' => 'Số điện thoại phải có từ :min đến :max số',
+        'phone.unique'      => 'Số điện thoại đã tồn tại trong hệ thống',
+        'password.required' => 'Vui lòng nhập mật khẩu',
+        'password.min'      => 'Mật khẩu phải có ít nhất :min ký tự',
+        'password.string'   => 'Mật khẩu phải là chuỗi ký tự',
+    ];
+
     public function login()
     {
         $this->validate([

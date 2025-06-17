@@ -1,35 +1,71 @@
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-lg rounded">
-                <div class="card-header text-center bg-primary text-white fw-bold">
-                    Đăng nhập vào hệ thống EduCore
-                </div>
-                <div class="card-body">
-                    <form wire:submit.prevent="login">
-                        <div class="mb-3">
-                            <label for="phone" class="form-label">Số điện thoại</label>
-                            <input type="text" id="phone"
-                                class="form-control @error('phone') is-invalid @enderror" wire:model.defer="phone">
-                            @error('phone')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+<div class="min-vh-100 d-flex align-items-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-7">
+                <div class="card shadow-lg border-0 rounded-4">
+                    <!-- Header with Logo -->
+                    <div class="card-body p-5">
+                        <div class="text-center mb-4">
+                            <div class="mb-3">
+                                <img src="/educore-logo.png" alt="Logo" style="width: 50px; height: 50px;">
+                            </div>
+                            <h3 class="fw-bold text-dark mb-2">
+                                <span class="text-primary">Edu</span><span class="text-warning">Core</span>
+                            </h3>
+                            <p class="text-muted">Đăng nhập vào hệ thống quản lý học tập</p>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Mật khẩu</label>
-                            <input type="password" id="password"
-                                class="form-control @error('password') is-invalid @enderror"
-                                wire:model.defer="password">
-                            @error('password')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
+                        <form wire:submit.prevent="login">
+                            <!-- Phone Input -->
+                            <div class="mb-3">
+                                <label for="phone" class="form-label fw-semibold text-dark">
+                                    <i class="bi bi-phone me-2 text-primary"></i>Số điện thoại
+                                </label>
+                                <input type="text" id="phone"
+                                    class="form-control form-control-lg @error('phone') is-invalid @enderror"
+                                    wire:model.defer="phone" placeholder="Nhập số điện thoại của bạn">
+                                @error('phone')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
 
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary">Đăng nhập</button>
+                            <!-- Password Input -->
+                            <div class="mb-4">
+                                <label for="password" class="form-label fw-semibold text-dark">
+                                    <i class="bi bi-lock me-2 text-primary"></i>Mật khẩu
+                                </label>
+                                <input type="password" id="password"
+                                    class="form-control form-control-lg @error('password') is-invalid @enderror"
+                                    wire:model.defer="password" placeholder="Nhập mật khẩu của bạn">
+                                @error('password')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Remember Me -->
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" id="remember">
+                                <label class="form-check-label text-muted" for="remember">
+                                    Ghi nhớ đăng nhập
+                                </label>
+                            </div>
+
+                            <!-- Login Button -->
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg fw-semibold py-3 rounded-3">
+                                    <i class="bi bi-box-arrow-in-right me-2"></i>
+                                    Đăng nhập
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Footer -->
+                        <div class="text-center mt-4">
+                            <small class="text-muted">
+                                © 2025 EduCore - Hệ thống quản lý học tập trung tâm tiếng Trung
+                            </small>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
