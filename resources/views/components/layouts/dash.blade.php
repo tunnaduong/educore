@@ -1,20 +1,22 @@
 {{-- Navbar Upper --}}
-<div>
+<div class="min-vh-100 d-flex flex-column">
     <div class="bg-[#23417e] text-white p-3 d-flex justify-content-between align-items-center">
-        <div class="d-flex align-items-center">
-            <img src="/educore-logo.png" alt="Logo" style="width: 36px; height: 36px;" class="me-2">
-            <span class="fs-4 fw-bold text-white">Edu</span>
-            <span class="fs-4 fw-bold text-warning">core</span>
-        </div>
+        <a href="/">
+            <div class="d-flex align-items-center">
+                <img src="/educore-logo.png" alt="Logo" style="width: 36px; height: 36px;" class="me-2">
+                <span class="fs-4 fw-bold text-white">Edu</span>
+                <span class="fs-4 fw-bold text-warning">core</span>
+            </div>
+        </a>
         <div>
             <i class="bi bi-bell fs-5 me-3"></i>
             <span class="fw-bold">Admin</span>
-            <i class="bi bi-person-circle ms-2"></i>
+            <i class="bi bi-person-circle fs-5 ms-2"></i>
         </div>
     </div>
-    <div class="d-flex">
+    <div class="d-flex flex-grow-1" style="min-height: 0;">
         <!-- Sidebar -->
-        <div class="bg-dark text-white p-4" style="width: 260px; min-height: 100vh;">
+        <div class="bg-dark text-white p-4" style="width: 260px;">
             <ul class="nav flex-column">
                 <li class="nav-item mb-2">
                     <a href="/dashboard/home" wire:navigate class="text-white text-decoration-none">
