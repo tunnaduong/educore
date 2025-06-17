@@ -6,10 +6,10 @@
                     <!-- Header with Logo -->
                     <div class="card-body p-5">
                         <div class="text-center mb-4">
-                            <div class="mb-3">
-                                <img src="/educore-logo.png" alt="Logo" style="width: 50px; height: 50px;">
+                            <div class="flex justify-center">
+                                <img src="/educore-logo.png" alt="Logo" style="width: 60px; height: 60px;">
                             </div>
-                            <h3 class="fw-bold text-dark mb-2">
+                            <h3 class="fw-bold text-[25px] mb-2 -mt-3">
                                 <span class="text-primary">Edu</span><span class="text-warning">Core</span>
                             </h3>
                             <p class="text-muted">Đăng nhập vào hệ thống quản lý học tập</p>
@@ -62,7 +62,7 @@
                         <!-- Footer -->
                         <div class="text-center mt-4">
                             <small class="text-muted">
-                                © 2025 EduCore - Hệ thống quản lý học tập trung tâm tiếng Trung
+                                © 2025 EduCore<br>Hệ thống quản lý học tập trung tâm tiếng Trung
                             </small>
                         </div>
                     </div>
