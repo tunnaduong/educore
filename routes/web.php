@@ -16,5 +16,5 @@ Route::get('/', function () {
 
 Route::get('/dashboard/home', Home::class)->name('dashboard')->middleware(['auth']);
 Route::get('/login', Login::class)->name('login');
-Route::get('/users', UsersIndex::class)->name('users.index');
-Route::get('/users/{user}/edit', UsersEdit::class)->name('users.edit');
+Route::get('/dashboard/users', UsersIndex::class)->name('users.index');
+Route::get('/dashboard/users/{user}/edit', UsersEdit::class)->name('users.edit');

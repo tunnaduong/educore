@@ -3,7 +3,7 @@
     <div class="bg-[#23417e] text-white p-3 d-flex justify-content-between align-items-center">
         <a href="/">
             <div class="d-flex align-items-center">
-                <img src="/educore-logo.png" alt="Logo" style="width: 36px; height: 36px;" class="me-2">
+                <img src="/educore-logo.png" alt="Logo" style="width: 50px; height: 50px;" class="me-2">
                 <span class="fs-4 fw-bold text-white">Edu</span>
                 <span class="fs-4 fw-bold text-warning">core</span>
             </div>
@@ -16,7 +16,7 @@
     </div>
     <div class="d-flex flex-grow-1" style="min-height: 0;">
         <!-- Sidebar -->
-        <div class="bg-dark text-white p-4" style="width: 260px;">
+        <div class="bg-dark text-white p-4" style="min-width: 260px;">
             <ul class="nav flex-column">
                 <li class="nav-item mb-2">
                     <a href="/dashboard/home" wire:navigate class="text-white text-decoration-none">
@@ -76,8 +76,10 @@
             </div>
         </div>
         <!-- Main Content -->
-        <div class="flex-grow-1 p-4" style="background: #f8fafc;">
-            {{ $slot }}
+        <div class="flex-grow-1 p-4 flex flex-col" style="background: #f8fafc;">
+            <div class="flex-1">
+                {{ $slot }}
+            </div>
             <footer class="text-center mt-4 text-muted small">
                 ©2025 Trung tâm Hanxen Kim Bảng Hà Nam — Powered by Educore
             </footer>

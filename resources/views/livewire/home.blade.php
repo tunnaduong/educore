@@ -1,105 +1,114 @@
 <x-layouts.dash>
     <div class="container py-4">
         <div class="row g-4">
+            <!-- Quản lý người dùng & phân quyền -->
             <div class="col-6 col-md-3 text-center">
-                <div class="mb-2">
-                    <i class="bi bi-journal-bookmark-fill" style="font-size: 2.5rem; color: #28a745;"></i>
-                </div>
-                <div>Courses To Complete</div>
+                <a href="{{ route('users.index') }}" wire:navigate class="text-decoration-none text-dark">
+                    <div class="mb-2">
+                        <i class="bi bi-people-fill" style="font-size:2.5rem; color:#0d6efd;"></i>
+                    </div>
+                    <div>Quản lý người dùng</div>
+                </a>
             </div>
             <div class="col-6 col-md-3 text-center">
-                <div class="mb-2">
-                    <i class="bi bi-flag-fill" style="font-size: 2.5rem; color: #d63384;"></i>
-                </div>
-                <div>Featured Courses</div>
+                <a href="#" class="text-decoration-none text-dark">
+                    <div class="mb-2">
+                        <i class="bi bi-shield-lock-fill" style="font-size:2.5rem; color:#6f42c1;"></i>
+                    </div>
+                    <div>Phân quyền</div>
+                </a>
             </div>
+            <!-- Quản lý lớp học -->
             <div class="col-6 col-md-3 text-center">
-                <div class="mb-2">
-                    <i class="bi bi-newspaper" style="font-size: 2.5rem; color: #b23cfd;"></i>
-                </div>
-                <div>Subscription Courses</div>
+                <a href="#" class="text-decoration-none text-dark">
+                    <div class="mb-2">
+                        <i class="bi bi-diagram-3-fill" style="font-size:2.5rem; color:#fd7e14;"></i>
+                    </div>
+                    <div>Quản lý lớp học</div>
+                </a>
             </div>
+            <!-- Quản lý học viên -->
             <div class="col-6 col-md-3 text-center">
-                <div class="mb-2">
-                    <i class="bi bi-sun-fill" style="font-size: 2.5rem; color: #f59e42;"></i>
-                </div>
-                <div>Training Goals</div>
+                <a href="#" class="text-decoration-none text-dark">
+                    <div class="mb-2">
+                        <i class="bi bi-person-lines-fill" style="font-size:2.5rem; color:#20c997;"></i>
+                    </div>
+                    <div>Quản lý học viên</div>
+                </a>
             </div>
+            <!-- Điểm danh -->
             <div class="col-6 col-md-3 text-center">
-                <div class="mb-2">
-                    <i class="bi bi-mortarboard-fill" style="font-size: 2.5rem; color: #5bc0de;"></i>
-                </div>
-                <div>Certifications</div>
+                <a href="#" class="text-decoration-none text-dark">
+                    <div class="mb-2">
+                        <i class="bi bi-clipboard-check-fill" style="font-size:2.5rem; color:#ffc107;"></i>
+                    </div>
+                    <div>Điểm danh</div>
+                </a>
             </div>
+            <!-- Giao bài tập -->
             <div class="col-6 col-md-3 text-center">
-                <div class="mb-2">
-                    <i class="bi bi-person-badge" style="font-size: 2.5rem; color: #20c997;"></i>
-                </div>
-                <div>Skills</div>
+                <a href="#" class="text-decoration-none text-dark">
+                    <div class="mb-2">
+                        <i class="bi bi-journal-text" style="font-size:2.5rem; color:#fd5e53;"></i>
+                    </div>
+                    <div>Giao bài tập</div>
+                </a>
             </div>
+            <!-- Kiểm tra & Quiz -->
             <div class="col-6 col-md-3 text-center">
-                <div class="mb-2">
-                    <i class="bi bi-search" style="font-size: 2.5rem; color: #0dcaf0;"></i>
-                </div>
-                <div>Course Catalog</div>
+                <a href="#" class="text-decoration-none text-dark">
+                    <div class="mb-2">
+                        <i class="bi bi-patch-question-fill" style="font-size:2.5rem; color:#b23cfd;"></i>
+                    </div>
+                    <div>Kiểm tra & Quiz</div>
+                </a>
             </div>
+            <!-- Xem lại bài học & tài nguyên -->
             <div class="col-6 col-md-3 text-center">
-                <div class="mb-2">
-                    <i class="bi bi-folder-fill" style="font-size: 2.5rem; color: #fd7e14;"></i>
-                </div>
-                <div>Resource Library</div>
+                <a href="#" class="text-decoration-none text-dark">
+                    <div class="mb-2">
+                        <i class="bi bi-folder-symlink-fill" style="font-size:2.5rem; color:#28a745;"></i>
+                    </div>
+                    <div>Bài học & Tài nguyên</div>
+                </a>
             </div>
+            <!-- Thống kê - báo cáo -->
             <div class="col-6 col-md-3 text-center">
-                <div class="mb-2">
-                    <i class="bi bi-people-fill" style="font-size: 2.5rem; color: #fd5e53;"></i>
-                </div>
-                <div>My People</div>
+                <a href="#" class="text-decoration-none text-dark">
+                    <div class="mb-2">
+                        <i class="bi bi-bar-chart-fill" style="font-size:2.5rem; color:#ff9800;"></i>
+                    </div>
+                    <div>Thống kê - Báo cáo</div>
+                </a>
             </div>
+            <!-- Thông báo & nhắc lịch -->
             <div class="col-6 col-md-3 text-center">
-                <div class="mb-2">
-                    <i class="bi bi-hand-thumbs-up-fill" style="font-size: 2.5rem; color: #28a745;"></i>
-                </div>
-                <div>Approvals</div>
+                <a href="#" class="text-decoration-none text-dark">
+                    <div class="mb-2 position-relative d-inline-block">
+                        <i class="bi bi-bell-fill" style="font-size:2.5rem; color:#f59e42;"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                            style="font-size:0.8rem;">3</span>
+                    </div>
+                    <div>Thông báo & Nhắc lịch</div>
+                </a>
             </div>
+            <!-- Chat & tương tác -->
             <div class="col-6 col-md-3 text-center">
-                <div class="mb-2">
-                    <i class="bi bi-bar-chart-fill" style="font-size: 2.5rem; color: #ffc107;"></i>
-                </div>
-                <div>Reports</div>
+                <a href="#" class="text-decoration-none text-dark">
+                    <div class="mb-2">
+                        <i class="bi bi-chat-dots-fill" style="font-size:2.5rem; color:#0dcaf0;"></i>
+                    </div>
+                    <div>Chat & Tương tác</div>
+                </a>
             </div>
-            <div class="col-6 col-md-3 text-center position-relative">
-                <div class="mb-2 position-relative d-inline-block">
-                    <i class="bi bi-envelope-fill" style="font-size: 2.5rem; color: #20c997;"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                        style="font-size: 0.8rem;">
-                        8
-                    </span>
-                </div>
-                <div>Messages</div>
-            </div>
+            <!-- Tài khoản cá nhân -->
             <div class="col-6 col-md-3 text-center">
-                <div class="mb-2">
-                    <i class="bi bi-calendar2-week-fill" style="font-size: 2.5rem; color: #fd5e53;"></i>
-                </div>
-                <div>Course Offerings</div>
-            </div>
-            <div class="col-6 col-md-3 text-center">
-                <div class="mb-2">
-                    <i class="bi bi-megaphone-fill" style="font-size: 2.5rem; color: #ff4d6d;"></i>
-                </div>
-                <div>What's New</div>
-            </div>
-            <div class="col-6 col-md-3 text-center">
-                <div class="mb-2">
-                    <i class="bi bi-check2-square" style="font-size: 2.5rem; color: #0d6efd;"></i>
-                </div>
-                <div>Training History</div>
-            </div>
-            <div class="col-6 col-md-3 text-center">
-                <div class="mb-2">
-                    <i class="bi bi-person-vcard-fill" style="font-size: 2.5rem; color: #6f42c1;"></i>
-                </div>
-                <div>Account</div>
+                <a href="#" class="text-decoration-none text-dark">
+                    <div class="mb-2">
+                        <i class="bi bi-person-circle" style="font-size:2.5rem; color:#6f42c1;"></i>
+                    </div>
+                    <div>Tài khoản</div>
+                </a>
             </div>
         </div>
     </div>
