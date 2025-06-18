@@ -63,22 +63,50 @@
                                             {{ $classroom->status == 'active' ? 'Đang hoạt động' : 'Đã kết thúc' }}
                                         </span>
                                     </td>
-                                    <td>
-                                        <div class="d-flex justify-content-end gap-2">
-                                            <a wire:navigate
-                                                href="{{ route('classrooms.edit', $classroom->id) ?? '#' }}"
-                                                class="btn btn-sm btn-outline-primary" title="Sửa">
+                                    <td class="px-6 py-4 text-right text-sm font-medium">
+                                        <div class="flex justify-end space-x-2">
+                                            <a href="{{ route('classrooms.edit', $classroom) }}"
+                                                class="btn btn-sm btn-outline-primary">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
-                                            <button wire:click="delete({{ $classroom->id }})"
-                                                class="btn btn-sm btn-outline-danger"
-                                                onclick="return confirm('Bạn có chắc chắn muốn xóa lớp học này?')"
-                                                title="Xóa">
+                                            <button type="button" data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal{{ $classroom->id }}"
+                                                class="btn btn-sm btn-outline-danger">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </div>
                                     </td>
                                 </tr>
+
+                                <!-- Delete Confirmation Modal -->
+                                <div class="modal fade" id="deleteModal{{ $classroom->id }}" tabindex="-1"
+                                    aria-labelledby="deleteModalLabel{{ $classroom->id }}" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="deleteModalLabel{{ $classroom->id }}">
+                                                    Xác nhận xóa lớp học</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+
+                                            <div class="modal-body">
+                                                Bạn có chắc chắn muốn xóa lớp học "{{ $classroom->name }}"? Hành động
+                                                này không thể hoàn tác.
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Hủy</button>
+                                                <button type="button" class="btn btn-danger" id="confirmDelete"
+                                                    wire:click="delete({{ $classroom->id }})"
+                                                    data-bs-dismiss="modal">Xóa</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
                             @endforeach
                         </tbody>
                     </table>
