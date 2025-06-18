@@ -25,7 +25,7 @@ class Edit extends Component
         $this->email = $user->email;
         $this->phone = $user->phone;
         $this->role = $user->role;
-        $this->is_active = $user->is_active;
+        $this->is_active = (bool) $user->is_active;
     }
 
     protected function rules()
@@ -35,7 +35,11 @@ class Edit extends Component
             'email' => [
                 'nullable',
                 'email',
-                Rule::unique('users', 'email')->ignore($this->user->id),
+                Rule::unique('users', 'email')
+                    ->where(function ($query) {
+                        return $query->whereNotNull('email');
+                    })
+                    ->ignore($this->user->id),
             ],
             'phone' => [
                 'required',
@@ -65,14 +69,13 @@ class Edit extends Component
 
     public function update()
     {
-        $this->is_active = (bool) $this->is_active;
         $this->validate();
 
         $this->user->name = $this->name;
-        $this->user->email = $this->email;
+        $this->user->email = $this->email ?: null; // Convert empty string to null
         $this->user->phone = $this->phone;
         $this->user->role = $this->role;
-        $this->user->is_active = $this->is_active;
+        $this->user->is_active = (bool) $this->is_active;
 
         if ($this->password) {
             $this->user->password = Hash::make($this->password);

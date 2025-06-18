@@ -5,6 +5,7 @@ namespace App\Livewire\Users;
 use App\Models\User;
 use Livewire\Component;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class Create extends Component
 {
@@ -16,14 +17,23 @@ class Create extends Component
     public $role = '';
     public $is_active = true;
 
-    protected $rules = [
-        'name' => 'required|string|min:3',
-        'email' => 'nullable|email|unique:users',
-        'phone' => 'required|string|min:10|unique:users',
-        'password' => 'required|min:6|confirmed',
-        'role' => 'required|in:admin,teacher,student',
-        'is_active' => 'boolean',
-    ];
+    protected function rules()
+    {
+        return [
+            'name' => 'required|string|min:3',
+            'email' => [
+                'nullable',
+                'email',
+                Rule::unique('users', 'email')->where(function ($query) {
+                    return $query->whereNotNull('email');
+                }),
+            ],
+            'phone' => 'required|string|min:10|unique:users',
+            'password' => 'required|min:6|confirmed',
+            'role' => 'required|in:admin,teacher,student',
+            'is_active' => 'boolean',
+        ];
+    }
 
     protected $messages = [
         'name.required' => 'Vui lòng nhập họ tên',
@@ -40,23 +50,17 @@ class Create extends Component
         'role.in' => 'Vai trò không hợp lệ',
     ];
 
-    public function mount()
-    {
-        $this->is_active = true;
-    }
-
     public function save()
     {
-        $this->is_active = (bool) $this->is_active;
         $this->validate();
 
         User::create([
             'name' => $this->name,
-            'email' => $this->email,
+            'email' => $this->email ?: null,
             'phone' => $this->phone,
             'password' => Hash::make($this->password),
             'role' => $this->role,
-            'is_active' => $this->is_active,
+            'is_active' => (bool) $this->is_active,
         ]);
 
         session()->flash('success', 'Tạo người dùng thành công!');
