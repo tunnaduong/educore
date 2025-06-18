@@ -21,11 +21,6 @@ class User extends Authenticatable
 
     protected $hidden = ['password'];
 
-    public function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = bcrypt($value);
-    }
-
     public function studentProfile()
     {
         return $this->hasOne(Student::class);

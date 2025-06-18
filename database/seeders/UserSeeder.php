@@ -25,9 +25,9 @@ class UserSeeder extends Seeder
 
         // Teacher
         $teacher = User::create([
-            'name' => 'Teacher Lisa',
-            'email' => 'teacher@educore.test',
-            'phone' => '0900000002',
+            'name' => 'Đinh Đăng Hùng',
+            'email' => 'dinhdanghung@gmail.com',
+            'phone' => '0987654321',
             'password' => bcrypt('password'),
             'role' => 'teacher',
         ]);
