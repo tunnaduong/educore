@@ -29,4 +29,16 @@ class Index extends Component
 
         return view('livewire.users.index', compact('users'));
     }
+
+    /**
+     * Delete a user by id.
+     */
+    public function delete(int $id): void
+    {
+        $user = User::find($id);
+        if ($user) {
+            $user->delete();
+            session()->flash('success', 'Xóa người dùng thành công!');
+        }
+    }
 }
