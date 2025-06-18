@@ -15,7 +15,7 @@
             <i class="bi bi-bell fs-5 me-3"></i>
             <a href="#" class="fw-bold text-white text-decoration-none dropdown-toggle" id="userDropdown"
                 data-bs-toggle="dropdown" aria-expanded="false">
-                Admin
+                {{ auth()->user()->name }}
                 <i class="bi bi-person-circle fs-5 ms-2"></i>
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
