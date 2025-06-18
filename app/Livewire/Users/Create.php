@@ -22,6 +22,7 @@ class Create extends Component
         'phone' => 'required|string|min:10|unique:users',
         'password' => 'required|min:6|confirmed',
         'role' => 'required|in:admin,teacher,student',
+        'is_active' => 'boolean',
     ];
 
     protected $messages = [
@@ -39,8 +40,14 @@ class Create extends Component
         'role.in' => 'Vai trò không hợp lệ',
     ];
 
+    public function mount()
+    {
+        $this->is_active = true;
+    }
+
     public function save()
     {
+        $this->is_active = (bool) $this->is_active;
         $this->validate();
 
         User::create([
@@ -53,7 +60,7 @@ class Create extends Component
         ]);
 
         session()->flash('success', 'Tạo người dùng thành công!');
-        return $this->redirect(route('users.index'));
+        return $this->redirect(route('users.index'), navigate: true);
     }
 
     public function render()

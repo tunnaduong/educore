@@ -84,7 +84,7 @@
                         </div>
 
                         <div class="form-check mb-3">
-                            <input wire:model="is_active" class="form-check-input" type="checkbox" id="is_active">
+                            <input wire:model="is_active" :checked="is_active" class="form-check-input" type="checkbox" id="is_active">
                             <label class="form-check-label" for="is_active">
                                 Kích hoạt tài khoản
                             </label>
