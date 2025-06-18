@@ -25,4 +25,14 @@ class User extends Authenticatable
     {
         $this->attributes['password'] = bcrypt($value);
     }
+
+    public function studentProfile()
+    {
+        return $this->hasOne(Student::class);
+    }
+
+    public function classes()
+    {
+        return $this->belongsToMany(Classroom::class)->withPivot('role')->withTimestamps();
+    }
 }

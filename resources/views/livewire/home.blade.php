@@ -1,4 +1,4 @@
-<x-layouts.dash>
+<x-layouts.dash active="home">
     <div class="container py-4">
         <div class="row g-4">
             <!-- Quản lý người dùng & phân quyền -->

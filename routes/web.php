@@ -16,14 +16,17 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Route::get('/dashboard/home', Home::class)->name('dashboard')->middleware(['auth']);
 Route::get('/login', Login::class)->name('login');
-Route::get('/dashboard/users', UsersIndex::class)->name('users.index');
-Route::get('/dashboard/users/{user}/edit', UsersEdit::class)->name('users.edit');
-Route::get('/dashboard/users/create', UsersCreate::class)->name('users.create');
 Route::post('/logout', function (Request $request) {
     Auth::logout();
     $request->session()->invalidate();
     $request->session()->regenerateToken();
     return redirect()->route('login');
 })->name('logout');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard/home', Home::class)->name('dashboard');
+    Route::get('/dashboard/users', UsersIndex::class)->name('users.index');
+    Route::get('/dashboard/users/{user}/edit', UsersEdit::class)->name('users.edit');
+    Route::get('/dashboard/users/create', UsersCreate::class)->name('users.create');
+});

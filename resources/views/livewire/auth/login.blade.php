@@ -12,7 +12,7 @@
                             <h3 class="fw-bold text-[25px] mb-2 -mt-3">
                                 <span class="text-primary">Edu</span><span class="text-warning">Core</span>
                             </h3>
-                            <p class="text-muted">Đăng nhập vào hệ thống quản lý học tập</p>
+                            <p class="text-muted">Đăng nhập vào website quản lý học tập</p>
                         </div>
 
                         <form wire:submit.prevent="login">
@@ -62,7 +62,7 @@
                         <!-- Footer -->
                         <div class="text-center mt-4">
                             <small class="text-muted">
-                                © 2025 EduCore<br>Hệ thống quản lý học tập trung tâm tiếng Trung
+                                © 2025 EduCore<br>Website quản lý học tập trung tâm tiếng Trung
                             </small>
                         </div>
                     </div>

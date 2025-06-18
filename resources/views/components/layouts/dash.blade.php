@@ -2,7 +2,8 @@
 @props(['active' => null])
 
 <div class="min-vh-100 d-flex flex-column">
-    <div class="bg-[#23417e] text-white p-3 d-flex justify-content-between align-items-center">
+    <div class="bg-[#23417e] text-white p-3 d-flex justify-content-between align-items-center"
+        style="background-color: #23417e">
         <a wire:navigate href="/">
             <div class="d-flex align-items-center">
                 <img src="/educore-logo.png" alt="Logo" style="width: 50px; height: 50px;" class="me-2">
@@ -31,7 +32,7 @@
     </div>
     <div class="d-flex flex-grow-1" style="min-height: 0;">
         <!-- Sidebar -->
-        <div class="bg-dark text-white p-4" style="min-width: 260px;">
+        <div class="bg-dark text-white p-4" style="min-width: 260px;width:100%;max-width: 290px;">
             <ul class="nav flex-column">
                 <li class="nav-item mb-2">
                     <a wire:navigate href="/dashboard/home"
