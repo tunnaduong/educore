@@ -20,11 +20,13 @@ class Index extends Component
         $this->resetPage();
     }
 
-    public function delete(Classroom $classroom)
+    public function delete($classroomId)
     {
         try {
+            $classroom = Classroom::findOrFail($classroomId);
             $classroom->delete();
             session()->flash('success', 'Xóa lớp học thành công!');
+            $this->dispatch('hide-delete-modal', id: $classroomId);
         } catch (\Exception $e) {
             session()->flash('error', 'Không thể xóa lớp học này. Vui lòng thử lại sau.');
         }
