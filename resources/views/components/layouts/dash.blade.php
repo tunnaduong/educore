@@ -35,7 +35,7 @@
         <div class="bg-dark text-white p-4" style="min-width: 260px;width:100%;max-width: 290px;">
             <ul class="nav flex-column">
                 <li class="nav-item mb-2">
-                    <a wire:navigate href="/dashboard/home"
+                    <a wire:navigate href="{{ route('dashboard') }}"
                         class="text-white text-decoration-none d-block {{ $active === 'home' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
                         <i class="bi bi-house me-2"></i> Trang chủ
                     </a>

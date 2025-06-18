@@ -24,9 +24,25 @@ Route::post('/logout', function (Request $request) {
     return redirect()->route('login');
 })->name('logout');
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard/home', Home::class)->name('dashboard');
-    Route::get('/dashboard/users', UsersIndex::class)->name('users.index');
-    Route::get('/dashboard/users/{user}/edit', UsersEdit::class)->name('users.edit');
-    Route::get('/dashboard/users/create', UsersCreate::class)->name('users.create');
+// Admin routes
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/home', Home::class)->name('dashboard');
+    Route::get('/admin/users', UsersIndex::class)->name('users.index');
+    Route::get('/admin/users/{user}/edit', UsersEdit::class)->name('users.edit');
+    Route::get('/admin/users/create', UsersCreate::class)->name('users.create');
+});
+
+// Teacher routes
+Route::middleware(['auth', 'role:teacher'])->group(function () {
+    // Other teacher routes...
+});
+
+// Student routes
+Route::middleware(['auth', 'role:student'])->group(function () {
+    // Other student routes...
+});
+
+// Shared routes for admin and teacher
+Route::middleware(['auth', 'role:admin,teacher'])->group(function () {
+    // Other shared routes...
 });
