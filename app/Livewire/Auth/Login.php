@@ -45,7 +45,7 @@ class Login extends Component
         // Đăng nhập nếu đúng
         Auth::login($user, $this->remember);
         session()->regenerate();
-        return $this->redirect('dashboard/home', navigate: true);
+        return $this->redirect(route('dashboard'), navigate: true);
     }
 
     public function updated($propertyName)
