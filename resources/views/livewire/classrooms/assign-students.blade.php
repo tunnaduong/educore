@@ -102,8 +102,8 @@
                                             <td>{{ $student->phone ?? 'Chưa có' }}</td>
                                             <td class="text-center">
                                                 <span
-                                                    class="badge bg-{{ $student->is_active ? 'success' : 'secondary' }}">
-                                                    {{ $student->is_active ? 'Hoạt động' : 'Không hoạt động' }}
+                                                    class="badge bg-{{ $student->status == 'active' ? 'success' : 'secondary' }}">
+                                                    {{ $student->status == 'active' ? 'Hoạt động' : 'Không hoạt động' }}
                                                 </span>
                                             </td>
                                         </tr>

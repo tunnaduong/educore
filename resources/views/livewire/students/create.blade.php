@@ -32,11 +32,10 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="email" class="form-label">Email <span
-                                            class="text-danger">*</span></label>
+                                    <label for="email" class="form-label">Email</label>
                                     <input wire:model="email" type="email"
                                         class="form-control @error('email') is-invalid @enderror" id="email"
-                                        placeholder="example@email.com">
+                                        placeholder="Nhập email">
                                     @error('email')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -44,10 +43,11 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="phone" class="form-label">Số điện thoại</label>
+                                    <label for="phone" class="form-label">Số điện thoại <span
+                                            class="text-danger">*</span></label>
                                     <input wire:model="phone" type="text"
                                         class="form-control @error('phone') is-invalid @enderror" id="phone"
-                                        placeholder="0123456789">
+                                        placeholder="Nhập số điện thoại">
                                     @error('phone')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror

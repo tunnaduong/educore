@@ -21,8 +21,8 @@ class Edit extends Component
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $this->student->id,
-            'phone' => 'nullable|string|max:20',
+            'email' => 'nullable|email|unique:users,email,' . $this->student->id,
+            'phone' => 'required|string|max:20',
             'date_of_birth' => 'nullable|date|before:today',
             'joined_at' => 'nullable|date',
             'status' => 'required|in:active,paused,dropped',
@@ -35,9 +35,9 @@ class Edit extends Component
     {
         return [
             'name.required' => 'Vui lòng nhập họ tên học viên.',
-            'email.required' => 'Vui lòng nhập email.',
             'email.email' => 'Email không đúng định dạng.',
             'email.unique' => 'Email này đã được sử dụng.',
+            'phone.required' => 'Vui lòng nhập số điện thoại.',
             'date_of_birth.before' => 'Ngày sinh phải trước ngày hiện tại.',
             'joined_at.date' => 'Ngày vào học không đúng định dạng.',
             'status.required' => 'Vui lòng chọn trạng thái.',
@@ -51,7 +51,7 @@ class Edit extends Component
         $this->name = $student->name;
         $this->email = $student->email;
         $this->phone = $student->phone;
-        
+
         if ($student->studentProfile) {
             $this->date_of_birth = $student->studentProfile->date_of_birth;
             $this->joined_at = $student->studentProfile->joined_at;

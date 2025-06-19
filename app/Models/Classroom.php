@@ -55,4 +55,9 @@ class Classroom extends Model
     {
         return $this->teachers()->first();
     }
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class, 'class_id');
+    }
 }

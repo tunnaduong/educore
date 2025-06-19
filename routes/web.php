@@ -42,6 +42,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/classrooms/create', ClassroomsCreate::class)->name('classrooms.create');
     Route::get('/admin/classrooms/{classroom}/edit', ClassroomsEdit::class)->name('classrooms.edit');
     Route::get('/admin/classrooms/{classroom}/assign-students', ClassroomsAssignStudents::class)->name('classrooms.assign-students');
+    Route::get('/admin/classrooms/{classroom}/attendance', \App\Livewire\Attendance\TakeAttendance::class)->name('classrooms.attendance');
+    Route::get('/admin/classrooms/{classroom}/attendance-history', \App\Livewire\Attendance\AttendanceHistory::class)->name('classrooms.attendance-history');
     Route::get('/admin/students', StudentsIndex::class)->name('students.index');
     Route::get('/admin/students/create', StudentsCreate::class)->name('students.create');
     Route::get('/admin/students/{student}/edit', StudentsEdit::class)->name('students.edit');

@@ -65,17 +65,27 @@
                                     </td>
                                     <td class="px-6 py-4 text-right text-sm font-medium">
                                         <div class="flex justify-end space-x-2">
+                                            <a href="{{ route('classrooms.attendance', $classroom) }}" wire:navigate
+                                                class="btn btn-sm btn-outline-info" title="Điểm danh">
+                                                <i class="bi bi-calendar-check"></i>
+                                            </a>
+                                            <a href="{{ route('classrooms.attendance-history', $classroom) }}"
+                                                wire:navigate class="btn btn-sm btn-outline-secondary"
+                                                title="Lịch sử điểm danh">
+                                                <i class="bi bi-calendar-week"></i>
+                                            </a>
                                             <a href="{{ route('classrooms.assign-students', $classroom) }}"
-                                                wire:navigate class="btn btn-sm btn-outline-success">
+                                                wire:navigate class="btn btn-sm btn-outline-success"
+                                                title="Gán học viên">
                                                 <i class="bi bi-person-add"></i>
                                             </a>
                                             <a href="{{ route('classrooms.edit', $classroom) }}" wire:navigate
-                                                class="btn btn-sm btn-outline-primary">
+                                                class="btn btn-sm btn-outline-primary" title="Chỉnh sửa">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
                                             <button type="button" data-bs-toggle="modal"
                                                 data-bs-target="#deleteModal{{ $classroom->id }}"
-                                                class="btn btn-sm btn-outline-danger">
+                                                class="btn btn-sm btn-outline-danger" title="Xóa">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </div>
