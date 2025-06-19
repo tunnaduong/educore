@@ -74,7 +74,7 @@
                 <div class="fw-bold text-uppercase small mb-2">Quản lý học viên</div>
                 <ul class="nav flex-column">
                     <li class="nav-item mb-2">
-                        <a wire:navigate href="/dashboard/students"
+                        <a wire:navigate href="{{ route('students.index') }}"
                             class="text-white text-decoration-none d-block {{ $active === 'students' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
                             <i class="bi bi-people me-2"></i> Danh sách học viên
                         </a>

@@ -65,7 +65,11 @@
                                     </td>
                                     <td class="px-6 py-4 text-right text-sm font-medium">
                                         <div class="flex justify-end space-x-2">
-                                            <a href="{{ route('classrooms.edit', $classroom) }}"
+                                            <a href="{{ route('classrooms.assign-students', $classroom) }}"
+                                                wire:navigate class="btn btn-sm btn-outline-success">
+                                                <i class="bi bi-person-add"></i>
+                                            </a>
+                                            <a href="{{ route('classrooms.edit', $classroom) }}" wire:navigate
                                                 class="btn btn-sm btn-outline-primary">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>

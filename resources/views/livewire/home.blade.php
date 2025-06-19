@@ -29,7 +29,7 @@
             </div>
             <!-- Quản lý học viên -->
             <div class="col-6 col-md-3 text-center">
-                <a href="#" wire:navigate class="text-decoration-none text-dark">
+                <a href="{{ route('students.index') }}" wire:navigate class="text-decoration-none text-dark">
                     <div class="mb-2">
                         <i class="bi bi-person-lines-fill" style="font-size:2.5rem; color:#20c997;"></i>
                     </div>
