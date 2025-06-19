@@ -53,4 +53,14 @@ class User extends Authenticatable
             ->wherePivot('role', 'student')
             ->withTimestamps();
     }
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class, 'student_id');
+    }
+
+    public function getStatusAttribute()
+    {
+        return $this->studentProfile->status;
+    }
 }

@@ -201,22 +201,8 @@
                     </div>
                 </div>
 
-                <!-- Lịch sử điểm danh -->
-                <div class="card shadow-sm mb-4">
-                    <div class="card-header bg-light">
-                        <h5 class="mb-0 text-primary">
-                            <i class="bi bi-calendar-check me-2"></i>Lịch sử điểm danh
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="text-center py-4">
-                            <div class="text-muted">
-                                <i class="bi bi-calendar-check fs-1 d-block mb-2"></i>
-                                Chưa có lịch sử điểm danh
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- Thống kê điểm danh -->
+                @livewire('students.attendance-stats', ['student' => $student])
 
                 <!-- Lịch sử bài tập -->
                 <div class="card shadow-sm">

@@ -24,9 +24,9 @@ class Create extends Component
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'phone' => 'nullable|string|max:20',
-            'password' => ['required', Password::defaults()],
+            'email' => 'nullable|email|unique:users,email',
+            'phone' => 'required|string|max:20',
+            'password' => ['required', 'min:6'],
             'date_of_birth' => 'nullable|date|before:today',
             'joined_at' => 'nullable|date',
             'status' => 'required|in:active,paused,dropped',
@@ -39,14 +39,15 @@ class Create extends Component
     {
         return [
             'name.required' => 'Vui lòng nhập họ tên học viên.',
-            'email.required' => 'Vui lòng nhập email.',
             'email.email' => 'Email không đúng định dạng.',
             'email.unique' => 'Email này đã được sử dụng.',
+            'phone.required' => 'Vui lòng nhập số điện thoại.',
             'password.required' => 'Vui lòng nhập mật khẩu.',
             'date_of_birth.before' => 'Ngày sinh phải trước ngày hiện tại.',
             'joined_at.date' => 'Ngày vào học không đúng định dạng.',
             'status.required' => 'Vui lòng chọn trạng thái.',
             'status.in' => 'Trạng thái không hợp lệ.',
+            'password.min' => 'Mật khẩu phải có ít nhất :min ký tự',
         ];
     }
 
@@ -67,7 +68,7 @@ class Create extends Component
         // Tạo student profile
         $user->studentProfile()->create([
             'date_of_birth' => $this->date_of_birth ?: null,
-            'joined_at' => $this->joined_at ?: now(),
+            'joined_at' => $this->joined_at ?: null,
             'status' => $this->status,
             'level' => $this->level,
             'notes' => $this->notes,
