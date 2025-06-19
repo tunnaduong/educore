@@ -67,7 +67,7 @@
                                     </td>
                                     <td>
                                         <div class="d-flex justify-content-end gap-2">
-                                            <a wire:navigate href="{{ route('users.edit', $user->id) ?? '#' }}"
+                                            <a href="{{ route('users.edit', $user->id) ?? '#' }}" wire:navigate
                                                 class="btn btn-sm btn-outline-primary" title="Sửa">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>

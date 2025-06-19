@@ -11,6 +11,11 @@ use Illuminate\Http\Request;
 use App\Livewire\Classrooms\Index as ClassroomsIndex;
 use App\Livewire\Classrooms\Create as ClassroomsCreate;
 use App\Livewire\Classrooms\Edit as ClassroomsEdit;
+use App\Livewire\Classrooms\AssignStudents as ClassroomsAssignStudents;
+use App\Livewire\Students\Index as StudentsIndex;
+use App\Livewire\Students\Create as StudentsCreate;
+use App\Livewire\Students\Edit as StudentsEdit;
+use App\Livewire\Students\Show as StudentsShow;
 
 Route::get('/', function () {
     if (Auth::check()) {
@@ -36,6 +41,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/classrooms', ClassroomsIndex::class)->name('classrooms.index');
     Route::get('/admin/classrooms/create', ClassroomsCreate::class)->name('classrooms.create');
     Route::get('/admin/classrooms/{classroom}/edit', ClassroomsEdit::class)->name('classrooms.edit');
+    Route::get('/admin/classrooms/{classroom}/assign-students', ClassroomsAssignStudents::class)->name('classrooms.assign-students');
+    Route::get('/admin/students', StudentsIndex::class)->name('students.index');
+    Route::get('/admin/students/create', StudentsCreate::class)->name('students.create');
+    Route::get('/admin/students/{student}/edit', StudentsEdit::class)->name('students.edit');
+    Route::get('/admin/students/{student}', StudentsShow::class)->name('students.show');
 });
 
 // Teacher routes
