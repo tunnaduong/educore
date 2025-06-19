@@ -1,4 +1,4 @@
-<x-layouts.dash>
+<x-layouts.dash active="classrooms">
     <div class="container-fluid">
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -65,6 +65,10 @@
                                     </td>
                                     <td class="px-6 py-4 text-right text-sm font-medium">
                                         <div class="flex justify-end space-x-2">
+                                            <a href="{{ route('classrooms.show', $classroom) }}" wire:navigate
+                                                class="btn btn-sm btn-outline-secondary" title="Xem chi tiết">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
                                             <a href="{{ route('classrooms.attendance', $classroom) }}" wire:navigate
                                                 class="btn btn-sm btn-outline-info" title="Điểm danh">
                                                 <i class="bi bi-calendar-check"></i>

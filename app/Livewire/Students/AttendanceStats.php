@@ -4,6 +4,7 @@ namespace App\Livewire\Students;
 
 use App\Models\User;
 use App\Models\Attendance;
+use App\Models\Student;
 use Livewire\Component;
 use Carbon\Carbon;
 
@@ -18,15 +19,29 @@ class AttendanceStats extends Component
     public function mount($student)
     {
         $this->student = $student;
-        $this->selectedMonth = now()->month;
-        $this->selectedYear = now()->year;
+        $this->selectedMonth = (int) now()->month;
+        $this->selectedYear = (int) now()->year;
         $this->loadAttendanceStats();
     }
 
     public function loadAttendanceStats()
     {
+        // Lấy student record từ bảng students
+        $studentRecord = Student::where('user_id', $this->student->id)->first();
+
+        if (!$studentRecord) {
+            $this->attendanceStats = [];
+            $this->totalStats = [
+                'total_days' => 0,
+                'present_days' => 0,
+                'absent_days' => 0,
+                'attendance_rate' => 0,
+            ];
+            return;
+        }
+
         // Lấy dữ liệu điểm danh của học viên trong tháng
-        $attendances = Attendance::forStudent($this->student->id)
+        $attendances = Attendance::forStudent($studentRecord->id)
             ->forMonth($this->selectedYear, $this->selectedMonth)
             ->with('classroom')
             ->get();
@@ -70,17 +85,19 @@ class AttendanceStats extends Component
 
     public function updatedSelectedMonth()
     {
+        $this->selectedMonth = (int) $this->selectedMonth;
         $this->loadAttendanceStats();
     }
 
     public function updatedSelectedYear()
     {
+        $this->selectedYear = (int) $this->selectedYear;
         $this->loadAttendanceStats();
     }
 
     public function getMonthName($month)
     {
-        return Carbon::create()->month($month)->format('F');
+        return Carbon::create()->month((int) $month)->format('F');
     }
 
     public function getStatusBadge($rate)

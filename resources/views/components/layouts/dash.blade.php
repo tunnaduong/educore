@@ -45,6 +45,18 @@
                 <div class="fw-bold text-uppercase small mb-2">Quản lý đào tạo</div>
                 <ul class="nav flex-column">
                     <li class="nav-item mb-2">
+                        <a wire:navigate href="{{ route('attendances.overview') }}"
+                            class="text-white text-decoration-none d-block {{ $active === 'attendances' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
+                            <i class="bi bi-calendar-check me-2"></i> Tổng quan điểm danh
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a wire:navigate href="{{ route('classrooms.index') }}"
+                            class="text-white text-decoration-none d-block {{ $active === 'classrooms' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
+                            <i class="bi bi-mortarboard me-2"></i> Quản lý lớp học
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
                         <a wire:navigate href="/dashboard/schedule"
                             class="text-white text-decoration-none d-block {{ $active === 'schedule' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
                             <i class="bi bi-calendar3 me-2"></i> Lịch học

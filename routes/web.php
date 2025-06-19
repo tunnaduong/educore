@@ -16,6 +16,7 @@ use App\Livewire\Students\Index as StudentsIndex;
 use App\Livewire\Students\Create as StudentsCreate;
 use App\Livewire\Students\Edit as StudentsEdit;
 use App\Livewire\Students\Show as StudentsShow;
+use App\Livewire\Attendance\Overview as AttendanceOverview;
 
 Route::get('/', function () {
     if (Auth::check()) {
@@ -40,6 +41,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/users/create', UsersCreate::class)->name('users.create');
     Route::get('/admin/classrooms', ClassroomsIndex::class)->name('classrooms.index');
     Route::get('/admin/classrooms/create', ClassroomsCreate::class)->name('classrooms.create');
+    Route::get('/admin/classrooms/{classroom}', \App\Livewire\Classrooms\Show::class)->name('classrooms.show');
     Route::get('/admin/classrooms/{classroom}/edit', ClassroomsEdit::class)->name('classrooms.edit');
     Route::get('/admin/classrooms/{classroom}/assign-students', ClassroomsAssignStudents::class)->name('classrooms.assign-students');
     Route::get('/admin/classrooms/{classroom}/attendance', \App\Livewire\Attendance\TakeAttendance::class)->name('classrooms.attendance');
@@ -48,6 +50,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/students/create', StudentsCreate::class)->name('students.create');
     Route::get('/admin/students/{student}/edit', StudentsEdit::class)->name('students.edit');
     Route::get('/admin/students/{student}', StudentsShow::class)->name('students.show');
+    Route::get('/admin/attendances', AttendanceOverview::class)->name('attendances.overview');
 });
 
 // Teacher routes

@@ -13,9 +13,9 @@
             <div class="col-6 col-md-3 text-center">
                 <a href="#" wire:navigate class="text-decoration-none text-dark">
                     <div class="mb-2">
-                        <i class="bi bi-shield-lock-fill" style="font-size:2.5rem; color:#6f42c1;"></i>
+                        <i class="bi bi-calendar3" style="font-size:2.5rem; color:#6f42c1;"></i>
                     </div>
-                    <div>Phân quyền</div>
+                    <div>Lịch học</div>
                 </a>
             </div>
             <!-- Quản lý lớp học -->
@@ -38,7 +38,7 @@
             </div>
             <!-- Điểm danh -->
             <div class="col-6 col-md-3 text-center">
-                <a href="#" wire:navigate class="text-decoration-none text-dark">
+                <a href="{{ route('attendances.overview') }}" wire:navigate class="text-decoration-none text-dark">
                     <div class="mb-2">
                         <i class="bi bi-clipboard-check-fill" style="font-size:2.5rem; color:#ffc107;"></i>
                     </div>

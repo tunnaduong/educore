@@ -4,6 +4,7 @@ namespace App\Livewire\Attendance;
 
 use App\Models\Classroom;
 use App\Models\Attendance;
+use App\Models\Student;
 use Livewire\Component;
 use Carbon\Carbon;
 
@@ -18,8 +19,8 @@ class AttendanceHistory extends Component
     public function mount($classroom)
     {
         $this->classroom = $classroom;
-        $this->selectedMonth = now()->month;
-        $this->selectedYear = now()->year;
+        $this->selectedMonth = (int) now()->month;
+        $this->selectedYear = (int) now()->year;
         $this->loadAttendanceHistory();
     }
 
@@ -31,7 +32,7 @@ class AttendanceHistory extends Component
         // Lấy dữ liệu điểm danh trong tháng
         $attendances = Attendance::forClass($this->classroom->id)
             ->forMonth($this->selectedYear, $this->selectedMonth)
-            ->with('student')
+            ->with('student.user')
             ->get()
             ->groupBy(['date', 'student_id']);
 
@@ -40,18 +41,24 @@ class AttendanceHistory extends Component
 
         // Tạo dữ liệu cho từng học viên
         foreach ($students as $student) {
-            $studentStats = [
-                'total_days' => 0,
-                'present_days' => 0,
-                'absent_days' => 0,
-                'attendance_rate' => 0,
-            ];
+            // Lấy student record từ bảng students
+            $studentRecord = Student::where('user_id', $student->id)->first();
 
-            $this->attendanceHistory[$student->id] = [
-                'student' => $student,
-                'attendance' => [],
-                'stats' => $studentStats,
-            ];
+            if ($studentRecord) {
+                $studentStats = [
+                    'total_days' => 0,
+                    'present_days' => 0,
+                    'absent_days' => 0,
+                    'attendance_rate' => 0,
+                ];
+
+                $this->attendanceHistory[$studentRecord->id] = [
+                    'student' => $student,
+                    'student_record' => $studentRecord,
+                    'attendance' => [],
+                    'stats' => $studentStats,
+                ];
+            }
         }
 
         // Điền dữ liệu điểm danh
@@ -109,17 +116,19 @@ class AttendanceHistory extends Component
 
     public function updatedSelectedMonth()
     {
+        $this->selectedMonth = (int) $this->selectedMonth;
         $this->loadAttendanceHistory();
     }
 
     public function updatedSelectedYear()
     {
+        $this->selectedYear = (int) $this->selectedYear;
         $this->loadAttendanceHistory();
     }
 
     public function getMonthName($month)
     {
-        return Carbon::create()->month($month)->format('F');
+        return Carbon::create()->month((int) $month)->format('F');
     }
 
     public function getDayName($date)

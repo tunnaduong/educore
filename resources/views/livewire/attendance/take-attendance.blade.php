@@ -1,4 +1,4 @@
-<x-layouts.dash>
+<x-layouts.dash active="attendances">
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
@@ -140,11 +140,11 @@
                                         <td>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox"
-                                                    wire:click="toggleAttendance({{ $data['student']->id }})"
+                                                    wire:click="toggleAttendance({{ $data['student_record']->id }})"
                                                     {{ $data['present'] ? 'checked' : '' }}
-                                                    id="attendance_{{ $data['student']->id }}">
+                                                    id="attendance_{{ $data['student_record']->id }}">
                                                 <label class="form-check-label"
-                                                    for="attendance_{{ $data['student']->id }}">
+                                                    for="attendance_{{ $data['student_record']->id }}">
                                                     @if ($data['present'])
                                                         <span class="badge bg-success">Có mặt</span>
                                                     @else
@@ -167,7 +167,7 @@
                                         </td>
                                         <td>
                                             @if (!$data['present'])
-                                                <button wire:click="openReasonModal({{ $data['student']->id }})"
+                                                <button wire:click="openReasonModal({{ $data['student_record']->id }})"
                                                     class="btn btn-sm btn-outline-primary">
                                                     <i class="bi bi-pencil me-1"></i>Lý do
                                                 </button>
