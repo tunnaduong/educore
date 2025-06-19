@@ -1,4 +1,4 @@
-<x-layouts.dash>
+<x-layouts.dash active="classrooms">
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">

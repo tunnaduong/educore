@@ -56,7 +56,7 @@ class User extends Authenticatable
 
     public function attendances()
     {
-        return $this->hasMany(Attendance::class, 'student_id');
+        return $this->hasManyThrough(Attendance::class, Student::class, 'user_id', 'student_id');
     }
 
     public function getStatusAttribute()

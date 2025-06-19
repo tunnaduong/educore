@@ -4,6 +4,7 @@ namespace App\Livewire\Attendance;
 
 use App\Models\Classroom;
 use App\Models\Attendance;
+use App\Models\Student;
 use App\Models\User;
 use Livewire\Component;
 use Carbon\Carbon;
@@ -55,13 +56,19 @@ class TakeAttendance extends Component
         $this->attendanceData = [];
 
         foreach ($students as $student) {
-            $existing = $existingAttendance->get($student->id);
-            $this->attendanceData[$student->id] = [
-                'student' => $student,
-                'present' => $existing ? $existing->present : true,
-                'reason' => $existing ? $existing->reason : '',
-                'hasExisting' => $existing ? true : false,
-            ];
+            // Lấy student record từ bảng students
+            $studentRecord = Student::where('user_id', $student->id)->first();
+
+            if ($studentRecord) {
+                $existing = $existingAttendance->get($studentRecord->id);
+                $this->attendanceData[$studentRecord->id] = [
+                    'student' => $student,
+                    'student_record' => $studentRecord,
+                    'present' => $existing ? $existing->present : true,
+                    'reason' => $existing ? $existing->reason : '',
+                    'hasExisting' => $existing ? true : false,
+                ];
+            }
         }
     }
 
