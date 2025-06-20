@@ -5,7 +5,7 @@
                 <i class="bi bi-calendar3 me-2 text-primary"></i>
                 Lịch học
             </h2>
-            <a href="{{ route('schedules.create') }}" class="btn btn-primary">
+            <a wire:navigate href="{{ route('schedules.create') }}" class="btn btn-primary">
                 <i class="bi bi-plus-circle me-2"></i>Thêm lịch học
             </a>
         </div>
@@ -38,7 +38,7 @@
                         </select>
                     </div>
                     <div class="col-md-2 d-flex align-items-end">
-                        <button wire:click="$set('search', '')" wire:click="$set('filterLevel', '')"
+                        <button wire:navigate wire:click="$set('search', '')" wire:click="$set('filterLevel', '')"
                             wire:click="$set('filterTeacher', '')" class="btn btn-outline-secondary w-100">
                             <i class="bi bi-arrow-clockwise me-1"></i>Làm mới
                         </button>
@@ -104,11 +104,11 @@
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group">
-                                                <a href="{{ route('schedules.show', $classroom) }}"
+                                                <a wire:navigate href="{{ route('schedules.show', $classroom) }}"
                                                     class="btn btn-sm btn-outline-primary" title="Xem chi tiết">
                                                     <i class="bi bi-eye"></i>
                                                 </a>
-                                                <a href="{{ route('schedules.edit', $classroom) }}"
+                                                <a wire:navigate href="{{ route('schedules.edit', $classroom) }}"
                                                     class="btn btn-sm btn-outline-warning" title="Chỉnh sửa">
                                                     <i class="bi bi-pencil"></i>
                                                 </a>

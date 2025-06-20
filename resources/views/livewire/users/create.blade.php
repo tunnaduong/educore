@@ -94,7 +94,7 @@
                     <!-- Submit Buttons -->
                     <div class="d-flex justify-content-end gap-2">
                         <a href="{{ route('users.index') }}" wire:navigate class="btn btn-light">Hủy</a>
-                        <button type="submit" class="btn btn-primary">
+                        <button wire:navigate type="submit" class="btn btn-primary">
                             <i class="bi bi-person-plus-fill me-2"></i>Tạo người dùng
                         </button>
                     </div>

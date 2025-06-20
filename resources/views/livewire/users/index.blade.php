@@ -67,11 +67,11 @@
                                     </td>
                                     <td>
                                         <div class="d-flex justify-content-end gap-2">
-                                            <a href="{{ route('users.edit', $user->id) ?? '#' }}" wire:navigate
+                                            <a wire:navigate href="{{ route('users.edit', $user->id) ?? '#' }}"
                                                 class="btn btn-sm btn-outline-primary" title="Sửa">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
-                                            <button type="button" data-bs-toggle="modal"
+                                            <button wire:navigate type="button" data-bs-toggle="modal"
                                                 data-bs-target="#deleteModal{{ $user->id }}"
                                                 class="btn btn-sm btn-outline-danger" title="Xóa">
                                                 <i class="bi bi-trash"></i>
@@ -89,7 +89,7 @@
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="deleteModalLabel{{ $user->id }}">
                                                     Xác nhận xóa người dùng</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                <button wire:navigate type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                             </div>
 
@@ -99,9 +99,9 @@
                                             </div>
 
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
+                                                <button wire:navigate type="button" class="btn btn-secondary"
                                                     data-bs-dismiss="modal">Hủy</button>
-                                                <button type="button" class="btn btn-danger" id="confirmDelete"
+                                                <button wire:navigate type="button" class="btn btn-danger" id="confirmDelete"
                                                     wire:click="delete({{ $user->id }})"
                                                     data-bs-dismiss="modal">Xóa</button>
                                             </div>
