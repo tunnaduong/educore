@@ -56,7 +56,7 @@ class Edit extends Component
         $this->status = $classroom->status;
 
         // Set schedule data
-        $schedule = json_decode($classroom->schedule, true);
+        $schedule = $classroom->schedule;
         $this->days = $schedule['days'] ?? [];
         $this->time = $schedule['time'] ?? '';
     }
@@ -68,10 +68,10 @@ class Edit extends Component
         $this->classroom->update([
             'name' => $this->name,
             'level' => $this->level,
-            'schedule' => json_encode([
+            'schedule' => [
                 'days' => $this->days,
                 'time' => $this->time,
-            ]),
+            ],
             'notes' => $this->notes,
             'teacher_id' => $this->teacher_id,
             'status' => $this->status,

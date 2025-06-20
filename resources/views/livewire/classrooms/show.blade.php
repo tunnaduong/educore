@@ -70,7 +70,7 @@
                                 <label class="form-label text-muted small">Lịch học</label>
                                 <div class="fw-medium">
                                     @php
-                                        $schedule = json_decode($classroom->schedule, true);
+                                        $schedule = $classroom->schedule;
                                         $days = $schedule['days'] ?? [];
                                         $time = $schedule['time'] ?? '';
                                     @endphp

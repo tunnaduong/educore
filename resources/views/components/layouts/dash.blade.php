@@ -118,7 +118,7 @@
                 {{ $slot }}
             </div>
             <footer class="text-center mt-4 text-muted small">
-                ©2025 Trung tâm Hanxen Kim Bảng Hà Nam — Powered by EduCore
+                © 2025 Trung tâm Hanxen Kim Bảng Hà Nam — Powered by EduCore
             </footer>
         </div>
     </div>
