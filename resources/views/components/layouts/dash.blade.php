@@ -114,7 +114,7 @@
         </div>
         <!-- Main Content -->
         <div class="flex-grow-1 p-4 flex flex-col" style="background: #f8fafc;">
-            <div class="flex-1">
+            <div>
                 {{ $slot }}
             </div>
             <footer class="text-center mt-4 text-muted small">
