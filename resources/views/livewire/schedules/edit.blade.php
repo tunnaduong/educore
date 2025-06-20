@@ -6,7 +6,7 @@
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">
                             <h4 class="mb-0 fs-4">Chỉnh sửa lịch học</h4>
-                            <a href="{{ route('schedules.index') }}" class="btn btn-outline-secondary">
+                            <a wire:navigate href="{{ route('schedules.index') }}" class="btn btn-outline-secondary">
                                 <i class="bi bi-arrow-left me-2"></i>Quay lại
                             </a>
                         </div>
@@ -96,10 +96,10 @@
 
                             <!-- Nút thao tác -->
                             <div class="d-flex justify-content-end gap-2">
-                                <a href="{{ route('schedules.index') }}" class="btn btn-secondary">
+                                <a wire:navigate href="{{ route('schedules.index') }}" class="btn btn-secondary">
                                     <i class="bi bi-x-circle me-2"></i>Hủy
                                 </a>
-                                <button type="submit" class="btn btn-primary">
+                                <button wire:navigate type="submit" class="btn btn-primary">
                                     <i class="bi bi-check-circle me-2"></i>Lưu thay đổi
                                 </button>
                             </div>
