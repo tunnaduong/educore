@@ -140,7 +140,7 @@
                     <!-- Submit Buttons -->
                     <div class="d-flex justify-content-end gap-2">
                         <a href="{{ route('students.index') }}" wire:navigate class="btn btn-light">Hủy</a>
-                        <button type="submit" class="btn btn-primary">
+                        <button wire:navigate type="submit" class="btn btn-primary">
                             <i class="bi bi-check-circle me-2"></i>Cập nhật
                         </button>
                     </div>

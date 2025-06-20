@@ -13,7 +13,7 @@
         </a>
         <div class="dropdown">
             <i class="bi bi-bell fs-5 me-3"></i>
-            <a href="#" class="fw-bold text-white text-decoration-none dropdown-toggle" id="userDropdown"
+            <a wire:navigate href="#" class="fw-bold text-white text-decoration-none dropdown-toggle" id="userDropdown"
                 data-bs-toggle="dropdown" aria-expanded="false">
                 {{ auth()->user()->name }}
                 <i class="bi bi-person-circle fs-5 ms-2"></i>
@@ -22,7 +22,7 @@
                 <li>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="dropdown-item text-danger">
+                        <button wire:navigate type="submit" class="dropdown-item text-danger">
                             <i class="bi bi-box-arrow-right me-2"></i>Đăng xuất
                         </button>
                     </form>
