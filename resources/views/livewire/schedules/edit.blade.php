@@ -5,7 +5,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h4 class="mb-0">Chỉnh sửa lịch học</h4>
+                            <h4 class="mb-0 fs-4">Chỉnh sửa lịch học</h4>
                             <a href="{{ route('schedules.index') }}" class="btn btn-outline-secondary">
                                 <i class="bi bi-arrow-left me-2"></i>Quay lại
                             </a>

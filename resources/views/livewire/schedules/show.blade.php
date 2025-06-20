@@ -1,7 +1,7 @@
 <x-layouts.dash active="schedules">
     <div class="container py-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="mb-0">Chi tiết lịch học</h2>
+            <h2 class="mb-0 fs-4">Chi tiết lịch học</h2>
             <div class="btn-group" role="group">
                 <a href="{{ route('schedules.index') }}" class="btn btn-outline-secondary">
                     <i class="bi bi-arrow-left me-2"></i>Quay lại
