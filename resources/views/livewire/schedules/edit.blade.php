@@ -99,7 +99,7 @@
                                 <a wire:navigate href="{{ route('schedules.index') }}" class="btn btn-secondary">
                                     <i class="bi bi-x-circle me-2"></i>Hủy
                                 </a>
-                                <button wire:navigate type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary">
                                     <i class="bi bi-check-circle me-2"></i>Lưu thay đổi
                                 </button>
                             </div>

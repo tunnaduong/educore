@@ -122,7 +122,7 @@
                     <!-- Submit Buttons -->
                     <div class="d-flex justify-content-end gap-2">
                         <a href="{{ route('classrooms.index') }}" wire:navigate class="btn btn-light">Hủy</a>
-                        <button wire:navigate type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary">
                             <i class="bi bi-save me-2"></i>Lưu thay đổi
                         </button>
                     </div>

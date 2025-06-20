@@ -13,7 +13,7 @@
         @if (session()->has('message'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('message') }}
-                <button wire:navigate type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
 
@@ -47,7 +47,7 @@
                         </select>
                     </div>
                     <div class="col-md-2 mb-3">
-                        <button wire:navigate wire:click="resetFilters" class="btn btn-outline-secondary w-100">
+                        <button wire:click="resetFilters" class="btn btn-outline-secondary w-100">
                             <i class="bi bi-arrow-clockwise me-1"></i>Reset
                         </button>
                     </div>
@@ -153,7 +153,7 @@
                                                 class="btn btn-sm btn-outline-primary" title="Chỉnh sửa">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
-                                            <button wire:navigate type="button" data-bs-toggle="modal"
+                                            <button type="button" data-bs-toggle="modal"
                                                 data-bs-target="#deleteModal{{ $student->id }}"
                                                 class="btn btn-sm btn-outline-danger" title="Xóa">
                                                 <i class="bi bi-trash"></i>
@@ -170,7 +170,7 @@
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="deleteModalLabel{{ $student->id }}">
                                                     Xác nhận xóa học viên</h5>
-                                                <button wire:navigate type="button" class="btn-close" data-bs-dismiss="modal"
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
@@ -178,9 +178,9 @@
                                                 này không thể hoàn tác.
                                             </div>
                                             <div class="modal-footer">
-                                                <button wire:navigate type="button" class="btn btn-secondary"
+                                                <button type="button" class="btn btn-secondary"
                                                     data-bs-dismiss="modal">Hủy</button>
-                                                <button wire:navigate type="button" class="btn btn-danger"
+                                                <button type="button" class="btn btn-danger"
                                                     wire:click="delete({{ $student->id }})"
                                                     data-bs-dismiss="modal">Xóa</button>
                                             </div>

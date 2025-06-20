@@ -52,7 +52,7 @@
 
                             <!-- Login Button -->
                             <div class="d-grid">
-                                <button wire:navigate type="submit" class="btn btn-primary btn-lg fw-semibold py-3 rounded-3">
+                                <button type="submit" class="btn btn-primary btn-lg fw-semibold py-3 rounded-3">
                                     <i class="bi bi-box-arrow-in-right me-2"></i>
                                     Đăng nhập
                                 </button>
