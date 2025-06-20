@@ -15,7 +15,7 @@
         @if (session()->has('message'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('message') }}
-                <button wire:navigate type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
 
@@ -29,10 +29,10 @@
                                 <i class="bi bi-person-plus me-2"></i>Danh sách học viên có sẵn
                             </h5>
                             <div class="d-flex gap-2">
-                                <button wire:navigate wire:click="selectAll" class="btn btn-sm btn-outline-primary">
+                                <button wire:click="selectAll" class="btn btn-sm btn-outline-primary">
                                     <i class="bi bi-check-all me-1"></i>Chọn tất cả
                                 </button>
-                                <button wire:navigate wire:click="deselectAll" class="btn btn-sm btn-outline-secondary">
+                                <button wire:click="deselectAll" class="btn btn-sm btn-outline-secondary">
                                     <i class="bi bi-x-circle me-1"></i>Bỏ chọn tất cả
                                 </button>
                             </div>
@@ -246,7 +246,7 @@
 
                         <!-- Action Buttons -->
                         <div class="mt-4">
-                            <button wire:navigate wire:click="assignStudents" class="btn btn-primary w-100"
+                            <button wire:click="assignStudents" class="btn btn-primary w-100"
                                 {{ empty($selectedStudents) && $enrolledStudents->count() == 0 ? 'disabled' : '' }}>
                                 <i class="bi bi-check-circle me-2"></i>
                                 Cập nhật danh sách học viên

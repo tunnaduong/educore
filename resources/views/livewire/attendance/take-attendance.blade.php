@@ -89,7 +89,7 @@
                         <div class="d-flex gap-2 justify-content-end">
                             <input wire:model.live="selectedDate" type="date" class="form-control"
                                 style="max-width: 200px;">
-                            <button wire:navigate wire:click="saveAttendance" class="btn btn-primary">
+                            <button wire:click="saveAttendance" class="btn btn-primary">
                                 <i class="bi bi-save me-2"></i>Lưu điểm danh
                             </button>
                         </div>
@@ -100,7 +100,7 @@
                 @if (session()->has('message'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         {{ session('message') }}
-                        <button wire:navigate type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
                 @endif
 
@@ -167,7 +167,7 @@
                                         </td>
                                         <td>
                                             @if (!$data['present'])
-                                                <button wire:navigate wire:click="openReasonModal({{ $data['student_record']->id }})"
+                                                <button wire:click="openReasonModal({{ $data['student_record']->id }})"
                                                     class="btn btn-sm btn-outline-primary">
                                                     <i class="bi bi-pencil me-1"></i>Lý do
                                                 </button>
@@ -192,7 +192,7 @@
                         <h5 class="modal-title">
                             <i class="bi bi-exclamation-triangle me-2"></i>Lý do nghỉ học
                         </h5>
-                        <button wire:navigate type="button" class="btn-close"
+                        <button type="button" class="btn-close"
                             wire:click="$set('showReasonModal', false)"></button>
                     </div>
                     <div class="modal-body">
@@ -206,10 +206,10 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button wire:navigate type="button" class="btn btn-secondary" wire:click="$set('showReasonModal', false)">
+                        <button type="button" class="btn btn-secondary" wire:click="$set('showReasonModal', false)">
                             Hủy
                         </button>
-                        <button wire:navigate type="button" class="btn btn-primary" wire:click="saveReason">
+                        <button type="button" class="btn btn-primary" wire:click="saveReason">
                             <i class="bi bi-check-circle me-2"></i>Lưu lý do
                         </button>
                     </div>
