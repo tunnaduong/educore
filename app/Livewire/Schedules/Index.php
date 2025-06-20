@@ -5,6 +5,7 @@ namespace App\Livewire\Schedules;
 use App\Models\Classroom;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Auth;
 
 class Index extends Component
 {
@@ -56,10 +57,26 @@ class Index extends Component
         $levels = Classroom::distinct()->pluck('level')->filter();
         $teachers = \App\Models\User::where('role', 'teacher')->orderBy('name')->get();
 
+
+        $user = Auth::user();
+        // Lấy danh sách lịch dạy của giáo viên
+        // $schedules = $user->schedules()->with('classroom')->get();
+
+        // Chuyển đổi sang dạng FullCalendar
+        // $events = $schedules->map(function ($schedule) {
+        //     return [
+        //         'title' => $schedule->classroom->name,
+        //         'start' => $schedule->start_time,
+        //         'end'   => $schedule->end_time,
+        //         'color' => '#4e73df',
+        //     ];
+        // });
+
         return view('livewire.schedules.index', [
             'classrooms' => $classrooms,
             'levels' => $levels,
             'teachers' => $teachers,
+            // 'events' => $events,
         ]);
     }
 
@@ -91,5 +108,12 @@ class Index extends Component
         }, $days);
 
         return implode(', ', $formattedDays) . ' - ' . $time;
+    }
+
+    public function resetFilters()
+    {
+        $this->search = '';
+        $this->filterLevel = '';
+        $this->filterTeacher = '';
     }
 }

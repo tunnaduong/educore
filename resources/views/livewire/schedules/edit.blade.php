@@ -1,5 +1,5 @@
 <x-layouts.dash active="schedules">
-    <div class="container py-4">
+    <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <div class="card">
