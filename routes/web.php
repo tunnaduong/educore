@@ -76,4 +76,6 @@ Route::middleware(['auth', 'role:student'])->group(function () {
 // Shared routes for admin and teacher
 Route::middleware(['auth', 'role:admin,teacher'])->group(function () {
     // Other shared routes...
+    Route::get('/admin/assignments/create', \App\Livewire\Assignments\Create::class)->name('assignments.create');
+    Route::get('/admin/assignments', \App\Livewire\Assignments\Overview::class)->name('assignments.overview');
 });
