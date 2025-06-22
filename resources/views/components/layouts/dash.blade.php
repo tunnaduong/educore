@@ -69,7 +69,7 @@
                         </a>
                     </li>
                     <li class="nav-item mb-2">
-                        <a wire:navigate href="/dashboard/assignments"
+                        <a wire:navigate href="{{ route('assignments.overview') }}"
                             class="text-white text-decoration-none d-block {{ $active === 'assignments' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
                             <i class="bi bi-journal-text me-2"></i> Giao bài tập
                         </a>

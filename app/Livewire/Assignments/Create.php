@@ -1,0 +1,90 @@
+<?php
+
+namespace App\Livewire\Assignments;
+
+use Livewire\Component;
+use App\Models\Assignment;
+use App\Models\Classroom;
+use Illuminate\Support\Facades\Auth;
+use Livewire\WithFileUploads;
+
+class Create extends Component
+{
+    use WithFileUploads;
+
+    public $title;
+    public $description;
+    public $class_id;
+    public $deadline;
+    public $types = [];
+    public $allTypes = [
+        'upload_image' => 'Nộp ảnh',
+        'record' => 'Ghi âm',
+        'video' => 'Quay video',
+        'multiple_choice' => 'Trắc nghiệm',
+        'text' => 'Tự luận',
+    ];
+
+    public $classrooms = [];
+    public $attachment;
+    public $video;
+
+    public function mount()
+    {
+        $user = Auth::user();
+        // Nếu là admin thì lấy tất cả lớp, nếu là giáo viên thì chỉ lấy lớp mình dạy
+        if ($user->role === 'admin') {
+            $this->classrooms = Classroom::all();
+        } else {
+            $this->classrooms = $user->teachingClassrooms;
+        }
+    }
+
+    public function createAssignment()
+    {
+        $this->validate([
+            'title' => 'required|string|max:255',
+            'class_id' => 'required|exists:classrooms,id',
+            'deadline' => 'required|date',
+            'types' => 'required|array|min:1',
+            'attachment' => 'nullable|file|mimes:doc,docx,pdf,zip,rar,txt|max:10240',
+            'video' => 'nullable|mimetypes:video/mp4,video/avi,video/mpeg,video/quicktime|max:51200',
+        ], [
+            'title.required' => 'Vui lòng nhập tiêu đề bài tập',
+            'class_id.required' => 'Vui lòng chọn lớp',
+            'deadline.required' => 'Vui lòng chọn hạn nộp',
+            'types.required' => 'Vui lòng chọn ít nhất một loại bài tập',
+            'attachment.max' => 'Tệp đính kèm tối đa 10MB',
+            'attachment.mimes' => 'Chỉ chấp nhận file doc, docx, pdf, zip, rar, txt',
+            'video.max' => 'Video tối đa 50MB',
+            'video.mimetypes' => 'Chỉ chấp nhận video mp4, avi, mpeg, mov',
+        ]);
+
+        $attachmentPath = null;
+        $videoPath = null;
+        if ($this->attachment && is_object($this->attachment) && method_exists($this->attachment, 'store')) {
+            $attachmentPath = $this->attachment->store('assignments/attachments', 'public');
+        }
+        if ($this->video && is_object($this->video) && method_exists($this->video, 'store')) {
+            $videoPath = $this->video->store('assignments/videos', 'public');
+        }
+
+        Assignment::create([
+            'class_id' => $this->class_id,
+            'title' => $this->title,
+            'description' => $this->description,
+            'deadline' => $this->deadline,
+            'types' => $this->types,
+            'attachment_path' => $attachmentPath,
+            'video_path' => $videoPath,
+        ]);
+
+        session()->flash('success', 'Tạo bài tập thành công!');
+        $this->reset(['title', 'description', 'class_id', 'deadline', 'types', 'attachment', 'video']);
+    }
+
+    public function render()
+    {
+        return view('livewire.assignments.create');
+    }
+}

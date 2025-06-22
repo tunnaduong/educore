@@ -47,7 +47,7 @@
             </div>
             <!-- Giao bài tập -->
             <div class="col-6 col-md-3 text-center">
-                <a href="#" wire:navigate class="text-decoration-none text-dark">
+                <a href="{{ route('assignments.overview') }}" wire:navigate class="text-decoration-none text-dark">
                     <div class="mb-2">
                         <i class="bi bi-journal-text" style="font-size:2.5rem; color:#fd5e53;"></i>
                     </div>
