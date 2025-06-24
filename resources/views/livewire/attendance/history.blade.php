@@ -1,0 +1,75 @@
+<x-layouts.dash active="attendances">
+    <div class="container-fluid">
+        <div class="mb-4">
+            <a href="{{ route('attendances.overview') }}" wire:navigate class="btn btn-light mb-2">
+                <i class="bi bi-arrow-left me-2"></i>Quay lại tổng quan
+            </a>
+            <h4 class="mb-0 text-primary fs-4">
+                <i class="bi bi-list-ul me-2"></i>Lịch sử điểm danh
+            </h4>
+        </div>
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Ngày</th>
+                                <th>Lớp học</th>
+                                <th>Học viên</th>
+                                <th class="text-center">Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($attendances as $attendance)
+                                <tr>
+                                    <td>
+                                        <div class="fw-medium">{{ $attendance->date->format('d/m/Y') }}</div>
+                                        <small class="text-muted">{{ $attendance->date->format('D') }}</small>
+                                    </td>
+                                    <td>
+                                        <div class="fw-medium">{{ $attendance->classroom->name }}</div>
+                                        <small class="text-muted">{{ $attendance->classroom->level }}</small>
+                                    </td>
+                                    <td>
+                                        <div class="fw-medium">{{ $attendance->student->user->name }}</div>
+                                        <small class="text-muted">{{ $attendance->student->user->email }}</small>
+                                    </td>
+                                    <td class="text-center">
+                                        @if ($attendance->present)
+                                            <span class="badge bg-success">Có mặt</span>
+                                        @else
+                                            <span class="badge bg-danger">Vắng</span>
+                                            @if ($attendance->reason)
+                                                <br><small class="text-muted">{{ $attendance->reason }}</small>
+                                            @endif
+                                        @endif
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted py-4">
+                                        <i class="bi bi-calendar-x fs-1 mb-2"></i>
+                                        <div>Chưa có dữ liệu điểm danh</div>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                    {{ $attendances->links() }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading overlay -->
+    <div wire:loading.delay.long class="position-fixed top-0 start-0 w-100 h-100"
+        style="z-index: 2000; background: rgba(0,0,0,0.3);">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div class="spinner-border text-primary" style="width: 4rem; height: 4rem;" role="status">
+                <span class="visually-hidden">Đang tải...</span>
+            </div>
+        </div>
+    </div>
+
+</x-layouts.dash>

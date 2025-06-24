@@ -79,7 +79,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">Buổi điểm danh</h6>
+                                <h6 class="card-title mb-0">Số lần điểm danh</h6>
                                 <h3 class="mb-0">{{ $overviewStats['total_attendance_days'] }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -113,7 +113,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">Tổng buổi có mặt</h6>
+                                <h6 class="card-title mb-0">Số lần có mặt</h6>
                                 <h3 class="mb-0">{{ $overviewStats['total_present'] }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -128,7 +128,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">Tổng buổi vắng</h6>
+                                <h6 class="card-title mb-0">Số lần vắng</h6>
                                 <h3 class="mb-0">{{ $overviewStats['total_absent'] }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -236,10 +236,14 @@
 
                 <!-- Điểm danh gần đây -->
                 <div class="card shadow-sm">
-                    <div class="card-header bg-light">
+                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
                         <h5 class="mb-0 text-primary">
                             <i class="bi bi-clock-history me-2"></i>Điểm danh gần đây
                         </h5>
+                        <a href="{{ route('attendances.history') }}" wire:navigate
+                            class="btn btn-sm btn-outline-secondary float-end">
+                            <i class="bi bi-calendar-week"></i> Lịch sử điểm danh
+                        </a>
                     </div>
                     <div class="card-body">
                         @if ($recentAttendances->count() > 0)

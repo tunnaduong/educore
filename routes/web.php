@@ -55,6 +55,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/students/{student}/edit', StudentsEdit::class)->name('students.edit');
     Route::get('/students/{student}', StudentsShow::class)->name('students.show');
     Route::get('/attendances', AttendanceOverview::class)->name('attendances.overview');
+    Route::get('/attendances/history', \App\Livewire\Attendance\History::class)->name('attendances.history');
 
     // Schedules routes
     Route::get('/schedules', SchedulesIndex::class)->name('schedules.index');
