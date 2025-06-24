@@ -59,24 +59,11 @@ class Index extends Component
 
 
         $user = Auth::user();
-        // Lấy danh sách lịch dạy của giáo viên
-        // $schedules = $user->schedules()->with('classroom')->get();
-
-        // Chuyển đổi sang dạng FullCalendar
-        // $events = $schedules->map(function ($schedule) {
-        //     return [
-        //         'title' => $schedule->classroom->name,
-        //         'start' => $schedule->start_time,
-        //         'end'   => $schedule->end_time,
-        //         'color' => '#4e73df',
-        //     ];
-        // });
 
         return view('livewire.schedules.index', [
             'classrooms' => $classrooms,
             'levels' => $levels,
             'teachers' => $teachers,
-            // 'events' => $events,
         ]);
     }
 

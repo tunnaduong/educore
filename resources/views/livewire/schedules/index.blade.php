@@ -10,44 +10,6 @@
             </a>
         </div>
 
-        <!-- Lịch dạy của tôi -->
-        <div class="mb-4">
-            <h5 class="mb-3 text-primary">Lịch dạy của tôi</h5>
-            <div id="calendar"></div>
-        </div>
-
-        <script>
-            function renderCalendar(events = []) {
-                let calendarEl = document.getElementById('calendar');
-                if (!calendarEl) return;
-                // Xóa calendar cũ nếu có
-                if (calendarEl.innerHTML.trim() !== '') {
-                    calendarEl.innerHTML = '';
-                }
-                let calendar = new FullCalendar.Calendar(calendarEl, {
-                    initialView: 'dayGridMonth',
-                    headerToolbar: {
-                        left: 'prev,next today',
-                        center: 'title',
-                        right: 'dayGridWeek,dayGridMonth'
-                    },
-                    events: events,
-                    locale: 'vi',
-                    height: 600,
-                });
-                calendar.render();
-            }
-
-            document.addEventListener('DOMContentLoaded', function() {
-                renderCalendar();
-            });
-
-            window.addEventListener('livewire:navigated', function() {
-                renderCalendar();
-                //@ json($events)
-            });
-        </script>
-
         <!-- Bộ lọc -->
         <div class="card mb-4">
             <div class="card-body">
