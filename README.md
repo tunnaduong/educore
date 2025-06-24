@@ -1,66 +1,159 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# EduCore – Hệ thống quản lý đào tạo trung tâm tiếng Trung hiện đại 🎓
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**EduCore** là một hệ thống quản lý đào tạo hiện đại, tùy biến cao, được thiết kế dành riêng cho các trung tâm đào tạo, đặc biệt là các trung tâm dạy ngoại ngữ như tiếng Trung. Hệ thống hỗ trợ toàn diện từ quản lý người dùng, lớp học, điểm danh, giao bài tập, cho đến kiểm tra và báo cáo tiến độ học tập. EduCore được xây dựng với Laravel, Livewire, Bootstrap và Tailwind CSS, hướng đến trải nghiệm người dùng mượt mà, dễ sử dụng và dễ mở rộng.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## ✨ Key Features (Tính năng nổi bật)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 1. **User Management & Role-Based Access**
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+* Quản lý người dùng với các vai trò: **Admin**, **Giảng viên**, **Học viên**.
+* Phân quyền rõ ràng theo vai trò, hỗ trợ **đăng nhập bằng số điện thoại + mật khẩu**.
+* Tự động phân quyền theo phiên đăng nhập và loại tài khoản.
 
-## Learning Laravel
+### 2. **Lớp học linh hoạt**
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+* Tạo, chỉnh sửa, xoá lớp học.
+* Gán giảng viên & học viên.
+* Thiết lập **lịch học theo tuần/tháng**.
+* Phân loại lớp theo trình độ (Sơ cấp, HSK 3, HSK 4,...).
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 3. **Hồ sơ học viên**
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+* Lưu trữ đầy đủ thông tin cá nhân và quá trình học tập.
+* Theo dõi **tiến độ học**, **điểm số**, **trạng thái** (đang học, nghỉ, bảo lưu).
+* Lưu **lịch sử điểm danh và bài tập**.
 
-## Laravel Sponsors
+### 4. **Điểm danh chi tiết**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+* Giảng viên điểm danh từng buổi học.
+* Ghi chú lý do nghỉ, thống kê buổi học.
+* Tích hợp dữ liệu điểm danh vào hồ sơ học viên.
 
-### Premium Partners
+### 5. **Hệ thống giao bài tập theo lộ trình**
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+* Giao bài tập theo từng **bài học cụ thể**
+* Hỗ trợ nhiều loại bài tập:
 
-## Contributing
+  * Làm bài trực tuyến (trắc nghiệm, điền từ)
+  * Upload ảnh (bài viết tay)
+  * Ghi âm/video luyện nói
+* Hệ thống **deadline + khóa nộp bài tự động**, giảng viên chấm điểm và phản hồi.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 6. **Quiz & Kiểm tra**
 
-## Code of Conduct
+* Tạo bài **thi thử HSK**, kiểm tra kỹ năng nghe – nói – đọc – viết.
+* Nhiều dạng bài: trắc nghiệm, điền từ, tự luận,...
+* Lưu trữ điểm, thời gian làm bài.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 7. **Thư viện học liệu & xem lại bài cũ**
 
-## Security Vulnerabilities
+* Học viên có thể xem lại bài đã học.
+* Hỗ trợ link video (YouTube, Drive...), slide, PDF,...
+* Tìm kiếm lại bài cũ theo tên/số bài.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 8. **Thống kê và báo cáo**
 
-## License
+* Báo cáo theo từng học viên hoặc cả lớp.
+* Thống kê tiến độ học, điểm trung bình, tỷ lệ nộp bài, số buổi tham gia.
+* Gợi ý học viên cần hỗ trợ thêm.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 9. **Thông báo & nhắc lịch tự động**
+
+* Gửi nhắc lịch học, hạn nộp bài qua **email** hoặc **Zalo** (nếu có tích hợp OA).
+* Tự động khóa form nộp bài sau deadline.
+* Giảng viên gửi thông báo chung hoặc riêng.
+
+### 10. **Tương tác và chat**
+
+* Chat 1-1 giữa học viên và giảng viên.
+* Thông báo đầu lớp, gửi kèm file nếu cần.
+
+### 11. **Phân loại & lọc học viên**
+
+* Lọc học viên theo **trình độ**, **trạng thái** học tập.
+* Hỗ trợ quản lý dễ dàng theo tiêu chí riêng.
+
+---
+
+## 👥 Our Team (Thành viên nhóm)
+Dự án này được xây dựng bởi một nhóm các nhà phát triển tâm huyết.
+
+| Tên thành viên | Vai trò                         | GitHub                                   |
+| -------------- | ------------------------------- | ---------------------------------------- |
+| Dương Tùng Anh | Project Manager / Full-stack Dev| [@tunnaduong](https://github.com/tunnaduong) |
+| Hoàng Tuấn Anh | Frontend / UI-UX                | [@anhhtpn00019](https://github.com/anhhtpn00019) |
+| Nguyễn Đức Duy | Backend Dev                     | [@duyandie](https://github.com/duyandie) |
+| Phạm Linh Chi  | Tester / QA                     | [@rubyxuxu](https://github.com/rubyxuxu) |
+| Hồ Đức         | Frontend / UI-UX                | [@Duch147](https://github.com/Duch147) |
+| Trần Duy Hải   | Documentation                   | [@DuyHai1708](https://github.com/DuyHai1708) |
+
+---
+
+## 🚀 Tech Stack (Công nghệ sử dụng)
+
+* **Backend:** Laravel 11.x, PHP 8.3+
+* **Frontend:** Tailwind CSS, Livewire 3.x / Alpine.js
+* **Database:** MySQL
+
+---
+
+## 🛠️ Installation Guide (Hướng dẫn cài đặt)
+
+### Yêu cầu:
+
+* Laragon
+* MySQL
+* Apache/NGINX
+* PHP 8.3+
+* Composer
+
+### Cài đặt:
+
+```bash
+git clone https://github.com/tunnaduong/educore.git
+cd educore
+
+cp .env.example .env
+# Cập nhật thông tin kết nối DB và APP_URL
+
+composer install
+php artisan key:generate
+php artisan migrate
+php artisan serve
+```
+
+Sau khi cài đặt, truy cập địa chỉ `http://localhost:8000` (hoặc theo `APP_URL`).
+
+---
+
+## 🤝 Contributing
+
+Chúng tôi hoan nghênh mọi đóng góp từ cộng đồng:
+
+```bash
+git checkout -b feature/YourFeature
+git commit -m "Add YourFeature"
+git push origin feature/YourFeature
+```
+
+Rồi mở Pull Request ❤️
+
+---
+
+## 📄 License
+
+Dự án được cấp phép theo **MIT License**.
+
+---
+
+## 📬 Contact
+
+Dự án được phát triển bởi Team No Sleep - FPT Polytechnic Hà Nam.  
+Liên hệ: Dương Tùng Anh - `tunnaduong@gmail.com` (Nhóm trưởng)  
+Repo: [github.com/tunnaduong/educore](https://github.com/tunnaduong/educore)
+
+---
+
+> ✨ *EduCore – Đồng hành cùng các trung tâm tiếng Trung xây dựng hệ thống học tập hiệu quả và hiện đại.*
