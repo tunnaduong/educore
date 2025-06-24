@@ -157,7 +157,7 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th>Lớp học</th>
-                                            <th class="text-center">Tổng buổi</th>
+                                            <th class="text-center">Tổng số</th>
                                             <th class="text-center">Có mặt</th>
                                             <th class="text-center">Tỷ lệ</th>
                                             <th class="text-center">Hành động</th>
@@ -311,13 +311,12 @@
                     <div class="card-body">
                         @if ($topStudents->count() > 0)
                             @foreach ($topStudents as $index => $studentData)
-                                <div
-                                    class="d-flex align-items-center mb-3 {{ $index < 3 ? 'p-2 bg-light rounded' : '' }}">
+                                <div class="d-flex align-items-center mb-3">
                                     <div class="me-3">
-                                        @if ($index < 3)
-                                            <span class="badge bg-warning">{{ $index + 1 }}</span>
+                                        @if ($index < 4)
+                                            <span class="badge bg-warning">{{ $index }}</span>
                                         @else
-                                            <span class="badge bg-secondary">{{ $index + 1 }}</span>
+                                            <span class="badge bg-secondary">{{ $index }}</span>
                                         @endif
                                     </div>
                                     <div class="flex-grow-1">

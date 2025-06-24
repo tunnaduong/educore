@@ -13,8 +13,8 @@
         </a>
         <div class="dropdown">
             <i class="bi bi-bell fs-5 me-3"></i>
-            <a wire:navigate href="#" class="fw-bold text-white text-decoration-none dropdown-toggle"
-                id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <a href="#" class="fw-bold text-white text-decoration-none dropdown-toggle" id="userDropdown"
+                data-bs-toggle="dropdown" aria-expanded="false">
                 {{ auth()->user()->name }}
                 <i class="bi bi-person-circle fs-5 ms-2"></i>
             </a>
