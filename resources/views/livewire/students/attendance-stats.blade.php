@@ -101,7 +101,7 @@
                     <thead class="table-light">
                         <tr>
                             <th>Lớp học</th>
-                            <th class="text-center">Tổng buổi</th>
+                            <th class="text-center">Tổng số</th>
                             <th class="text-center">Có mặt</th>
                             <th class="text-center">Vắng</th>
                             <th class="text-center">Tỷ lệ</th>

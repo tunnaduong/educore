@@ -124,7 +124,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($attendanceData as $index => $data)
-                                    <tr>
+                                    <tr wire:key="attendance-{{ $selectedDate }}-{{ $data['student_record']->id }}">
                                         <td class="text-center">{{ $index + 1 }}</td>
                                         <td>
                                             <div class="d-flex align-items-center">
@@ -218,4 +218,14 @@
         </div>
         <div class="modal-backdrop fade show"></div>
     @endif
+
+    <!-- Loading overlay -->
+    <div wire:loading.delay.long wire:target="selectedDate,saveAttendance" class="position-fixed top-0 start-0 w-100 h-100"
+        style="z-index: 2000; background: rgba(0,0,0,0.3);">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div class="spinner-border text-primary" style="width: 4rem; height: 4rem;" role="status">
+                <span class="visually-hidden">Đang tải...</span>
+            </div>
+        </div>
+    </div>
 </x-layouts.dash>
