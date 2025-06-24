@@ -106,7 +106,7 @@
                             <div class="col-6 mb-3">
                                 <div class="border rounded p-3">
                                     <div class="fs-4 fw-bold text-success">{{ $classroom->attendances->count() }}</div>
-                                    <div class="small text-muted">Buổi điểm danh</div>
+                                    <div class="small text-muted">Tổng đã điểm danh</div>
                                 </div>
                             </div>
                         </div>
