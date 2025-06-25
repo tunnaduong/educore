@@ -54,6 +54,15 @@
                     <div>Giao bài tập</div>
                 </a>
             </div>
+            <!-- Chấm bài -->
+            <div class="col-6 col-md-3 text-center">
+                <a href="#" wire:navigate class="text-decoration-none text-dark">
+                    <div class="mb-2">
+                        <i class="bi bi-journal-check" style="font-size:2.5rem; color:#6f42c1;"></i>
+                    </div>
+                    <div>Chấm bài</div>
+                </a>
+            </div>
             <!-- Kiểm tra & Quiz -->
             <div class="col-6 col-md-3 text-center">
                 <a href="#" wire:navigate class="text-decoration-none text-dark">
@@ -99,15 +108,6 @@
                         <i class="bi bi-chat-dots-fill" style="font-size:2.5rem; color:#0dcaf0;"></i>
                     </div>
                     <div>Chat & Tương tác</div>
-                </a>
-            </div>
-            <!-- Tài khoản cá nhân -->
-            <div class="col-6 col-md-3 text-center">
-                <a href="#" wire:navigate class="text-decoration-none text-dark">
-                    <div class="mb-2">
-                        <i class="bi bi-person-circle" style="font-size:2.5rem; color:#6f42c1;"></i>
-                    </div>
-                    <div>Tài khoản</div>
                 </a>
             </div>
         </div>
