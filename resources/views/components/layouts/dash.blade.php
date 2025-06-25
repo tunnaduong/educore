@@ -77,7 +77,7 @@
                     <li class="nav-item mb-2">
                         <a wire:navigate href="/dashboard/submissions"
                             class="text-white text-decoration-none d-block {{ $active === 'submissions' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                            <i class="bi bi-upload me-2"></i> Nộp bài & chấm bài
+                            <i class="bi bi-journal-check me-2"></i> Chấm bài
                         </a>
                     </li>
                 </ul>
