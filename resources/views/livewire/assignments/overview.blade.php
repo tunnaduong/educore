@@ -207,6 +207,7 @@
                                             <th>Lớp học</th>
                                             <th>Hạn nộp</th>
                                             <th>Ngày giao</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -216,6 +217,17 @@
                                                 <td>{{ $assignment->classroom->name ?? '-' }}</td>
                                                 <td>{{ $assignment->deadline ? $assignment->deadline->format('d/m/Y H:i') : '-' }}</td>
                                                 <td>{{ $assignment->created_at->format('d/m/Y H:i') }}</td>
+                                                <td class="d-flex gap-1">
+                                                    <a href="{{ route('assignments.show', $assignment->id) }}" wire:navigate class="btn btn-sm btn-outline-primary">
+                                                        <i class="bi bi-eye"></i>
+                                                    </a>
+                                                    <button wire:click="editAssignment({{ $assignment->id }})" class="btn btn-sm btn-outline-warning">
+                                                        <i class="bi bi-pencil-square"></i>
+                                                    </button>
+                                                    <button wire:click="deleteAssignment({{ $assignment->id }})" onclick="return confirm('Bạn có chắc muốn xóa bài tập này?')" class="btn btn-sm btn-outline-danger">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>

@@ -8,6 +8,7 @@ use App\Models\AssignmentSubmission;
 use App\Models\Classroom;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class Overview extends Component
 {
@@ -86,6 +87,26 @@ class Overview extends Component
     {
         $months = [1=>'Tháng 1',2=>'Tháng 2',3=>'Tháng 3',4=>'Tháng 4',5=>'Tháng 5',6=>'Tháng 6',7=>'Tháng 7',8=>'Tháng 8',9=>'Tháng 9',10=>'Tháng 10',11=>'Tháng 11',12=>'Tháng 12'];
         return $months[$month] ?? '';
+    }
+
+    public function editAssignment($id)
+    {
+        return redirect()->route('assignments.edit', $id);
+    }
+
+    public function deleteAssignment($id)
+    {
+        $assignment = Assignment::findOrFail($id);
+        // Xóa file đính kèm nếu có
+        if ($assignment->attachment_path) {
+            Storage::disk('public')->delete($assignment->attachment_path);
+        }
+        if ($assignment->video_path) {
+            Storage::disk('public')->delete($assignment->video_path);
+        }
+        $assignment->delete();
+        session()->flash('success', 'Đã xóa bài tập thành công!');
+        $this->loadStats();
     }
 
     public function render()

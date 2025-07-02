@@ -28,6 +28,7 @@ class Create extends Component
     public $classrooms = [];
     public $attachment;
     public $video;
+    public $score;
 
     public function mount()
     {
@@ -49,6 +50,7 @@ class Create extends Component
             'type' => 'required', // Đổi từ 'types' => ... sang 'type' => 'required'
             'attachment' => 'nullable|file|mimes:doc,docx,pdf,zip,rar,txt|max:10240',
             'video' => 'nullable|mimetypes:video/mp4,video/avi,video/mpeg,video/quicktime|max:51200',
+            'score' => 'nullable|numeric|min:0',
         ], [
             'title.required' => 'Vui lòng nhập tiêu đề bài tập',
             'class_id.required' => 'Vui lòng chọn lớp',
@@ -58,6 +60,8 @@ class Create extends Component
             'attachment.mimes' => 'Chỉ chấp nhận file doc, docx, pdf, zip, rar, txt',
             'video.max' => 'Video tối đa 50MB',
             'video.mimetypes' => 'Chỉ chấp nhận video mp4, avi, mpeg, mov',
+            'score.numeric' => 'Điểm tối đa phải là số',
+            'score.min' => 'Điểm tối đa phải lớn hơn hoặc bằng 0',
         ]);
 
         $attachmentPath = null;
@@ -77,10 +81,11 @@ class Create extends Component
             'types' => $this->type, // Lưu $type thay vì $types
             'attachment_path' => $attachmentPath,
             'video_path' => $videoPath,
+            'score' => $this->score,
         ]);
 
         session()->flash('success', 'Tạo bài tập thành công!');
-        $this->reset(['title', 'description', 'class_id', 'deadline', 'type', 'attachment', 'video']); // Đổi 'types' thành 'type'
+        $this->reset(['title', 'description', 'class_id', 'deadline', 'type', 'attachment', 'video', 'score']); // Đổi 'types' thành 'type'
     }
 
     public function render()

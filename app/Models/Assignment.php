@@ -18,6 +18,8 @@ class Assignment extends Model
         'description',
         'deadline',
         'types',
+        'attachment_path',
+        'video_path',
     ];
 
     protected $casts = [
