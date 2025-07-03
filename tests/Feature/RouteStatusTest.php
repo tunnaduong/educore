@@ -19,30 +19,30 @@ class RouteStatusTest extends TestCase
         $studentId = 1;
         $assignmentId = 1;
         return [
-            ['/', 'get', false],
-            ['/login', 'get', false],
+            ['/', 'get', false], // 1
+            ['/login', 'get', false], // 2
             // --- Các route cần đăng nhập với role admin ---
-            ['/dashboard', 'get', true],
-            ['/users', 'get', true],
-            ['/users/create', 'get', true],
-            ["/users/{$userId}/edit", 'get', true],
-            ['/classrooms', 'get', true],
-            ['/classrooms/create', 'get', true],
-            ["/classrooms/{$classroomId}", 'get', true],
-            ["/classrooms/{$classroomId}/edit", 'get', true],
-            ["/classrooms/{$classroomId}/assign-students", 'get', true],
+            ['/dashboard', 'get', true], // 3
+            ['/users', 'get', true], // 4
+            ['/users/create', 'get', true], // 5
+            ["/users/{$userId}/edit", 'get', true], // 6
+            ['/classrooms', 'get', true], // 7
+            ['/classrooms/create', 'get', true], // 8
+            ["/classrooms/{$classroomId}", 'get', true], // 9
+            ["/classrooms/{$classroomId}/edit", 'get', true], // 10
+            ["/classrooms/{$classroomId}/assign-students", 'get', true], // 11
             ["/classrooms/{$classroomId}/attendance", 'get', true],
-            ["/classrooms/{$classroomId}/attendance-history", 'get', true],
-            ['/students', 'get', true],
-            ['/students/create', 'get', true],
-            ["/students/{$studentId}/edit", 'get', true],
-            ["/students/{$studentId}", 'get', true],
-            ['/attendances', 'get', true],
-            ['/attendances/history', 'get', true],
-            ['/schedules', 'get', true],
-            ['/schedules/create', 'get', true],
-            ["/schedules/{$classroomId}/edit", 'get', true],
-            ["/schedules/{$classroomId}", 'get', true],
+            ["/classrooms/{$classroomId}/attendance-history", 'get', true], // 12
+            ['/students', 'get', true], // 13
+            ['/students/create', 'get', true], // 14
+            ["/students/{$studentId}/edit", 'get', true], // 15
+            ["/students/{$studentId}", 'get', true], // 16
+            ['/attendances', 'get', true], // 17
+            ['/attendances/history', 'get', true], // 18
+            ['/schedules', 'get', true], // 19
+            ['/schedules/create', 'get', true], // 20
+            ["/schedules/{$classroomId}/edit", 'get', true], // 21
+            ["/schedules/{$classroomId}", 'get', true], // 22
             // --- Các route cho admin, teacher ---
             ['/assignments/create', 'get', true],
             ['/assignments', 'get', true],
