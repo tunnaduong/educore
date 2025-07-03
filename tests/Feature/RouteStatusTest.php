@@ -15,7 +15,7 @@ class RouteStatusTest extends TestCase
     public static function routeProvider()
     {
         $userId = 1;
-        $classroomId = 3;
+        $classroomId = 1;
         $studentId = 1;
         $assignmentId = 1;
         return [
