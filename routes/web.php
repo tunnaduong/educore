@@ -1,26 +1,26 @@
 <?php
 
-use App\Livewire\Home;
-use App\Livewire\Auth\Login;
+use App\Livewire\Admin\Home;
+use Illuminate\Http\Request;
+use App\Livewire\Admin\Auth\Login;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Livewire\Users\Edit as UsersEdit;
-use App\Livewire\Users\Index as UsersIndex;
-use App\Livewire\Users\Create as UsersCreate;
-use Illuminate\Http\Request;
-use App\Livewire\Classrooms\Index as ClassroomsIndex;
-use App\Livewire\Classrooms\Create as ClassroomsCreate;
-use App\Livewire\Classrooms\Edit as ClassroomsEdit;
-use App\Livewire\Classrooms\AssignStudents as ClassroomsAssignStudents;
-use App\Livewire\Students\Index as StudentsIndex;
-use App\Livewire\Students\Create as StudentsCreate;
-use App\Livewire\Students\Edit as StudentsEdit;
-use App\Livewire\Students\Show as StudentsShow;
-use App\Livewire\Attendance\Overview as AttendanceOverview;
-use App\Livewire\Schedules\Index as SchedulesIndex;
-use App\Livewire\Schedules\Create as SchedulesCreate;
-use App\Livewire\Schedules\Edit as SchedulesEdit;
-use App\Livewire\Schedules\Show as SchedulesShow;
+use App\Livewire\Admin\Users\Edit as UsersEdit;
+use App\Livewire\Admin\Users\Index as UsersIndex;
+use App\Livewire\Admin\Users\Create as UsersCreate;
+use App\Livewire\Admin\Students\Edit as StudentsEdit;
+use App\Livewire\Admin\Students\Show as StudentsShow;
+use App\Livewire\Admin\Schedules\Edit as SchedulesEdit;
+use App\Livewire\Admin\Schedules\Show as SchedulesShow;
+use App\Livewire\Admin\Students\Index as StudentsIndex;
+use App\Livewire\Admin\Classrooms\Edit as ClassroomsEdit;
+use App\Livewire\Admin\Schedules\Index as SchedulesIndex;
+use App\Livewire\Admin\Students\Create as StudentsCreate;
+use App\Livewire\Admin\Classrooms\Index as ClassroomsIndex;
+use App\Livewire\Admin\Schedules\Create as SchedulesCreate;
+use App\Livewire\Admin\Classrooms\Create as ClassroomsCreate;
+use App\Livewire\Admin\Attendance\Overview as AttendanceOverview;
+use App\Livewire\Admin\Classrooms\AssignStudents as ClassroomsAssignStudents;
 
 Route::get('/', function () {
     if (Auth::check()) {
@@ -45,17 +45,17 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/users/create', UsersCreate::class)->name('users.create');
     Route::get('/classrooms', ClassroomsIndex::class)->name('classrooms.index');
     Route::get('/classrooms/create', ClassroomsCreate::class)->name('classrooms.create');
-    Route::get('/classrooms/{classroom}', \App\Livewire\Classrooms\Show::class)->name('classrooms.show');
+    Route::get('/classrooms/{classroom}', \App\Livewire\Admin\Classrooms\Show::class)->name('classrooms.show');
     Route::get('/classrooms/{classroom}/edit', ClassroomsEdit::class)->name('classrooms.edit');
     Route::get('/classrooms/{classroom}/assign-students', ClassroomsAssignStudents::class)->name('classrooms.assign-students');
-    Route::get('/classrooms/{classroom}/attendance', \App\Livewire\Attendance\TakeAttendance::class)->name('classrooms.attendance');
-    Route::get('/classrooms/{classroom}/attendance-history', \App\Livewire\Attendance\AttendanceHistory::class)->name('classrooms.attendance-history');
+    Route::get('/classrooms/{classroom}/attendance', \App\Livewire\Admin\Attendance\TakeAttendance::class)->name('classrooms.attendance');
+    Route::get('/classrooms/{classroom}/attendance-history', \App\Livewire\Admin\Attendance\AttendanceHistory::class)->name('classrooms.attendance-history');
     Route::get('/students', StudentsIndex::class)->name('students.index');
     Route::get('/students/create', StudentsCreate::class)->name('students.create');
     Route::get('/students/{student}/edit', StudentsEdit::class)->name('students.edit');
     Route::get('/students/{student}', StudentsShow::class)->name('students.show');
     Route::get('/attendances', AttendanceOverview::class)->name('attendances.overview');
-    Route::get('/attendances/history', \App\Livewire\Attendance\History::class)->name('attendances.history');
+    Route::get('/attendances/history', \App\Livewire\Admin\Attendance\History::class)->name('attendances.history');
 
     // Schedules routes
     Route::get('/schedules', SchedulesIndex::class)->name('schedules.index');
@@ -78,12 +78,8 @@ Route::middleware(['auth', 'role:student'])->group(function () {
 Route::middleware(['auth', 'role:admin,teacher'])->group(function () {
     // Other shared routes...
 
-    Route::get('/assignments/create', \App\Livewire\Assignments\Create::class)->name('assignments.create');
-    Route::get('/assignments', \App\Livewire\Assignments\Overview::class)->name('assignments.overview');
-
-    Route::get('/admin/assignments/create', \App\Livewire\Assignments\Create::class)->name('assignments.create');
-    Route::get('/admin/assignments', \App\Livewire\Assignments\Overview::class)->name('assignments.overview');
-    Route::get('/admin/assignments/{assignmentId}', \App\Livewire\Assignments\Show::class)->name('assignments.show');
-    Route::get('/admin/assignments/{assignmentId}/edit', \App\Livewire\Assignments\Edit::class)->name('assignments.edit');
-
+    Route::get('/assignments/create', \App\Livewire\Admin\Assignments\Create::class)->name('assignments.create');
+    Route::get('/assignments', \App\Livewire\Admin\Assignments\Overview::class)->name('assignments.overview');
+    Route::get('/assignments/{assignmentId}', \App\Livewire\Admin\Assignments\Show::class)->name('assignments.show');
+    Route::get('/assignments/{assignmentId}/edit', \App\Livewire\Admin\Assignments\Edit::class)->name('assignments.edit');
 });
