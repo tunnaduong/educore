@@ -202,7 +202,7 @@
                 </div>
 
                 <!-- Thống kê điểm danh -->
-                @livewire('admin.students.attendance-stats', ['student' => $student])
+                @livewire('components.attendance-stats', ['student' => $student])
 
                 <!-- Lịch sử bài tập -->
                 <div class="card shadow-sm">

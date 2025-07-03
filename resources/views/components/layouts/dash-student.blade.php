@@ -40,65 +40,45 @@
                         <i class="bi bi-house me-2"></i> Trang chủ
                     </a>
                 </li>
+                <li class="nav-item mb-2">
+                    <a wire:navigate href="#"
+                        class="text-white text-decoration-none d-block {{ $active === 'courses' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
+                        <i class="bi bi-book me-2"></i> Bài học
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a wire:navigate href="{{ route('assignments.overview') }}"
+                        class="text-white text-decoration-none d-block {{ $active === 'assignments' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
+                        <i class="bi bi-journal-text me-2"></i> Bài tập
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a wire:navigate href="#"
+                        class="text-white text-decoration-none d-block {{ $active === 'tests' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
+                        <i class="bi bi-journal-check me-2"></i> Kiểm tra
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a wire:navigate href="#"
+                        class="text-white text-decoration-none d-block {{ $active === 'results' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
+                        <i class="bi bi-bar-chart me-2"></i> Kết quả
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a wire:navigate href="{{ route('schedules.index') }}"
+                        class="text-white text-decoration-none d-block {{ $active === 'schedules' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
+                        <i class="bi bi-calendar3 me-2"></i> Lịch học
+                    </a>
+                </li>
+
+
+                <li class="nav-item mb-2">
+                    <a wire:navigate href="#"
+                        class="text-white text-decoration-none d-block {{ $active === 'messages' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
+                        <i class="bi bi-bell me-2"></i> Tin nhắn & thông báo
+                    </a>
+                </li>
             </ul>
-            <div class="my-4">
-                <div class="fw-bold text-uppercase small mb-2">Quản lý đào tạo</div>
-                <ul class="nav flex-column">
-                    <li class="nav-item mb-2">
-                        <a wire:navigate href="{{ route('attendances.overview') }}"
-                            class="text-white text-decoration-none d-block {{ $active === 'attendances' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                            <i class="bi bi-calendar-check me-2"></i> Tổng quan điểm danh
-                        </a>
-                    </li>
-                    <li class="nav-item mb-2">
-                        <a wire:navigate href="{{ route('classrooms.index') }}"
-                            class="text-white text-decoration-none d-block {{ $active === 'classrooms' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                            <i class="bi bi-diagram-3 me-2"></i> Quản lý lớp học
-                        </a>
-                    </li>
-                    <li class="nav-item mb-2">
-                        <a wire:navigate href="{{ route('schedules.index') }}"
-                            class="text-white text-decoration-none d-block {{ $active === 'schedules' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                            <i class="bi bi-calendar3 me-2"></i> Lịch học
-                        </a>
-                    </li>
-                    <li class="nav-item mb-2">
-                        <a wire:navigate href="{{ route('assignments.overview') }}"
-                            class="text-white text-decoration-none d-block {{ $active === 'assignments' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                            <i class="bi bi-journal-text me-2"></i> Giao bài tập
-                        </a>
-                    </li>
-                    <li class="nav-item mb-2">
-                        <a wire:navigate href="#"
-                            class="text-white text-decoration-none d-block {{ $active === 'submissions' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                            <i class="bi bi-journal-check me-2"></i> Chấm bài
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div class="mb-4">
-                <div class="fw-bold text-uppercase small mb-2">Quản lý học viên</div>
-                <ul class="nav flex-column">
-                    <li class="nav-item mb-2">
-                        <a wire:navigate href="{{ route('students.index') }}"
-                            class="text-white text-decoration-none d-block {{ $active === 'students' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                            <i class="bi bi-people me-2"></i> Danh sách học viên
-                        </a>
-                    </li>
-                    <li class="nav-item mb-2">
-                        <a wire:navigate href="#"
-                            class="text-white text-decoration-none d-block {{ $active === 'reports' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                            <i class="bi bi-bar-chart me-2"></i> Báo cáo học tập
-                        </a>
-                    </li>
-                    <li class="nav-item mb-2">
-                        <a wire:navigate href="#"
-                            class="text-white text-decoration-none d-block {{ $active === 'messages' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                            <i class="bi bi-bell me-2"></i> Tin nhắn & thông báo
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </div>
         <!-- Main Content -->
         <div class="flex-grow-1 p-4 flex flex-col" style="background: #f8fafc;">
