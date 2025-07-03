@@ -72,6 +72,7 @@ Route::middleware(['auth', 'role:teacher'])->group(function () {
 // Student routes
 Route::middleware(['auth', 'role:student'])->group(function () {
     // Other student routes...
+    Route::get('/dashboard', Home::class)->name('dashboard');
 });
 
 // Shared routes for admin and teacher
