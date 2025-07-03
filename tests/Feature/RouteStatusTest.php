@@ -56,9 +56,18 @@ class RouteStatusTest extends TestCase
      */
     public function test_routes_return_200($uri, $method, $needLogin)
     {
-        // Tạo user admin mẫu nếu cần đăng nhập
         if ($needLogin) {
-            $user = User::where('phone', '0707006421')->first();
+            $user = User::firstOrCreate(
+                ['phone' => '0707006421'],
+                [
+                    'name' => 'Admin Test',
+                    'phone' => '0707006421',
+                    'email' => 'admin_test_' . uniqid() . '@example.com',
+                    'password' => bcrypt('tunganh2003'),
+                    'role' => 'admin',
+                    'is_active' => 1,
+                ]
+            );
             $this->actingAs($user);
         }
         $response = $this->$method($uri);
