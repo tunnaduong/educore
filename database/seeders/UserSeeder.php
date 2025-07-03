@@ -3,8 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use App\Models\Classroom;
 use App\Models\Student;
+use App\Models\Classroom;
+use App\Models\Assignment;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -66,5 +67,16 @@ class UserSeeder extends Seeder
         foreach ($studentIds as $studentId) {
             $class->users()->attach($studentId, ['role' => 'student']);
         }
+
+        // Create an example assignment
+        Assignment::create([
+            'class_id' => $class->id,
+            'title' => 'Bài tập mẫu',
+            'description' => 'Mô tả cho bài tập mẫu',
+            'deadline' => now()->addDays(1),
+            'types' => json_encode(['upload_image', 'video', 'text']),
+            'attachment_path' => null,
+            'video_path' => null,
+        ]);
     }
 }
