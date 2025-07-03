@@ -94,7 +94,7 @@ Dự án này được xây dựng bởi một nhóm các nhà phát triển tâ
 ## 🚀 Tech Stack (Công nghệ sử dụng)
 
 * **Backend:** Laravel 11.x, PHP 8.3+
-* **Frontend:** Tailwind CSS, Livewire 3.x / Alpine.js
+* **Frontend:** Bootstrap 5.x, Tailwind CSS, Livewire 3.x / Alpine.js
 * **Database:** MySQL
 
 ---
