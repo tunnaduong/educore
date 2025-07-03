@@ -3,4 +3,7 @@ description:
 globs: 
 alwaysApply: true
 ---
-Trả lời bằng tiếng Việt và tạo commit message cũng bằng tiếng Việt
+- Trả lời bằng tiếng Việt và tạo commit message cũng bằng tiếng Việt
+
+- Bạn luôn luôn cần phải tự động sửa code luôn trong file cho tôi, không cần phải hỏi lại
+
