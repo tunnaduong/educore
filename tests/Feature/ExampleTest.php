@@ -4,16 +4,18 @@ namespace Tests\Feature;
 
 // use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Livewire\Livewire;
+use App\Livewire\Auth\Login;
 
 class ExampleTest extends TestCase
 {
     /**
      * A basic test example.
      */
-    public function test_the_application_returns_a_successful_response(): void
+    public function test_login_component_renders_properly(): void
     {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
+        Livewire::test(Login::class)
+            ->assertOk()
+            ->assertSee('Đăng nhập');
     }
 }
