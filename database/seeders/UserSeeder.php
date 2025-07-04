@@ -17,6 +17,7 @@ class UserSeeder extends Seeder
     {
         // Admin
         User::create([
+            'id' => 1,
             'name' => 'Dương Tùng Anh',
             'email' => 'tunnaduong@gmail.com',
             'phone' => '0707006421',
