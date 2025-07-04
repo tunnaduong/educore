@@ -86,4 +86,12 @@ Route::middleware(['auth', 'role:admin,teacher'])->group(function () {
 
 Route::middleware(['auth', 'role:admin,teacher,student'])->group(function () {
     Route::get('/dashboard', Home::class)->name('dashboard');
+    
+    // Quiz routes
+    Route::get('/quizzes', \App\Livewire\Admin\Quiz\Index::class)->name('quizzes.index');
+    Route::get('/quizzes/create', \App\Livewire\Admin\Quiz\Create::class)->name('quizzes.create');
+    Route::get('/quizzes/{quiz}', \App\Livewire\Admin\Quiz\Show::class)->name('quizzes.show');
+    Route::get('/quizzes/{quiz}/edit', \App\Livewire\Admin\Quiz\Edit::class)->name('quizzes.edit');
+    Route::get('/quizzes/{quiz}/do', \App\Livewire\Admin\Quiz\DoQuiz::class)->name('quizzes.do');
+    Route::get('/quizzes/{quiz}/results', \App\Livewire\Admin\Quiz\Results::class)->name('quizzes.results');
 });
