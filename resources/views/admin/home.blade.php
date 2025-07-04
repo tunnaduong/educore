@@ -66,7 +66,7 @@
             </div>
             <!-- Kiểm tra & Quiz -->
             <div class="col-6 col-md-3 text-center">
-                <a href="#" wire:navigate class="text-decoration-none text-dark">
+                <a href="{{ route('quizzes.index') }}" wire:navigate class="text-decoration-none text-dark">
                     <div class="mb-2">
                         <i class="bi bi-patch-question-fill" style="font-size:2.5rem; color:#b23cfd;"></i>
                     </div>
