@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use Livewire\Livewire;
 use Illuminate\Support\ServiceProvider;
+use App\Livewire\Admin\Students\AttendanceStats;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Livewire::component('components.attendance-stats', AttendanceStats::class);
     }
 }

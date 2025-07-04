@@ -39,7 +39,6 @@ Route::post('/logout', function (Request $request) {
 
 // Admin routes
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/dashboard', Home::class)->name('dashboard');
     Route::get('/users', UsersIndex::class)->name('users.index');
     Route::get('/users/{user}/edit', UsersEdit::class)->name('users.edit');
     Route::get('/users/create', UsersCreate::class)->name('users.create');
@@ -83,4 +82,8 @@ Route::middleware(['auth', 'role:admin,teacher'])->group(function () {
     Route::get('/assignments', \App\Livewire\Admin\Assignments\Overview::class)->name('assignments.overview');
     Route::get('/assignments/{assignmentId}', \App\Livewire\Admin\Assignments\Show::class)->name('assignments.show');
     Route::get('/assignments/{assignmentId}/edit', \App\Livewire\Admin\Assignments\Edit::class)->name('assignments.edit');
+});
+
+Route::middleware(['auth', 'role:admin,teacher,student'])->group(function () {
+    Route::get('/dashboard', Home::class)->name('dashboard');
 });
