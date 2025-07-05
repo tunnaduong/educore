@@ -14,6 +14,7 @@ class Show extends Component
     public $submissions;
     public $students;
     public $assignmentId;
+    public $grading = [];
 
     public function mount($assignmentId)
     {
@@ -22,6 +23,26 @@ class Show extends Component
         $this->classroom = $this->assignment->classroom;
         $this->submissions = AssignmentSubmission::where('assignment_id', $assignmentId)->with(['student'])->get();
         $this->students = $this->classroom ? $this->classroom->students : collect();
+    }
+
+    public function updatedGrading($value, $key)
+    {
+        // Không làm gì, chỉ để Livewire nhận biết thay đổi
+    }
+
+    public function saveGrade($submissionId)
+    {
+        $score = $this->grading[$submissionId]['score'] ?? null;
+        $feedback = $this->grading[$submissionId]['feedback'] ?? null;
+        $submission = AssignmentSubmission::find($submissionId);
+        if ($submission) {
+            $submission->score = $score;
+            $submission->feedback = $feedback;
+            $submission->save();
+            session()->flash('success', 'Đã lưu điểm và nhận xét!');
+        }
+        // Làm mới submissions để cập nhật giao diện
+        $this->submissions = AssignmentSubmission::where('assignment_id', $this->assignmentId)->with(['student'])->get();
     }
 
     public function render()
