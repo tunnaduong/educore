@@ -21,18 +21,14 @@
                 <div class="row g-3">
                     <div class="col-md-4">
                         <label class="form-label">Tìm kiếm</label>
-                        <input 
-                            type="text" 
-                            class="form-control" 
-                            wire:model.live="search" 
-                            placeholder="Tìm theo tên hoặc mô tả..."
-                        >
+                        <input type="text" class="form-control" wire:model.live="search"
+                            placeholder="Tìm theo tên hoặc mô tả...">
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Lớp học</label>
                         <select class="form-select" wire:model.live="filterClass">
                             <option value="">Tất cả lớp</option>
-                            @foreach($classrooms as $classroom)
+                            @foreach ($classrooms as $classroom)
                                 <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
                             @endforeach
                         </select>
@@ -62,7 +58,7 @@
                 </h6>
             </div>
             <div class="card-body">
-                @if($quizzes->count() > 0)
+                @if ($quizzes->count() > 0)
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead class="table-light">
@@ -77,12 +73,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($quizzes as $quiz)
+                                @foreach ($quizzes as $quiz)
                                     <tr>
                                         <td>
                                             <div class="fw-medium">{{ $quiz->title }}</div>
-                                            @if($quiz->description)
-                                                <small class="text-muted">{{ Str::limit($quiz->description, 50) }}</small>
+                                            @if ($quiz->description)
+                                                <small
+                                                    class="text-muted">{{ Str::limit($quiz->description, 50) }}</small>
                                             @endif
                                         </td>
                                         <td>
@@ -92,7 +89,7 @@
                                             <span class="badge bg-secondary">{{ $quiz->getQuestionCount() }}</span>
                                         </td>
                                         <td>
-                                            @if($quiz->deadline)
+                                            @if ($quiz->deadline)
                                                 <div class="fw-medium">{{ $quiz->deadline->format('d/m/Y H:i') }}</div>
                                                 <small class="text-muted">{{ $quiz->deadline->diffForHumans() }}</small>
                                             @else
@@ -100,7 +97,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if($quiz->isExpired())
+                                            @if ($quiz->isExpired())
                                                 <span class="badge bg-danger">Hết hạn</span>
                                             @else
                                                 <span class="badge bg-success">Còn hạn</span>
@@ -112,33 +109,52 @@
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group">
-                                                <a href="{{ route('quizzes.show', $quiz) }}" 
-                                                   class="btn btn-sm btn-outline-primary" 
-                                                   title="Xem chi tiết">
+                                                <a href="{{ route('quizzes.show', $quiz) }}"
+                                                    class="btn btn-sm btn-outline-primary" title="Xem chi tiết">
                                                     <i class="bi bi-eye"></i>
                                                 </a>
-                                                <a href="{{ route('quizzes.edit', $quiz) }}" 
-                                                   class="btn btn-sm btn-outline-warning" 
-                                                   title="Sửa">
+                                                <a href="{{ route('quizzes.edit', $quiz) }}"
+                                                    class="btn btn-sm btn-outline-warning" title="Sửa">
                                                     <i class="bi bi-pencil"></i>
                                                 </a>
-                                                <a href="{{ route('quizzes.results', $quiz) }}" 
-                                                   class="btn btn-sm btn-outline-info" 
-                                                   title="Xem kết quả">
+                                                <a href="{{ route('quizzes.results', $quiz) }}"
+                                                    class="btn btn-sm btn-outline-info" title="Xem kết quả">
                                                     <i class="bi bi-graph-up"></i>
                                                 </a>
-                                                <button 
-                                                    type="button" 
-                                                    class="btn btn-sm btn-outline-danger" 
-                                                    title="Xóa"
-                                                    onclick="confirm('Bạn có chắc chắn muốn xóa bài kiểm tra này?') || event.stopImmediatePropagation()"
-                                                    wire:click="deleteQuiz({{ $quiz->id }})"
-                                                >
+                                                <button type="button" class="btn btn-sm btn-outline-danger"
+                                                    title="Xóa" data-bs-toggle="modal"
+                                                    data-bs-target="#deleteModal{{ $quiz->id }}">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </div>
                                         </td>
                                     </tr>
+
+                                    <!-- Delete Confirmation Modal -->
+                                    <div class="modal fade" id="deleteModal{{ $quiz->id }}" tabindex="-1"
+                                        aria-labelledby="deleteModalLabel{{ $quiz->id }}" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="deleteModalLabel{{ $quiz->id }}">
+                                                        Xác nhận xóa bài kiểm tra</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Bạn có chắc chắn muốn xóa bài kiểm tra "{{ $quiz->title }}"? Hành
+                                                    động này không thể hoàn tác.
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Hủy</button>
+                                                    <button type="button" class="btn btn-danger"
+                                                        wire:click="deleteQuiz({{ $quiz->id }})"
+                                                        data-bs-dismiss="modal">Xóa</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 @endforeach
                             </tbody>
                         </table>
@@ -162,8 +178,9 @@
         </div>
 
         <!-- Flash Message -->
-        @if(session()->has('message'))
-            <div class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3" role="alert">
+        @if (session()->has('message'))
+            <div class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3"
+                role="alert">
                 <i class="bi bi-check-circle me-2"></i>{{ session('message') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
