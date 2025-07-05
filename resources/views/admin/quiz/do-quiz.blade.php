@@ -1,5 +1,5 @@
-<div>
-    @if($isFinished && $result)
+<x-layouts.dash-student>
+    @if ($isFinished && $result)
         <!-- Hiển thị kết quả -->
         <div class="container-fluid">
             <div class="row justify-content-center">
@@ -15,7 +15,7 @@
                                 <h2 class="text-primary">{{ $quiz->title }}</h2>
                                 <p class="text-muted">{{ $quiz->description }}</p>
                             </div>
-                            
+
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="card bg-light">
@@ -28,7 +28,8 @@
                                 <div class="col-md-4">
                                     <div class="card bg-light">
                                         <div class="card-body">
-                                            <h3 class="text-info mb-0">{{ $result->duration ? gmdate('H:i:s', $result->duration) : '-' }}</h3>
+                                            <h3 class="text-info mb-0">
+                                                {{ $result->duration ? gmdate('H:i:s', $result->duration) : '-' }}</h3>
                                             <small class="text-muted">Thời gian làm bài</small>
                                         </div>
                                     </div>
@@ -42,9 +43,9 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="mt-4">
-                                <a href="{{ route('home') }}" class="btn btn-primary">
+                                <a href="{{ route('quizzes.index') }}" class="btn btn-primary">
                                     <i class="bi bi-house me-2"></i>Về trang chủ
                                 </a>
                             </div>
@@ -67,7 +68,7 @@
                                     <p class="text-muted mb-0">{{ $quiz->description }}</p>
                                 </div>
                                 <div class="col-md-6 text-md-end">
-                                    @if($timeRemaining)
+                                    @if ($timeRemaining)
                                         <div class="d-inline-block bg-warning text-dark px-3 py-2 rounded">
                                             <i class="bi bi-clock me-2"></i>
                                             <span id="timer">{{ gmdate('H:i:s', $timeRemaining) }}</span>
@@ -91,12 +92,10 @@
                         </div>
                         <div class="card-body">
                             <div class="row g-2">
-                                @foreach($questions as $index => $question)
+                                @foreach ($questions as $index => $question)
                                     <div class="col-4">
-                                        <button 
-                                            wire:click="goToQuestion({{ $index }})"
-                                            class="btn btn-sm w-100 {{ $index === $currentQuestionIndex ? 'btn-primary' : ($answers[$index] ? 'btn-success' : 'btn-outline-secondary') }}"
-                                        >
+                                        <button wire:click="goToQuestion({{ $index }})"
+                                            class="btn btn-sm w-100 {{ $index === $currentQuestionIndex ? 'btn-primary' : (isset($answers[$index]) && $answers[$index] ? 'btn-success' : 'btn-outline-secondary') }}">
                                             {{ $index + 1 }}
                                         </button>
                                     </div>
@@ -108,9 +107,9 @@
 
                 <!-- Nội dung câu hỏi -->
                 <div class="col-lg-9">
-                    @if(count($questions) > 0)
+                    @if (count($questions) > 0)
                         @php $currentQuestion = $questions[$currentQuestionIndex]; @endphp
-                        
+
                         <div class="card shadow-sm">
                             <div class="card-header bg-light">
                                 <div class="d-flex justify-content-between align-items-center">
@@ -125,11 +124,12 @@
                                 <!-- Nội dung câu hỏi -->
                                 <div class="mb-4">
                                     <h5>{{ $currentQuestion['question'] }}</h5>
-                                    
-                                    @if(isset($currentQuestion['audio']))
+
+                                    @if (isset($currentQuestion['audio']))
                                         <div class="mb-3">
                                             <audio controls class="w-100">
-                                                <source src="{{ asset('storage/' . $currentQuestion['audio']) }}" type="audio/mpeg">
+                                                <source src="{{ asset('storage/' . $currentQuestion['audio']) }}"
+                                                    type="audio/mpeg">
                                                 Trình duyệt không hỗ trợ audio.
                                             </audio>
                                         </div>
@@ -140,32 +140,27 @@
                                 <div class="mb-4">
                                     @switch($currentQuestion['type'])
                                         @case('multiple_choice')
-                                            @foreach($currentQuestion['options'] as $option)
+                                            @foreach ($currentQuestion['options'] as $option)
                                                 <div class="form-check mb-2">
-                                                    <input 
-                                                        class="form-check-input" 
-                                                        type="radio" 
-                                                        wire:model="answers.{{ $currentQuestionIndex }}" 
-                                                        value="{{ $option }}" 
-                                                        id="option_{{ $currentQuestionIndex }}_{{ $loop->index }}"
-                                                    >
-                                                    <label class="form-check-label" for="option_{{ $currentQuestionIndex }}_{{ $loop->index }}">
+                                                    <input class="form-check-input" type="radio"
+                                                        wire:model="answers.{{ $currentQuestionIndex }}"
+                                                        value="{{ $option }}"
+                                                        id="option_{{ $currentQuestionIndex }}_{{ $loop->index }}">
+                                                    <label class="form-check-label"
+                                                        for="option_{{ $currentQuestionIndex }}_{{ $loop->index }}">
                                                         {{ $option }}
                                                     </label>
                                                 </div>
                                             @endforeach
-                                            @break
+                                        @break
 
                                         @case('fill_blank')
                                             <div class="form-group">
-                                                <input 
-                                                    type="text" 
-                                                    class="form-control" 
-                                                    wire:model="answers.{{ $currentQuestionIndex }}" 
-                                                    placeholder="Nhập câu trả lời..."
-                                                >
+                                                <input type="text" class="form-control"
+                                                    wire:model="answers.{{ $currentQuestionIndex }}"
+                                                    placeholder="Nhập câu trả lời...">
                                             </div>
-                                            @break
+                                        @break
 
                                         @case('drag_drop')
                                             <div class="alert alert-info">
@@ -175,49 +170,36 @@
                                             <div class="form-group">
                                                 <select class="form-select" wire:model="answers.{{ $currentQuestionIndex }}">
                                                     <option value="">Chọn đáp án...</option>
-                                                    @foreach($currentQuestion['options'] as $option)
+                                                    @foreach ($currentQuestion['options'] as $option)
                                                         <option value="{{ $option }}">{{ $option }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            @break
+                                        @break
 
                                         @case('essay')
                                             <div class="form-group">
-                                                <textarea 
-                                                    class="form-control" 
-                                                    rows="6" 
-                                                    wire:model="answers.{{ $currentQuestionIndex }}" 
-                                                    placeholder="Viết câu trả lời của bạn..."
-                                                ></textarea>
+                                                <textarea class="form-control" rows="6" wire:model="answers.{{ $currentQuestionIndex }}"
+                                                    placeholder="Viết câu trả lời của bạn..."></textarea>
                                             </div>
-                                            @break
+                                        @break
                                     @endswitch
                                 </div>
 
                                 <!-- Nút điều hướng -->
                                 <div class="d-flex justify-content-between">
-                                    <button 
-                                        class="btn btn-outline-secondary" 
-                                        wire:click="previousQuestion"
-                                        {{ $currentQuestionIndex === 0 ? 'disabled' : '' }}
-                                    >
+                                    <button class="btn btn-outline-secondary" wire:click="previousQuestion"
+                                        {{ $currentQuestionIndex === 0 ? 'disabled' : '' }}>
                                         <i class="bi bi-arrow-left me-2"></i>Câu trước
                                     </button>
-                                    
-                                    @if($currentQuestionIndex === count($questions) - 1)
-                                        <button 
-                                            class="btn btn-success" 
-                                            wire:click="submitQuiz"
-                                            onclick="return confirm('Bạn có chắc chắn muốn nộp bài?')"
-                                        >
+
+                                    @if ($currentQuestionIndex === count($questions) - 1)
+                                        <button class="btn btn-success" wire:click="submitQuiz"
+                                            onclick="return confirm('Bạn có chắc chắn muốn nộp bài?')">
                                             <i class="bi bi-check-circle me-2"></i>Nộp bài
                                         </button>
                                     @else
-                                        <button 
-                                            class="btn btn-primary" 
-                                            wire:click="nextQuestion"
-                                        >
+                                        <button class="btn btn-primary" wire:click="nextQuestion">
                                             Câu tiếp<i class="bi bi-arrow-right ms-2"></i>
                                         </button>
                                     @endif
@@ -238,31 +220,37 @@
         </div>
 
         <!-- JavaScript cho timer -->
-        @if($timeRemaining)
+        @if ($timeRemaining)
             <script>
                 let timeRemaining = {{ $timeRemaining }};
                 const timerElement = document.getElementById('timer');
-                
+
+                // Cảnh báo khi người dùng cố gắng reload hoặc rời khỏi trang
+                window.onbeforeunload = function() {
+                    return 'Nếu bạn tải lại hoặc rời khỏi trang, bài kiểm tra sẽ bị nộp tự động và bạn không thể tiếp tục làm tiếp!';
+                };
+
                 const timer = setInterval(function() {
                     timeRemaining--;
-                    
+
                     if (timerElement) {
                         const hours = Math.floor(timeRemaining / 3600);
                         const minutes = Math.floor((timeRemaining % 3600) / 60);
                         const seconds = timeRemaining % 60;
-                        
-                        timerElement.textContent = 
+
+                        timerElement.textContent =
                             (hours < 10 ? '0' : '') + hours + ':' +
                             (minutes < 10 ? '0' : '') + minutes + ':' +
                             (seconds < 10 ? '0' : '') + seconds;
                     }
-                    
+
                     if (timeRemaining <= 0) {
                         clearInterval(timer);
+                        window.onbeforeunload = null; // Cho phép rời trang khi đã nộp
                         @this.call('submitQuiz');
                     }
                 }, 1000);
             </script>
         @endif
     @endif
-</div>
+</x-layouts.dash-student>
