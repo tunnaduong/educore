@@ -27,7 +27,11 @@ class CheckRole
             abort(403, 'Tài khoản của bạn đã bị vô hiệu hóa. Vui lòng liên hệ quản trị viên.');
         }
 
-        if (!in_array($user->role, $roles)) {
+        $roleList = collect($roles)->flatMap(function($r) {
+            return explode(',', $r);
+        })->map(fn($r) => trim($r))->filter()->all();
+
+        if (!in_array($user->role, $roleList)) {
             abort(403, 'Bạn không có quyền truy cập trang này');
         }
 
