@@ -134,25 +134,9 @@
                 </div>
 
                 <!-- Pagination -->
-                <div class="d-flex justify-content-between align-items-center mt-4">
-                    <div class="text-muted small">
-                        Hiển thị {{ $users->firstItem() ?? 0 }} - {{ $users->lastItem() ?? 0 }}
-                        trên tổng số {{ $users->total() ?? 0 }} người dùng
-                    </div>
-                    <div>
-                        {{ $users->links() }}
-                    </div>
+                <div class="mt-4">
+                    {{ $users->links() }}
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Loading overlay -->
-    <div wire:loading.delay.long wire:target="previousPage, nextPage, gotoPage"
-        class="position-fixed top-0 start-0 w-100 h-100" style="z-index: 2000; background: rgba(0,0,0,0.3);">
-        <div class="d-flex justify-content-center align-items-center h-100">
-            <div class="spinner-border text-primary" style="width: 4rem; height: 4rem;" role="status">
-                <span class="visually-hidden">Đang tải...</span>
             </div>
         </div>
     </div>

@@ -2,7 +2,8 @@
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
-            <a href="{{ route('quizzes.index') }}" wire:navigate class="text-decoration-none text-secondary d-inline-block mb-3">
+            <a href="{{ route('quizzes.index') }}" wire:navigate
+                class="text-decoration-none text-secondary d-inline-block mb-3">
                 <i class="bi bi-arrow-left me-2"></i>Quay lại danh sách bài kiểm tra
             </a>
             <div class="d-flex justify-content-between align-items-center">
@@ -13,15 +14,15 @@
                     <p class="text-muted mb-0">{{ $quiz->title }}</p>
                 </div>
                 <div class="btn-group">
-                    <a href="{{ route('quizzes.edit', $quiz) }}" class="btn btn-warning">
+                    <a href="{{ route('quizzes.edit', $quiz) }}" wire:navigate class="btn btn-warning">
                         <i class="bi bi-pencil me-2"></i>Sửa
                     </a>
-                    <a href="{{ route('quizzes.results', $quiz) }}" class="btn btn-info">
+                    <a href="{{ route('quizzes.results', $quiz) }}" wire:navigate class="btn btn-info">
                         <i class="bi bi-graph-up me-2"></i>Kết quả
                     </a>
-                    <button type="button" class="btn btn-danger" 
-                            onclick="confirm('Bạn có chắc chắn muốn xóa bài kiểm tra này?') || event.stopImmediatePropagation()"
-                            wire:click="deleteQuiz">
+                    <button type="button" class="btn btn-danger"
+                        onclick="confirm('Bạn có chắc chắn muốn xóa bài kiểm tra này?') || event.stopImmediatePropagation()"
+                        wire:click="deleteQuiz">
                         <i class="bi bi-trash me-2"></i>Xóa
                     </button>
                 </div>
@@ -49,9 +50,9 @@
                         <div class="mb-3">
                             <label class="form-label text-muted small">Hạn nộp</label>
                             <div class="fw-medium">
-                                @if($quiz->deadline)
+                                @if ($quiz->deadline)
                                     {{ $quiz->deadline->format('d/m/Y H:i') }}
-                                    @if($quiz->isExpired())
+                                    @if ($quiz->isExpired())
                                         <span class="badge bg-danger ms-2">Hết hạn</span>
                                     @else
                                         <span class="badge bg-success ms-2">Còn hạn</span>
@@ -102,7 +103,7 @@
                                 <small class="text-muted">Đạt (≥80%)</small>
                             </div>
                         </div>
-                        @if($results->count() > 0)
+                        @if ($results->count() > 0)
                             <hr>
                             <div class="row text-center">
                                 <div class="col-6">
@@ -132,8 +133,8 @@
                         </h6>
                     </div>
                     <div class="card-body">
-                        @if(count($quiz->questions) > 0)
-                            @foreach($quiz->questions as $index => $question)
+                        @if (count($quiz->questions) > 0)
+                            @foreach ($quiz->questions as $index => $question)
                                 <div class="border rounded p-3 mb-3">
                                     <div class="d-flex justify-content-between align-items-start mb-2">
                                         <div>
@@ -143,16 +144,17 @@
                                         </div>
                                     </div>
                                     <div class="fw-medium mb-2">{{ $question['question'] }}</div>
-                                    
-                                    @if($question['type'] === 'multiple_choice' && isset($question['options']))
+
+                                    @if ($question['type'] === 'multiple_choice' && isset($question['options']))
                                         <div class="ms-3">
-                                            @foreach($question['options'] as $optionIndex => $option)
+                                            @foreach ($question['options'] as $optionIndex => $option)
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" disabled 
-                                                           {{ $option === $question['correct_answer'] ? 'checked' : '' }}>
-                                                    <label class="form-check-label {{ $option === $question['correct_answer'] ? 'fw-bold text-success' : '' }}">
+                                                    <input class="form-check-input" type="radio" disabled
+                                                        {{ $option === $question['correct_answer'] ? 'checked' : '' }}>
+                                                    <label
+                                                        class="form-check-label {{ $option === $question['correct_answer'] ? 'fw-bold text-success' : '' }}">
                                                         {{ $option }}
-                                                        @if($option === $question['correct_answer'])
+                                                        @if ($option === $question['correct_answer'])
                                                             <i class="bi bi-check-circle-fill text-success ms-1"></i>
                                                         @endif
                                                     </label>
@@ -192,7 +194,7 @@
                         </h6>
                     </div>
                     <div class="card-body">
-                        @if($students->count() > 0)
+                        @if ($students->count() > 0)
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead class="table-light">
@@ -207,7 +209,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($students as $student)
+                                        @foreach ($students as $student)
                                             @php
                                                 $result = $results->firstWhere('student_id', $student->id);
                                             @endphp
@@ -224,8 +226,8 @@
                                                 </td>
                                                 <td>{{ $student->email ?? 'Chưa có' }}</td>
                                                 <td>
-                                                    @if($result)
-                                                        @if($result->isOnTime())
+                                                    @if ($result)
+                                                        @if ($result->isOnTime())
                                                             <span class="badge bg-success">Đúng hạn</span>
                                                         @else
                                                             <span class="badge bg-warning">Trễ hạn</span>
@@ -235,8 +237,9 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if($result)
-                                                        <span class="fw-medium {{ $result->score >= 80 ? 'text-success' : ($result->score >= 60 ? 'text-warning' : 'text-danger') }}">
+                                                    @if ($result)
+                                                        <span
+                                                            class="fw-medium {{ $result->score >= 80 ? 'text-success' : ($result->score >= 60 ? 'text-warning' : 'text-danger') }}">
                                                             {{ $result->score }}%
                                                         </span>
                                                     @else
@@ -244,24 +247,28 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if($result && $result->duration)
-                                                        <span class="text-muted">{{ $result->getDurationString() }}</span>
+                                                    @if ($result && $result->duration)
+                                                        <span
+                                                            class="text-muted">{{ $result->getDurationString() }}</span>
                                                     @else
                                                         <span class="text-muted">-</span>
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if($result && $result->submitted_at)
-                                                        <div class="fw-medium">{{ $result->submitted_at->format('d/m/Y') }}</div>
-                                                        <small class="text-muted">{{ $result->submitted_at->format('H:i') }}</small>
+                                                    @if ($result && $result->submitted_at)
+                                                        <div class="fw-medium">
+                                                            {{ $result->submitted_at->format('d/m/Y') }}</div>
+                                                        <small
+                                                            class="text-muted">{{ $result->submitted_at->format('H:i') }}</small>
                                                     @else
                                                         <span class="text-muted">-</span>
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if($result)
-                                                        <a href="{{ route('quizzes.results', $quiz) }}?student={{ $student->id }}" 
-                                                           class="btn btn-sm btn-outline-primary" title="Xem chi tiết">
+                                                    @if ($result)
+                                                        <a href="{{ route('quizzes.results', $quiz) }}?student={{ $student->id }}"
+                                                            wire:navigate class="btn btn-sm btn-outline-primary"
+                                                            title="Xem chi tiết">
                                                             <i class="bi bi-eye"></i>
                                                         </a>
                                                     @else
@@ -286,8 +293,9 @@
         </div>
 
         <!-- Flash Message -->
-        @if(session()->has('message'))
-            <div class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3" role="alert">
+        @if (session()->has('message'))
+            <div class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3"
+                role="alert">
                 <i class="bi bi-check-circle me-2"></i>{{ session('message') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>

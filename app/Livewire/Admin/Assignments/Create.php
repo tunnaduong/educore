@@ -18,7 +18,6 @@ class Create extends Component
     public $deadline;
     public $type = null; // Đổi từ $types = [] sang $type = null
     public $allTypes = [
-        'multiple_choice' => 'Trắc nghiệm',
         'text' => 'Tự luận',
         'upload_image' => 'Nộp ảnh',
         'record' => 'Ghi âm',
