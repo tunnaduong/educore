@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Classrooms;
 
 use App\Models\Classroom;
+use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -11,11 +12,24 @@ class Index extends Component
     use WithPagination;
 
     public $search = '';
-    protected $queryString = ['search'];
+    public $filterTeacher = '';
+    public $filterStatus = '';
+
+    protected $queryString = ['search', 'filterTeacher', 'filterStatus'];
 
     protected $listeners = ['refresh' => '$refresh'];
 
     public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingFilterTeacher()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingFilterStatus()
     {
         $this->resetPage();
     }
@@ -45,11 +59,22 @@ class Index extends Component
                         });
                 });
             })
+            ->when($this->filterTeacher, function ($query) {
+                $query->where('teacher_id', $this->filterTeacher);
+            })
+            ->when($this->filterStatus, function ($query) {
+                $query->where('status', $this->filterStatus);
+            })
             ->latest()
             ->paginate(10);
 
+        $teachers = User::where('role', 'teacher')
+            ->orderBy('name')
+            ->get();
+
         return view('admin.classrooms.index', [
-            'classrooms' => $classrooms
+            'classrooms' => $classrooms,
+            'teachers' => $teachers
         ]);
     }
 }

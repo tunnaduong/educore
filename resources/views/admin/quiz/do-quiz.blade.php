@@ -45,7 +45,7 @@
                             </div>
 
                             <div class="mt-4">
-                                <a href="{{ route('quizzes.index') }}" class="btn btn-primary">
+                                <a href="{{ route('quizzes.index') }}" wire:navigate class="btn btn-primary">
                                     <i class="bi bi-house me-2"></i>Về trang chủ
                                 </a>
                             </div>

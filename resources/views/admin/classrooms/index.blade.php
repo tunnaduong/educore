@@ -10,15 +10,34 @@
             </a>
         </div>
 
-        <!-- Search Bar -->
+        <!-- Search Bar & Filters -->
         <div class="card shadow-sm mb-4">
             <div class="card-body">
-                <div class="input-group">
-                    <span class="input-group-text bg-light">
-                        <i class="bi bi-search"></i>
-                    </span>
-                    <input wire:model.live="search" type="text" class="form-control"
-                        placeholder="Tìm kiếm theo tên lớp hoặc giảng viên...">
+                <div class="row g-2 align-items-center">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <span class="input-group-text bg-light">
+                                <i class="bi bi-search"></i>
+                            </span>
+                            <input wire:model.live="search" type="text" class="form-control"
+                                placeholder="Tìm kiếm theo tên lớp hoặc giảng viên...">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <select wire:model.live="filterTeacher" class="form-select">
+                            <option value="">Tất cả giảng viên</option>
+                            @foreach ($teachers as $teacher)
+                                <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col">
+                        <select wire:model.live="filterStatus" class="form-select">
+                            <option value="">Tất cả trạng thái</option>
+                            <option value="active">Đang hoạt động</option>
+                            <option value="inactive">Đã kết thúc</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
