@@ -1,33 +1,30 @@
 <?php
 
-namespace App\Livewire\Admin\Assignments;
+namespace App\Livewire\Admin\Grading;
 
 use Livewire\Component;
 use App\Models\Assignment;
 use App\Models\AssignmentSubmission;
-use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
-class Show extends Component
+class GradeAssignment extends Component
 {
     public $assignment;
-    public $classroom;
     public $submissions;
-    public $students;
-    public $assignmentId;
     public $grading = [];
+    public $assignmentId;
 
-    public function mount($assignmentId)
+    public function mount($assignment)
     {
-        $this->assignmentId = $assignmentId;
-        $this->assignment = Assignment::with('classroom')->findOrFail($assignmentId);
-        $this->classroom = $this->assignment->classroom;
-        $this->submissions = AssignmentSubmission::where('assignment_id', $assignmentId)->with(['student'])->get();
-        $this->students = $this->classroom ? $this->classroom->students : collect();
-    }
-
-    public function updatedGrading($value, $key)
-    {
-        // Không làm gì, chỉ để Livewire nhận biết thay đổi
+        $this->assignmentId = $assignment;
+        $this->assignment = Assignment::with('classroom')->findOrFail($assignment);
+        $this->submissions = AssignmentSubmission::where('assignment_id', $assignment)->with(['student'])->get();
+        foreach ($this->submissions as $submission) {
+            $this->grading[$submission->id] = [
+                'score' => $submission->score,
+                'feedback' => $submission->feedback,
+            ];
+        }
     }
 
     public function saveGrade($submissionId)
@@ -47,6 +44,9 @@ class Show extends Component
 
     public function render()
     {
-        return view('admin.assignments.show');
+        return view('admin.grading.grade-assignment', [
+            'assignment' => $this->assignment,
+            'submissions' => $this->submissions,
+        ]);
     }
 }

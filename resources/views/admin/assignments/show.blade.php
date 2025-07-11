@@ -148,6 +148,30 @@
                                                     @endif
                                                 </td>
                                             </tr>
+                                            @if ($submission)
+                                            <tr>
+                                                <td colspan="6">
+                                                    <form wire:submit.prevent="saveGrade({{ $submission->id }})" class="row g-2 align-items-center">
+                                                        <div class="col-md-2">
+                                                            <label class="form-label mb-0 small">Điểm</label>
+                                                            <input type="number" step="0.01" min="0" max="10" class="form-control form-control-sm" wire:model.defer="grading.{{ $submission->id }}.score" @if($submission->score !== null) value="{{ $submission->score }}" @endif>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label class="form-label mb-0 small">Nhận xét</label>
+                                                            <input type="text" class="form-control form-control-sm" wire:model.defer="grading.{{ $submission->id }}.feedback" @if($submission->feedback) value="{{ $submission->feedback }}" @endif>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <button type="submit" class="btn btn-primary btn-sm mt-3">Lưu</button>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            @if($submission->score !== null)
+                                                                <span class="badge bg-info">Đã chấm: {{ $submission->score }}</span>
+                                                            @endif
+                                                        </div>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            @endif
                                         @endforeach
                                     </tbody>
                                 </table>
