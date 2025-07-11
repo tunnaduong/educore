@@ -8,7 +8,7 @@
                         <h4 class="mb-0">Danh sách bài tập cần chấm</h4>
                     </div>
                     <div class="card-body p-0">
-                        @if($assignments->count() > 0)
+                        @if ($assignments->count() > 0)
                             <div class="table-responsive">
                                 <table class="table table-hover align-middle mb-0">
                                     <thead class="table-light">
@@ -22,21 +22,31 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($assignments as $assignment)
+                                        @foreach ($assignments as $assignment)
                                             <tr>
-                                                <td><span class="fw-semibold"><i class="bi bi-mortarboard me-1"></i>{{ $assignment->classroom?->name ?? '-' }}</span></td>
+                                                <td><span class="fw-semibold"><i
+                                                            class="bi bi-mortarboard me-1"></i>{{ $assignment->classroom?->name ?? '-' }}</span>
+                                                </td>
                                                 <td>{{ $assignment->title }}</td>
-                                                <td><span class="badge bg-warning text-dark"><i class="bi bi-calendar3"></i> {{ $assignment->deadline ? $assignment->deadline->format('d/m/Y H:i') : '-' }}</span></td>
-                                                <td class="text-center"><span class="badge bg-info text-dark">{{ $assignment->submissions_count }}</span></td>
+                                                <td><span class="badge bg-warning text-dark"><i
+                                                            class="bi bi-calendar3"></i>
+                                                        {{ $assignment->deadline ? $assignment->deadline->format('d/m/Y H:i') : '-' }}</span>
+                                                </td>
+                                                <td class="text-center"><span
+                                                        class="badge bg-info text-dark">{{ $assignment->submissions_count }}</span>
+                                                </td>
                                                 <td class="text-center">
-                                                    @if($assignment->submissions_count > 0)
-                                                        <span class="badge bg-success"><i class="bi bi-check2-all"></i> Có bài nộp</span>
+                                                    @if ($assignment->submissions_count > 0)
+                                                        <span class="badge bg-success"><i class="bi bi-check2-all"></i>
+                                                            Có bài nộp</span>
                                                     @else
-                                                        <span class="badge bg-secondary"><i class="bi bi-hourglass-split"></i> Chưa có</span>
+                                                        <span class="badge bg-secondary"><i
+                                                                class="bi bi-hourglass-split"></i> Chưa có</span>
                                                     @endif
                                                 </td>
                                                 <td class="text-center">
-                                                    <button class="btn btn-primary btn-sm px-3" wire:click="selectAssignment({{ $assignment->id }})">
+                                                    <button class="btn btn-primary btn-sm px-3"
+                                                        wire:click="selectAssignment({{ $assignment->id }})">
                                                         <i class="bi bi-pencil-square"></i> Chấm bài
                                                     </button>
                                                 </td>
@@ -61,7 +71,8 @@
                     <div class="card-body small">
                         <ul class="mb-2 ps-3">
                             <li>Chỉ hiện các bài tập thuộc lớp bạn phụ trách.</li>
-                            <li>Bấm <span class="badge bg-primary"><i class="bi bi-pencil-square"></i> Chấm bài</span> để vào giao diện chấm điểm.</li>
+                            <li>Bấm <span class="badge bg-primary"><i class="bi bi-pencil-square"></i> Chấm bài</span>
+                                để vào giao diện chấm điểm.</li>
                             <li>Số bài nộp sẽ hiển thị theo từng bài tập.</li>
                         </ul>
                         <div class="alert alert-info p-2 mb-0">

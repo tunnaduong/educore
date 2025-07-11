@@ -47,7 +47,7 @@
                     </a>
                 </li>
                 <li class="nav-item mb-2">
-                    <a wire:navigate href="{{ route('assignments.overview') }}"
+                    <a wire:navigate href="{{ route('student.assignments.overview') }}"
                         class="text-white text-decoration-none d-block {{ $active === 'assignments' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
                         <i class="bi bi-journal-text me-2"></i> Bài tập
                     </a>
@@ -65,7 +65,7 @@
                     </a>
                 </li>
                 <li class="nav-item mb-2">
-                    <a wire:navigate href="{{ route('schedules.index') }}"
+                    <a wire:navigate href="#"
                         class="text-white text-decoration-none d-block {{ $active === 'schedules' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
                         <i class="bi bi-calendar3 me-2"></i> Lịch học
                     </a>

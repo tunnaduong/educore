@@ -47,7 +47,7 @@
                     <li class="nav-item mb-2">
                         <a wire:navigate href="{{ route('attendances.overview') }}"
                             class="text-white text-decoration-none d-block {{ $active === 'attendances' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                            <i class="bi bi-calendar-check me-2"></i> Tổng quan điểm danh
+                            <i class="bi bi-calendar-check me-2"></i> Điểm danh
                         </a>
                     </li>
                     <li class="nav-item mb-2">
