@@ -21,6 +21,8 @@ use App\Livewire\Admin\Schedules\Create as SchedulesCreate;
 use App\Livewire\Admin\Classrooms\Create as ClassroomsCreate;
 use App\Livewire\Admin\Attendance\Overview as AttendanceOverview;
 use App\Livewire\Admin\Classrooms\AssignStudents as ClassroomsAssignStudents;
+use App\Livewire\Admin\Grading\GradingList;
+use App\Livewire\Admin\Grading\GradeAssignment;
 
 Route::get('/', function () {
     if (Auth::check()) {
@@ -86,7 +88,7 @@ Route::middleware(['auth', 'role:admin,teacher'])->group(function () {
 
 Route::middleware(['auth', 'role:admin,teacher,student'])->group(function () {
     Route::get('/dashboard', Home::class)->name('dashboard');
-    
+
     // Quiz routes
     Route::get('/quizzes', \App\Livewire\Admin\Quiz\Index::class)->name('quizzes.index');
     Route::get('/quizzes/create', \App\Livewire\Admin\Quiz\Create::class)->name('quizzes.create');
@@ -94,4 +96,9 @@ Route::middleware(['auth', 'role:admin,teacher,student'])->group(function () {
     Route::get('/quizzes/{quiz}/edit', \App\Livewire\Admin\Quiz\Edit::class)->name('quizzes.edit');
     Route::get('/quizzes/{quiz}/do', \App\Livewire\Admin\Quiz\DoQuiz::class)->name('quizzes.do');
     Route::get('/quizzes/{quiz}/results', \App\Livewire\Admin\Quiz\Results::class)->name('quizzes.results');
+});
+
+Route::middleware(['auth', 'role:admin,teacher'])->prefix('grading')->name('grading.')->group(function () {
+    Route::get('/', GradingList::class)->name('list');
+    Route::get('/{assignment}', GradeAssignment::class)->name('grade-assignment');
 });
