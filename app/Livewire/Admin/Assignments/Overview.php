@@ -51,7 +51,9 @@ class Overview extends Component
         $totalAssignments = $assignments->count();
         $totalClasses = $assignments->pluck('class_id')->unique()->count();
         $totalSubmissions = $submissions->count();
-        $onTimeSubmissions = $submissions->filter(function($s) { return $s->submitted_at && $s->assignment && $s->submitted_at <= $s->assignment->deadline; })->count();
+        $onTimeSubmissions = $submissions->filter(function ($s) {
+            return $s->submitted_at && $s->assignment && $s->submitted_at <= $s->assignment->deadline;
+        })->count();
         $submissionRate = $totalAssignments > 0 ? round($totalSubmissions / $totalAssignments * 100, 1) : 0;
         $onTimeRate = $totalSubmissions > 0 ? round($onTimeSubmissions / $totalSubmissions * 100, 1) : 0;
         $this->overviewStats = [
@@ -62,7 +64,7 @@ class Overview extends Component
             'on_time_rate' => $onTimeRate,
         ];
         // Top lớp nhiều bài tập nhất
-        $this->topClasses = $assignments->groupBy('class_id')->map(function($items, $classId) {
+        $this->topClasses = $assignments->groupBy('class_id')->map(function ($items, $classId) {
             return [
                 'classroom' => Classroom::find($classId),
                 'total_assignments' => $items->count(),
@@ -71,8 +73,10 @@ class Overview extends Component
         // Bài tập gần đây
         $this->recentAssignments = $assignments->sortByDesc('created_at')->take(10);
         // Top học viên nộp bài đúng hạn
-        $studentStats = $submissions->groupBy('student_id')->map(function($subs, $studentId) {
-            $onTime = $subs->filter(function($s) { return $s->submitted_at && $s->assignment && $s->submitted_at <= $s->assignment->deadline; })->count();
+        $studentStats = $submissions->groupBy('student_id')->map(function ($subs, $studentId) {
+            $onTime = $subs->filter(function ($s) {
+                return $s->submitted_at && $s->assignment && $s->submitted_at <= $s->assignment->deadline;
+            })->count();
             return [
                 'student' => User::find($studentId),
                 'total_submissions' => $subs->count(),
@@ -85,7 +89,7 @@ class Overview extends Component
 
     public function getMonthName($month)
     {
-        $months = [1=>'Tháng 1',2=>'Tháng 2',3=>'Tháng 3',4=>'Tháng 4',5=>'Tháng 5',6=>'Tháng 6',7=>'Tháng 7',8=>'Tháng 8',9=>'Tháng 9',10=>'Tháng 10',11=>'Tháng 11',12=>'Tháng 12'];
+        $months = [1 => 'Tháng 1', 2 => 'Tháng 2', 3 => 'Tháng 3', 4 => 'Tháng 4', 5 => 'Tháng 5', 6 => 'Tháng 6', 7 => 'Tháng 7', 8 => 'Tháng 8', 9 => 'Tháng 9', 10 => 'Tháng 10', 11 => 'Tháng 11', 12 => 'Tháng 12'];
         return $months[$month] ?? '';
     }
 
@@ -111,6 +115,18 @@ class Overview extends Component
 
     public function render()
     {
-        return view('admin.assignments.overview');
+        // if user is student then render student.assignments.overview
+        // if user is teacher then render teacher.assignments.overview
+        // if user is admin then render admin.assignments.overview
+        $user = Auth::user();
+        if ($user->role === 'student') {
+            return view('student.assignments.overview');
+        }
+        if ($user->role === 'teacher') {
+            return view('teacher.assignments.overview');
+        }
+        if ($user->role === 'admin') {
+            return view('admin.assignments.overview');
+        }
     }
 }
