@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\Models\Student;
+use App\Models\QuizResult;
 
 class User extends Authenticatable
 {
@@ -29,6 +31,11 @@ class User extends Authenticatable
     ];
 
     public function studentProfile()
+    {
+        return $this->hasOne(Student::class);
+    }
+
+    public function student()
     {
         return $this->hasOne(Student::class);
     }
@@ -57,6 +64,11 @@ class User extends Authenticatable
     public function attendances()
     {
         return $this->hasManyThrough(Attendance::class, Student::class, 'user_id', 'student_id');
+    }
+
+    public function quizResults()
+    {
+        return $this->hasManyThrough(QuizResult::class, Student::class, 'user_id', 'student_id');
     }
 
     public function getStatusAttribute()

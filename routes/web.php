@@ -1,10 +1,14 @@
 <?php
 
+use Livewire\Livewire;
 use App\Livewire\Admin\Home;
 use Illuminate\Http\Request;
 use App\Livewire\Admin\Auth\Login;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RouteController;
+use App\Livewire\Admin\Grading\GradingList;
+use App\Livewire\Admin\Grading\GradeAssignment;
 use App\Livewire\Admin\Users\Edit as UsersEdit;
 use App\Livewire\Admin\Users\Index as UsersIndex;
 use App\Livewire\Admin\Users\Create as UsersCreate;
@@ -21,8 +25,6 @@ use App\Livewire\Admin\Schedules\Create as SchedulesCreate;
 use App\Livewire\Admin\Classrooms\Create as ClassroomsCreate;
 use App\Livewire\Admin\Attendance\Overview as AttendanceOverview;
 use App\Livewire\Admin\Classrooms\AssignStudents as ClassroomsAssignStudents;
-use App\Livewire\Admin\Grading\GradingList;
-use App\Livewire\Admin\Grading\GradeAssignment;
 
 Route::get('/', function () {
     if (Auth::check()) {
@@ -39,30 +41,50 @@ Route::post('/logout', function (Request $request) {
     return redirect()->route('login');
 })->name('logout');
 
+Route::middleware(['auth', 'role:admin,teacher,student'])->group(function () {
+    Route::get('/dashboard', Home::class)->name('dashboard');
+});
+
 // Admin routes
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/users', UsersIndex::class)->name('users.index');
-    Route::get('/users/{user}/edit', UsersEdit::class)->name('users.edit');
-    Route::get('/users/create', UsersCreate::class)->name('users.create');
-    Route::get('/classrooms', ClassroomsIndex::class)->name('classrooms.index');
-    Route::get('/classrooms/create', ClassroomsCreate::class)->name('classrooms.create');
-    Route::get('/classrooms/{classroom}', \App\Livewire\Admin\Classrooms\Show::class)->name('classrooms.show');
-    Route::get('/classrooms/{classroom}/edit', ClassroomsEdit::class)->name('classrooms.edit');
-    Route::get('/classrooms/{classroom}/assign-students', ClassroomsAssignStudents::class)->name('classrooms.assign-students');
-    Route::get('/classrooms/{classroom}/attendance', \App\Livewire\Admin\Attendance\TakeAttendance::class)->name('classrooms.attendance');
-    Route::get('/classrooms/{classroom}/attendance-history', \App\Livewire\Admin\Attendance\AttendanceHistory::class)->name('classrooms.attendance-history');
-    Route::get('/students', StudentsIndex::class)->name('students.index');
-    Route::get('/students/create', StudentsCreate::class)->name('students.create');
-    Route::get('/students/{student}/edit', StudentsEdit::class)->name('students.edit');
-    Route::get('/students/{student}', StudentsShow::class)->name('students.show');
-    Route::get('/attendances', AttendanceOverview::class)->name('attendances.overview');
-    Route::get('/attendances/history', \App\Livewire\Admin\Attendance\History::class)->name('attendances.history');
+    Route::get('/admin/users', UsersIndex::class)->name('users.index');
+    Route::get('/admin/users/{user}/edit', UsersEdit::class)->name('users.edit');
+    Route::get('/admin/users/create', UsersCreate::class)->name('users.create');
+    Route::get('/admin/classrooms', ClassroomsIndex::class)->name('classrooms.index');
+    Route::get('/admin/classrooms/create', ClassroomsCreate::class)->name('classrooms.create');
+    Route::get('/admin/classrooms/{classroom}', \App\Livewire\Admin\Classrooms\Show::class)->name('classrooms.show');
+    Route::get('/admin/classrooms/{classroom}/edit', ClassroomsEdit::class)->name('classrooms.edit');
+    Route::get('/admin/classrooms/{classroom}/assign-students', ClassroomsAssignStudents::class)->name('classrooms.assign-students');
+    Route::get('/admin/classrooms/{classroom}/attendance', \App\Livewire\Admin\Attendance\TakeAttendance::class)->name('classrooms.attendance');
+    Route::get('/admin/classrooms/{classroom}/attendance-history', \App\Livewire\Admin\Attendance\AttendanceHistory::class)->name('classrooms.attendance-history');
+    Route::get('/admin/students', StudentsIndex::class)->name('students.index');
+    Route::get('/admin/students/create', StudentsCreate::class)->name('students.create');
+    Route::get('/admin/students/{student}/edit', StudentsEdit::class)->name('students.edit');
+    Route::get('/admin/students/{student}', StudentsShow::class)->name('students.show');
+    Route::get('/admin/attendances', AttendanceOverview::class)->name('attendances.overview');
+    Route::get('/admin/attendances/history', \App\Livewire\Admin\Attendance\History::class)->name('attendances.history');
+
+    // Quiz routes
+    Route::get('/admin/quizzes', \App\Livewire\Admin\Quiz\Index::class)->name('quizzes.index');
+    Route::get('/admin/quizzes/create', \App\Livewire\Admin\Quiz\Create::class)->name('quizzes.create');
+    Route::get('/admin/quizzes/{quiz}', \App\Livewire\Admin\Quiz\Show::class)->name('quizzes.show');
+    Route::get('/admin/quizzes/{quiz}/edit', \App\Livewire\Admin\Quiz\Edit::class)->name('quizzes.edit');
+    Route::get('/admin/quizzes/{quiz}/results', \App\Livewire\Admin\Quiz\Results::class)->name('quizzes.results');
 
     // Schedules routes
-    Route::get('/schedules', SchedulesIndex::class)->name('schedules.index');
-    Route::get('/schedules/create', SchedulesCreate::class)->name('schedules.create');
-    Route::get('/schedules/{classroom}/edit', SchedulesEdit::class)->name('schedules.edit');
-    Route::get('/schedules/{classroom}', SchedulesShow::class)->name('schedules.show');
+    Route::get('/admin/schedules', SchedulesIndex::class)->name('schedules.index');
+    Route::get('/admin/schedules/create', SchedulesCreate::class)->name('schedules.create');
+    Route::get('/admin/schedules/{classroom}/edit', SchedulesEdit::class)->name('schedules.edit');
+    Route::get('/admin/schedules/{classroom}', SchedulesShow::class)->name('schedules.show');
+
+    Route::get('/admin/assignments', \App\Livewire\Admin\Assignments\Overview::class)->name('assignments.overview');
+
+    Route::get('/admin/assignments', \App\Livewire\Admin\Assignments\Overview::class)->name('assignments.overview');
+    Route::get('/admin/assignments/create', \App\Livewire\Admin\Assignments\Create::class)->name('assignments.create');
+    Route::get('/admin/assignments/{assignmentId}', \App\Livewire\Admin\Assignments\Show::class)->name('assignments.show');
+    Route::get('/admin/assignments/{assignmentId}/edit', \App\Livewire\Admin\Assignments\Edit::class)->name('assignments.edit');
+    Route::get('/admin/grading', GradingList::class)->name('grading.list');
+    Route::get('/admin/grading/{assignment}', GradeAssignment::class)->name('grading.grade-assignment');
 });
 
 // Teacher routes
@@ -70,35 +92,20 @@ Route::middleware(['auth', 'role:teacher'])->group(function () {
     // Other teacher routes...
 });
 
-// Student routes
-Route::middleware(['auth', 'role:student'])->group(function () {
-    // Other student routes...
-    Route::get('/dashboard', Home::class)->name('dashboard');
-});
-
 // Shared routes for admin and teacher
 Route::middleware(['auth', 'role:admin,teacher'])->group(function () {
     // Other shared routes...
-
-    Route::get('/assignments/create', \App\Livewire\Admin\Assignments\Create::class)->name('assignments.create');
-    Route::get('/assignments', \App\Livewire\Admin\Assignments\Overview::class)->name('assignments.overview');
-    Route::get('/assignments/{assignmentId}', \App\Livewire\Admin\Assignments\Show::class)->name('assignments.show');
-    Route::get('/assignments/{assignmentId}/edit', \App\Livewire\Admin\Assignments\Edit::class)->name('assignments.edit');
 });
 
-Route::middleware(['auth', 'role:admin,teacher,student'])->group(function () {
-    Route::get('/dashboard', Home::class)->name('dashboard');
-
-    // Quiz routes
-    Route::get('/quizzes', \App\Livewire\Admin\Quiz\Index::class)->name('quizzes.index');
-    Route::get('/quizzes/create', \App\Livewire\Admin\Quiz\Create::class)->name('quizzes.create');
-    Route::get('/quizzes/{quiz}', \App\Livewire\Admin\Quiz\Show::class)->name('quizzes.show');
-    Route::get('/quizzes/{quiz}/edit', \App\Livewire\Admin\Quiz\Edit::class)->name('quizzes.edit');
-    Route::get('/quizzes/{quiz}/do', \App\Livewire\Admin\Quiz\DoQuiz::class)->name('quizzes.do');
-    Route::get('/quizzes/{quiz}/results', \App\Livewire\Admin\Quiz\Results::class)->name('quizzes.results');
+// Student routes
+Route::middleware(['auth', 'role:student'])->name('student.')->group(function () {
+    // Other student routes...
+    Route::get('/student/assignments', \App\Livewire\Student\Assignments\Index::class)->name('assignments.overview');
+    Route::get('/student/assignments/submissions', \App\Livewire\Student\Assignments\MySubmissions::class)->name('assignments.submissions');
+    Route::get('/student/assignments/{assignmentId}', \App\Livewire\Student\Assignments\Show::class)->name('assignments.show');
+    Route::get('/student/assignments/{assignmentId}/submit', \App\Livewire\Student\Assignments\Submit::class)->name('assignments.submit');
+    Route::get('/student/quizzes/{quiz}/do', \App\Livewire\Student\Quiz\DoQuiz::class)->name('quizzes.do');
+    Route::get('/student/quizzes/{quizId}/review', \App\Livewire\Student\Quiz\Review::class)->name('quizzes.review');
+    Route::get('/student/quizzes', \App\Livewire\Student\Quiz\Index::class)->name('quizzes.index');
 });
 
-Route::middleware(['auth', 'role:admin,teacher'])->prefix('grading')->name('grading.')->group(function () {
-    Route::get('/', GradingList::class)->name('list');
-    Route::get('/{assignment}', GradeAssignment::class)->name('grade-assignment');
-});

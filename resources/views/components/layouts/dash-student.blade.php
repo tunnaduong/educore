@@ -4,7 +4,7 @@
 <div class="min-vh-100 d-flex flex-column">
     <div class="bg-[#23417e] text-white p-3 d-flex justify-content-between align-items-center"
         style="background-color: #23417e">
-        <a wire:navigate href="/">
+        <a wire:navigate href="/" class="text-decoration-none">
             <div class="d-flex align-items-center">
                 <img src="/educore-logo.png" alt="Logo" style="width: 50px; height: 50px;" class="me-2">
                 <span class="fs-4 fw-bold text-white">Edu</span>
@@ -47,13 +47,13 @@
                     </a>
                 </li>
                 <li class="nav-item mb-2">
-                    <a wire:navigate href="{{ route('assignments.overview') }}"
+                    <a wire:navigate href="{{ route('student.assignments.overview') }}"
                         class="text-white text-decoration-none d-block {{ $active === 'assignments' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
                         <i class="bi bi-journal-text me-2"></i> Bài tập
                     </a>
                 </li>
                 <li class="nav-item mb-2">
-                    <a wire:navigate href="#"
+                    <a wire:navigate href="{{ route('student.quizzes.index') }}"
                         class="text-white text-decoration-none d-block {{ $active === 'tests' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
                         <i class="bi bi-journal-check me-2"></i> Kiểm tra
                     </a>
@@ -65,7 +65,7 @@
                     </a>
                 </li>
                 <li class="nav-item mb-2">
-                    <a wire:navigate href="{{ route('schedules.index') }}"
+                    <a wire:navigate href="#"
                         class="text-white text-decoration-none d-block {{ $active === 'schedules' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
                         <i class="bi bi-calendar3 me-2"></i> Lịch học
                     </a>

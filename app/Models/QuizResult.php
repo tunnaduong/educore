@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Student;
 
 class QuizResult extends Model
 {
@@ -36,7 +37,15 @@ class QuizResult extends Model
      */
     public function student(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'student_id');
+        return $this->belongsTo(Student::class, 'student_id');
+    }
+
+    /**
+     * Lấy user của học viên thông qua student
+     */
+    public function getUserAttribute()
+    {
+        return $this->student ? $this->student->user : null;
     }
 
     /**

@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Livewire\Admin\Quiz;
+namespace App\Livewire\Student\Quiz;
 
 use Livewire\Component;
-use App\Models\Quiz;
 use App\Models\QuizResult;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -212,6 +211,6 @@ class DoQuiz extends Component
 
     public function render()
     {
-        return view('admin.quiz.do-quiz');
+        return view('student.quiz.do-quiz');
     }
 }

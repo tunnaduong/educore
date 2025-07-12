@@ -66,14 +66,20 @@
                         <div class="d-flex flex-wrap gap-3">
                             @foreach ($allTypes as $key => $label)
                                 <div class="form-check">
-                                    <input wire:model.defer="type" class="form-check-input" type="radio"
+                                    <input wire:model.defer="types" class="form-check-input" type="checkbox"
                                         value="{{ $key }}" id="type_{{ $key }}">
-                                    <label class="form-check-label"
-                                        for="type_{{ $key }}">{{ $label }}</label>
+                                    <label class="form-check-label" for="type_{{ $key }}">{{ $label }}</label>
                                 </div>
                             @endforeach
+                            @if (!array_key_exists('text', $allTypes))
+                                <div class="form-check">
+                                    <input wire:model.defer="types" class="form-check-input" type="checkbox"
+                                        value="text" id="type_text">
+                                    <label class="form-check-label" for="type_text">Điền từ</label>
+                                </div>
+                            @endif
                         </div>
-                        @error('type')
+                        @error('types')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
