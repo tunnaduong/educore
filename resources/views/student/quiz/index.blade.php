@@ -1,17 +1,14 @@
-<x-layouts.dash-admin active="quizzes">
+<x-layouts.dash-student active="tests">
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-journal-check me-2"></i>Quản lý bài kiểm tra
+                        <i class="bi bi-clipboard-check-fill me-2"></i>Danh sách bài kiểm tra
                     </h4>
-                    <p class="text-muted mb-0">Danh sách tất cả bài kiểm tra trong hệ thống</p>
+                    <p class="text-muted mb-0">Các bài kiểm tra bạn cần hoàn thành</p>
                 </div>
-                <a href="{{ route('quizzes.create') }}" wire:navigate class="btn btn-primary">
-                    <i class="bi bi-plus-circle me-2"></i>Tạo bài kiểm tra mới
-                </a>
             </div>
         </div>
 
@@ -60,7 +57,7 @@
             <div class="card-body">
                 @if ($quizzes->count() > 0)
                     <div class="table-responsive">
-                        <table class="table table-hover">
+                        <table class="table table-hover align-middle">
                             <thead class="table-light">
                                 <tr>
                                     <th>Tiêu đề</th>
@@ -68,12 +65,15 @@
                                     <th>Số câu hỏi</th>
                                     <th>Hạn nộp</th>
                                     <th>Trạng thái</th>
-                                    <th>Ngày tạo</th>
+                                    <th>Trạng thái làm bài</th>
                                     <th>Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($quizzes as $quiz)
+                                    @php
+                                        $result = $quizResults[$quiz->id] ?? null;
+                                    @endphp
                                     <tr>
                                         <td>
                                             <div class="fw-medium">{{ $quiz->title }}</div>
@@ -104,62 +104,37 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <div class="fw-medium">{{ $quiz->created_at->format('d/m/Y') }}</div>
-                                            <small class="text-muted">{{ $quiz->created_at->format('H:i') }}</small>
+                                            @if ($result)
+                                                <span class="badge bg-primary">Đã làm</span>
+                                                @if ($result->submitted_at)
+                                                    <span class="badge bg-success">Đã nộp</span>
+                                                @else
+                                                    <span class="badge bg-warning text-dark">Chưa nộp</span>
+                                                @endif
+                                            @else
+                                                <span class="badge bg-secondary">Chưa làm</span>
+                                            @endif
                                         </td>
                                         <td>
-                                            <div class="btn-group" role="group">
-                                                <a href="{{ route('quizzes.show', $quiz) }}" wire:navigate
-                                                    class="btn btn-sm btn-outline-primary" title="Xem chi tiết">
-                                                    <i class="bi bi-eye"></i>
+                                            @if ($result && $result->submitted_at)
+                                                <a href="{{ route('student.quizzes.review', ['quizId' => $quiz->id]) }}" wire:navigate
+                                                    class="btn btn-sm btn-outline-info" title="Xem lại bài">
+                                                    <i class="bi bi-eye"></i> Xem lại
                                                 </a>
-                                                <a href="{{ route('quizzes.edit', $quiz) }}" wire:navigate
-                                                    class="btn btn-sm btn-outline-warning" title="Sửa">
-                                                    <i class="bi bi-pencil"></i>
+                                            @elseif ($quiz->isExpired())
+                                                <span class="text-muted">Đã hết hạn</span>
+                                            @else
+                                                <a href="{{ route('student.quizzes.do', $quiz) }}" wire:navigate
+                                                    class="btn btn-sm btn-outline-primary" title="Làm bài">
+                                                    <i class="bi bi-pencil"></i> Làm bài
                                                 </a>
-                                                <a href="{{ route('quizzes.results', $quiz) }}" wire:navigate
-                                                    class="btn btn-sm btn-outline-info" title="Xem kết quả">
-                                                    <i class="bi bi-graph-up"></i>
-                                                </a>
-                                                <button type="button" class="btn btn-sm btn-outline-danger"
-                                                    title="Xóa" data-bs-toggle="modal"
-                                                    data-bs-target="#deleteModal{{ $quiz->id }}">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </div>
+                                            @endif
                                         </td>
                                     </tr>
-
-                                    <!-- Delete Confirmation Modal -->
-                                    <div class="modal fade" id="deleteModal{{ $quiz->id }}" tabindex="-1"
-                                        aria-labelledby="deleteModalLabel{{ $quiz->id }}" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="deleteModalLabel{{ $quiz->id }}">
-                                                        Xác nhận xóa bài kiểm tra</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    Bạn có chắc chắn muốn xóa bài kiểm tra "{{ $quiz->title }}"? Hành
-                                                    động này không thể hoàn tác.
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Hủy</button>
-                                                    <button type="button" class="btn btn-danger"
-                                                        wire:click="deleteQuiz({{ $quiz->id }})"
-                                                        data-bs-dismiss="modal">Xóa</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
-
                     <!-- Pagination -->
                     <div class="d-flex justify-content-center mt-4">
                         {{ $quizzes->links('vendor.pagination.bootstrap-5') }}
@@ -168,22 +143,10 @@
                     <div class="text-center py-5">
                         <i class="bi bi-journal-x fs-1 text-muted mb-3"></i>
                         <h5 class="text-muted">Không có bài kiểm tra nào</h5>
-                        <p class="text-muted">Hãy tạo bài kiểm tra đầu tiên để bắt đầu.</p>
-                        <a href="{{ route('quizzes.create') }}" wire:navigate class="btn btn-primary">
-                            <i class="bi bi-plus-circle me-2"></i>Tạo bài kiểm tra
-                        </a>
+                        <p class="text-muted">Bạn chưa có bài kiểm tra nào cần làm.</p>
                     </div>
                 @endif
             </div>
         </div>
-
-        <!-- Flash Message -->
-        @if (session()->has('message'))
-            <div class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3"
-                role="alert">
-                <i class="bi bi-check-circle me-2"></i>{{ session('message') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        @endif
     </div>
-</x-layouts.dash-admin>
+</x-layouts.dash-student>

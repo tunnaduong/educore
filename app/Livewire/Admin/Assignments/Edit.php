@@ -19,11 +19,11 @@ class Edit extends Component
     public $deadline;
     public $types = [];
     public $allTypes = [
-        'upload_image' => 'Nộp ảnh',
-        'record' => 'Ghi âm',
+        'text' => 'Điền từ',
+        'essay' => 'Tự luận',
+        'image' => 'Nộp ảnh',
+        'audio' => 'Ghi âm',
         'video' => 'Quay video',
-        'multiple_choice' => 'Trắc nghiệm',
-        'text' => 'Tự luận',
     ];
     public $classrooms = [];
     public $attachment;

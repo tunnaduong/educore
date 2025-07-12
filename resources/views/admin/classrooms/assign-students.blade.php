@@ -124,7 +124,7 @@
                         <!-- Pagination -->
                         @if ($availableStudents->hasPages())
                             <div class="d-flex justify-content-center mt-3">
-                                {{ $availableStudents->links() }}
+                                {{ $availableStudents->links('vendor.pagination.bootstrap-5') }}
                             </div>
                         @endif
                     </div>

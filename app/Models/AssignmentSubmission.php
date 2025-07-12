@@ -14,6 +14,7 @@ class AssignmentSubmission extends Model
         'assignment_id',
         'student_id',
         'content',
+        'submission_type',
         'score',
         'feedback',
         'submitted_at',

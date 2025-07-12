@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->dateTime('deadline')->nullable();
-            $table->json('types')->nullable(); // ['upload_image', 'record', 'video', 'multiple_choice']
+            $table->json('types')->nullable(); // 'text' => 'Điền từ',         'essay' => 'Tự luận',         'image' => 'Nộp ảnh',         'audio' => 'Ghi âm',         'video' => 'Quay video',
             $table->timestamps();
         });
     }

@@ -121,7 +121,7 @@
 
                     <!-- Phân trang -->
                     <div class="d-flex justify-content-center mt-4">
-                        {{ $classrooms->links() }}
+                        {{ $classrooms->links('vendor.pagination.bootstrap-5') }}
                     </div>
                 @else
                     <div class="text-center py-5">
