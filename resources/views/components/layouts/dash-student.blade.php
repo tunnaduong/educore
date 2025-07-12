@@ -53,7 +53,7 @@
                     </a>
                 </li>
                 <li class="nav-item mb-2">
-                    <a wire:navigate href="#"
+                    <a wire:navigate href="{{ route('student.quizzes.index') }}"
                         class="text-white text-decoration-none d-block {{ $active === 'tests' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
                         <i class="bi bi-journal-check me-2"></i> Kiểm tra
                     </a>

@@ -78,7 +78,8 @@
                                         <td>
                                             <div class="fw-medium">{{ $quiz->title }}</div>
                                             @if ($quiz->description)
-                                                <small class="text-muted">{{ Str::limit($quiz->description, 50) }}</small>
+                                                <small
+                                                    class="text-muted">{{ Str::limit($quiz->description, 50) }}</small>
                                             @endif
                                         </td>
                                         <td>
@@ -116,13 +117,15 @@
                                         </td>
                                         <td>
                                             @if ($result && $result->submitted_at)
-                                                <a href="{{ route('quizzes.do', $quiz) }}" wire:navigate class="btn btn-sm btn-outline-info" title="Xem lại bài">
+                                                <a href="{{ route('quizzes.do', $quiz) }}" wire:navigate
+                                                    class="btn btn-sm btn-outline-info" title="Xem lại bài">
                                                     <i class="bi bi-eye"></i> Xem lại
                                                 </a>
                                             @elseif ($quiz->isExpired())
                                                 <span class="text-muted">Đã hết hạn</span>
                                             @else
-                                                <a href="{{ route('quizzes.do', $quiz) }}" wire:navigate class="btn btn-sm btn-outline-primary" title="Làm bài">
+                                                <a href="{{ route('student.quizzes.do', $quiz) }}" wire:navigate
+                                                    class="btn btn-sm btn-outline-primary" title="Làm bài">
                                                     <i class="bi bi-pencil"></i> Làm bài
                                                 </a>
                                             @endif
