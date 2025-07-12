@@ -208,7 +208,7 @@
                         trên tổng số {{ $students->total() ?? 0 }} học viên
                     </div>
                     <div>
-                        {{ $students->links() }}
+                        {{ $students->links('vendor.pagination.bootstrap-5') }}
                     </div>
                 </div>
             </div>

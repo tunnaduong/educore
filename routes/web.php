@@ -101,6 +101,11 @@ Route::middleware(['auth', 'role:admin,teacher'])->group(function () {
 Route::middleware(['auth', 'role:student'])->name('student.')->group(function () {
     // Other student routes...
     Route::get('/student/assignments', \App\Livewire\Student\Assignments\Index::class)->name('assignments.overview');
+    Route::get('/student/assignments/submissions', \App\Livewire\Student\Assignments\MySubmissions::class)->name('assignments.submissions');
+    Route::get('/student/assignments/{assignmentId}', \App\Livewire\Student\Assignments\Show::class)->name('assignments.show');
+    Route::get('/student/assignments/{assignmentId}/submit', \App\Livewire\Student\Assignments\Submit::class)->name('assignments.submit');
     Route::get('/student/quizzes/{quiz}/do', \App\Livewire\Student\Quiz\DoQuiz::class)->name('quizzes.do');
+    Route::get('/student/quizzes/{quizId}/review', \App\Livewire\Student\Quiz\Review::class)->name('quizzes.review');
     Route::get('/student/quizzes', \App\Livewire\Student\Quiz\Index::class)->name('quizzes.index');
 });
+

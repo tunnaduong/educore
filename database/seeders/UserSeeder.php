@@ -75,7 +75,7 @@ class UserSeeder extends Seeder
             'title' => 'Bài tập mẫu',
             'description' => 'Mô tả cho bài tập mẫu',
             'deadline' => now()->addDays(1),
-            'types' => json_encode(['upload_image', 'video', 'text']),
+            'types' => json_encode(['image', 'video', 'text']),
             'attachment_path' => null,
             'video_path' => null,
         ]);

@@ -156,7 +156,7 @@
                         trên tổng số {{ $classrooms->total() ?? 0 }} lớp học
                     </div>
                     <div>
-                        {{ $classrooms->links() }}
+                        {{ $classrooms->links('vendor.pagination.bootstrap-5') }}
                     </div>
                 </div>
             </div>

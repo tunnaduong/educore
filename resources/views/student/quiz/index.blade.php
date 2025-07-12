@@ -117,7 +117,7 @@
                                         </td>
                                         <td>
                                             @if ($result && $result->submitted_at)
-                                                <a href="{{ route('quizzes.do', $quiz) }}" wire:navigate
+                                                <a href="{{ route('student.quizzes.review', ['quizId' => $quiz->id]) }}" wire:navigate
                                                     class="btn btn-sm btn-outline-info" title="Xem lại bài">
                                                     <i class="bi bi-eye"></i> Xem lại
                                                 </a>
@@ -137,7 +137,7 @@
                     </div>
                     <!-- Pagination -->
                     <div class="d-flex justify-content-center mt-4">
-                        {{ $quizzes->links() }}
+                        {{ $quizzes->links('vendor.pagination.bootstrap-5') }}
                     </div>
                 @else
                     <div class="text-center py-5">
