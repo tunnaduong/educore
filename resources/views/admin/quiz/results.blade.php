@@ -102,7 +102,6 @@
                             <thead class="table-light">
                                 <tr>
                                     <th>Học viên</th>
-                                    <th>Email</th>
                                     <th>Điểm số</th>
                                     <th>Thời gian làm</th>
                                     <th>Thời gian nộp</th>
@@ -119,11 +118,10 @@
                                                     <i class="bi bi-person-circle fs-4 text-primary"></i>
                                                 </div>
                                                 <div>
-                                                    <div class="fw-medium">{{ $result->student->name }}</div>
+                                                    <div class="fw-medium">{{ $result->user ? $result->user->name : 'N/A' }}</div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>{{ $result->student->email ?? 'Chưa có' }}</td>
                                         <td>
                                             <span class="fw-medium {{ $result->score >= 80 ? 'text-success' : ($result->score >= 60 ? 'text-warning' : 'text-danger') }}">
                                                 {{ $result->score }}%
@@ -166,7 +164,7 @@
 
                     <!-- Pagination -->
                     <div class="d-flex justify-content-center mt-4">
-                        {{ $results->links() }}
+                        {{ $results->links('vendor.pagination.bootstrap-5') }}
                     </div>
                 @else
                     <div class="text-center py-5">

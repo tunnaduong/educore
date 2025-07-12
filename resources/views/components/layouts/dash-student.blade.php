@@ -4,7 +4,7 @@
 <div class="min-vh-100 d-flex flex-column">
     <div class="bg-[#23417e] text-white p-3 d-flex justify-content-between align-items-center"
         style="background-color: #23417e">
-        <a wire:navigate href="/">
+        <a wire:navigate href="/" class="text-decoration-none">
             <div class="d-flex align-items-center">
                 <img src="/educore-logo.png" alt="Logo" style="width: 50px; height: 50px;" class="me-2">
                 <span class="fs-4 fw-bold text-white">Edu</span>

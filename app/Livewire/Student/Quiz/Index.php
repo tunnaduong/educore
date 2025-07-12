@@ -30,6 +30,16 @@ class Index extends Component
     public function render()
     {
         $user = Auth::user();
+        
+        // Kiểm tra xem user có student profile không
+        if (!$user->studentProfile) {
+            return view('student.quiz.index', [
+                'quizzes' => collect(),
+                'classrooms' => collect(),
+                'quizResults' => collect(),
+            ]);
+        }
+        
         $classIds = $user->enrolledClassrooms->pluck('id');
         $classrooms = $user->enrolledClassrooms;
 
@@ -56,7 +66,7 @@ class Index extends Component
             ->paginate(10);
 
         // Lấy kết quả quiz của user
-        $quizResults = QuizResult::where('student_id', $user->id)->get()->keyBy('quiz_id');
+        $quizResults = $user->quizResults->keyBy('quiz_id');
 
         return view('student.quiz.index', [
             'quizzes' => $quizzes,

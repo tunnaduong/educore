@@ -16,11 +16,12 @@ class Create extends Component
     public $description;
     public $class_id;
     public $deadline;
-    public $type = null; // Đổi từ $types = [] sang $type = null
+    public $type = null;
     public $allTypes = [
-        'text' => 'Tự luận',
-        'upload_image' => 'Nộp ảnh',
-        'record' => 'Ghi âm',
+        'text' => 'Điền từ',
+        'essay' => 'Tự luận',
+        'image' => 'Nộp ảnh',
+        'audio' => 'Ghi âm',
         'video' => 'Quay video',
     ];
 
