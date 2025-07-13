@@ -66,4 +66,20 @@ class Classroom extends Model
     {
         return $this->hasMany(Assignment::class, 'class_id');
     }
+
+    public function messageReads()
+    {
+        return $this->hasMany(ClassroomMessageRead::class, 'class_id');
+    }
+
+    public function unreadMessagesCountForUser($userId)
+    {
+        $read = $this->messageReads()->where('user_id', $userId)->first();
+        $lastReadId = $read ? $read->last_read_message_id : 0;
+        return Message::where('class_id', $this->id)
+            ->when($lastReadId, function ($q) use ($lastReadId) {
+                $q->where('id', '>', $lastReadId);
+            })
+            ->count();
+    }
 }
