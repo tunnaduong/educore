@@ -101,7 +101,7 @@
                             @enderror
                         </div>
                         <div class="col-md-6">
-                            <label for="video" class="form-label">Video (tối đa 50MB)</label>
+                            <label for="video" class="form-label">Video (tối đa 100MB)</label>
                             @if ($old_video_path)
                                 <div class="small text-success mt-1">
                                     <video width="240" height="135" controls>

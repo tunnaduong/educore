@@ -49,7 +49,7 @@ class Create extends Component
             'deadline' => 'required|date',
             'types' => 'required|array|min:1',
             'attachment' => 'nullable|file|mimes:doc,docx,pdf,zip,rar,txt|max:10240',
-            'video' => 'nullable|mimetypes:video/mp4,video/avi,video/mpeg,video/quicktime|max:51200',
+            'video' => 'nullable|mimetypes:video/mp4,video/avi,video/mpeg,video/quicktime|max:102400',
             'score' => 'nullable|numeric|min:0',
         ], [
             'title.required' => 'Vui lòng nhập tiêu đề bài tập',
@@ -59,7 +59,7 @@ class Create extends Component
             'types.min' => 'Vui lòng chọn ít nhất một loại bài tập',
             'attachment.max' => 'Tệp đính kèm tối đa 10MB',
             'attachment.mimes' => 'Chỉ chấp nhận file doc, docx, pdf, zip, rar, txt',
-            'video.max' => 'Video tối đa 50MB',
+            'video.max' => 'Video tối đa 100MB',
             'video.mimetypes' => 'Chỉ chấp nhận video mp4, avi, mpeg, mov',
             'score.numeric' => 'Điểm tối đa phải là số',
             'score.min' => 'Điểm tối đa phải lớn hơn hoặc bằng 0',
