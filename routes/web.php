@@ -78,8 +78,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/schedules/{classroom}', SchedulesShow::class)->name('schedules.show');
 
     Route::get('/admin/assignments', \App\Livewire\Admin\Assignments\Overview::class)->name('assignments.overview');
-
-    Route::get('/admin/assignments', \App\Livewire\Admin\Assignments\Overview::class)->name('assignments.overview');
+    Route::get('/admin/assignments/list', \App\Livewire\Admin\Assignments\AssignmentList::class)->name('assignments.list');
     Route::get('/admin/assignments/create', \App\Livewire\Admin\Assignments\Create::class)->name('assignments.create');
     Route::get('/admin/assignments/{assignmentId}', \App\Livewire\Admin\Assignments\Show::class)->name('assignments.show');
     Route::get('/admin/assignments/{assignmentId}/edit', \App\Livewire\Admin\Assignments\Edit::class)->name('assignments.edit');
@@ -108,4 +107,3 @@ Route::middleware(['auth', 'role:student'])->name('student.')->group(function ()
     Route::get('/student/quizzes/{quizId}/review', \App\Livewire\Student\Quiz\Review::class)->name('quizzes.review');
     Route::get('/student/quizzes', \App\Livewire\Student\Quiz\Index::class)->name('quizzes.index');
 });
-

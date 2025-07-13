@@ -140,12 +140,28 @@
                         <h6 class="mb-0">
                             <i class="bi bi-check-circle me-2"></i>Bài nộp của bạn -
                             @switch($submission->submission_type)
-                                @case('text') Điền từ @break
-                                @case('essay') Tự luận @break
-                                @case('image') Ảnh @break
-                                @case('audio') Âm thanh @break
-                                @case('video') Video @break
-                                @default {{ $submission->submission_type }}
+                                @case('text')
+                                    Điền từ
+                                @break
+
+                                @case('essay')
+                                    Tự luận
+                                @break
+
+                                @case('image')
+                                    Ảnh
+                                @break
+
+                                @case('audio')
+                                    Âm thanh
+                                @break
+
+                                @case('video')
+                                    Video
+                                @break
+
+                                @default
+                                    {{ $submission->submission_type }}
                             @endswitch
                         </h6>
                     </div>
@@ -156,7 +172,9 @@
                                     <h6>Nội dung bài nộp:</h6>
                                     @php
                                         $content = $submission->content;
-                                        $isFile = filter_var($content, FILTER_VALIDATE_URL) || str_starts_with($content, 'assignments/');
+                                        $isFile =
+                                            filter_var($content, FILTER_VALIDATE_URL) ||
+                                            str_starts_with($content, 'assignments/');
                                     @endphp
 
                                     @if ($isFile)
@@ -167,13 +185,15 @@
                                         @if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp']))
                                             <div class="border rounded p-3">
                                                 <h6>Ảnh bài viết:</h6>
-                                                <img src="{{ Storage::url($content) }}" alt="Bài viết" class="img-fluid rounded">
+                                                <img src="{{ Storage::url($content) }}" alt="Bài viết"
+                                                    class="img-fluid rounded">
                                             </div>
                                         @elseif(in_array($extension, ['mp3', 'wav', 'm4a']))
                                             <div class="border rounded p-3">
                                                 <h6>File âm thanh:</h6>
                                                 <audio controls class="w-100">
-                                                    <source src="{{ Storage::url($content) }}" type="audio/{{ $extension }}">
+                                                    <source src="{{ Storage::url($content) }}"
+                                                        type="audio/{{ $extension }}">
                                                     Trình duyệt của bạn không hỗ trợ âm thanh.
                                                 </audio>
                                             </div>
@@ -181,7 +201,8 @@
                                             <div class="border rounded p-3">
                                                 <h6>File video:</h6>
                                                 <video controls class="w-100 rounded">
-                                                    <source src="{{ Storage::url($content) }}" type="video/{{ $extension }}">
+                                                    <source src="{{ Storage::url($content) }}"
+                                                        type="video/{{ $extension }}">
                                                     Trình duyệt của bạn không hỗ trợ video.
                                                 </video>
                                             </div>
@@ -213,12 +234,28 @@
                                                 <i class="bi bi-file-earmark me-2"></i>
                                                 <strong>Loại bài nộp:</strong><br>
                                                 @switch($submission->submission_type)
-                                                    @case('text') Điền từ @break
-                                                    @case('essay') Tự luận @break
-                                                    @case('image') Upload ảnh @break
-                                                    @case('audio') Ghi âm @break
-                                                    @case('video') Video @break
-                                                    @default {{ $submission->submission_type }}
+                                                    @case('text')
+                                                        Điền từ
+                                                    @break
+
+                                                    @case('essay')
+                                                        Tự luận
+                                                    @break
+
+                                                    @case('image')
+                                                        Upload ảnh
+                                                    @break
+
+                                                    @case('audio')
+                                                        Ghi âm
+                                                    @break
+
+                                                    @case('video')
+                                                        Video
+                                                    @break
+
+                                                    @default
+                                                        {{ $submission->submission_type }}
                                                 @endswitch
                                             </li>
                                         </ul>
@@ -228,7 +265,8 @@
                                     <div class="card mt-3 border-primary">
                                         <div class="card-body text-center">
                                             <h6 class="card-title">Điểm số</h6>
-                                            <div class="display-6 text-primary fw-bold">{{ $submission->score }}/10</div>
+                                            <div class="display-6 text-primary fw-bold">{{ $submission->score }}/10
+                                            </div>
                                             @if ($submission->feedback)
                                                 <div class="mt-2">
                                                     <small class="text-muted">Nhận xét:</small><br>
@@ -271,7 +309,7 @@
             </div>
         @endif
 
-        @if ($submission && $this->canRedo())
+        @if ($submissions->count() > 0 && $this->canRedo())
             <div class="text-center mb-3">
                 <button class="btn btn-warning" wire:click="redoSubmission">
                     <i class="bi bi-arrow-clockwise me-2"></i>Nộp lại bài

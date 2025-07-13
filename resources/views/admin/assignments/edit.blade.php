@@ -66,14 +66,14 @@
                         <div class="d-flex flex-wrap gap-3">
                             @foreach ($allTypes as $key => $label)
                                 <div class="form-check">
-                                    <input wire:model.defer="type" class="form-check-input" type="radio"
+                                    <input wire:model.defer="types" class="form-check-input" type="checkbox"
                                         value="{{ $key }}" id="type_{{ $key }}">
                                     <label class="form-check-label"
                                         for="type_{{ $key }}">{{ $label }}</label>
                                 </div>
                             @endforeach
                         </div>
-                        @error('type')
+                        @error('types')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
@@ -84,7 +84,8 @@
                             <label for="attachment" class="form-label">Tệp đính kèm</label>
                             @if ($old_attachment_path)
                                 <div class="small text-success mt-1">
-                                    <a href="{{ asset('storage/' . $old_attachment_path) }}" target="_blank" class="btn btn-sm btn-outline-success">
+                                    <a href="{{ asset('storage/' . $old_attachment_path) }}" target="_blank"
+                                        class="btn btn-sm btn-outline-success">
                                         <i class="bi bi-file-earmark-arrow-down"></i> File hiện tại
                                     </a>
                                 </div>
@@ -132,7 +133,8 @@
 
                     <!-- Buttons -->
                     <div class="d-flex justify-content-end gap-2">
-                        <a href="{{ route('assignments.overview') }}" wire:navigate class="btn btn-outline-secondary">Hủy</a>
+                        <a href="{{ route('assignments.overview') }}" wire:navigate
+                            class="btn btn-outline-secondary">Hủy</a>
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-send me-1"></i> Cập nhật
                         </button>

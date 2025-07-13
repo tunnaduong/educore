@@ -56,7 +56,8 @@ class Submit extends Component
         'essay.required_if' => 'Vui lòng nhập nội dung bài luận',
         'essay.max' => 'Nội dung bài luận không được vượt quá 50,000 ký tự',
         'imageFile.required_if' => 'Vui lòng tải lên ảnh bài viết',
-        'imageFile.image' => 'File phải là hình ảnh',
+        'imageFile.file' => 'File phải là hình ảnh',
+        'imageFile.mimes' => 'File phải có định dạng: jpg, jpeg, png, gif, webp',
         'imageFile.max' => 'Kích thước ảnh không được vượt quá 10MB',
         'audioFile.required_if' => 'Vui lòng tải lên file âm thanh',
         'audioFile.mimes' => 'File âm thanh phải có định dạng mp3, wav, hoặc m4a',
@@ -75,7 +76,7 @@ class Submit extends Component
     public function loadAssignment()
     {
         $student = Auth::user()->student;
-        
+
         if (!$student) {
             abort(403, 'Bạn không có quyền truy cập');
         }
@@ -83,10 +84,10 @@ class Submit extends Component
         $this->assignment = Assignment::whereHas('classroom.students', function ($q) use ($student) {
             $q->where('users.id', $student->user_id);
         })
-        ->with(['submissions' => function ($q) use ($student) {
-            $q->where('student_id', $student->id);
-        }])
-        ->findOrFail($this->assignmentId);
+            ->with(['submissions' => function ($q) use ($student) {
+                $q->where('student_id', $student->id);
+            }])
+            ->findOrFail($this->assignmentId);
 
         // Chỉ kiểm tra quá hạn, cho phép nộp lại nhiều lần trước hạn
         if ($this->assignment->deadline < now()) {
@@ -95,13 +96,26 @@ class Submit extends Component
         }
 
         // Set default submission type based on assignment types
-        if ($this->assignment->types && in_array('image', $this->assignment->types)) {
+        if ($this->assignment->types && in_array('essay', $this->assignment->types)) {
+            $this->submissionType = 'essay';
+        } elseif ($this->assignment->types && in_array('text', $this->assignment->types)) {
+            $this->submissionType = 'text';
+        } elseif ($this->assignment->types && in_array('image', $this->assignment->types)) {
             $this->submissionType = 'image';
         } elseif ($this->assignment->types && in_array('audio', $this->assignment->types)) {
             $this->submissionType = 'audio';
         } elseif ($this->assignment->types && in_array('video', $this->assignment->types)) {
             $this->submissionType = 'video';
+        } else {
+            // Fallback to first available type
+            $this->submissionType = $this->assignment->types[0] ?? 'text';
         }
+
+        // Debug: Log submission type
+        Log::info('Submission type set to: ' . $this->submissionType, [
+            'assignment_types' => $this->assignment->types,
+            'submission_type' => $this->submissionType
+        ]);
     }
 
     public function updatedSubmissionType()
@@ -128,6 +142,10 @@ class Submit extends Component
         try {
             $this->validate();
             Log::info('Validate thành công');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Validate thất bại', ['errors' => $e->validator->errors()->toArray()]);
+            session()->flash('error', 'Lỗi: ' . collect($e->validator->errors()->all())->join(' - '));
+            return;
         } catch (\Exception $e) {
             Log::error('Validate thất bại', ['error' => $e->getMessage()]);
             throw $e;
@@ -169,7 +187,17 @@ class Submit extends Component
                     $submissionData['content'] = $this->essay;
                     break;
                 case 'image':
+                    if (!$this->imageFile) {
+                        session()->flash('error', 'Bạn chưa chọn file ảnh hoặc file upload bị lỗi.');
+                        return;
+                    }
+                    Log::info('Bắt đầu upload image', [
+                        'originalName' => $this->imageFile->getClientOriginalName(),
+                        'size' => $this->imageFile->getSize(),
+                        'mimeType' => $this->imageFile->getMimeType(),
+                    ]);
                     $path = $this->imageFile->store('assignments/images', 'public');
+                    Log::info('Upload image thành công', ['path' => $path]);
                     $submissionData['content'] = $path;
                     break;
                 case 'audio':
@@ -189,7 +217,6 @@ class Submit extends Component
             Log::info('Nộp bài thành công!');
             session()->flash('success', 'Nộp bài tập thành công!');
             return $this->redirect(route('student.assignments.show', $this->assignmentId), navigate: true);
-
         } catch (\Exception $e) {
             Log::error('Có lỗi xảy ra khi nộp bài tập', ['error' => $e->getMessage()]);
             session()->flash('error', 'Có lỗi xảy ra khi nộp bài tập: ' . $e->getMessage());

@@ -6,7 +6,7 @@ use Livewire\Component;
 use App\Models\Assignment;
 use App\Models\AssignmentSubmission;
 use App\Models\Classroom;
-use App\Models\User;
+use App\Models\Student;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -78,7 +78,7 @@ class Overview extends Component
                 return $s->submitted_at && $s->assignment && $s->submitted_at <= $s->assignment->deadline;
             })->count();
             return [
-                'student' => User::find($studentId),
+                'student' => Student::find($studentId)->user,
                 'total_submissions' => $subs->count(),
                 'on_time' => $onTime,
                 'on_time_rate' => $subs->count() > 0 ? round($onTime / $subs->count() * 100, 1) : 0,
