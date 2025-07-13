@@ -1,0 +1,200 @@
+<?php
+
+namespace App\Livewire\Admin\Chat;
+
+use App\Models\Message;
+use App\Models\User;
+use App\Models\Classroom;
+use Livewire\Component;
+use Livewire\WithPagination;
+use Livewire\WithFileUploads;
+
+class Index extends Component
+{
+    use WithPagination, WithFileUploads;
+
+    public $selectedUser = null;
+    public $selectedClass = null;
+    public $messageText = '';
+    public $attachment = null;
+    public $searchTerm = '';
+    public $messageType = 'user'; // 'user' or 'class'
+    public $unreadCount = 0;
+    public $memberSearch = '';
+    public $addMemberSearch = '';
+    public $allUsers;
+
+    protected $listeners = ['messageReceived' => 'refreshMessages', 'echo:chat,MessageSent' => 'handleNewMessage'];
+
+    public function mount()
+    {
+        $this->unreadCount = Message::unread(auth()->id())->count();
+        $this->allUsers = User::all();
+    }
+
+    public function selectUser($userId)
+    {
+        $this->selectedUser = User::find($userId);
+        $this->selectedClass = null;
+        $this->messageType = 'user';
+        $this->resetPage();
+    }
+
+    public function selectClass($classId)
+    {
+        $this->selectedClass = Classroom::find($classId);
+        $this->selectedUser = null;
+        $this->messageType = 'class';
+        $this->resetPage();
+        // Đánh dấu đã đọc
+        $lastMsg = Message::where('class_id', $classId)->latest('id')->first();
+        if ($lastMsg) {
+            \App\Models\ClassroomMessageRead::updateOrCreate(
+                [
+                    'user_id' => auth()->id(),
+                    'class_id' => $classId,
+                ],
+                [
+                    'last_read_message_id' => $lastMsg->id,
+                    'last_read_at' => now(),
+                ]
+            );
+        }
+    }
+
+    public function sendMessage()
+    {
+        $this->validate([
+            'messageText' => 'required|string|max:1000',
+            'attachment' => 'nullable|file|max:10240', // 10MB max
+        ]);
+
+        $messageData = [
+            'sender_id' => auth()->id(),
+            'message' => $this->messageText,
+        ];
+
+        if ($this->messageType === 'user' && $this->selectedUser) {
+            $messageData['receiver_id'] = $this->selectedUser->id;
+        } elseif ($this->messageType === 'class' && $this->selectedClass) {
+            $messageData['class_id'] = $this->selectedClass->id;
+        }
+
+        if ($this->attachment) {
+            $path = $this->attachment->store('chat-attachments', 'public');
+            $messageData['attachment'] = $path;
+        }
+
+        Message::create($messageData);
+
+        $this->messageText = '';
+        $this->attachment = null;
+        $this->dispatch('messageSent');
+    }
+
+    public function getMessagesProperty()
+    {
+        if ($this->selectedUser) {
+            return Message::where(function ($query) {
+                $query->where('sender_id', auth()->id())
+                    ->where('receiver_id', $this->selectedUser->id)
+                    ->orWhere('sender_id', $this->selectedUser->id)
+                    ->where('receiver_id', auth()->id());
+            })->with(['sender', 'receiver'])->orderBy('created_at', 'desc')->paginate(20);
+        }
+
+        if ($this->selectedClass) {
+            return Message::where('class_id', $this->selectedClass->id)
+                ->with(['sender', 'receiver', 'classroom'])
+                ->orderBy('created_at', 'desc')
+                ->paginate(20);
+        }
+
+        return collect();
+    }
+
+    public function getUsersProperty()
+    {
+        $query = User::where('id', '!=', auth()->id());
+
+        if ($this->searchTerm) {
+            $query->where(function ($q) {
+                $q->where('name', 'like', '%' . $this->searchTerm . '%')
+                    ->orWhere('email', 'like', '%' . $this->searchTerm . '%');
+            });
+        }
+
+        return $query->orderBy('name')->get();
+    }
+
+    public function getClassesProperty()
+    {
+        $query = Classroom::whereHas('users', function ($q) {
+            $q->where('users.id', auth()->id());
+        });
+
+        if ($this->searchTerm) {
+            $query->where('name', 'like', '%' . $this->searchTerm . '%');
+        }
+
+        $classes = $query->orderBy('name')->get();
+        foreach ($classes as $class) {
+            $class->unread_messages_count = $class->unreadMessagesCountForUser(auth()->id());
+        }
+        return $classes;
+    }
+
+    public function refreshMessages()
+    {
+        $this->unreadCount = Message::unread(auth()->id())->count();
+    }
+
+    public function handleNewMessage($event)
+    {
+        $this->refreshMessages();
+        $this->dispatch('messageReceived');
+    }
+
+    public function addMember($userId)
+    {
+        if (!$this->selectedClass) return;
+        if (!in_array(auth()->user()->role, ['admin', 'teacher'])) return;
+        $user = User::find($userId);
+        if ($user && !$this->selectedClass->users->contains($user->id)) {
+            $this->selectedClass->users()->attach($user->id);
+            $this->selectedClass->refresh();
+            $this->allUsers = User::all();
+        }
+        $this->addMemberSearch = '';
+        $this->dispatch('closeAddMemberModal');
+    }
+
+    public function removeMember($userId)
+    {
+        if (!$this->selectedClass) return;
+        if (!in_array(auth()->user()->role, ['admin', 'teacher'])) return;
+        if ($userId == auth()->id()) return;
+        $user = User::find($userId);
+        if ($user && $this->selectedClass->users->contains($user->id)) {
+            $this->selectedClass->users()->detach($user->id);
+            $this->selectedClass->refresh();
+            $this->allUsers = User::all();
+        }
+        $this->memberSearch = '';
+    }
+
+    // Đóng modal thêm thành viên bằng JS
+    public function dispatchCloseAddMemberModal()
+    {
+        $this->dispatch('closeAddMemberModal');
+    }
+
+    public function render()
+    {
+        return view('admin.chat.index', [
+            'messages' => $this->messages,
+            'users' => $this->users,
+            'classes' => $this->classes,
+        ]);
+    }
+}
