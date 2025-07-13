@@ -230,7 +230,8 @@
                                     <label for="imageFile" class="form-label fw-bold">Upload ảnh bài viết:</label>
                                     <input type="file" wire:model.live="imageFile" id="imageFile" accept="image/*"
                                         class="form-control @error('imageFile') is-invalid @enderror">
-                                    <div class="form-text">Chỉ chấp nhận file ảnh (JPG, PNG, GIF). Kích thước tối đa 5MB.</div>
+                                    <div class="form-text">Chỉ chấp nhận file ảnh (JPG, PNG, GIF, WEBP). Kích thước tối đa
+                                        10MB.</div>
                                     @error('imageFile')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror

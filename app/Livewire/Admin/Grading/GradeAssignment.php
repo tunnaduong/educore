@@ -48,10 +48,30 @@ class GradeAssignment extends Component
     {
         $score = $this->grading[$submissionId]['score'] ?? null;
         $feedback = $this->grading[$submissionId]['feedback'] ?? null;
+
+        // Validation cho điểm
+        if ($score !== null && $score !== '') {
+            if (!is_numeric($score)) {
+                session()->flash('error', 'Điểm phải là số!');
+                return;
+            }
+
+            if ($score < 0) {
+                session()->flash('error', 'Điểm không được nhỏ hơn 0!');
+                return;
+            }
+
+            if ($score > 10) {
+                session()->flash('error', 'Điểm không được vượt quá 10!');
+                return;
+            }
+        }
+
         // Nếu điểm là rỗng (empty string), set null
         if ($score === '' || $score === null) {
             $score = null;
         }
+
         $submission = AssignmentSubmission::find($submissionId);
         if ($submission) {
             $submission->score = $score;
@@ -59,6 +79,7 @@ class GradeAssignment extends Component
             $submission->save();
             session()->flash('success', 'Đã lưu điểm và nhận xét!');
         }
+
         // Làm mới submissions để cập nhật giao diện
         $this->submissions = AssignmentSubmission::where('assignment_id', $this->assignmentId)
             ->with(['student.user'])
@@ -67,7 +88,7 @@ class GradeAssignment extends Component
 
     public function getSubmissionTypeLabel($type)
     {
-        return match($type) {
+        return match ($type) {
             'text' => 'Điền từ',
             'essay' => 'Tự luận',
             'image' => 'Upload ảnh',

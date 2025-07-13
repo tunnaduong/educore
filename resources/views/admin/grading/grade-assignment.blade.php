@@ -95,7 +95,8 @@
                                                             step="0.1"
                                                             class="form-control form-control-sm text-center mb-2 mb-md-0"
                                                             wire:model.defer="grading.{{ $submission->id }}.score"
-                                                            placeholder="Điểm (0-10)">
+                                                            placeholder="Điểm (0-10)"
+                                                            oninput="if(this.value > 10) this.value = 10; if(this.value < 0) this.value = 0;">
                                                         <input type="text"
                                                             class="form-control form-control-sm text-center mb-2 mb-md-0"
                                                             wire:model.defer="grading.{{ $submission->id }}.feedback"
@@ -136,6 +137,12 @@
                             @if (session()->has('success'))
                                 <div class="alert alert-success mt-3 text-center fw-bold shadow-sm">
                                     <i class="bi bi-check-circle-fill me-2"></i>{{ session('success') }}
+                                </div>
+                            @endif
+
+                            @if (session()->has('error'))
+                                <div class="alert alert-danger mt-3 text-center fw-bold shadow-sm">
+                                    <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ session('error') }}
                                 </div>
                             @endif
                         @else

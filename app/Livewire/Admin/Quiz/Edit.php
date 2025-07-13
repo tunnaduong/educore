@@ -14,6 +14,7 @@ class Edit extends Component
     public $class_id = '';
     public $deadline = '';
     public $questions = [];
+    public $editingIndex = null; // Index của câu hỏi đang được sửa
     public $currentQuestion = [
         'question' => '',
         'type' => 'multiple_choice',
@@ -94,17 +95,24 @@ class Edit extends Component
             ]);
         }
 
-        $this->questions[] = $this->currentQuestion;
+        // Nếu đang sửa câu hỏi, thay thế câu hỏi cũ
+        if ($this->editingIndex !== null) {
+            $this->questions[$this->editingIndex] = $this->currentQuestion;
+            $this->editingIndex = null;
+            session()->flash('message', 'Câu hỏi đã được cập nhật thành công.');
+        } else {
+            // Nếu thêm mới
+            $this->questions[] = $this->currentQuestion;
+            session()->flash('message', 'Câu hỏi đã được thêm thành công.');
+        }
 
         $this->resetCurrentQuestion();
-
-        session()->flash('message', 'Câu hỏi đã được thêm thành công.');
     }
 
     public function editQuestion($index)
     {
         $this->currentQuestion = $this->questions[$index];
-        $this->removeQuestion($index);
+        $this->editingIndex = $index; // Đánh dấu câu hỏi đang được sửa
     }
 
     public function removeQuestion($index)
@@ -154,6 +162,7 @@ class Edit extends Component
             'score' => 1,
             'audio' => null,
         ];
+        $this->editingIndex = null; // Reset editing index
     }
 
     public function save()

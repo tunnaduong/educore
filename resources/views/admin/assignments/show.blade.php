@@ -32,7 +32,8 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label text-muted small">Hạn nộp</label>
-                            <div class="fw-medium">{{ $assignment->deadline ? $assignment->deadline->format('d/m/Y H:i') : '-' }}</div>
+                            <div class="fw-medium">
+                                {{ $assignment->deadline ? $assignment->deadline->format('d/m/Y H:i') : '-' }}</div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label text-muted small">Ngày giao</label>
@@ -46,7 +47,8 @@
                             <label class="form-label text-muted small">File đính kèm</label>
                             <div class="fw-medium">
                                 @if ($assignment->attachment_path)
-                                    <a href="{{ asset('storage/' . $assignment->attachment_path) }}" target="_blank" class="btn btn-sm btn-outline-success">
+                                    <a href="{{ asset('storage/' . $assignment->attachment_path) }}" target="_blank"
+                                        class="btn btn-sm btn-outline-success">
                                         <i class="bi bi-file-earmark-arrow-down"></i> Tải file
                                     </a>
                                 @else
@@ -59,7 +61,8 @@
                             <div class="fw-medium">
                                 @if ($assignment->video_path)
                                     <video width="240" height="135" controls>
-                                        <source src="{{ asset('storage/' . $assignment->video_path) }}" type="video/mp4">
+                                        <source src="{{ asset('storage/' . $assignment->video_path) }}"
+                                            type="video/mp4">
                                         Trình duyệt không hỗ trợ video.
                                     </video>
                                 @else
@@ -96,7 +99,7 @@
                                     <tbody>
                                         @foreach ($students as $student)
                                             @php
-                                                $submission = $submissions->firstWhere('student_id', $student->id);
+                                                $submission = $submissions->firstWhere('student.user_id', $student->id);
                                             @endphp
                                             <tr>
                                                 <td>
@@ -130,7 +133,8 @@
                                                 </td>
                                                 <td>
                                                     @if ($submission && $submission->file_path)
-                                                        <a href="{{ asset('storage/' . $submission->file_path) }}" target="_blank" class="btn btn-sm btn-outline-success">
+                                                        <a href="{{ asset('storage/' . $submission->file_path) }}"
+                                                            target="_blank" class="btn btn-sm btn-outline-success">
                                                             <i class="bi bi-file-earmark-arrow-down"></i> Tải file
                                                         </a>
                                                     @else
@@ -140,7 +144,8 @@
                                                 <td>
                                                     @if ($submission && $submission->video_url)
                                                         <video width="160" height="90" controls>
-                                                            <source src="{{ $submission->video_url }}" type="video/mp4">
+                                                            <source src="{{ $submission->video_url }}"
+                                                                type="video/mp4">
                                                             Trình duyệt không hỗ trợ video.
                                                         </video>
                                                     @else
@@ -148,30 +153,6 @@
                                                     @endif
                                                 </td>
                                             </tr>
-                                            @if ($submission)
-                                            <tr>
-                                                <td colspan="6">
-                                                    <form wire:submit.prevent="saveGrade({{ $submission->id }})" class="row g-2 align-items-center">
-                                                        <div class="col-md-2">
-                                                            <label class="form-label mb-0 small">Điểm</label>
-                                                            <input type="number" step="0.01" min="0" max="10" class="form-control form-control-sm" wire:model.defer="grading.{{ $submission->id }}.score" @if($submission->score !== null) value="{{ $submission->score }}" @endif>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <label class="form-label mb-0 small">Nhận xét</label>
-                                                            <input type="text" class="form-control form-control-sm" wire:model.defer="grading.{{ $submission->id }}.feedback" @if($submission->feedback) value="{{ $submission->feedback }}" @endif>
-                                                        </div>
-                                                        <div class="col-md-2">
-                                                            <button type="submit" class="btn btn-primary btn-sm mt-3">Lưu</button>
-                                                        </div>
-                                                        <div class="col-md-2">
-                                                            @if($submission->score !== null)
-                                                                <span class="badge bg-info">Đã chấm: {{ $submission->score }}</span>
-                                                            @endif
-                                                        </div>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                            @endif
                                         @endforeach
                                     </tbody>
                                 </table>
