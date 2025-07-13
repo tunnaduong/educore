@@ -84,8 +84,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/assignments/{assignmentId}/edit', \App\Livewire\Admin\Assignments\Edit::class)->name('assignments.edit');
     Route::get('/admin/grading', GradingList::class)->name('grading.list');
     Route::get('/admin/grading/{assignment}', GradeAssignment::class)->name('grading.grade-assignment');
-    // Chat routes
-    Route::get('/admin/chat', \App\Livewire\Admin\Chat\Index::class)->name('chat.index');
 });
 
 // Teacher routes
@@ -101,6 +99,8 @@ Route::middleware(['auth', 'role:admin,teacher'])->group(function () {
 // Student routes
 Route::middleware(['auth', 'role:student'])->name('student.')->group(function () {
     // Other student routes...
+    Route::get('/student/lessons', \App\Livewire\Student\Lessons\Index::class)->name('lessons.index');
+    Route::get('/student/lessons/{lessonId}', \App\Livewire\Student\Lessons\Show::class)->name('lessons.show');
     Route::get('/student/assignments', \App\Livewire\Student\Assignments\Index::class)->name('assignments.overview');
     Route::get('/student/assignments/submissions', \App\Livewire\Student\Assignments\MySubmissions::class)->name('assignments.submissions');
     Route::get('/student/assignments/{assignmentId}', \App\Livewire\Student\Assignments\Show::class)->name('assignments.show');
