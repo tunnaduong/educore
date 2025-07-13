@@ -86,7 +86,15 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/grading/{assignment}', GradeAssignment::class)->name('grading.grade-assignment');
     // Chat routes
     Route::get('/admin/chat', \App\Livewire\Admin\Chat\Index::class)->name('chat.index');
-    
+
+    // Lesson routes
+    Route::get('/admin/lessons', \App\Livewire\Admin\Lessons\Index::class)->name('lessons.index');
+    Route::get('/admin/lessons/create', \App\Livewire\Admin\Lessons\Create::class)->name('lessons.create');
+    Route::get('/admin/lessons/{lesson}/show', \App\Livewire\Admin\Lessons\Show::class)->name('lessons.show');
+    Route::get('/admin/lessons/{lesson}/edit', \App\Livewire\Admin\Lessons\Edit::class)->name('lessons.edit');
+    Route::delete('/admin/lessons/{lesson}', [\App\Livewire\Admin\Lessons\Show::class, 'deleteLesson'])->name('lessons.destroy');
+
+
     // Notifications routes
     Route::get('/admin/notifications', AdminNotificationsIndex::class)->name('notifications.index');
 });
@@ -104,6 +112,8 @@ Route::middleware(['auth', 'role:admin,teacher'])->group(function () {
 // Student routes
 Route::middleware(['auth', 'role:student'])->name('student.')->group(function () {
     // Other student routes...
+    Route::get('/student/lessons', \App\Livewire\Student\Lessons\Index::class)->name('lessons.index');
+    Route::get('/student/lessons/{lessonId}', \App\Livewire\Student\Lessons\Show::class)->name('lessons.show');
     Route::get('/student/assignments', \App\Livewire\Student\Assignments\Index::class)->name('assignments.overview');
     Route::get('/student/assignments/submissions', \App\Livewire\Student\Assignments\MySubmissions::class)->name('assignments.submissions');
     Route::get('/student/assignments/{assignmentId}', \App\Livewire\Student\Assignments\Show::class)->name('assignments.show');
@@ -111,7 +121,7 @@ Route::middleware(['auth', 'role:student'])->name('student.')->group(function ()
     Route::get('/student/quizzes/{quiz}/do', \App\Livewire\Student\Quiz\DoQuiz::class)->name('quizzes.do');
     Route::get('/student/quizzes/{quizId}/review', \App\Livewire\Student\Quiz\Review::class)->name('quizzes.review');
     Route::get('/student/quizzes', \App\Livewire\Student\Quiz\Index::class)->name('quizzes.index');
-    
+
     // Notifications routes
     Route::get('/student/notifications', StudentNotificationsIndex::class)->name('notifications.index');
 });

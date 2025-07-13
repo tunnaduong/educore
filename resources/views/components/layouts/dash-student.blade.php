@@ -41,7 +41,7 @@
                     </a>
                 </li>
                 <li class="nav-item mb-2">
-                    <a wire:navigate href="#"
+                    <a wire:navigate href="{{ route('student.lessons.index') }}"
                         class="text-white text-decoration-none d-block {{ $active === 'courses' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
                         <i class="bi bi-book me-2"></i> Bài học
                     </a>
