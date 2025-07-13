@@ -11,23 +11,25 @@
                 <span class="fs-4 fw-bold text-warning">Core</span>
             </div>
         </a>
-        <div class="dropdown">
-            <i class="bi bi-bell fs-5 me-3"></i>
-            <a href="#" class="fw-bold text-white text-decoration-none dropdown-toggle" id="userDropdown"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                {{ auth()->user()->name }}
-                <i class="bi bi-person-circle fs-5 ms-2"></i>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                <li>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="dropdown-item text-danger">
-                            <i class="bi bi-box-arrow-right me-2"></i>Đăng xuất
-                        </button>
-                    </form>
-                </li>
-            </ul>
+        <div class="d-flex align-items-center">
+            <livewire:components.notification-bell />
+            <div class="dropdown ms-3">
+                <a href="#" class="fw-bold text-white text-decoration-none dropdown-toggle" id="userDropdown"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ auth()->user()->name }}
+                    <i class="bi bi-person-circle fs-5 ms-2"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                    <li>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="dropdown-item text-danger">
+                                <i class="bi bi-box-arrow-right me-2"></i>Đăng xuất
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
     <div class="d-flex flex-grow-1" style="min-height: 0;">
@@ -92,9 +94,9 @@
                         </a>
                     </li>
                     <li class="nav-item mb-2">
-                        <a wire:navigate href="#"
-                            class="text-white text-decoration-none d-block {{ $active === 'messages' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                            <i class="bi bi-bell me-2"></i> Tin nhắn & thông báo
+                        <a wire:navigate href="{{ route('notifications.index') }}"
+                            class="text-white text-decoration-none d-block {{ $active === 'notifications' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
+                            <i class="bi bi-bell me-2"></i> Thông báo & Nhắc lịch
                         </a>
                     </li>
                 </ul>
