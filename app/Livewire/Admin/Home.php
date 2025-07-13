@@ -2,11 +2,19 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Message;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 
 class Home extends Component
 {
+    public $unreadCount = 0;
+
+    public function mount()
+    {
+        $this->unreadCount = Message::unread(auth()->id())->count();
+    }
+
     public function render()
     {
         // if user is admin then render admin.home

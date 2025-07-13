@@ -104,9 +104,13 @@
             </div>
             <!-- Chat & tương tác -->
             <div class="col-6 col-md-3 text-center">
-                <a href="#" wire:navigate class="text-decoration-none text-dark">
-                    <div class="mb-2">
+                <a href="{{ route('chat.index') }}" wire:navigate class="text-decoration-none text-dark">
+                    <div class="mb-2 position-relative d-inline-block">
                         <i class="bi bi-chat-dots-fill" style="font-size:2.5rem; color:#0dcaf0;"></i>
+                        @if($unreadCount > 0)
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                            style="font-size:0.8rem;">{{ $unreadCount }}</span>
+                        @endif
                     </div>
                     <div>Chat & Tương tác</div>
                 </a>
