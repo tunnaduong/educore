@@ -82,6 +82,16 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/assignments/{assignmentId}/edit', \App\Livewire\Admin\Assignments\Edit::class)->name('assignments.edit');
     Route::get('/admin/grading', GradingList::class)->name('grading.list');
     Route::get('/admin/grading/{assignment}', GradeAssignment::class)->name('grading.grade-assignment');
+    // Chat routes
+    Route::get('/admin/chat', \App\Livewire\Admin\Chat\Index::class)->name('chat.index');
+
+    // Lesson routes
+    Route::get('/admin/lessons', \App\Livewire\Admin\Lessons\Index::class)->name('lessons.index');
+    Route::get('/admin/lessons/create', \App\Livewire\Admin\Lessons\Create::class)->name('lessons.create');
+    Route::get('/admin/lessons/{lesson}/show', \App\Livewire\Admin\Lessons\Show::class)->name('lessons.show');
+    Route::get('/admin/lessons/{lesson}/edit', \App\Livewire\Admin\Lessons\Edit::class)->name('lessons.edit');
+    Route::delete('/admin/lessons/{lesson}', [\App\Livewire\Admin\Lessons\Show::class, 'deleteLesson'])->name('lessons.destroy');
+
 });
 
 // Teacher routes
