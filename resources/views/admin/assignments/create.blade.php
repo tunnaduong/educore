@@ -99,7 +99,7 @@
                             @enderror
                         </div>
                         <div class="col-md-6">
-                            <label for="video" class="form-label">Video (tối đa 50MB)</label>
+                            <label for="video" class="form-label">Video (tối đa 100MB)</label>
                             <input wire:model="video" type="file" accept="video/*"
                                 class="form-control @error('video') is-invalid @enderror" id="video">
                             @if ($video)

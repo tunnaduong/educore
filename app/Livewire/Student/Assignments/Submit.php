@@ -44,7 +44,7 @@ class Submit extends Component
                 ];
             case 'video':
                 return [
-                    'videoFile' => 'required|file|mimes:mp4,avi,mov|max:102400', // 100MB
+                    'videoFile' => 'required|file|mimes:mp4,avi,mov|max:204800', // 200MB
                 ];
             default:
                 return [];
@@ -64,7 +64,7 @@ class Submit extends Component
         'audioFile.max' => 'Kích thước file âm thanh không được vượt quá 50MB',
         'videoFile.required_if' => 'Vui lòng tải lên file video',
         'videoFile.mimes' => 'File video phải có định dạng mp4, avi, hoặc mov',
-        'videoFile.max' => 'Kích thước file video không được vượt quá 100MB',
+        'videoFile.max' => 'Kích thước file video không được vượt quá 200MB',
     ];
 
     public function mount($assignmentId)
@@ -84,9 +84,11 @@ class Submit extends Component
         $this->assignment = Assignment::whereHas('classroom.students', function ($q) use ($student) {
             $q->where('users.id', $student->user_id);
         })
-            ->with(['submissions' => function ($q) use ($student) {
-                $q->where('student_id', $student->id);
-            }])
+            ->with([
+                'submissions' => function ($q) use ($student) {
+                    $q->where('student_id', $student->id);
+                }
+            ])
             ->findOrFail($this->assignmentId);
 
         // Chỉ kiểm tra quá hạn, cho phép nộp lại nhiều lần trước hạn
