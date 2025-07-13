@@ -2,7 +2,7 @@
     <div class="container py-4">
         <div class="row g-5">
             <div class="col-6 col-md-4 text-center">
-                <a href="#" wire:navigate class="text-decoration-none text-dark">
+                <a href="{{ route('student.lessons.index') }}" wire:navigate class="text-decoration-none text-dark">
                     <div class="mb-2">
                         <i class="bi bi-book" style="font-size:2.5rem; color:#0d6efd;"></i>
                     </div>
