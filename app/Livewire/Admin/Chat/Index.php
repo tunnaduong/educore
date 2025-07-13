@@ -24,7 +24,9 @@ class Index extends Component
     public $addMemberSearch = '';
     public $allUsers;
 
-    protected $listeners = ['messageReceived' => 'refreshMessages', 'echo:chat,MessageSent' => 'handleNewMessage'];
+    protected $listeners = [
+        'messageReceived' => 'refreshMessages'
+    ];
 
     public function mount()
     {
@@ -85,7 +87,11 @@ class Index extends Component
             $messageData['attachment'] = $path;
         }
 
-        Message::create($messageData);
+        $message = Message::create($messageData);
+
+        // Dispatch event để broadcast tin nhắn
+        \Log::info('Dispatching MessageSent event', ['message_id' => $message->id]);
+        \App\Events\MessageSent::dispatch($message);
 
         $this->messageText = '';
         $this->attachment = null;
@@ -151,14 +157,32 @@ class Index extends Component
 
     public function handleNewMessage($event)
     {
-        $this->refreshMessages();
-        $this->dispatch('messageReceived');
+        // Kiểm tra xem tin nhắn có thuộc về cuộc trò chuyện hiện tại không
+        $message = $event['message'] ?? null;
+        if ($message) {
+            $isRelevant = false;
+
+            if ($this->selectedUser && $message['receiver_id'] == $this->selectedUser->id && $message['sender_id'] == auth()->id()) {
+                $isRelevant = true;
+            } elseif ($this->selectedUser && $message['sender_id'] == $this->selectedUser->id && $message['receiver_id'] == auth()->id()) {
+                $isRelevant = true;
+            } elseif ($this->selectedClass && $message['class_id'] == $this->selectedClass->id) {
+                $isRelevant = true;
+            }
+
+            if ($isRelevant) {
+                $this->refreshMessages();
+                $this->dispatch('messageReceived');
+            }
+        }
     }
 
     public function addMember($userId)
     {
-        if (!$this->selectedClass) return;
-        if (!in_array(auth()->user()->role, ['admin', 'teacher'])) return;
+        if (!$this->selectedClass)
+            return;
+        if (!in_array(auth()->user()->role, ['admin', 'teacher']))
+            return;
         $user = User::find($userId);
         if ($user && !$this->selectedClass->users->contains($user->id)) {
             $this->selectedClass->users()->attach($user->id);
@@ -171,9 +195,12 @@ class Index extends Component
 
     public function removeMember($userId)
     {
-        if (!$this->selectedClass) return;
-        if (!in_array(auth()->user()->role, ['admin', 'teacher'])) return;
-        if ($userId == auth()->id()) return;
+        if (!$this->selectedClass)
+            return;
+        if (!in_array(auth()->user()->role, ['admin', 'teacher']))
+            return;
+        if ($userId == auth()->id())
+            return;
         $user = User::find($userId);
         if ($user && $this->selectedClass->users->contains($user->id)) {
             $this->selectedClass->users()->detach($user->id);
