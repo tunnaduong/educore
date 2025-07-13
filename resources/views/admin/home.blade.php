@@ -75,7 +75,7 @@
             </div>
             <!-- Xem lại bài học & tài nguyên -->
             <div class="col-6 col-md-3 text-center">
-                <a href="#" wire:navigate class="text-decoration-none text-dark">
+                <a href="{{ route('lessons.index') }}" wire:navigate class="text-decoration-none text-dark">
                     <div class="mb-2">
                         <i class="bi bi-folder-symlink-fill" style="font-size:2.5rem; color:#28a745;"></i>
                     </div>
