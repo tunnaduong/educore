@@ -16,7 +16,7 @@ class Create extends Component
     public $description;
     public $class_id;
     public $deadline;
-    public $type = null;
+    public $types = [];
     public $allTypes = [
         'text' => 'Điền từ',
         'essay' => 'Tự luận',
@@ -47,7 +47,7 @@ class Create extends Component
             'title' => 'required|string|max:255',
             'class_id' => 'required|exists:classrooms,id',
             'deadline' => 'required|date',
-            'type' => 'required', // Đổi từ 'types' => ... sang 'type' => 'required'
+            'types' => 'required|array|min:1',
             'attachment' => 'nullable|file|mimes:doc,docx,pdf,zip,rar,txt|max:10240',
             'video' => 'nullable|mimetypes:video/mp4,video/avi,video/mpeg,video/quicktime|max:51200',
             'score' => 'nullable|numeric|min:0',
@@ -55,7 +55,8 @@ class Create extends Component
             'title.required' => 'Vui lòng nhập tiêu đề bài tập',
             'class_id.required' => 'Vui lòng chọn lớp',
             'deadline.required' => 'Vui lòng chọn hạn nộp',
-            'type.required' => 'Vui lòng chọn một loại bài tập', // Đổi từ types sang type
+            'types.required' => 'Vui lòng chọn ít nhất một loại bài tập',
+            'types.min' => 'Vui lòng chọn ít nhất một loại bài tập',
             'attachment.max' => 'Tệp đính kèm tối đa 10MB',
             'attachment.mimes' => 'Chỉ chấp nhận file doc, docx, pdf, zip, rar, txt',
             'video.max' => 'Video tối đa 50MB',
@@ -78,14 +79,14 @@ class Create extends Component
             'title' => $this->title,
             'description' => $this->description,
             'deadline' => $this->deadline,
-            'types' => $this->type, // Lưu $type thay vì $types
+            'types' => $this->types,
             'attachment_path' => $attachmentPath,
             'video_path' => $videoPath,
             'score' => $this->score,
         ]);
 
         session()->flash('success', 'Tạo bài tập thành công!');
-        $this->reset(['title', 'description', 'class_id', 'deadline', 'type', 'attachment', 'video', 'score']); // Đổi 'types' thành 'type'
+        $this->reset(['title', 'description', 'class_id', 'deadline', 'types', 'attachment', 'video', 'score']);
     }
 
     public function render()

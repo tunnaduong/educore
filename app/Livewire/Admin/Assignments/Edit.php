@@ -32,7 +32,6 @@ class Edit extends Component
     public $old_video_path;
     public $assignmentId;
     public $score;
-    public $type;
 
     public function mount($assignmentId)
     {
@@ -43,7 +42,6 @@ class Edit extends Component
         $this->class_id = $this->assignment->class_id;
         $this->deadline = $this->assignment->deadline?->format('Y-m-d\TH:i');
         $this->score = $this->assignment->score ?? null;
-        $this->type = is_array($this->assignment->types) ? ($this->assignment->types[0] ?? null) : $this->assignment->types;
         $this->types = $this->assignment->types ?? [];
         $this->old_attachment_path = $this->assignment->attachment_path;
         $this->old_video_path = $this->assignment->video_path;
@@ -56,7 +54,7 @@ class Edit extends Component
             'title' => 'required|string|max:255',
             'class_id' => 'required|exists:classrooms,id',
             'deadline' => 'required|date',
-            'type' => 'required',
+            'types' => 'required|array|min:1',
             'attachment' => 'nullable|file|mimes:doc,docx,pdf,zip,rar,txt|max:10240',
             'video' => 'nullable|mimetypes:video/mp4,video/avi,video/mpeg,video/quicktime|max:51200',
         ]);
@@ -78,7 +76,7 @@ class Edit extends Component
             'description' => $this->description,
             'deadline' => $this->deadline,
             'score' => $this->score,
-            'types' => [$this->type],
+            'types' => $this->types,
             'attachment_path' => $attachmentPath,
             'video_path' => $videoPath,
         ]);

@@ -73,7 +73,11 @@
                     <div class="card shadow-sm mb-4">
                         <div class="card-header bg-light">
                             <h6 class="mb-0">
-                                <i class="bi bi-plus-circle me-2"></i>Thêm câu hỏi mới
+                                @if ($editingIndex !== null)
+                                    <i class="bi bi-pencil me-2"></i>Sửa câu hỏi #{{ $editingIndex + 1 }}
+                                @else
+                                    <i class="bi bi-plus-circle me-2"></i>Thêm câu hỏi mới
+                                @endif
                             </h6>
                         </div>
                         <div class="card-body">
@@ -172,8 +176,18 @@
                             @endif
 
                             <div class="text-end">
+                                @if ($editingIndex !== null)
+                                    <button type="button" class="btn btn-warning me-2"
+                                        wire:click="resetCurrentQuestion">
+                                        <i class="bi bi-x-circle me-2"></i>Hủy sửa
+                                    </button>
+                                @endif
                                 <button type="button" class="btn btn-primary" wire:click="addQuestion">
-                                    <i class="bi bi-plus-circle me-2"></i>Thêm câu hỏi
+                                    @if ($editingIndex !== null)
+                                        <i class="bi bi-check-circle me-2"></i>Cập nhật câu hỏi
+                                    @else
+                                        <i class="bi bi-plus-circle me-2"></i>Thêm câu hỏi
+                                    @endif
                                 </button>
                             </div>
                         </div>
