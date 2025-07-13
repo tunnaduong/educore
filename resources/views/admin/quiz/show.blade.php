@@ -211,7 +211,7 @@
                                     <tbody>
                                         @foreach ($students as $student)
                                             @php
-                                                $result = $results->firstWhere('student_id', $student->id);
+                                                $result = $student->student ? $results->firstWhere('student_id', $student->student->id) : null;
                                             @endphp
                                             <tr>
                                                 <td>
