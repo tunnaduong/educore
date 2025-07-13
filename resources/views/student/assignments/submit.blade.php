@@ -267,7 +267,7 @@
                                     <label for="videoFile" class="form-label fw-bold">Upload file video:</label>
                                     <input type="file" wire:model.live="videoFile" id="videoFile" accept="video/*"
                                         class="form-control @error('videoFile') is-invalid @enderror">
-                                    <div class="form-text">Chỉ chấp nhận file video (MP4, AVI, MOV). Kích thước tối đa 50MB.
+                                    <div class="form-text">Chỉ chấp nhận file video (MP4, AVI, MOV). Kích thước tối đa 200MB.
                                     </div>
                                     @error('videoFile')
                                         <div class="invalid-feedback">{{ $message }}</div>

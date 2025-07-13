@@ -56,17 +56,19 @@ class Edit extends Component
             'deadline' => 'required|date',
             'types' => 'required|array|min:1',
             'attachment' => 'nullable|file|mimes:doc,docx,pdf,zip,rar,txt|max:10240',
-            'video' => 'nullable|mimetypes:video/mp4,video/avi,video/mpeg,video/quicktime|max:51200',
+            'video' => 'nullable|mimetypes:video/mp4,video/avi,video/mpeg,video/quicktime|max:102400',
         ]);
 
         $attachmentPath = $this->old_attachment_path;
         $videoPath = $this->old_video_path;
         if ($this->attachment && is_object($this->attachment) && method_exists($this->attachment, 'store')) {
-            if ($attachmentPath) Storage::disk('public')->delete($attachmentPath);
+            if ($attachmentPath)
+                Storage::disk('public')->delete($attachmentPath);
             $attachmentPath = $this->attachment->store('assignments/attachments', 'public');
         }
         if ($this->video && is_object($this->video) && method_exists($this->video, 'store')) {
-            if ($videoPath) Storage::disk('public')->delete($videoPath);
+            if ($videoPath)
+                Storage::disk('public')->delete($videoPath);
             $videoPath = $this->video->store('assignments/videos', 'public');
         }
 
