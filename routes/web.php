@@ -25,6 +25,8 @@ use App\Livewire\Admin\Schedules\Create as SchedulesCreate;
 use App\Livewire\Admin\Classrooms\Create as ClassroomsCreate;
 use App\Livewire\Admin\Attendance\Overview as AttendanceOverview;
 use App\Livewire\Admin\Classrooms\AssignStudents as ClassroomsAssignStudents;
+use App\Livewire\Admin\Notifications\Index as AdminNotificationsIndex;
+use App\Livewire\Student\Notifications\Index as StudentNotificationsIndex;
 
 Route::get('/', function () {
     if (Auth::check()) {
@@ -86,6 +88,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/grading/{assignment}', GradeAssignment::class)->name('grading.grade-assignment');
     // Chat routes
     Route::get('/admin/chat', \App\Livewire\Admin\Chat\Index::class)->name('chat.index');
+    
+    // Notifications routes
+    Route::get('/admin/notifications', AdminNotificationsIndex::class)->name('notifications.index');
 });
 
 // Teacher routes
@@ -108,4 +113,7 @@ Route::middleware(['auth', 'role:student'])->name('student.')->group(function ()
     Route::get('/student/quizzes/{quiz}/do', \App\Livewire\Student\Quiz\DoQuiz::class)->name('quizzes.do');
     Route::get('/student/quizzes/{quizId}/review', \App\Livewire\Student\Quiz\Review::class)->name('quizzes.review');
     Route::get('/student/quizzes', \App\Livewire\Student\Quiz\Index::class)->name('quizzes.index');
+    
+    // Notifications routes
+    Route::get('/student/notifications', StudentNotificationsIndex::class)->name('notifications.index');
 });
