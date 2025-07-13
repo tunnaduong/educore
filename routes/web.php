@@ -1,12 +1,10 @@
 <?php
 
-use Livewire\Livewire;
 use App\Livewire\Admin\Home;
 use Illuminate\Http\Request;
 use App\Livewire\Admin\Auth\Login;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RouteController;
 use App\Livewire\Admin\Grading\GradingList;
 use App\Livewire\Admin\Grading\GradeAssignment;
 use App\Livewire\Admin\Users\Edit as UsersEdit;
