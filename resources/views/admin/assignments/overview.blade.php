@@ -196,9 +196,15 @@
                 <!-- Bài tập gần đây -->
                 <div class="card shadow-sm">
                     <div class="card-header bg-light">
-                        <h5 class="mb-0 text-primary">
-                            <i class="bi bi-clock-history me-2"></i>Bài tập gần đây
-                        </h5>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0 text-primary">
+                                <i class="bi bi-clock-history me-2"></i>Bài tập gần đây
+                            </h5>
+                            <a href="{{ route('assignments.list') }}" class="btn btn-sm btn-outline-primary"
+                                wire:navigate>
+                                <i class="bi bi-list-ul me-1"></i>Xem tất cả
+                            </a>
+                        </div>
                     </div>
                     <div class="card-body">
                         @if ($recentAssignments->count() > 0)
@@ -239,18 +245,23 @@
                                             </tr>
 
                                             <!-- Delete Confirmation Modal -->
-                                            <div class="modal fade" id="deleteAssignmentModal{{ $assignment->id }}" tabindex="-1"
-                                                aria-labelledby="deleteAssignmentModalLabel{{ $assignment->id }}" aria-hidden="true">
+                                            <div class="modal fade" id="deleteAssignmentModal{{ $assignment->id }}"
+                                                tabindex="-1"
+                                                aria-labelledby="deleteAssignmentModalLabel{{ $assignment->id }}"
+                                                aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="deleteAssignmentModalLabel{{ $assignment->id }}">
+                                                            <h5 class="modal-title"
+                                                                id="deleteAssignmentModalLabel{{ $assignment->id }}">
                                                                 Xác nhận xóa bài tập</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                aria-label="Close"></button>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            Bạn có chắc chắn muốn xóa bài tập "{{ $assignment->title }}"? Hành động này không thể hoàn tác.
+                                                            Bạn có chắc chắn muốn xóa bài tập
+                                                            "{{ $assignment->title }}"? Hành động này không thể hoàn
+                                                            tác.
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary"

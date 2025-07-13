@@ -42,7 +42,7 @@
                         <label class="form-label">Sắp xếp</label>
                         <select class="form-select" wire:model.live="sortBy">
                             <option value="submissions_count">Số bài nộp</option>
-                            <option value="created_at">Ngày tạo lớp</option>
+                            <option value="created_at">Ngày tạo</option>
                             <option value="deadline">Hạn nộp</option>
                         </select>
                     </div>
