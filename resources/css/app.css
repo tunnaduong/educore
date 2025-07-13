@@ -4,14 +4,14 @@
 
 @layer components {
     .avatar-sm {
-        @apply w-8 h-8 rounded-full flex items-center justify-center bg-light;
+        @apply w-8 h-8 rounded-full flex items-center justify-center bg-gray-200;
     }
 
     .avatar-md {
-        @apply w-12 h-12 rounded-full flex items-center justify-center bg-light;
+        @apply w-12 h-12 rounded-full flex items-center justify-center bg-gray-200;
     }
 
     .avatar-lg {
-        @apply w-16 h-16 rounded-full flex items-center justify-center bg-light;
+        @apply w-16 h-16 rounded-full flex items-center justify-center bg-gray-200;
     }
 }
