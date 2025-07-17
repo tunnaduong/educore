@@ -101,10 +101,21 @@
                                             <td>{{ $student->email }}</td>
                                             <td>{{ $student->phone ?? 'Chưa có' }}</td>
                                             <td class="text-center">
-                                                <span
-                                                    class="badge bg-{{ $student->status == 'active' ? 'success' : 'secondary' }}">
-                                                    {{ $student->status == 'active' ? 'Hoạt động' : 'Không hoạt động' }}
-                                                </span>
+                                                @php
+                                                    $statusColors = [
+                                                        'active' => 'success',
+                                                        'paused' => 'warning',
+                                                        'dropped' => 'danger',
+                                                    ];
+                                                    $statusLabels = [
+                                                        'active' => 'Hoạt động',
+                                                        'paused' => 'Nghỉ',
+                                                        'dropped' => 'Bảo lưu',
+                                                    ];
+                                                    $color = $statusColors[$student->status] ?? 'secondary';
+                                                    $label = $statusLabels[$student->status] ?? 'Không xác định';
+                                                @endphp
+                                                <span class="badge bg-{{ $color }}">{{ $label }}</span>
                                             </td>
                                         </tr>
                                     @empty

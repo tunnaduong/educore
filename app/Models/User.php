@@ -71,8 +71,11 @@ class User extends Authenticatable
         return $this->hasManyThrough(QuizResult::class, Student::class, 'user_id', 'student_id');
     }
 
+    /**
+     * Lấy trạng thái của học viên (nếu có studentProfile), trả về null nếu không có.
+     */
     public function getStatusAttribute()
     {
-        return $this->studentProfile->status;
+        return $this->studentProfile ? $this->studentProfile->status : null;
     }
 }

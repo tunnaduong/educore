@@ -1,5 +1,5 @@
 <x-layouts.dash-admin active="messages">
-    <div class="container-fluid py-4">
+    <div class="container-fluid py-2">
         <div class="row">
             <!-- Sidebar - Danh sách người dùng và lớp học -->
             <div class="col-md-5 col-lg-4">
@@ -25,14 +25,14 @@
                         <!-- Tabs -->
                         <ul class="nav nav-tabs nav-fill" id="chatTabs" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="users-tab" data-bs-toggle="tab"
-                                    data-bs-target="#users" type="button" role="tab">
+                                <button class="nav-link @if ($activeTab === 'users') active @endif"
+                                    wire:click="setActiveTab('users')" id="users-tab" type="button" role="tab">
                                     <i class="bi bi-people-fill me-1"></i>Người dùng
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="classes-tab" data-bs-toggle="tab" data-bs-target="#classes"
-                                    type="button" role="tab">
+                                <button class="nav-link @if ($activeTab === 'classes') active @endif"
+                                    wire:click="setActiveTab('classes')" id="classes-tab" type="button" role="tab">
                                     <i class="bi bi-diagram-3-fill me-1"></i>Lớp học
                                 </button>
                             </li>
@@ -41,7 +41,8 @@
                         <!-- Tab content -->
                         <div class="tab-content" id="chatTabsContent">
                             <!-- Users tab -->
-                            <div class="tab-pane fade show active" id="users" role="tabpanel">
+                            <div class="tab-pane fade @if ($activeTab === 'users') show active @endif"
+                                id="users" role="tabpanel">
                                 <div class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
                                     @forelse($users as $user)
                                         <button wire:click="selectUser({{ $user->id }})"
@@ -72,7 +73,8 @@
                             </div>
 
                             <!-- Classes tab -->
-                            <div class="tab-pane fade" id="classes" role="tabpanel">
+                            <div class="tab-pane fade @if ($activeTab === 'classes') show active @endif"
+                                id="classes" role="tabpanel">
                                 <div class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
                                     @forelse($classes as $class)
                                         <button wire:click="selectClass({{ $class->id }})"
@@ -91,8 +93,6 @@
                                             </div>
                                             <div class="flex-grow-1 ms-3">
                                                 <h6 class="mb-0">{{ $class->name }}</h6>
-                                                <small
-                                                    class="text-muted">{{ $class->description ?? 'Không có mô tả' }}</small>
                                             </div>
                                             <span class="badge bg-danger rounded-pill ms-auto" style="min-width: 28px;">
                                                 {{ $class->unread_messages_count ?? 0 }}
@@ -140,133 +140,7 @@
                                     </div>
                                 @endif
                             </div>
-                            @if ($selectedClass)
-                                <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#groupMembersModal">
-                                    <i class="bi bi-people-fill"></i> Thành viên
-                                </button>
-                            @endif
                         </div>
-
-                        <!-- Modal: Danh sách thành viên nhóm lớp học -->
-                        @if ($selectedClass)
-                            <div class="modal fade" id="groupMembersModal" tabindex="-1"
-                                aria-labelledby="groupMembersModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-scrollable">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="groupMembersModalLabel">Thành viên lớp:
-                                                {{ $selectedClass->name }}</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <input type="text" wire:model="memberSearch" class="form-control mb-3"
-                                                placeholder="Tìm kiếm thành viên...">
-                                            <ul class="list-group">
-                                                @foreach ($selectedClass->users->where('name', 'like', '%' . $memberSearch . '%') as $member)
-                                                    <li
-                                                        class="list-group-item d-flex align-items-center justify-content-between">
-                                                        <div class="d-flex align-items-center">
-                                                            @if (!empty($member->avatar))
-                                                                <img src="{{ asset('storage/' . $member->avatar) }}"
-                                                                    alt="Avatar" class="rounded-circle me-2"
-                                                                    style="width: 32px; height: 32px; object-fit: cover;">
-                                                            @else
-                                                                <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center me-2"
-                                                                    style="width: 32px; height: 32px;">
-                                                                    <span
-                                                                        class="text-white fw-bold">{{ strtoupper(substr($member->name, 0, 1)) }}</span>
-                                                                </div>
-                                                            @endif
-                                                            <div>
-                                                                <div class="fw-bold">{{ $member->name }}</div>
-                                                                <div style="font-size: 0.9em;">{{ $member->email }}
-                                                                </div>
-                                                                <span class="badge bg-info text-dark"
-                                                                    style="font-size: 0.8em;">{{ $member->role ?? 'Học sinh' }}</span>
-                                                            </div>
-                                                        </div>
-                                                        @if (in_array(auth()->user()->role, ['admin', 'teacher']) && $member->id !== auth()->id())
-                                                            <button class="btn btn-sm btn-outline-danger ms-2"
-                                                                wire:click.prevent="removeMember({{ $member->id }})">
-                                                                <i class="bi bi-x"></i>
-                                                            </button>
-                                                        @endif
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                        <div class="modal-footer">
-                                            @if (in_array(auth()->user()->role, ['admin', 'teacher']))
-                                                <button class="btn btn-success" data-bs-toggle="modal"
-                                                    data-bs-target="#addMemberModal">
-                                                    <i class="bi bi-person-plus"></i> Thêm thành viên
-                                                </button>
-                                            @endif
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Đóng</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-
-                        <!-- Modal: Thêm thành viên -->
-                        @if ($selectedClass && in_array(auth()->user()->role, ['admin', 'teacher']))
-                            <div class="modal fade" id="addMemberModal" tabindex="-1"
-                                aria-labelledby="addMemberModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="addMemberModalLabel">Thêm thành viên vào lớp:
-                                                {{ $selectedClass->name }}</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <input type="text" wire:model="addMemberSearch"
-                                                class="form-control mb-3" placeholder="Tìm kiếm người dùng...">
-                                            <ul class="list-group">
-                                                @foreach ($allUsers->whereNotIn('id', $selectedClass->users->pluck('id'))->where('name', 'like', '%' . $addMemberSearch . '%') as $user)
-                                                    <li
-                                                        class="list-group-item d-flex align-items-center justify-content-between">
-                                                        <div class="d-flex align-items-center">
-                                                            @if (!empty($user->avatar))
-                                                                <img src="{{ asset('storage/' . $user->avatar) }}"
-                                                                    alt="Avatar" class="rounded-circle me-2"
-                                                                    style="width: 32px; height: 32px; object-fit: cover;">
-                                                            @else
-                                                                <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center me-2"
-                                                                    style="width: 32px; height: 32px;">
-                                                                    <span
-                                                                        class="text-white fw-bold">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
-                                                                </div>
-                                                            @endif
-                                                            <div>
-                                                                <div class="fw-bold">{{ $user->name }}</div>
-                                                                <div style="font-size: 0.9em;">{{ $user->email }}
-                                                                </div>
-                                                                <span class="badge bg-info text-dark"
-                                                                    style="font-size: 0.8em;">{{ $user->role ?? 'Học sinh' }}</span>
-                                                            </div>
-                                                        </div>
-                                                        <button class="btn btn-sm btn-outline-success ms-2"
-                                                            wire:click.prevent="addMember({{ $user->id }})">
-                                                            <i class="bi bi-plus"></i>
-                                                        </button>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Đóng</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
 
                         <!-- Messages area -->
                         <div class="card-body d-flex flex-column" style="height: 400px;">
@@ -458,6 +332,26 @@
                 window.addEventListener('closeAddMemberModal', function() {
                     var modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('addMemberModal'));
                     if (modal) modal.hide();
+                });
+                // Hiển thị toast khi thêm thành viên
+                Livewire.on('showToast', function(data) {
+                    let type = data.type || 'info';
+                    let message = data.message || '';
+                    let toast = document.createElement('div');
+                    toast.className = 'toast align-items-center text-bg-' + (type === 'success' ? 'success' : (
+                            type === 'error' ? 'danger' : 'info')) +
+                        ' border-0 position-fixed bottom-0 end-0 m-3';
+                    toast.style.zIndex = 9999;
+                    toast.innerHTML =
+                        `<div class="d-flex"><div class="toast-body">${message}</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div>`;
+                    document.body.appendChild(toast);
+                    var bsToast = new bootstrap.Toast(toast, {
+                        delay: 2500
+                    });
+                    bsToast.show();
+                    toast.addEventListener('hidden.bs.toast', function() {
+                        toast.remove();
+                    });
                 });
             });
         </script>

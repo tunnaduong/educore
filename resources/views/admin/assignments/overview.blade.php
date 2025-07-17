@@ -106,40 +106,6 @@
             </div>
         </div>
 
-        <!-- Thống kê chi tiết -->
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="card bg-success text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <h6 class="card-title mb-0">Tỷ lệ nộp đúng hạn</h6>
-                                <h3 class="mb-0">{{ $overviewStats['on_time_rate'] ?? 0 }}%</h3>
-                            </div>
-                            <div class="align-self-center">
-                                <i class="bi bi-clock-history fs-1"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card bg-info text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <h6 class="card-title mb-0">Bài tập gần đây</h6>
-                                <h3 class="mb-0">{{ $recentAssignments->count() }}</h3>
-                            </div>
-                            <div class="align-self-center">
-                                <i class="bi bi-clock fs-1"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Danh sách lớp nhiều bài tập nhất -->
         <div class="row">
             <div class="col-lg-8">

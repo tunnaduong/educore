@@ -23,31 +23,31 @@ class RouteStatusTest extends TestCase
             ['/login', 'get', false], // 1
             // --- Các route cần đăng nhập với role admin ---
             ['/dashboard', 'get', true], // 2
-            ['/users', 'get', true], // 3
-            ['/users/create', 'get', true], // 4
-            ["/users/{$userId}/edit", 'get', true], // 5
-            ['/classrooms', 'get', true], // 6
-            ['/classrooms/create', 'get', true], // 7
-            ["/classrooms/{$classroomId}", 'get', true], // 8
-            ["/classrooms/{$classroomId}/edit", 'get', true], // 9
-            ["/classrooms/{$classroomId}/assign-students", 'get', true], // 10
-            ["/classrooms/{$classroomId}/attendance", 'get', true], // 11
-            ["/classrooms/{$classroomId}/attendance-history", 'get', true], // 12
-            ['/students', 'get', true], // 13
-            ['/students/create', 'get', true], // 14
-            ["/students/{$studentId}/edit", 'get', true], // 15
-            ["/students/{$studentId}", 'get', true], // 16
-            ['/attendances', 'get', true], // 17
-            ['/attendances/history', 'get', true], // 18
-            ['/schedules', 'get', true], // 19
-            ['/schedules/create', 'get', true], // 20
-            ["/schedules/{$classroomId}/edit", 'get', true], // 21
-            ["/schedules/{$classroomId}", 'get', true], // 22
+            ['/admin/users', 'get', true], // 3
+            ['/admin/users/create', 'get', true], // 4
+            ["/admin/users/{$userId}/edit", 'get', true], // 5
+            ['/admin/classrooms', 'get', true], // 6
+            ['/admin/classrooms/create', 'get', true], // 7
+            ["/admin/classrooms/{$classroomId}", 'get', true], // 8
+            ["/admin/classrooms/{$classroomId}/edit", 'get', true], // 9
+            ["/admin/classrooms/{$classroomId}/assign-students", 'get', true], // 10
+            ["/admin/classrooms/{$classroomId}/attendance", 'get', true], // 11
+            ["/admin/classrooms/{$classroomId}/attendance-history", 'get', true], // 12
+            ['/admin/students', 'get', true], // 13
+            ['/admin/students/create', 'get', true], // 14
+            ["/admin/students/{$studentId}/edit", 'get', true], // 15
+            ["/admin/students/{$studentId}", 'get', true], // 16
+            ['/admin/attendances', 'get', true], // 17
+            ['/admin/attendances/history', 'get', true], // 18
+            ['/admin/schedules', 'get', true], // 19
+            ['/admin/schedules/create', 'get', true], // 20
+            ["/admin/schedules/{$classroomId}/edit", 'get', true], // 21
+            ["/admin/schedules/{$classroomId}", 'get', true], // 22
             // --- Các route cho admin, teacher ---
-            ['/assignments/create', 'get', true], // 23
-            ['/assignments', 'get', true], // 24
-            ["/assignments/{$assignmentId}", 'get', true], // 25
-            ["/assignments/{$assignmentId}/edit", 'get', true], // 26
+            ['/admin/assignments/create', 'get', true], // 23
+            ['/admin/assignments', 'get', true], // 24 (có thể là overview/list tuỳ mục đích)
+            ["/admin/assignments/{$assignmentId}", 'get', true], // 25
+            ["/admin/assignments/{$assignmentId}/edit", 'get', true], // 26
         ];
     }
 

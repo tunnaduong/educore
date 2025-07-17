@@ -23,6 +23,7 @@ class Index extends Component
     public $memberSearch = '';
     public $addMemberSearch = '';
     public $allUsers;
+    public $activeTab = 'users'; // 'users' hoặc 'classes'
 
     protected $listeners = [
         'messageReceived' => 'refreshMessages'
@@ -39,14 +40,21 @@ class Index extends Component
         $this->selectedUser = User::find($userId);
         $this->selectedClass = null;
         $this->messageType = 'user';
+        $this->activeTab = 'users';
         $this->resetPage();
     }
 
     public function selectClass($classId)
     {
-        $this->selectedClass = Classroom::find($classId);
+        $this->selectedClass = Classroom::with('users')->find($classId);
+        \Log::info('[Chat Debug] selectClass: Chọn lớp', [
+            'class_id' => $classId,
+            'selectedClass' => $this->selectedClass ? $this->selectedClass->toArray() : null,
+            'current_user_id' => auth()->id(),
+        ]);
         $this->selectedUser = null;
         $this->messageType = 'class';
+        $this->activeTab = 'classes';
         $this->resetPage();
         // Đánh dấu đã đọc
         $lastMsg = Message::where('class_id', $classId)->latest('id')->first();
@@ -62,6 +70,11 @@ class Index extends Component
                 ]
             );
         }
+    }
+
+    public function setActiveTab($tab)
+    {
+        $this->activeTab = $tab;
     }
 
     public function sendMessage()
@@ -135,15 +148,22 @@ class Index extends Component
 
     public function getClassesProperty()
     {
-        $query = Classroom::whereHas('users', function ($q) {
-            $q->where('users.id', auth()->id());
-        });
+        // Nếu là admin, hiển thị tất cả lớp học
+        if (auth()->user()->role === 'admin') {
+            $query = Classroom::query();
+        } else {
+            // Nếu không phải admin, chỉ hiển thị lớp mà user được gán
+            $query = Classroom::whereHas('users', function ($q) {
+                $q->where('users.id', auth()->id());
+            });
+        }
 
         if ($this->searchTerm) {
             $query->where('name', 'like', '%' . $this->searchTerm . '%');
         }
 
         $classes = $query->orderBy('name')->get();
+
         foreach ($classes as $class) {
             $class->unread_messages_count = $class->unreadMessagesCountForUser(auth()->id());
         }
@@ -177,20 +197,31 @@ class Index extends Component
         }
     }
 
-    public function addMember($userId)
+    // Xóa các biến liên quan đến thêm thành viên
+    // public $addMemberSearch = '';
+    // public function addMember($userId) { ... }
+
+    public $addTeacherSearch = '';
+
+    public function addTeacher($userId)
     {
         if (!$this->selectedClass)
             return;
-        if (!in_array(auth()->user()->role, ['admin', 'teacher']))
+        if (auth()->user()->role !== 'admin') {
+            $this->dispatch('showToast', ['type' => 'error', 'message' => 'Chỉ admin mới được thêm giáo viên!']);
             return;
-        $user = User::find($userId);
-        if ($user && !$this->selectedClass->users->contains($user->id)) {
-            $this->selectedClass->users()->attach($user->id);
-            $this->selectedClass->refresh();
-            $this->allUsers = User::all();
         }
-        $this->addMemberSearch = '';
-        $this->dispatch('closeAddMemberModal');
+        $user = User::find($userId);
+        if ($user && $user->role === 'teacher' && !$this->selectedClass->users->contains($user->id)) {
+            $this->selectedClass->users()->attach($user->id, ['role' => 'teacher']);
+            $this->selectedClass = Classroom::with('users')->find($this->selectedClass->id);
+            $this->allUsers = User::all();
+            $this->dispatch('showToast', ['type' => 'success', 'message' => 'Đã thêm giáo viên vào lớp!']);
+        } else {
+            $this->dispatch('showToast', ['type' => 'error', 'message' => 'Không thể thêm giáo viên!']);
+        }
+        $this->addTeacherSearch = '';
+        $this->dispatch('closeAddTeacherModal');
     }
 
     public function removeMember($userId)
@@ -218,6 +249,19 @@ class Index extends Component
 
     public function render()
     {
+        if ($this->selectedClass) {
+            \Log::info('[Chat Debug] render: Thành viên hiện tại của lớp', [
+                'class_id' => $this->selectedClass->id,
+                'user_ids' => $this->selectedClass->users->pluck('id')->toArray(),
+            ]);
+            \Log::info('[Chat Debug] render: allUsers', [
+                'user_ids' => $this->allUsers ? $this->allUsers->pluck('id')->toArray() : null,
+            ]);
+            $canAdd = $this->allUsers->whereNotIn('id', $this->selectedClass->users->pluck('id'));
+            \Log::info('[Chat Debug] render: user có thể thêm', [
+                'user_ids' => $canAdd->pluck('id')->toArray(),
+            ]);
+        }
         return view('admin.chat.index', [
             'messages' => $this->messages,
             'users' => $this->users,
