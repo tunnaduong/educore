@@ -2,7 +2,9 @@
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h2 class="mb-1">Quản lý Thông báo & Nhắc lịch</h2>
+            <h4 class="mb-0 text-primary fs-4">
+                <i class="bi bi-bell me-2"></i>Thông báo & Nhắc lịch
+            </h4>
             <p class="text-muted mb-0">Tạo và quản lý thông báo cho học viên</p>
         </div>
         <div class="d-flex gap-2">
@@ -24,7 +26,8 @@
             <div class="row g-3">
                 <div class="col-md-4">
                     <label class="form-label">Tìm kiếm</label>
-                    <input wire:model.live="search" type="text" class="form-control" placeholder="Tìm theo tiêu đề hoặc nội dung...">
+                    <input wire:model.live="search" type="text" class="form-control"
+                        placeholder="Tìm theo tiêu đề hoặc nội dung...">
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Loại thông báo</label>
@@ -57,7 +60,7 @@
     <!-- Notifications List -->
     <div class="card">
         <div class="card-body p-0">
-            @if($notifications->count() > 0)
+            @if ($notifications->count() > 0)
                 <div class="table-responsive">
                     <table class="table table-hover mb-0">
                         <thead class="table-light">
@@ -73,8 +76,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($notifications as $notification)
-                                <tr class="{{ $notification->scheduled_at && $notification->scheduled_at->isPast() ? 'table-warning' : '' }}">
+                            @foreach ($notifications as $notification)
+                                <tr
+                                    class="{{ $notification->scheduled_at && $notification->scheduled_at->isPast() ? 'table-warning' : '' }}">
                                     <td>
                                         <div class="fw-bold">{{ $notification->title }}</div>
                                         <small class="text-muted">{{ Str::limit($notification->message, 50) }}</small>
@@ -86,14 +90,14 @@
                                                 'warning' => 'warning',
                                                 'success' => 'success',
                                                 'danger' => 'danger',
-                                                'reminder' => 'info'
+                                                'reminder' => 'info',
                                             ];
                                             $typeLabels = [
                                                 'info' => 'Thông tin',
                                                 'warning' => 'Cảnh báo',
                                                 'success' => 'Thành công',
                                                 'danger' => 'Nguy hiểm',
-                                                'reminder' => 'Nhắc nhở'
+                                                'reminder' => 'Nhắc nhở',
                                             ];
                                         @endphp
                                         <span class="badge bg-{{ $typeColors[$notification->type] }}">
@@ -101,7 +105,7 @@
                                         </span>
                                     </td>
                                     <td>
-                                        @if($notification->user)
+                                        @if ($notification->user)
                                             <div class="d-flex align-items-center">
                                                 <i class="bi bi-person-circle me-2"></i>
                                                 {{ $notification->user->name }}
@@ -111,16 +115,16 @@
                                         @endif
                                     </td>
                                     <td>
-                                        @if($notification->classroom)
+                                        @if ($notification->classroom)
                                             <span class="badge bg-secondary">{{ $notification->classroom->name }}</span>
                                         @else
                                             <span class="text-muted">-</span>
                                         @endif
                                     </td>
                                     <td>
-                                        @if($notification->scheduled_at)
+                                        @if ($notification->scheduled_at)
                                             <div>{{ $notification->scheduled_at->format('d/m/Y H:i') }}</div>
-                                            @if($notification->scheduled_at->isPast())
+                                            @if ($notification->scheduled_at->isPast())
                                                 <small class="text-warning fw-bold">Đã gửi</small>
                                             @else
                                                 <small class="text-muted">Chờ gửi</small>
@@ -130,7 +134,7 @@
                                         @endif
                                     </td>
                                     <td>
-                                        @if($notification->is_read)
+                                        @if ($notification->is_read)
                                             <span class="badge bg-success">Đã đọc</span>
                                         @else
                                             <span class="badge bg-warning">Chưa đọc</span>
@@ -142,34 +146,28 @@
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            @if(!$notification->is_read)
-                                                <button wire:click="toggleRead({{ $notification->id }})" 
-                                                        class="btn btn-sm btn-outline-success" 
-                                                        title="Đánh dấu đã đọc">
+                                            @if (!$notification->is_read)
+                                                <button wire:click="toggleRead({{ $notification->id }})"
+                                                    class="btn btn-sm btn-outline-success" title="Đánh dấu đã đọc">
                                                     <i class="bi bi-check"></i>
                                                 </button>
                                             @endif
-                                            <button wire:click="edit({{ $notification->id }})" 
-                                                    class="btn btn-sm btn-outline-primary" 
-                                                    title="Chỉnh sửa">
+                                            <button wire:click="edit({{ $notification->id }})"
+                                                class="btn btn-sm btn-outline-primary" title="Chỉnh sửa">
                                                 <i class="bi bi-pencil"></i>
                                             </button>
-                                            <button wire:click="duplicate({{ $notification->id }})" 
-                                                    class="btn btn-sm btn-outline-info" 
-                                                    title="Sao chép">
+                                            <button wire:click="duplicate({{ $notification->id }})"
+                                                class="btn btn-sm btn-outline-info" title="Sao chép">
                                                 <i class="bi bi-files"></i>
                                             </button>
-                                            @if($notification->scheduled_at && $notification->scheduled_at->isFuture())
-                                                <button wire:click="sendNow({{ $notification->id }})" 
-                                                        class="btn btn-sm btn-outline-success" 
-                                                        title="Gửi ngay">
+                                            @if ($notification->scheduled_at && $notification->scheduled_at->isFuture())
+                                                <button wire:click="sendNow({{ $notification->id }})"
+                                                    class="btn btn-sm btn-outline-success" title="Gửi ngay">
                                                     <i class="bi bi-send"></i>
                                                 </button>
                                             @endif
-                                            <button wire:click="delete({{ $notification->id }})" 
-                                                    class="btn btn-sm btn-outline-danger" 
-                                                    title="Xóa"
-                                                    onclick="return">
+                                            <button wire:click="delete({{ $notification->id }})"
+                                                class="btn btn-sm btn-outline-danger" title="Xóa" onclick="return">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </div>
@@ -180,7 +178,7 @@
                     </table>
                 </div>
                 <div class="card-footer">
-                    {{ $notifications->links() }}
+                    {{ $notifications->links('vendor.pagination.bootstrap-5') }}
                 </div>
             @else
                 <div class="text-center py-5">
@@ -196,212 +194,253 @@
     </div>
 
     <!-- Create Modal -->
-    @if($showCreateModal)
-    <div class="modal fade show" wire:ignore.self id="createModal" tabindex="-1" style="display: block; background-color: rgba(0,0,0,0.5);">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Tạo thông báo mới</h5>
-                    <button type="button" class="btn-close" wire:click="$set('showCreateModal', false)"></button>
-                </div>
-                <form wire:submit="store">
-                    <div class="modal-body">
-                        <div class="row g-3">
-                            <div class="col-12">
-                                <label class="form-label">Tiêu đề <span class="text-danger">*</span></label>
-                                <input wire:model="title" type="text" class="form-control @error('title') is-invalid @enderror" placeholder="Nhập tiêu đề thông báo">
-                                @error('title') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                            </div>
-                            
-                            <div class="col-12">
-                                <label class="form-label">Nội dung <span class="text-danger">*</span></label>
-                                <textarea wire:model="message" rows="4" class="form-control @error('message') is-invalid @enderror" placeholder="Nhập nội dung thông báo"></textarea>
-                                @error('message') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                            </div>
-                            
-                            <div class="col-md-6">
-                                <label class="form-label">Loại thông báo <span class="text-danger">*</span></label>
-                                <select wire:model="type" class="form-select @error('type') is-invalid @enderror">
-                                    <option value="info">Thông tin</option>
-                                    <option value="warning">Cảnh báo</option>
-                                    <option value="success">Thành công</option>
-                                    <option value="danger">Nguy hiểm</option>
-                                    <option value="reminder">Nhắc nhở</option>
-                                </select>
-                                @error('type') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                            </div>
-                            
-                            <div class="col-md-6">
-                                <div class="form-check mt-4">
-                                    <input wire:model="is_global" class="form-check-input" type="checkbox" id="isGlobal">
-                                    <label class="form-check-label" for="isGlobal">
-                                        Gửi cho tất cả học viên
-                                    </label>
+    @if ($showCreateModal)
+        <div class="modal fade show" wire:ignore.self id="createModal" tabindex="-1"
+            style="display: block; background-color: rgba(0,0,0,0.5);">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Tạo thông báo mới</h5>
+                        <button type="button" class="btn-close"
+                            wire:click="$set('showCreateModal', false)"></button>
+                    </div>
+                    <form wire:submit="store">
+                        <div class="modal-body">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label">Tiêu đề <span class="text-danger">*</span></label>
+                                    <input wire:model="title" type="text"
+                                        class="form-control @error('title') is-invalid @enderror"
+                                        placeholder="Nhập tiêu đề thông báo">
+                                    @error('title')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label">Nội dung <span class="text-danger">*</span></label>
+                                    <textarea wire:model="message" rows="4" class="form-control @error('message') is-invalid @enderror"
+                                        placeholder="Nhập nội dung thông báo"></textarea>
+                                    @error('message')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Loại thông báo <span
+                                            class="text-danger">*</span></label>
+                                    <select wire:model="type" class="form-select @error('type') is-invalid @enderror">
+                                        <option value="info">Thông tin</option>
+                                        <option value="warning">Cảnh báo</option>
+                                        <option value="success">Thành công</option>
+                                        <option value="danger">Nguy hiểm</option>
+                                        <option value="reminder">Nhắc nhở</option>
+                                    </select>
+                                    @error('type')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-check mt-4">
+                                        <input wire:model="is_global" class="form-check-input" type="checkbox"
+                                            id="isGlobal">
+                                        <label class="form-check-label" for="isGlobal">
+                                            Gửi cho tất cả học viên
+                                        </label>
+                                    </div>
+                                </div>
+
+                                @if (!$is_global)
+                                    <div class="col-md-6">
+                                        <label class="form-label">Học viên</label>
+                                        <select wire:model="user_id" class="form-select">
+                                            <option value="">Chọn học viên</option>
+                                            @foreach ($users as $user)
+                                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @endif
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Lớp học</label>
+                                    <select wire:model="class_id" class="form-select">
+                                        <option value="">Chọn lớp học</option>
+                                        @foreach ($classrooms as $classroom)
+                                            <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Lịch gửi</label>
+                                    <input wire:model="scheduled_at" type="datetime-local"
+                                        class="form-control @error('scheduled_at') is-invalid @enderror">
+                                    @error('scheduled_at')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <small class="text-muted">Để trống để gửi ngay</small>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Hết hạn</label>
+                                    <input wire:model="expires_at" type="datetime-local"
+                                        class="form-control @error('expires_at') is-invalid @enderror">
+                                    @error('expires_at')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <small class="text-muted">Để trống để không hết hạn</small>
                                 </div>
                             </div>
-                            
-                            @if(!$is_global)
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                wire:click="$set('showCreateModal', false)">Hủy</button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle me-2"></i>Tạo thông báo
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <!-- Edit Modal -->
+    @if ($showEditModal)
+        <div class="modal fade show" wire:ignore.self id="editModal" tabindex="-1"
+            style="display: block; background-color: rgba(0,0,0,0.5);">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Chỉnh sửa thông báo</h5>
+                        <button type="button" class="btn-close" wire:click="$set('showEditModal', false)"></button>
+                    </div>
+                    <form wire:submit="update">
+                        <div class="modal-body">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label">Tiêu đề <span class="text-danger">*</span></label>
+                                    <input wire:model="title" type="text"
+                                        class="form-control @error('title') is-invalid @enderror"
+                                        placeholder="Nhập tiêu đề thông báo">
+                                    @error('title')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label">Nội dung <span class="text-danger">*</span></label>
+                                    <textarea wire:model="message" rows="4" class="form-control @error('message') is-invalid @enderror"
+                                        placeholder="Nhập nội dung thông báo"></textarea>
+                                    @error('message')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Loại thông báo <span
+                                            class="text-danger">*</span></label>
+                                    <select wire:model="type" class="form-select @error('type') is-invalid @enderror">
+                                        <option value="info">Thông tin</option>
+                                        <option value="warning">Cảnh báo</option>
+                                        <option value="success">Thành công</option>
+                                        <option value="danger">Nguy hiểm</option>
+                                        <option value="reminder">Nhắc nhở</option>
+                                    </select>
+                                    @error('type')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
                                 <div class="col-md-6">
                                     <label class="form-label">Học viên</label>
                                     <select wire:model="user_id" class="form-select">
                                         <option value="">Chọn học viên</option>
-                                        @foreach($users as $user)
+                                        @foreach ($users as $user)
                                             <option value="{{ $user->id }}">{{ $user->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                            @endif
-                            
-                            <div class="col-md-6">
-                                <label class="form-label">Lớp học</label>
-                                <select wire:model="class_id" class="form-select">
-                                    <option value="">Chọn lớp học</option>
-                                    @foreach($classrooms as $classroom)
-                                        <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            
-                            <div class="col-md-6">
-                                <label class="form-label">Lịch gửi</label>
-                                <input wire:model="scheduled_at" type="datetime-local" class="form-control @error('scheduled_at') is-invalid @enderror">
-                                @error('scheduled_at') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                                <small class="text-muted">Để trống để gửi ngay</small>
-                            </div>
-                            
-                            <div class="col-md-6">
-                                <label class="form-label">Hết hạn</label>
-                                <input wire:model="expires_at" type="datetime-local" class="form-control @error('expires_at') is-invalid @enderror">
-                                @error('expires_at') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                                <small class="text-muted">Để trống để không hết hạn</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" wire:click="$set('showCreateModal', false)">Hủy</button>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-check-circle me-2"></i>Tạo thông báo
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    @endif
 
-    <!-- Edit Modal -->
-    @if($showEditModal)
-    <div class="modal fade show" wire:ignore.self id="editModal" tabindex="-1" style="display: block; background-color: rgba(0,0,0,0.5);">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Chỉnh sửa thông báo</h5>
-                    <button type="button" class="btn-close" wire:click="$set('showEditModal', false)"></button>
-                </div>
-                <form wire:submit="update">
-                    <div class="modal-body">
-                        <div class="row g-3">
-                            <div class="col-12">
-                                <label class="form-label">Tiêu đề <span class="text-danger">*</span></label>
-                                <input wire:model="title" type="text" class="form-control @error('title') is-invalid @enderror" placeholder="Nhập tiêu đề thông báo">
-                                @error('title') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                            </div>
-                            
-                            <div class="col-12">
-                                <label class="form-label">Nội dung <span class="text-danger">*</span></label>
-                                <textarea wire:model="message" rows="4" class="form-control @error('message') is-invalid @enderror" placeholder="Nhập nội dung thông báo"></textarea>
-                                @error('message') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                            </div>
-                            
-                            <div class="col-md-6">
-                                <label class="form-label">Loại thông báo <span class="text-danger">*</span></label>
-                                <select wire:model="type" class="form-select @error('type') is-invalid @enderror">
-                                    <option value="info">Thông tin</option>
-                                    <option value="warning">Cảnh báo</option>
-                                    <option value="success">Thành công</option>
-                                    <option value="danger">Nguy hiểm</option>
-                                    <option value="reminder">Nhắc nhở</option>
-                                </select>
-                                @error('type') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                            </div>
-                            
-                            <div class="col-md-6">
-                                <label class="form-label">Học viên</label>
-                                <select wire:model="user_id" class="form-select">
-                                    <option value="">Chọn học viên</option>
-                                    @foreach($users as $user)
-                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            
-                            <div class="col-md-6">
-                                <label class="form-label">Lớp học</label>
-                                <select wire:model="class_id" class="form-select">
-                                    <option value="">Chọn lớp học</option>
-                                    @foreach($classrooms as $classroom)
-                                        <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            
-                            <div class="col-md-6">
-                                <label class="form-label">Lịch gửi</label>
-                                <input wire:model="scheduled_at" type="datetime-local" class="form-control @error('scheduled_at') is-invalid @enderror">
-                                @error('scheduled_at') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                                <small class="text-muted">Để trống để gửi ngay</small>
-                            </div>
-                            
-                            <div class="col-md-6">
-                                <label class="form-label">Hết hạn</label>
-                                <input wire:model="expires_at" type="datetime-local" class="form-control @error('expires_at') is-invalid @enderror">
-                                @error('expires_at') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                                <small class="text-muted">Để trống để không hết hạn</small>
+                                <div class="col-md-6">
+                                    <label class="form-label">Lớp học</label>
+                                    <select wire:model="class_id" class="form-select">
+                                        <option value="">Chọn lớp học</option>
+                                        @foreach ($classrooms as $classroom)
+                                            <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Lịch gửi</label>
+                                    <input wire:model="scheduled_at" type="datetime-local"
+                                        class="form-control @error('scheduled_at') is-invalid @enderror">
+                                    @error('scheduled_at')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <small class="text-muted">Để trống để gửi ngay</small>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Hết hạn</label>
+                                    <input wire:model="expires_at" type="datetime-local"
+                                        class="form-control @error('expires_at') is-invalid @enderror">
+                                    @error('expires_at')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <small class="text-muted">Để trống để không hết hạn</small>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" wire:click="$set('showEditModal', false)">Hủy</button>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-check-circle me-2"></i>Cập nhật
-                        </button>
-                    </div>
-                </form>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                wire:click="$set('showEditModal', false)">Hủy</button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle me-2"></i>Cập nhật
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
     @endif
 
     <!-- Delete Modal -->
-    @if($showDeleteModal)
-    <div class="modal fade show" wire:ignore.self id="deleteModal" tabindex="-1" style="display: block; background-color: rgba(0,0,0,0.5);">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Xác nhận xóa</h5>
-                    <button type="button" class="btn-close" wire:click="$set('showDeleteModal', false)"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Bạn có chắc chắn muốn xóa thông báo này không?</p>
-                    @if($selectedNotification)
-                        <div class="alert alert-warning">
-                            <strong>{{ $selectedNotification->title }}</strong>
-                        </div>
-                    @endif
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" wire:click="$set('showDeleteModal', false)">Hủy</button>
-                    <button type="button" class="btn btn-danger" wire:click="confirmDelete">
-                        <i class="bi bi-trash me-2"></i>Xóa
-                    </button>
+    @if ($showDeleteModal)
+        <div class="modal fade show" wire:ignore.self id="deleteModal" tabindex="-1"
+            style="display: block; background-color: rgba(0,0,0,0.5);">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Xác nhận xóa</h5>
+                        <button type="button" class="btn-close"
+                            wire:click="$set('showDeleteModal', false)"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Bạn có chắc chắn muốn xóa thông báo này không?</p>
+                        @if ($selectedNotification)
+                            <div class="alert alert-warning">
+                                <strong>{{ $selectedNotification->title }}</strong>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                            wire:click="$set('showDeleteModal', false)">Hủy</button>
+                        <button type="button" class="btn btn-danger" wire:click="confirmDelete">
+                            <i class="bi bi-trash me-2"></i>Xóa
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     @endif
 
     <!-- Flash Messages -->
-    @if(session()->has('message'))
+    @if (session()->has('message'))
         <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050;">
             <div class="toast show" role="alert">
                 <div class="toast-header">
@@ -418,23 +457,23 @@
 
     <style>
         .modal.show {
-            background-color: rgba(0,0,0,0.5);
+            background-color: rgba(0, 0, 0, 0.5);
         }
-        
+
         /* Màu sắc cho trạng thái gửi */
         .table-warning {
             background-color: #fff3cd !important;
         }
-        
+
         .table-warning:hover {
             background-color: #ffeaa7 !important;
         }
-        
+
         /* Màu trắng cho chưa gửi */
         tr:not(.table-warning) {
             background-color: #ffffff;
         }
-        
+
         tr:not(.table-warning):hover {
             background-color: #f8f9fa;
         }
@@ -447,7 +486,7 @@
                 const modal = new bootstrap.Modal(document.getElementById('createModal'));
                 modal.show();
             });
-            
+
             Livewire.on('hideCreateModal', () => {
                 const modal = bootstrap.Modal.getInstance(document.getElementById('createModal'));
                 if (modal) {
