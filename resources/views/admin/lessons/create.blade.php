@@ -20,36 +20,46 @@
                         <div class="mb-4">
                             <h5 class="text-success mb-3">Thông tin bài học</h5>
                             <div class="mb-3">
-                                <label for="number" class="form-label">Số bài <span class="text-danger">*</span></label>
-                                <input wire:model="number" type="text" class="form-control @error('number') is-invalid @enderror" id="number" placeholder="Ví dụ: 1, 2, 3...">
+                                <label for="number" class="form-label">Số bài <span
+                                        class="text-danger">*</span></label>
+                                <input wire:model="number" type="text"
+                                    class="form-control @error('number') is-invalid @enderror" id="number"
+                                    placeholder="Ví dụ: 1, 2, 3...">
                                 @error('number')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="title" class="form-label">Tiêu đề <span class="text-danger">*</span></label>
-                                <input wire:model="title" type="text" class="form-control @error('title') is-invalid @enderror" id="title" placeholder="Nhập tiêu đề bài học">
+                                <label for="title" class="form-label">Tiêu đề <span
+                                        class="text-danger">*</span></label>
+                                <input wire:model="title" type="text"
+                                    class="form-control @error('title') is-invalid @enderror" id="title"
+                                    placeholder="Nhập tiêu đề bài học">
                                 @error('title')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="description" class="form-label">Mô tả</label>
-                                <textarea wire:model="description" class="form-control @error('description') is-invalid @enderror" id="description" rows="3" placeholder="Nhập mô tả về bài học..."></textarea>
+                                <textarea wire:model="description" class="form-control @error('description') is-invalid @enderror" id="description"
+                                    rows="3" placeholder="Nhập mô tả về bài học..."></textarea>
                                 @error('description')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="video" class="form-label">Link video (YouTube, Google Drive...)</label>
-                                <input wire:model="video" type="text" class="form-control @error('video') is-invalid @enderror" id="video" placeholder="Dán link video bài học">
+                                <input wire:model="video" type="text"
+                                    class="form-control @error('video') is-invalid @enderror" id="video"
+                                    placeholder="Dán link video bài học">
                                 @error('video')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="attachment" class="form-label">Tài liệu/Slide (PDF, Word...)</label>
-                                <input wire:model="attachment" type="file" class="form-control @error('attachment') is-invalid @enderror" id="attachment">
+                                <input wire:model="attachment" type="file"
+                                    class="form-control @error('attachment') is-invalid @enderror" id="attachment">
                                 @error('attachment')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -57,18 +67,20 @@
                         </div>
                         <!-- Submit Buttons -->
                         <div class="d-flex justify-content-end gap-2">
-                            <button type="button" class="btn btn-light" wire:click="$emitUp('closeCreate')">Hủy</button>
+                            <a href="{{ route('lessons.index') }}" wire:navigate class="btn btn-light">Hủy</a>
                             <button type="submit" class="btn btn-success">
                                 <i class="bi bi-folder-plus me-2"></i>Lưu bài học
                             </button>
                         </div>
                     </form>
                 </div>
-                <div class="col-md-5 d-flex flex-column justify-content-center align-items-center bg-light border-start rounded-end p-4">
+                <div
+                    class="col-md-5 d-flex flex-column justify-content-center align-items-center bg-light border-start rounded-end p-4">
                     <img src="/educore-logo.png" alt="Thêm bài học mới" class="mb-3" style="max-width: 90px;">
                     <div class="text-center">
                         <h6 class="text-success fw-bold mb-2">Thêm bài học mới</h6>
-                        <p class="text-muted small mb-0">Lưu trữ bài học, tài liệu, video, slide để học viên có thể tra cứu lại bất kỳ lúc nào.</p>
+                        <p class="text-muted small mb-0">Lưu trữ bài học, tài liệu, video, slide để học viên có thể tra
+                            cứu lại bất kỳ lúc nào.</p>
                     </div>
                 </div>
             </div>
