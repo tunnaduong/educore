@@ -15,3 +15,7 @@ window.Echo = new Echo({
     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
     encrypted: true,
 });
+
+if (window.Livewire) {
+    window.Livewire.start();
+}

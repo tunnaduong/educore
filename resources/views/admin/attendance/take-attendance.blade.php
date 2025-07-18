@@ -140,6 +140,7 @@
                                         <td>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox"
+                                                    @click="$dispatch('hide-loading')"
                                                     wire:click="toggleAttendance({{ $data['student_record']->id }})"
                                                     {{ $data['present'] ? 'checked' : '' }}
                                                     id="attendance_{{ $data['student_record']->id }}">
