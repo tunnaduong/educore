@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\Student;
 use App\Models\QuizResult;
+use App\Models\Lesson;
 
 class User extends Authenticatable
 {
@@ -69,6 +70,13 @@ class User extends Authenticatable
     public function quizResults()
     {
         return $this->hasManyThrough(QuizResult::class, Student::class, 'user_id', 'student_id');
+    }
+
+    public function lessons()
+    {
+        return $this->belongsToMany(Lesson::class, 'lesson_user', 'user_id', 'lesson_id')
+            ->withPivot('completed_at')
+            ->withTimestamps();
     }
 
     /**

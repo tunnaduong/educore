@@ -97,6 +97,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     // Notifications routes
     Route::get('/admin/notifications', AdminNotificationsIndex::class)->name('notifications.index');
+
+    // Reports routes
+    Route::get('/admin/reports', \App\Livewire\Admin\Reports\Index::class)->name('reports.index');
+    Route::get('/admin/reports/student/{student}', \App\Livewire\Admin\Reports\StudentReport::class)->name('reports.student');
+    Route::get('/admin/reports/class/{classroom}', \App\Livewire\Admin\Reports\ClassReport::class)->name('reports.class');
 });
 
 // Teacher routes

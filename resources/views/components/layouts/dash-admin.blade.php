@@ -88,7 +88,7 @@
                         </a>
                     </li>
                     <li class="nav-item mb-2">
-                        <a wire:navigate href="#"
+                        <a wire:navigate href="{{ route('reports.index') }}"
                             class="text-white text-decoration-none d-block {{ $active === 'reports' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
                             <i class="bi bi-bar-chart me-2"></i> Báo cáo học tập
                         </a>
@@ -113,12 +113,35 @@
         </div>
     </div>
     <!-- Loading overlay -->
-    <div wire:loading.delay.long class="position-fixed top-0 start-0 w-100 h-100"
-        style="z-index: 2000; background: rgba(0,0,0,0.3);">
+    <div id="global-loading-overlay" wire:loading.delay.long x-data
+        x-on:hide-loading.window="document.getElementById('global-loading-overlay')?.classList.add('d-none')"
+        x-on:show-loading.window="document.getElementById('global-loading-overlay')?.classList.remove('d-none')"
+        class="position-fixed top-0 start-0 w-100 h-100" style="z-index: 2000; background: rgba(0,0,0,0.3);">
         <div class="d-flex justify-content-center align-items-center h-100">
             <div class="spinner-border text-primary" style="width: 4rem; height: 4rem;" role="status">
                 <span class="visually-hidden">Đang tải...</span>
             </div>
         </div>
     </div>
+
 </div>
+
+{{-- @push('scripts')
+    <script>
+        function listenLoading() {
+            if (window.Livewire) {
+                Livewire.on('hideLoading', function() {
+                    document.getElementById('global-loading-overlay')?.classList.add('d-none');
+                });
+                Livewire.on('showLoading', function() {
+                    document.getElementById('global-loading-overlay')?.classList.remove('d-none');
+                });
+            }
+        }
+        if (window.Livewire) {
+            listenLoading();
+        } else {
+            document.addEventListener('livewire:load', listenLoading);
+        }
+    </script>
+@endpush --}}

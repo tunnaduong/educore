@@ -317,10 +317,10 @@
                             @foreach ($topStudents as $index => $studentData)
                                 <div class="d-flex align-items-center mb-3">
                                     <div class="me-3">
-                                        @if ($index < 4)
-                                            <span class="badge bg-warning">{{ $index }}</span>
+                                        @if ($loop->index + 1 < 4)
+                                            <span class="badge bg-warning">{{ $loop->index + 1 }}</span>
                                         @else
-                                            <span class="badge bg-secondary">{{ $index }}</span>
+                                            <span class="badge bg-secondary">{{ $loop->index + 1 }}</span>
                                         @endif
                                     </div>
                                     <div class="flex-grow-1">
