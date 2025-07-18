@@ -128,7 +128,7 @@ class AttendanceHistory extends Component
 
     public function getMonthName($month)
     {
-        return Carbon::create()->month((int) $month)->format('F');
+        return 'Tháng ' . (int) $month;
     }
 
     public function getDayName($date)

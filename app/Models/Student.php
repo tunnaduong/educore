@@ -30,11 +30,14 @@ class Student extends Model
 
     public function classrooms(): BelongsToMany
     {
-        return $this->belongsToMany(Classroom::class, 'class_user', 'user_id', 'class_id')
-            ->wherePivot('role', 'student')
-            ->using(function ($query) {
-                $query->where('user_id', $this->user_id);
-            });
+        return $this->belongsToMany(
+            Classroom::class,
+            'class_user',
+            'user_id',    // class_user.user_id
+            'class_id',   // class_user.class_id
+            'user_id',    // students.user_id
+            'id'          // classrooms.id
+        )->wherePivot('role', 'student');
     }
 
     public function getClassroomsAttribute()

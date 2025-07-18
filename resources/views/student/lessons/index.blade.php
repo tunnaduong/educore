@@ -56,6 +56,7 @@
                                     <th>Lớp học</th>
                                     <th>Mô tả</th>
                                     <th>Tệp/Video</th>
+                                    <th>Trạng thái</th>
                                     <th>Thao tác</th>
                                 </tr>
                             </thead>
@@ -63,7 +64,8 @@
                                 @foreach ($lessons as $lesson)
                                     <tr>
                                         <td>
-                                            <div class="fw-medium">{{ $lesson->title }}</div>
+                                            <span class="badge bg-primary">{{ $lesson->number }}</span>
+                                            <span class="fw-medium">{{ $lesson->title }}</span>
                                         </td>
                                         <td>
                                             <span class="badge bg-info">{{ $lesson->classroom->name ?? 'N/A' }}</span>
@@ -72,18 +74,28 @@
                                             <small class="text-muted">{{ Str::limit($lesson->description, 50) }}</small>
                                         </td>
                                         <td>
-                                            @if($lesson->attachment)
-                                                <a href="{{ asset('storage/' . $lesson->attachment) }}" target="_blank" class="badge bg-success">Tệp</a>
+                                            @if ($lesson->attachment)
+                                                <a href="{{ asset('storage/' . $lesson->attachment) }}" target="_blank"
+                                                    class="badge bg-success">Tệp</a>
                                             @endif
-                                            @if($lesson->video)
-                                                <a href="{{ asset('storage/' . $lesson->video) }}" target="_blank" class="badge bg-warning text-dark">Video</a>
+                                            @if ($lesson->video)
+                                                <a href="{{ $lesson->video }}" target="_blank"
+                                                    class="badge bg-warning text-dark">Video</a>
                                             @endif
-                                            @if(!$lesson->attachment && !$lesson->video)
+                                            @if (!$lesson->attachment && !$lesson->video)
                                                 <span class="text-muted">-</span>
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{ route('student.lessons.show', $lesson->id) }}" wire:navigate class="btn btn-sm btn-outline-primary">
+                                            @if (!empty($completedLessons[$lesson->id]) && $completedLessons[$lesson->id])
+                                                <span class="badge bg-success">Đã hoàn thành</span>
+                                            @else
+                                                <span class="badge bg-danger">Chưa xem</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('student.lessons.show', $lesson->id) }}" wire:navigate
+                                                class="btn btn-sm btn-outline-primary">
                                                 <i class="bi bi-eye"></i> Xem chi tiết
                                             </a>
                                         </td>

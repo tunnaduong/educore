@@ -15,7 +15,7 @@
                         <div class="mb-4">
                             <h5 class="text-success mb-3">Thông tin bài học</h5>
                             <div class="mb-3">
-                                <label for="number" class="form-label">Số bài <span class="text-danger">*</span></label>
+                                <label for="number" class="form-label">Bài số <span class="text-danger">*</span></label>
                                 <input wire:model="number" type="text" class="form-control @error('number') is-invalid @enderror" id="number" placeholder="Ví dụ: 1, 2, 3...">
                                 @error('number')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -25,6 +25,18 @@
                                 <label for="title" class="form-label">Tiêu đề <span class="text-danger">*</span></label>
                                 <input wire:model="title" type="text" class="form-control @error('title') is-invalid @enderror" id="title" placeholder="Nhập tiêu đề bài học">
                                 @error('title')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="classroom_id" class="form-label">Lớp học <span class="text-danger">*</span></label>
+                                <select wire:model="classroom_id" class="form-select @error('classroom_id') is-invalid @enderror" id="classroom_id">
+                                    <option value="">Chọn lớp học</option>
+                                    @foreach($classrooms as $class)
+                                        <option value="{{ $class->id }}">{{ $class->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('classroom_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>

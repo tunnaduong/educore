@@ -87,6 +87,7 @@ class TakeAttendance extends Component
                 $this->attendanceData[$studentId]['reason'] = '';
             }
         }
+        $this->dispatch('hide-loading');
     }
 
     public function openReasonModal($studentId)
@@ -113,6 +114,7 @@ class TakeAttendance extends Component
 
     public function saveAttendance()
     {
+        $this->dispatch('show-loading');
         $this->validate();
 
         foreach ($this->attendanceData as $studentId => $data) {

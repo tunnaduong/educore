@@ -69,12 +69,7 @@
                             <div class="mb-3">
                                 <label class="form-label text-muted small">Lịch học</label>
                                 <div class="fw-medium">
-                                    @php
-                                        $schedule = $classroom->schedule;
-                                        $days = $schedule['days'] ?? [];
-                                        $time = $schedule['time'] ?? '';
-                                    @endphp
-                                    {{ implode(', ', $days) }} - {{ $time }}
+                                    {{ $this->formatSchedule($classroom->schedule) }}
                                 </div>
                             </div>
                         @endif
@@ -212,20 +207,26 @@
                         </h5>
                     </div>
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
+                        <div class="row gy-3">
+                            <div class="col-md-6">
                                 <a href="{{ route('classrooms.attendance', $classroom) }}" wire:navigate
                                     class="btn btn-outline-primary w-100">
                                     <i class="bi bi-calendar-check me-2"></i>Điểm danh
                                 </a>
                             </div>
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-6">
                                 <a href="{{ route('classrooms.attendance-history', $classroom) }}" wire:navigate
                                     class="btn btn-outline-info w-100">
                                     <i class="bi bi-calendar-week me-2"></i>Lịch sử điểm danh
                                 </a>
                             </div>
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-6">
+                                <a href="{{ route('classrooms.assign-students', $classroom) }}" wire:navigate
+                                    class="btn btn-outline-success w-100">
+                                    <i class="bi bi-person-plus me-2"></i>Gán học viên
+                                </a>
+                            </div>
+                            <div class="col-md-6">
                                 <a href="{{ route('classrooms.edit', $classroom) }}" wire:navigate
                                     class="btn btn-outline-warning w-100">
                                     <i class="bi bi-pencil-square me-2"></i>Chỉnh sửa
