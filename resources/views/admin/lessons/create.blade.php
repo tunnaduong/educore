@@ -11,6 +11,13 @@
             </h4>
         </div>
 
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+            </div>
+        @endif
+
         <!-- Form Card Centered with Illustration -->
         <div class="card shadow-sm p-0">
             <div class="row g-0 align-items-stretch">
@@ -20,11 +27,11 @@
                         <div class="mb-4">
                             <h5 class="text-success mb-3">Thông tin bài học</h5>
                             <div class="mb-3">
-                                <label for="number" class="form-label">Số bài <span
+                                <label for="number" class="form-label">Bài số <span
                                         class="text-danger">*</span></label>
                                 <input wire:model="number" type="text"
                                     class="form-control @error('number') is-invalid @enderror" id="number"
-                                    placeholder="Ví dụ: 1, 2, 3...">
+                                    placeholder="Ví dụ: 1, 2, 3, 1a, 2b, 3c...">
                                 @error('number')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -36,6 +43,20 @@
                                     class="form-control @error('title') is-invalid @enderror" id="title"
                                     placeholder="Nhập tiêu đề bài học">
                                 @error('title')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="classroom_id" class="form-label">Lớp học <span
+                                        class="text-danger">*</span></label>
+                                <select wire:model="classroom_id"
+                                    class="form-select @error('classroom_id') is-invalid @enderror" id="classroom_id">
+                                    <option value="">Chọn lớp học</option>
+                                    @foreach ($classrooms as $class)
+                                        <option value="{{ $class->id }}">{{ $class->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('classroom_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -52,6 +73,8 @@
                                 <input wire:model="video" type="text"
                                     class="form-control @error('video') is-invalid @enderror" id="video"
                                     placeholder="Dán link video bài học">
+                                <small class="text-danger d-block mb-2">* Hãy nhớ để chế độ chia sẻ công khai khi chèn
+                                    link từ Google Drive</small>
                                 @error('video')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

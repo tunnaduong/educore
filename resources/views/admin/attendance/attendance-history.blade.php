@@ -60,7 +60,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">Tổng buổi có mặt</h6>
+                                <h6 class="card-title mb-0">Tổng lần có mặt</h6>
                                 <h3 class="mb-0">{{ $monthlyStats['total_present'] }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -75,7 +75,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">Tổng buổi vắng</h6>
+                                <h6 class="card-title mb-0">Tổng lần vắng</h6>
                                 <h3 class="mb-0">{{ $monthlyStats['total_absent'] }}</h3>
                             </div>
                             <div class="align-self-center">

@@ -12,6 +12,8 @@ class Edit extends Component
 
     public $lesson;
     public $number, $title, $description, $video, $attachment, $oldAttachment;
+    public $classroom_id;
+    public $classrooms = [];
 
     public function mount(Lesson $lesson)
     {
@@ -21,6 +23,7 @@ class Edit extends Component
         $this->description = $lesson->description;
         $this->video = $lesson->video;
         $this->oldAttachment = $lesson->attachment;
+        $this->classroom_id = $lesson->classroom_id;
     }
 
     protected $rules = [
@@ -29,6 +32,7 @@ class Edit extends Component
         'description' => 'nullable',
         'video' => 'nullable|string',
         'attachment' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx,txt',
+        'classroom_id' => 'required|exists:classrooms,id',
     ];
 
     public function update()
@@ -41,11 +45,14 @@ class Edit extends Component
         }
         $this->lesson->update($data);
         session()->flash('success', 'Cập nhật bài học thành công!');
-        return redirect()->route('lessons.index');
+        return $this->redirect(route('lessons.index'), true);
     }
 
     public function render()
     {
-        return view('admin.lessons.edit');
+        $this->classrooms = \App\Models\Classroom::all();
+        return view('admin.lessons.edit', [
+            'classrooms' => $this->classrooms,
+        ]);
     }
 }
