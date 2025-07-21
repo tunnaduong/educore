@@ -1,4 +1,4 @@
-<x-layouts.dash-admin active="messages">
+<x-layouts.dash-admin active="chat">
     <div class="container-fluid py-2">
         <div class="row">
             <!-- Sidebar - Danh sách người dùng và lớp học -->

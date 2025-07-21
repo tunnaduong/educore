@@ -96,8 +96,6 @@
                 <a href="{{ route('notifications.index') }}" wire:navigate class="text-decoration-none text-dark">
                     <div class="mb-2 position-relative d-inline-block">
                         <i class="bi bi-bell-fill" style="font-size:2.5rem; color:#f59e42;"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                            style="font-size:0.8rem;">3</span>
                     </div>
                     <div>Thông báo & Nhắc lịch</div>
                 </a>
