@@ -129,4 +129,5 @@ Route::middleware(['auth', 'role:student'])->name('student.')->group(function ()
 
     // Notifications routes
     Route::get('/student/notifications', StudentNotificationsIndex::class)->name('notifications.index');
+    Route::get('/student/reports', \App\Livewire\Student\Reports\Index::class)->name('reports.index');
 });
