@@ -35,7 +35,7 @@
                 </a>
             </div>
             <div class="col-6 col-md-3 text-center">
-                <a href="#" wire:navigate class="text-decoration-none text-dark">
+                <a href="{{ route('student.schedules') }}" class="text-decoration-none text-dark">
                     <div class="mb-2">
                         <i class="bi bi-calendar3" style="font-size:2.5rem; color:#ffc107;"></i>
                     </div>

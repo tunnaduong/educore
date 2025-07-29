@@ -129,5 +129,8 @@ Route::middleware(['auth', 'role:student'])->name('student.')->group(function ()
 
     // Notifications routes
     Route::get('/student/notifications', StudentNotificationsIndex::class)->name('notifications.index');
+    // Kết quả học tập
     Route::get('/student/reports', \App\Livewire\Student\Reports\Index::class)->name('reports.index');
+    // Lịch học
+    Route::get('/student/schedules', \App\Livewire\Student\Schedules\Index::class)->name('schedules');
 });
