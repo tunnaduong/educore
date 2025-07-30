@@ -16,11 +16,13 @@ class Message extends Model
         'class_id',
         'message',
         'attachment',
+        'read_at',
     ];
 
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'read_at' => 'datetime',
     ];
 
     public function sender(): BelongsTo
@@ -51,8 +53,19 @@ class Message extends Model
 
     public function scopeUnread($query, $userId)
     {
-        // For now, return all messages received by the user
-        // TODO: Implement read tracking system later
-        return $query->where('receiver_id', $userId);
+        return $query->where(function ($q) use ($userId) {
+            // Tin nhắn 1-1 chưa đọc
+            $q->where('receiver_id', $userId)
+                ->whereNull('read_at');
+        })->orWhere(function ($q) use ($userId) {
+            // Tin nhắn nhóm chưa đọc (sử dụng classroom_message_reads)
+            $q->whereNotNull('class_id')
+                ->whereHas('classroom.users', function ($subQ) use ($userId) {
+                    $subQ->where('users.id', $userId);
+                })
+                ->whereDoesntHave('classroom.messageReads', function ($subQ) use ($userId) {
+                    $subQ->where('user_id', $userId);
+                });
+        });
     }
 }

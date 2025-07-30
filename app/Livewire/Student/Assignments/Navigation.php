@@ -14,9 +14,23 @@ class Navigation extends Component
         $student = Auth::user()->student;
         if (!$student) return 0;
 
-        return Assignment::whereHas('classroom.students', function ($query) use ($student) {
+        // Bài tập của lớp chưa kết thúc
+        $activeCount = Assignment::whereHas('classroom.students', function ($query) use ($student) {
             $query->where('user_id', $student->user_id);
+        })->whereHas('classroom', function ($q) {
+            $q->where('status', '!=', 'completed');
         })->count();
+
+        // Bài tập đã nộp của lớp đã kết thúc
+        $completedClassCount = Assignment::whereHas('classroom.students', function ($query) use ($student) {
+            $query->where('user_id', $student->user_id);
+        })->whereHas('classroom', function ($q) {
+            $q->where('status', 'completed');
+        })->whereHas('submissions', function ($q) use ($student) {
+            $q->where('student_id', $student->id);
+        })->count();
+
+        return $activeCount + $completedClassCount;
     }
 
     public function getUpcomingAssignmentsProperty()
@@ -26,6 +40,9 @@ class Navigation extends Component
 
         return Assignment::whereHas('classroom.students', function ($query) use ($student) {
             $query->where('user_id', $student->user_id);
+        })
+        ->whereHas('classroom', function ($q) {
+            $q->where('status', '!=', 'completed');
         })
         ->where('deadline', '>', now())
         ->whereDoesntHave('submissions', function ($query) use ($student) {
@@ -42,6 +59,9 @@ class Navigation extends Component
         return Assignment::whereHas('classroom.students', function ($query) use ($student) {
             $query->where('user_id', $student->user_id);
         })
+        ->whereHas('classroom', function ($q) {
+            $q->where('status', '!=', 'completed');
+        })
         ->where('deadline', '<', now())
         ->whereDoesntHave('submissions', function ($query) use ($student) {
             $query->where('student_id', $student->id);
@@ -54,7 +74,17 @@ class Navigation extends Component
         $student = Auth::user()->student;
         if (!$student) return 0;
 
-        return AssignmentSubmission::where('student_id', $student->id)->count();
+        // Đã nộp của lớp chưa kết thúc
+        $active = AssignmentSubmission::where('student_id', $student->id)
+            ->whereHas('assignment.classroom', function ($q) {
+                $q->where('status', '!=', 'completed');
+            })->count();
+        // Đã nộp của lớp đã kết thúc
+        $completed = AssignmentSubmission::where('student_id', $student->id)
+            ->whereHas('assignment.classroom', function ($q) {
+                $q->where('status', 'completed');
+            })->count();
+        return $active + $completed;
     }
 
     public function render()

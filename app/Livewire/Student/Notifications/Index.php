@@ -17,9 +17,10 @@ class Index extends Component
 
     public function markAsRead($id)
     {
-        $notification = Notification::where('user_id', auth()->id())
-            ->orWhereNull('user_id')
-            ->findOrFail($id);
+        $notification = Notification::where(function ($query) {
+            $query->where('user_id', auth()->id())
+                ->orWhereNull('user_id');
+        })->findOrFail($id);
 
         $notification->markAsRead();
         session()->flash('message', 'Đã đánh dấu thông báo là đã đọc!');

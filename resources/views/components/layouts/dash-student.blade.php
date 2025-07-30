@@ -11,23 +11,25 @@
                 <span class="fs-4 fw-bold text-warning">Core</span>
             </div>
         </a>
-        <div class="dropdown">
-            <i class="bi bi-bell fs-5 me-3"></i>
-            <a href="#" class="fw-bold text-white text-decoration-none dropdown-toggle" id="userDropdown"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                {{ auth()->user()->name }}
-                <i class="bi bi-person-circle fs-5 ms-2"></i>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                <li>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="dropdown-item text-danger">
-                            <i class="bi bi-box-arrow-right me-2"></i>Đăng xuất
-                        </button>
-                    </form>
-                </li>
-            </ul>
+        <div class="d-flex align-items-center">
+            <livewire:components.notification-bell />
+            <div class="dropdown ms-3">
+                <a href="#" class="fw-bold text-white text-decoration-none dropdown-toggle" id="userDropdown"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ auth()->user()->name }}
+                    <i class="bi bi-person-circle fs-5 ms-2"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                    <li>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="dropdown-item text-danger">
+                                <i class="bi bi-box-arrow-right me-2"></i>Đăng xuất
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
     <div class="d-flex flex-grow-1" style="min-height: 0;">
@@ -38,6 +40,12 @@
                     <a wire:navigate href="{{ route('dashboard') }}"
                         class="text-white text-decoration-none d-block {{ $active === 'home' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
                         <i class="bi bi-house me-2"></i> Trang chủ
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a href="{{ route('student.schedules') }}"
+                        class="text-white text-decoration-none d-block {{ $active === 'schedules' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
+                        <i class="bi bi-calendar3 me-2"></i> Lịch học
                     </a>
                 </li>
                 <li class="nav-item mb-2">
@@ -59,23 +67,21 @@
                     </a>
                 </li>
                 <li class="nav-item mb-2">
-                    <a wire:navigate href="#"
-                        class="text-white text-decoration-none d-block {{ $active === 'results' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
+                    <a wire:navigate href="{{ route('student.reports.index') }}"
+                        class="text-white text-decoration-none d-block {{ $active === 'reports' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
                         <i class="bi bi-bar-chart me-2"></i> Kết quả
                     </a>
                 </li>
                 <li class="nav-item mb-2">
-                    <a wire:navigate href="{{ route('student.schedules') }}"
-                        class="text-white text-decoration-none d-block {{ $active === 'schedules' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                        <i class="bi bi-calendar3 me-2"></i> Lịch học
+                    <a wire:navigate href="{{ route('student.notifications.index') }}"
+                        class="text-white text-decoration-none d-block {{ $active === 'notifications' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
+                        <i class="bi bi-bell me-2"></i> Thông báo
                     </a>
                 </li>
-
-
                 <li class="nav-item mb-2">
-                    <a wire:navigate href="#"
-                        class="text-white text-decoration-none d-block {{ $active === 'messages' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                        <i class="bi bi-bell me-2"></i> Tin nhắn & thông báo
+                    <a wire:navigate href="{{ route('student.chat.index') }}"
+                        class="text-white text-decoration-none d-block {{ $active === 'chat' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
+                        <i class="bi bi-chat-dots me-2"></i> Tin nhắn
                     </a>
                 </li>
             </ul>
@@ -90,4 +96,17 @@
             </footer>
         </div>
     </div>
+
+    <!-- Loading overlay -->
+    <div id="global-loading-overlay" wire:loading.delay.long x-data
+        x-on:hide-loading.window="document.getElementById('global-loading-overlay')?.classList.add('d-none')"
+        x-on:show-loading.window="document.getElementById('global-loading-overlay')?.classList.remove('d-none')"
+        class="position-fixed top-0 start-0 w-100 h-100" style="z-index: 2000; background: rgba(0,0,0,0.3);">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div class="spinner-border text-primary" style="width: 4rem; height: 4rem;" role="status">
+                <span class="visually-hidden">Đang tải...</span>
+            </div>
+        </div>
+    </div>
+
 </div>
