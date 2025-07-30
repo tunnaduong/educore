@@ -105,8 +105,14 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 });
 
 // Teacher routes
-Route::middleware(['auth', 'role:teacher'])->group(function () {
+Route::middleware(['auth', 'role:teacher'])->name('teacher.')->group(function () {
     // Other teacher routes...
+    Route::get('/teacher/quizzes', \App\Livewire\Teacher\Quizzes\Index::class)->name('quizzes.index');
+    Route::get('/teacher/quizzes/create', \App\Livewire\Teacher\Quizzes\Create::class)->name('quizzes.create');
+    Route::get('/teacher/quizzes/{quiz}', \App\Livewire\Teacher\Quizzes\Show::class)->name('quizzes.show');
+    Route::get('/teacher/quizzes/{quiz}/edit', \App\Livewire\Teacher\Quizzes\Edit::class)->name('quizzes.edit');
+    // Route kết quả quiz nếu có
+    // Route::get('/teacher/quizzes/{quiz}/results', ...)->name('quizzes.results');
 });
 
 // Shared routes for admin and teacher
