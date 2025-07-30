@@ -1,4 +1,4 @@
-<x-layouts.dash-admin active="chat">
+<x-layouts.dash-student active="chat">
     <div class="container-fluid py-2">
         <div class="row">
             <!-- Sidebar - Danh sách người dùng và lớp học -->
@@ -25,9 +25,9 @@
                         <!-- Tabs -->
                         <ul class="nav nav-tabs nav-fill" id="chatTabs" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link @if ($activeTab === 'users') active @endif"
-                                    wire:click="setActiveTab('users')" id="users-tab" type="button" role="tab">
-                                    <i class="bi bi-people-fill me-1"></i>Người dùng
+                                <button class="nav-link @if ($activeTab === 'teachers') active @endif"
+                                    wire:click="setActiveTab('teachers')" id="teachers-tab" type="button" role="tab">
+                                    <i class="bi bi-person-workspace me-1"></i>Giảng viên
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
@@ -40,33 +40,33 @@
 
                         <!-- Tab content -->
                         <div class="tab-content" id="chatTabsContent">
-                            <!-- Users tab -->
-                            <div class="tab-pane fade @if ($activeTab === 'users') show active @endif"
-                                id="users" role="tabpanel">
+                            <!-- Teachers tab -->
+                            <div class="tab-pane fade @if ($activeTab === 'teachers') show active @endif"
+                                id="teachers" role="tabpanel">
                                 <div class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
-                                    @forelse($users as $user)
-                                        <button wire:click="selectUser({{ $user->id }})"
-                                            class="list-group-item list-group-item-action d-flex align-items-center {{ $selectedUser && $selectedUser->id === $user->id ? 'active' : '' }}">
+                                    @forelse($teachers as $teacher)
+                                        <button wire:click="selectTeacher({{ $teacher->id }})"
+                                            class="list-group-item list-group-item-action d-flex align-items-center {{ $selectedTeacher && $selectedTeacher->id === $teacher->id ? 'active' : '' }}">
                                             <div class="flex-shrink-0">
                                                 <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center"
                                                     style="width: 40px; height: 40px;">
                                                     <span
-                                                        class="text-white fw-bold">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                                                        class="text-white fw-bold">{{ strtoupper(substr($teacher->name, 0, 1)) }}</span>
                                                 </div>
                                             </div>
                                             <div class="flex-grow-1 ms-3">
-                                                <h6 class="mb-0">{{ $user->name }}</h6>
-                                                <small>{{ $user->email }}</small>
+                                                <h6 class="mb-0">{{ $teacher->name }}</h6>
+                                                <small>{{ $teacher->email }}</small>
                                             </div>
-                                            @if ($user->unread_messages_count > 0)
+                                            @if ($teacher->unread_messages_count > 0)
                                                 <span
-                                                    class="badge bg-danger rounded-pill">{{ $user->unread_messages_count }}</span>
+                                                    class="badge bg-danger rounded-pill">{{ $teacher->unread_messages_count }}</span>
                                             @endif
                                         </button>
                                     @empty
                                         <div class="list-group-item text-center text-muted">
-                                            <i class="bi bi-people-fill" style="font-size: 2rem; color: #dee2e6;"></i>
-                                            <p class="mt-2">Không có người dùng nào</p>
+                                            <i class="bi bi-person-workspace" style="font-size: 2rem; color: #dee2e6;"></i>
+                                            <p class="mt-2">Không có giảng viên nào</p>
                                         </div>
                                     @endforelse
                                 </div>
@@ -93,10 +93,12 @@
                                             </div>
                                             <div class="flex-grow-1 ms-3">
                                                 <h6 class="mb-0">{{ $class->name }}</h6>
+                                                <small class="text-muted">{{ $class->users->count() }} thành viên</small>
                                             </div>
-                                            <span class="badge bg-danger rounded-pill ms-auto" style="min-width: 28px;">
-                                                {{ $class->unread_messages_count ?? 0 }}
-                                            </span>
+                                            @if ($class->unread_messages_count > 0)
+                                                <span
+                                                    class="badge bg-danger rounded-pill">{{ $class->unread_messages_count }}</span>
+                                            @endif
                                         </button>
                                     @empty
                                         <div class="list-group-item text-center text-muted">
@@ -115,19 +117,19 @@
             <!-- Main chat area -->
             <div class="col-md-7 col-lg-8">
                 <div class="card shadow-sm h-100">
-                    @if ($selectedUser || $selectedClass)
+                    @if ($selectedTeacher || $selectedClass)
                         <!-- Chat header -->
                         <div class="card-header bg-light d-flex align-items-center justify-content-between">
                             <div class="d-flex align-items-center">
-                                @if ($selectedUser)
+                                @if ($selectedTeacher)
                                     <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center me-3"
                                         style="width: 40px; height: 40px;">
                                         <span
-                                            class="text-white fw-bold">{{ strtoupper(substr($selectedUser->name, 0, 1)) }}</span>
+                                            class="text-white fw-bold">{{ strtoupper(substr($selectedTeacher->name, 0, 1)) }}</span>
                                     </div>
                                     <div>
-                                        <h6 class="mb-0">{{ $selectedUser->name }}</h6>
-                                        <small class="text-muted">{{ $selectedUser->email }}</small>
+                                        <h6 class="mb-0">{{ $selectedTeacher->name }}</h6>
+                                        <small class="text-muted">{{ $selectedTeacher->email }}</small>
                                     </div>
                                 @elseif($selectedClass)
                                     <div class="rounded-circle bg-success d-flex align-items-center justify-content-center me-3"
@@ -136,7 +138,7 @@
                                     </div>
                                     <div>
                                         <h6 class="mb-0">{{ $selectedClass->name }}</h6>
-                                        <small class="text-muted">Lớp học</small>
+                                        <small class="text-muted">Lớp học - {{ $selectedClass->users->count() }} thành viên</small>
                                     </div>
                                 @endif
                             </div>
@@ -245,7 +247,7 @@
                             <div class="text-center">
                                 <i class="bi bi-chat-dots-fill" style="font-size: 4rem; color: #0dcaf0;"></i>
                                 <h4 class="mt-3">Chào mừng đến với Chat & Tương tác</h4>
-                                <p class="text-muted">Chọn một người dùng hoặc lớp học để bắt đầu cuộc trò chuyện</p>
+                                <p class="text-muted">Chọn một giảng viên hoặc lớp học để bắt đầu cuộc trò chuyện</p>
                             </div>
                         </div>
                     @endif
@@ -309,8 +311,6 @@
                 Notification.requestPermission();
             }
 
-            // Không cần auto refresh nữa vì đã dùng Pusher realtime
-
             // Real-time typing indicator
             let typingTimer;
             const messageInput = document.querySelector('input[wire\\:model="messageText"]');
@@ -357,4 +357,4 @@
         </script>
     @endpush
 
-</x-layouts.dash-admin>
+</x-layouts.dash-student>

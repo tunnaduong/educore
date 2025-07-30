@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 class Review extends Component
 {
     public Quiz $quiz;
-    public QuizResult $result;
+    public $result = null;
     public $selectedQuestion = 0;
     public $quizId;
 
@@ -35,13 +35,7 @@ class Review extends Component
         $this->result = QuizResult::with(['student'])->where('quiz_id', $this->quizId)
             ->where('student_id', $user->studentProfile->id)
             ->first();
-
-        // Kiểm tra xem có kết quả không
-        if (!$this->result) {
-            abort(404, 'Không tìm thấy kết quả bài kiểm tra này.');
-        }
-
-
+        // Nếu không có kết quả thì để null, không abort
     }
 
     public function selectQuestion($index)
@@ -51,6 +45,9 @@ class Review extends Component
 
     public function getQuestionStatus($questionIndex)
     {
+        if (!$this->result) {
+            return 'unknown';
+        }
         $question = $this->quiz->questions[$questionIndex];
         $answer = $this->result->answers[$questionIndex] ?? null;
         
@@ -70,6 +67,9 @@ class Review extends Component
 
     public function getQuestionStatusText($questionIndex)
     {
+        if (!$this->result) {
+            return 'Không xác định';
+        }
         $status = $this->getQuestionStatus($questionIndex);
         
         switch ($status) {
@@ -86,6 +86,9 @@ class Review extends Component
 
     public function getQuestionStatusClass($questionIndex)
     {
+        if (!$this->result) {
+            return 'warning';
+        }
         $status = $this->getQuestionStatus($questionIndex);
         
         switch ($status) {
@@ -102,6 +105,10 @@ class Review extends Component
 
     public function render()
     {
-        return view('student.quiz.review');
+        return view('student.quiz.review', [
+            'quiz' => $this->quiz,
+            'result' => $this->result,
+            'selectedQuestion' => $this->selectedQuestion,
+        ]);
     }
 }

@@ -1,5 +1,9 @@
 <x-layouts.dash-admin active="submissions">
     <div class="container-fluid">
+        <a href="{{ route('grading.list') }}" wire:navigate
+            class="text-decoration-none text-secondary d-inline-block mb-3">
+            <i class="bi bi-arrow-left me-2"></i>Quay lại danh sách
+        </a>
         <div class="row mb-4">
             <div class="col-lg-8">
                 <div class="card shadow-sm mb-3">

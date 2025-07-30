@@ -63,15 +63,34 @@ class Index extends Component
                 }
             })
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->get();
 
         // Lấy kết quả quiz của user
         $quizResults = $user->quizResults->keyBy('quiz_id');
 
+        // Lọc quiz dựa trên trạng thái lớp học
+        $filteredQuizzes = $quizzes->filter(function ($quiz) use ($quizResults) {
+            // Nếu lớp đã kết thúc, chỉ hiển thị bài đã làm
+            if ($quiz->classroom && $quiz->classroom->status === 'completed') {
+                return $quizResults->has($quiz->id);
+            }
+            // Nếu lớp chưa kết thúc, hiển thị tất cả bài kiểm tra
+            return true;
+        });
+
+        // Phân trang thủ công
+        $perPage = 10;
+        $currentPage = request()->get('page', 1);
+        $offset = ($currentPage - 1) * $perPage;
+        $paginatedQuizzes = $filteredQuizzes->slice($offset, $perPage);
+
         return view('student.quiz.index', [
-            'quizzes' => $quizzes,
+            'quizzes' => $paginatedQuizzes,
             'classrooms' => $classrooms,
             'quizResults' => $quizResults,
+            'totalQuizzes' => $filteredQuizzes->count(),
+            'perPage' => $perPage,
+            'currentPage' => $currentPage,
         ]);
     }
 }

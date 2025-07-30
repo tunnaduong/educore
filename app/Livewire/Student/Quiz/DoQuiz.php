@@ -18,6 +18,7 @@ class DoQuiz extends Component
     public $timeRemaining;
     public $isFinished = false;
     public $result = null;
+    public $accessDenied = null;
 
     protected $listeners = ['timerTick' => 'updateTimer'];
 
@@ -49,7 +50,8 @@ class DoQuiz extends Component
     {
         $student = Auth::user()->studentProfile;
         if (!$student) {
-            abort(403, 'Không tìm thấy hồ sơ học viên cho tài khoản này!');
+            $this->accessDenied = 'Không tìm thấy hồ sơ học viên cho tài khoản này!';
+            return;
         }
         $studentId = $student->id;
 
@@ -58,15 +60,18 @@ class DoQuiz extends Component
         $user = Auth::user();
         $isStudentInClass = $classroom && $classroom->students()->where('users.id', $user->id)->exists();
         if (!$isStudentInClass) {
-            abort(403, 'Bạn không thuộc lớp học này nên không thể làm bài kiểm tra!');
+            $this->accessDenied = 'Bạn không thuộc lớp học này nên không thể làm bài kiểm tra!';
+            return;
         }
         if ($classroom && $classroom->status === 'completed') {
-            abort(403, 'Lớp học đã kết thúc, bạn không thể làm bài kiểm tra này!');
+            $this->accessDenied = 'Lớp học đã kết thúc, bạn không thể làm bài kiểm tra này!';
+            return;
         }
 
         // Chặn làm quiz nếu quiz đã hết hạn
         if (method_exists($this->quiz, 'isExpired') && $this->quiz->isExpired()) {
-            abort(403, 'Bài kiểm tra này đã hết hạn, bạn không thể làm nữa!');
+            $this->accessDenied = 'Bài kiểm tra này đã hết hạn, bạn không thể làm nữa!';
+            return;
         }
 
         // Nếu đã có kết quả chưa nộp thì tiếp tục làm bài

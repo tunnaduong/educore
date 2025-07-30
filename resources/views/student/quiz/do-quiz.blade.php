@@ -1,5 +1,20 @@
 <x-layouts.dash-student>
-    @if ($isFinished && $result)
+    @if ($accessDenied)
+        <div class="container-fluid">
+            <div class="row justify-content-center align-items-center" style="min-height: 60vh;">
+                <div class="col-md-8 text-center">
+                    <div class="alert alert-warning py-5">
+                        <i class="bi bi-exclamation-triangle display-4 mb-3"></i>
+                        <h3 class="mb-3">403 | Không thể truy cập bài kiểm tra</h3>
+                        <p class="lead">{{ $accessDenied }}</p>
+                        <a href="{{ route('student.quizzes.index') }}" wire:navigate class="btn btn-primary mt-3">
+                            <i class="bi bi-arrow-left me-1"></i>Quay lại danh sách bài kiểm tra
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @elseif ($isFinished && $result)
         <!-- Hiển thị kết quả -->
         <div class="container-fluid">
             <div class="row justify-content-center">

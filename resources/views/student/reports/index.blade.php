@@ -1,5 +1,5 @@
 <x-layouts.dash-student active="reports">
-    <div class="container py-4">
+    <div class="container">
         <!-- Header -->
         <div class="mb-4">
             <div class="d-flex justify-content-between align-items-center">

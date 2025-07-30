@@ -13,7 +13,7 @@
         </a>
         <div class="d-flex align-items-center">
             <livewire:components.notification-bell />
-            <div class="dropdown ms-3">
+            <div class="dropdown ms-3" wire:ignore>
                 <a href="#" class="fw-bold text-white text-decoration-none dropdown-toggle" id="userDropdown"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     {{ auth()->user()->name }}
@@ -76,6 +76,18 @@
                             <i class="bi bi-journal-check me-2"></i> Chấm bài
                         </a>
                     </li>
+                    <li class="nav-item mb-2">
+                        <a wire:navigate href="{{ route('quizzes.index') }}"
+                            class="text-white text-decoration-none d-block {{ $active === 'quizzes' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
+                            <i class="bi bi-patch-question me-2"></i> Kiểm tra & Quiz
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a wire:navigate href="{{ route('lessons.index') }}"
+                            class="text-white text-decoration-none d-block {{ $active === 'lessons' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
+                            <i class="bi bi-folder-symlink me-2"></i> Bài học & Tài nguyên
+                        </a>
+                    </li>
                 </ul>
             </div>
             <div class="mb-4">
@@ -97,6 +109,12 @@
                         <a wire:navigate href="{{ route('notifications.index') }}"
                             class="text-white text-decoration-none d-block {{ $active === 'notifications' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
                             <i class="bi bi-bell me-2"></i> Thông báo & Nhắc lịch
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a wire:navigate href="{{ route('chat.index') }}"
+                            class="text-white text-decoration-none d-block {{ $active === 'chat' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
+                            <i class="bi bi-chat-dots me-2"></i> Chat & Tương tác
                         </a>
                     </li>
                 </ul>
