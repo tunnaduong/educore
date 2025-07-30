@@ -13,7 +13,7 @@
         </a>
         <div class="d-flex align-items-center">
             <livewire:components.notification-bell />
-            <div class="dropdown ms-3">
+            <div class="dropdown ms-3" wire:ignore>
                 <a href="#" class="fw-bold text-white text-decoration-none dropdown-toggle" id="userDropdown"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     {{ auth()->user()->name }}
