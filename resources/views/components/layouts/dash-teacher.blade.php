@@ -76,7 +76,7 @@
                         </a>
                     </li>
                     <li class="nav-item mb-2">
-                        <a wire:navigate href="#"
+                        <a wire:navigate href="{{ route('teacher.assignments.index') }}"
                             class="text-white text-decoration-none d-block {{ $active === 'assignments' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
                             <i class="bi bi-journal-text me-2"></i> Bài tập
                         </a>
@@ -93,7 +93,7 @@
                 <div class="fw-bold text-uppercase small mb-2">Đánh giá & Báo cáo</div>
                 <ul class="nav flex-column">
                     <li class="nav-item mb-2">
-                        <a wire:navigate href="#"
+                        <a wire:navigate href="{{ route('teacher.grading.index') }}"
                             class="text-white text-decoration-none d-block {{ $active === 'grading' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
                             <i class="bi bi-journal-check me-2"></i> Chấm bài
                         </a>
@@ -134,4 +134,4 @@
             </div>
         </div>
     </div>
-</div> 
+</div>
