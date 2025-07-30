@@ -39,7 +39,7 @@
             </div>
             <!-- Bài tập -->
             <div class="col-6 col-md-3 text-center">
-                <a href="#" wire:navigate class="text-decoration-none text-dark">
+                <a href="{{ route('teacher.assignments.index') }}" wire:navigate class="text-decoration-none text-dark">
                     <div class="mb-2">
                         <i class="bi bi-journal-text" style="font-size:2.5rem; color:#ffc107;"></i>
                     </div>
@@ -57,7 +57,8 @@
             </div>
             <!-- Chấm bài -->
             <div class="col-6 col-md-3 text-center">
-                <a href="#" wire:navigate class="text-decoration-none text-dark">
+                <a href="{{ route('teacher.grading.index') }}
+                " wire:navigate class="text-decoration-none text-dark">
                     <div class="mb-2">
                         <i class="bi bi-journal-check" style="font-size:2.5rem; color:#6f42c1;"></i>
                     </div>
@@ -86,4 +87,4 @@
             </div>
         </div>
     </div>
-</x-layouts.dash-teacher> 
+</x-layouts.dash-teacher>
