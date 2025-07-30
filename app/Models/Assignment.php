@@ -36,4 +36,9 @@ class Assignment extends Model
     {
         return $this->hasMany(AssignmentSubmission::class);
     }
+
+    public function isOverdue(): bool
+    {
+        return $this->deadline && now()->isAfter($this->deadline);
+    }
 }

@@ -113,6 +113,15 @@ Route::middleware(['auth', 'role:teacher'])->name('teacher.')->group(function ()
     Route::get('/teacher/quizzes/{quiz}/edit', \App\Livewire\Teacher\Quizzes\Edit::class)->name('quizzes.edit');
     // Route kết quả quiz nếu có
     // Route::get('/teacher/quizzes/{quiz}/results', ...)->name('quizzes.results');
+    // Assignments routes
+    Route::get('/teacher/assignments', \App\Livewire\Teacher\Assignments\Index::class)->name('assignments.index');
+    Route::get('/teacher/assignments/create', \App\Livewire\Teacher\Assignments\Create::class)->name('assignments.create');
+    Route::get('/teacher/assignments/{assignment}/edit', \App\Livewire\Teacher\Assignments\Edit::class)->name('assignments.edit');
+    Route::get('/teacher/assignments/{assignment}', \App\Livewire\Teacher\Assignments\Show::class)->name('assignments.show');
+
+    // Grading routes
+    Route::get('/teacher/grading', \App\Livewire\Teacher\Grading\GradingList::class)->name('grading.index');
+    Route::get('/teacher/grading/{assignment}', \App\Livewire\Teacher\Grading\GradeAssignment::class)->name('grading.grade-assignment');
 });
 
 // Shared routes for admin and teacher
