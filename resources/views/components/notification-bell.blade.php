@@ -51,7 +51,7 @@
                                         </h6>
                                     </div>
                                     <p class="mb-1 text-muted" style="font-size: 0.8rem;">
-                                        {{ Str::limit($notification->message, 60) }}
+                                        {{ Str::limit($notification->message, 45) }}
                                     </p>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <small
