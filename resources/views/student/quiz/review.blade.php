@@ -11,6 +11,13 @@
             <p class="text-muted mb-0">{{ $quiz->title }}</p>
         </div>
 
+        @if(!$result)
+            <div class="alert alert-warning mt-4">
+                <h5 class="alert-heading"><i class="bi bi-exclamation-triangle me-2"></i>Không tìm thấy kết quả bài kiểm tra</h5>
+                <p>Bạn chưa làm hoặc kết quả bài kiểm tra này đã bị xóa. Nếu bạn nghĩ đây là lỗi, vui lòng liên hệ giáo viên để được hỗ trợ.</p>
+                <a href="{{ route('student.quizzes.index') }}" class="btn btn-primary mt-2"><i class="bi bi-arrow-left me-1"></i>Quay lại danh sách bài kiểm tra</a>
+            </div>
+        @else
         <!-- Thống kê tổng quan -->
         <div class="row mb-4">
             <div class="col-md-3">
@@ -110,7 +117,6 @@
                             $correctCount = 0;
                             $incorrectCount = 0;
                             $unansweredCount = 0;
-                            
                             foreach($quiz->questions as $index => $question) {
                                 $status = $this->getQuestionStatus($index);
                                 if ($status === 'correct') $correctCount++;
@@ -171,7 +177,6 @@
                         $answer = $result->answers[$selectedQuestion] ?? null;
                         $status = $this->getQuestionStatus($selectedQuestion);
                     @endphp
-                    
                     <div class="border rounded p-4">
                         <div class="d-flex justify-content-between align-items-start mb-3">
                             <div>
@@ -182,9 +187,7 @@
                                 </span>
                             </div>
                         </div>
-
                         <div class="fw-medium mb-3 fs-5">{{ $question['question'] }}</div>
-
                         @if($question['type'] === 'multiple_choice')
                             <div class="mb-3">
                                 <h6>Các lựa chọn:</h6>
@@ -213,7 +216,6 @@
                                 </div>
                             </div>
                         @endif
-
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="alert alert-info">
@@ -232,7 +234,6 @@
                                 </div>
                             </div>
                         </div>
-
                         @if(isset($question['explanation']) && $question['explanation'])
                             <div class="alert alert-warning">
                                 <strong>Giải thích:</strong><br>
@@ -243,5 +244,6 @@
                 @endif
             </div>
         </div>
+        @endif
     </div>
 </x-layouts.dash-student>

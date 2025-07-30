@@ -115,22 +115,23 @@ Route::middleware(['auth', 'role:admin,teacher'])->group(function () {
 });
 
 // Student routes
-Route::middleware(['auth', 'role:student'])->name('student.')->group(function () {
+Route::middleware(['auth', 'verified', 'role:student'])->name('student.')->prefix('student')->group(function () {
     // Other student routes...
-    Route::get('/student/lessons', \App\Livewire\Student\Lessons\Index::class)->name('lessons.index');
-    Route::get('/student/lessons/{lessonId}', \App\Livewire\Student\Lessons\Show::class)->name('lessons.show');
-    Route::get('/student/assignments', \App\Livewire\Student\Assignments\Index::class)->name('assignments.overview');
-    Route::get('/student/assignments/submissions', \App\Livewire\Student\Assignments\MySubmissions::class)->name('assignments.submissions');
-    Route::get('/student/assignments/{assignmentId}', \App\Livewire\Student\Assignments\Show::class)->name('assignments.show');
-    Route::get('/student/assignments/{assignmentId}/submit', \App\Livewire\Student\Assignments\Submit::class)->name('assignments.submit');
-    Route::get('/student/quizzes/{quiz}/do', \App\Livewire\Student\Quiz\DoQuiz::class)->name('quizzes.do');
-    Route::get('/student/quizzes/{quizId}/review', \App\Livewire\Student\Quiz\Review::class)->name('quizzes.review');
-    Route::get('/student/quizzes', \App\Livewire\Student\Quiz\Index::class)->name('quizzes.index');
+    Route::get('/lessons', \App\Livewire\Student\Lessons\Index::class)->name('lessons.index');
+    Route::get('/lessons/{lessonId}', \App\Livewire\Student\Lessons\Show::class)->name('lessons.show');
+    Route::get('/assignments', \App\Livewire\Student\Assignments\Index::class)->name('assignments.overview');
+    Route::get('/assignments/submissions', \App\Livewire\Student\Assignments\MySubmissions::class)->name('assignments.submissions');
+    Route::get('/assignments/{assignmentId}', \App\Livewire\Student\Assignments\Show::class)->name('assignments.show');
+    Route::get('/assignments/{assignmentId}/submit', \App\Livewire\Student\Assignments\Submit::class)->name('assignments.submit');
+    Route::get('/quizzes/{quiz}/do', \App\Livewire\Student\Quiz\DoQuiz::class)->name('quizzes.do');
+    Route::get('/quizzes/{quizId}/review', \App\Livewire\Student\Quiz\Review::class)->name('quizzes.review');
+    Route::get('/quizzes', \App\Livewire\Student\Quiz\Index::class)->name('quizzes.index');
 
     // Notifications routes
-    Route::get('/student/notifications', StudentNotificationsIndex::class)->name('notifications.index');
+    Route::get('/notifications', StudentNotificationsIndex::class)->name('notifications.index');
     // Kết quả học tập
-    Route::get('/student/reports', \App\Livewire\Student\Reports\Index::class)->name('reports.index');
+    Route::get('/reports', \App\Livewire\Student\Reports\Index::class)->name('reports.index');
     // Lịch học
-    Route::get('/student/schedules', \App\Livewire\Student\Schedules\Index::class)->name('schedules');
+    Route::get('/schedules', \App\Livewire\Student\Schedules\Index::class)->name('schedules');
+    Route::get('/chat', App\Livewire\Student\Chat\Index::class)->name('chat.index');
 });
