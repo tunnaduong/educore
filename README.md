@@ -1,6 +1,6 @@
 # EduCore – Hệ thống quản lý đào tạo trung tâm tiếng Trung hiện đại 🎓
 
-**EduCore** là một hệ thống quản lý đào tạo hiện đại, tùy biến cao, được thiết kế dành riêng cho các trung tâm đào tạo, đặc biệt là các trung tâm dạy ngoại ngữ như tiếng Trung. Hệ thống hỗ trợ toàn diện từ quản lý người dùng, lớp học, điểm danh, giao bài tập, cho đến kiểm tra và báo cáo tiến độ học tập. EduCore được xây dựng với Laravel, Livewire, Bootstrap và Tailwind CSS, hướng đến trải nghiệm người dùng mượt mà, dễ sử dụng và dễ mở rộng.
+**EduCore** là một hệ thống quản lý đào tạo hiện đại, tùy biến cao, được thiết kế dành riêng cho các trung tâm đào tạo, đặc biệt là các trung tâm dạy ngoại ngữ như tiếng Trung. Hệ thống hỗ trợ toàn diện từ quản lý người dùng, lớp học, điểm danh, giao bài tập, cho đến kiểm tra và báo cáo tiến độ học tập. EduCore được xây dựng với Laravel, Livewire và Bootstrap, hướng đến trải nghiệm người dùng mượt mà, dễ sử dụng và dễ mở rộng.
 
 ---
 
@@ -96,7 +96,7 @@ Dự án này được xây dựng bởi một nhóm các nhà phát triển tâ
 ## 🚀 Tech Stack (Công nghệ sử dụng)
 
 -   **Backend:** Laravel 11.x, PHP 8.3+
--   **Frontend:** Bootstrap 5.x, Tailwind CSS, Livewire 3.x / Alpine.js
+-   **Frontend:** Vite, Bootstrap 5.x, Livewire 3.x / Alpine.js
 -   **Database:** MySQL
 
 ---
@@ -110,6 +110,7 @@ Dự án này được xây dựng bởi một nhóm các nhà phát triển tâ
 -   Apache/NGINX
 -   PHP 8.3+
 -   Composer
+-   Node.js (npm)
 
 ### Cài đặt:
 
