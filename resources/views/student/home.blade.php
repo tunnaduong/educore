@@ -2,6 +2,14 @@
     <div class="container py-4">
         <div class="row g-5">
             <div class="col-6 col-md-3 text-center">
+                <a href="{{ route('student.schedules') }}" class="text-decoration-none text-dark">
+                    <div class="mb-2">
+                        <i class="bi bi-calendar3" style="font-size:2.5rem; color:#ffc107;"></i>
+                    </div>
+                    <div>Lịch học</div>
+                </a>
+            </div>
+            <div class="col-6 col-md-3 text-center">
                 <a href="{{ route('student.lessons.index') }}" wire:navigate class="text-decoration-none text-dark">
                     <div class="mb-2">
                         <i class="bi bi-book" style="font-size:2.5rem; color:#0d6efd;"></i>
@@ -35,26 +43,28 @@
                 </a>
             </div>
             <div class="col-6 col-md-3 text-center">
-                <a href="{{ route('student.schedules') }}" class="text-decoration-none text-dark">
-                    <div class="mb-2">
-                        <i class="bi bi-calendar3" style="font-size:2.5rem; color:#ffc107;"></i>
-                    </div>
-                    <div>Lịch học</div>
-                </a>
-            </div>
-            <div class="col-6 col-md-3 text-center">
                 <a href="{{ route('student.notifications.index') }}" wire:navigate
                     class="text-decoration-none text-dark">
-                    <div class="mb-2">
+                    <div class="position-relative d-inline-block">
                         <i class="bi bi-bell-fill" style="font-size:2.5rem; color:#fd5e53;"></i>
+                        @if ($unreadNotification > 0)
+                            <span
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                style="font-size:0.8rem;">{{ $unreadNotification }}</span>
+                        @endif
+                        <div class="mt-2">Thông báo</div>
                     </div>
-                    <div>Thông báo</div>
                 </a>
             </div>
             <div class="col-6 col-md-3 text-center">
-                <a href="#" wire:navigate class="text-decoration-none text-dark">
-                    <div class="mb-2">
+                <a href="{{ route('student.chat.index') }}" wire:navigate class="text-decoration-none text-dark">
+                    <div class="mb-2 position-relative d-inline-block">
                         <i class="bi bi-chat-dots-fill" style="font-size:2.5rem; color:#3372a2;"></i>
+                        @if ($unreadCount > 0)
+                            <span
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                style="font-size:0.8rem;">{{ $unreadCount }}</span>
+                        @endif
                     </div>
                     <div>Tin nhắn</div>
                 </a>

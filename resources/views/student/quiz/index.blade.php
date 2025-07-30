@@ -137,13 +137,53 @@
                     </div>
                     <!-- Pagination -->
                     <div class="d-flex justify-content-center mt-4">
-                        {{ $quizzes->links('vendor.pagination.bootstrap-5') }}
+                        @if($totalQuizzes > $perPage)
+                            <nav aria-label="Quiz pagination">
+                                <ul class="pagination">
+                                    @if($currentPage > 1)
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ $currentPage - 1 }}{{ $search ? '&search=' . $search : '' }}{{ $filterClass ? '&filterClass=' . $filterClass : '' }}{{ $filterStatus ? '&filterStatus=' . $filterStatus : '' }}">
+                                                <i class="bi bi-chevron-left"></i>
+                                            </a>
+                                        </li>
+                                    @endif
+                                    
+                                    @php
+                                        $totalPages = ceil($totalQuizzes / $perPage);
+                                        $startPage = max(1, $currentPage - 2);
+                                        $endPage = min($totalPages, $currentPage + 2);
+                                    @endphp
+                                    
+                                    @for($i = $startPage; $i <= $endPage; $i++)
+                                        <li class="page-item {{ $i == $currentPage ? 'active' : '' }}">
+                                            <a class="page-link" href="?page={{ $i }}{{ $search ? '&search=' . $search : '' }}{{ $filterClass ? '&filterClass=' . $filterClass : '' }}{{ $filterStatus ? '&filterStatus=' . $filterStatus : '' }}">
+                                                {{ $i }}
+                                            </a>
+                                        </li>
+                                    @endfor
+                                    
+                                    @if($currentPage < $totalPages)
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ $currentPage + 1 }}{{ $search ? '&search=' . $search : '' }}{{ $filterClass ? '&filterClass=' . $filterClass : '' }}{{ $filterStatus ? '&filterStatus=' . $filterStatus : '' }}">
+                                                <i class="bi bi-chevron-right"></i>
+                                            </a>
+                                        </li>
+                                    @endif
+                                </ul>
+                            </nav>
+                        @endif
                     </div>
                 @else
                     <div class="text-center py-5">
                         <i class="bi bi-journal-x fs-1 text-muted mb-3"></i>
                         <h5 class="text-muted">Không có bài kiểm tra nào</h5>
-                        <p class="text-muted">Bạn chưa có bài kiểm tra nào cần làm.</p>
+                        <p class="text-muted">
+                            @if($search || $filterClass || $filterStatus)
+                                Không tìm thấy bài kiểm tra nào phù hợp với bộ lọc hiện tại.
+                            @else
+                                Bạn chưa có bài kiểm tra nào cần làm.
+                            @endif
+                        </p>
                     </div>
                 @endif
             </div>

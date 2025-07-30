@@ -70,7 +70,23 @@ class Index extends Component
         })
         ->with(['classroom.teacher', 'submissions' => function ($q) use ($student) {
             $q->where('student_id', $student->id);
-        }]);
+        }, 'classroom']); // Thêm classroom để dùng status
+
+        // Lọc assignment theo trạng thái lớp
+        $query->where(function ($q) use ($student) {
+            $q->whereHas('classroom', function ($c) {
+                $c->where('status', '!=', 'completed');
+            })
+            // Nếu lớp đã completed thì chỉ lấy bài đã hoàn thành
+            ->orWhere(function ($q2) use ($student) {
+                $q2->whereHas('classroom', function ($c2) {
+                    $c2->where('status', 'completed');
+                })
+                ->whereHas('submissions', function ($s) use ($student) {
+                    $s->where('student_id', $student->id);
+                });
+            });
+        });
 
         // Filter by status
         if ($this->filterStatus === 'upcoming') {
