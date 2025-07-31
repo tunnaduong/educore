@@ -11,7 +11,7 @@ class Show extends Component
 
     public function mount(Classroom $classroom)
     {
-        $this->classroom = $classroom->load(['teacher', 'students']);
+        $this->classroom = $classroom->load(['teachers', 'students']);
     }
 
     public function formatSchedule($schedule)
