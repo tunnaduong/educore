@@ -46,7 +46,7 @@
                 var calendarEl = document.getElementById('calendar');
                 var events = @json($events ?? []);
                 var calendar = new FullCalendar.Calendar(calendarEl, {
-                    initialView: 'dayGridMonth',
+                    initialView: 'listWeek',
                     locale: 'vi',
                     buttonText: {
                         today:    'Hôm nay',
