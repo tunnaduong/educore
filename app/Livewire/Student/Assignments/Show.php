@@ -31,9 +31,12 @@ class Show extends Component
         $this->assignment = Assignment::whereHas('classroom.students', function ($q) use ($student) {
             $q->where('users.id', $student->user_id);
         })
-        ->with(['classroom.teacher', 'submissions' => function ($q) use ($student) {
-            $q->where('student_id', $student->id);
-        }])
+        ->with([
+            'classroom.teachers',
+            'submissions' => function ($q) use ($student) {
+                $q->where('student_id', $student->id);
+            }
+        ])
         ->findOrFail($this->assignmentId);
 
         // Lấy tất cả submissions của học viên cho assignment này (collection)

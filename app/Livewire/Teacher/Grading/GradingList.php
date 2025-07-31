@@ -58,13 +58,16 @@ class GradingList extends Component
         $user = Auth::user();
         $classIds = $user->teachingClassrooms->pluck('id');
         $query = Assignment::withCount('submissions')
-            ->with(['classroom.teacher'])
+            ->with([
+                'classroom.teachers',
+                'submissions.student.user'
+            ])
             ->whereIn('class_id', $classIds);
 
         // Filter by search
         if ($this->search) {
             $query->where('title', 'like', '%' . $this->search . '%')
-                  ->orWhere('description', 'like', '%' . $this->search . '%');
+                ->orWhere('description', 'like', '%' . $this->search . '%');
         }
 
         // Filter by classroom

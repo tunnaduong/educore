@@ -47,13 +47,13 @@ class MySubmissions extends Component
     public function getSubmissionsProperty()
     {
         $student = Auth::user()->student;
-        
+
         if (!$student) {
             return collect();
         }
 
         $query = AssignmentSubmission::where('student_id', $student->id)
-            ->with(['assignment.classroom.teacher', 'assignment']);
+            ->with(['assignment.classroom.teachers', 'assignment']);
 
         // Filter by status
         if ($this->filterGraded === 'graded') {
@@ -73,7 +73,7 @@ class MySubmissions extends Component
         if ($this->search) {
             $query->whereHas('assignment', function ($q) {
                 $q->where('title', 'like', '%' . $this->search . '%')
-                  ->orWhere('description', 'like', '%' . $this->search . '%');
+                    ->orWhere('description', 'like', '%' . $this->search . '%');
             });
         }
 
@@ -83,7 +83,7 @@ class MySubmissions extends Component
     public function getClassroomsProperty()
     {
         $student = Auth::user()->student;
-        
+
         if (!$student) {
             return collect();
         }
@@ -96,7 +96,8 @@ class MySubmissions extends Component
     public function getTotalSubmissionsProperty()
     {
         $student = Auth::user()->student;
-        if (!$student) return 0;
+        if (!$student)
+            return 0;
 
         return AssignmentSubmission::where('student_id', $student->id)->count();
     }
@@ -104,7 +105,8 @@ class MySubmissions extends Component
     public function getGradedSubmissionsProperty()
     {
         $student = Auth::user()->student;
-        if (!$student) return 0;
+        if (!$student)
+            return 0;
 
         return AssignmentSubmission::where('student_id', $student->id)
             ->whereNotNull('score')->count();
@@ -113,7 +115,8 @@ class MySubmissions extends Component
     public function getUngradedSubmissionsProperty()
     {
         $student = Auth::user()->student;
-        if (!$student) return 0;
+        if (!$student)
+            return 0;
 
         return AssignmentSubmission::where('student_id', $student->id)
             ->whereNull('score')->count();
@@ -122,7 +125,8 @@ class MySubmissions extends Component
     public function getAverageScoreProperty()
     {
         $student = Auth::user()->student;
-        if (!$student) return 0;
+        if (!$student)
+            return 0;
 
         $gradedSubmissions = AssignmentSubmission::where('student_id', $student->id)
             ->whereNotNull('score')->get();
@@ -144,7 +148,7 @@ class MySubmissions extends Component
         if ($score === null) {
             return 'text-gray-500';
         }
-        
+
         if ($score >= 8) {
             return 'text-green-600';
         } elseif ($score >= 6) {

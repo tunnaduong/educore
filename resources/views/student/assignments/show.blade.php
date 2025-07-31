@@ -8,7 +8,12 @@
                         <i class="bi bi-journal-text me-2"></i>{{ $assignment->title }}
                     </h4>
                     <p class="text-muted mb-0">{{ $assignment->classroom->name }} -
-                        {{ $assignment->classroom->teacher->name }}</p>
+                        @if ($assignment->classroom->teachers->count())
+                            {{ $assignment->classroom->teachers->pluck('name')->join(', ') }}
+                        @else
+                            Chưa có giáo viên
+                        @endif
+                    </p>
                 </div>
                 <div class="text-end">
                     @php
@@ -98,7 +103,11 @@
                                     <li class="mb-2">
                                         <i class="bi bi-person me-2"></i>
                                         <strong>Giảng viên:</strong><br>
-                                        {{ $assignment->classroom->teacher->name }}
+                                        @if ($assignment->classroom->teachers->count())
+                                            {{ $assignment->classroom->teachers->pluck('name')->join(', ') }}
+                                        @else
+                                            Chưa có giáo viên
+                                        @endif
                                     </li>
                                 </ul>
                             </div>

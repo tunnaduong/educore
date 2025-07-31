@@ -72,7 +72,15 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td>{{ $classroom->getFirstTeacher()?->name ?? 'Chưa có giáo viên' }}</td>
+                                    <td>
+                                        @if ($classroom->teachers->count())
+                                            @foreach ($classroom->teachers as $teacher)
+                                                <span class="badge bg-secondary">{{ $teacher->name }}</span>
+                                            @endforeach
+                                        @else
+                                            <span class="text-muted">Chưa có giáo viên</span>
+                                        @endif
+                                    </td>
                                     <td class="text-center">
                                         <span class="badge bg-info">{{ $classroom->students_count }}</span>
                                     </td>
