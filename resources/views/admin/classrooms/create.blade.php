@@ -53,18 +53,37 @@
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="teacher_id" class="form-label">Giảng viên <span
+                                <label for="teacher_ids" class="form-label">Giảng viên <span
                                         class="text-danger">*</span></label>
-                                <select wire:model="teacher_id"
-                                    class="form-select @error('teacher_id') is-invalid @enderror" id="teacher_id">
-                                    <option value="">Chọn giảng viên</option>
-                                    @foreach ($teachers as $teacher)
-                                        <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('teacher_id')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                                <div class="dropdown">
+                                    <button
+                                        class="btn w-100 d-flex justify-content-between align-items-center border border-gray-300 bg-white text-start"
+                                        type="button" data-bs-toggle="dropdown" aria-expanded="false"
+                                        style="height: 48px;">
+                                        <span class="text-truncate">
+                                            @if (count($teacher_ids))
+                                                {{ collect($teachers)->whereIn('id', $teacher_ids)->pluck('name')->join(', ') }}
+                                            @else
+                                                Chọn giảng viên
+                                            @endif
+                                        </span>
+                                        <span class="ms-2"><i class="bi bi-chevron-down"></i></span>
+                                    </button>
+                                    <ul class="dropdown-menu w-100" style="max-height: 300px; overflow-y: auto;">
+                                        @foreach ($teachers as $teacher)
+                                            <li>
+                                                <label class="dropdown-item mb-0">
+                                                    <input type="checkbox" value="{{ $teacher->id }}"
+                                                        wire:model="teacher_ids">
+                                                    {{ $teacher->name }}
+                                                </label>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                    @error('teacher_ids')
+                                        <div class="text-danger small mt-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label for="status" class="form-label">Trạng thái <span

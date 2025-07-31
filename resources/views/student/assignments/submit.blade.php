@@ -8,7 +8,12 @@
                         <i class="bi bi-pencil me-2"></i>Làm bài tập: {{ $assignment->title }}
                     </h4>
                     <p class="text-muted mb-0">{{ $assignment->classroom->name }} -
-                        {{ $assignment->classroom->teacher->name }}</p>
+                        @if ($assignment->classroom->teachers->count())
+                            {{ $assignment->classroom->teachers->pluck('name')->join(', ') }}
+                        @else
+                            Chưa có giáo viên
+                        @endif
+                    </p>
                 </div>
                 <div class="text-end">
                     <div class="badge bg-warning text-dark">Hạn nộp: {{ $assignment->deadline->format('d/m/Y H:i') }}

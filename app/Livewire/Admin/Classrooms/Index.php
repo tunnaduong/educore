@@ -50,17 +50,19 @@ class Index extends Component
     {
         $classrooms = Classroom::query()
             ->withCount('students')
-            ->with('teacher')
+            ->with('teachers')
             ->when($this->search, function ($query) {
                 $query->where(function ($query) {
                     $query->where('name', 'like', '%' . $this->search . '%')
-                        ->orWhereHas('teacher', function ($query) {
+                        ->orWhereHas('teachers', function ($query) {
                             $query->where('name', 'like', '%' . $this->search . '%');
                         });
                 });
             })
             ->when($this->filterTeacher, function ($query) {
-                $query->where('teacher_id', $this->filterTeacher);
+                $query->whereHas('teachers', function ($q) {
+                    $q->where('users.id', $this->filterTeacher);
+                });
             })
             ->when($this->filterStatus, function ($query) {
                 $query->where('status', $this->filterStatus);

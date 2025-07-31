@@ -17,7 +17,6 @@ class Classroom extends Model
         'level',
         'schedule',
         'notes',
-        'teacher_id',
         'status',
     ];
 
@@ -25,11 +24,6 @@ class Classroom extends Model
         'schedule' => 'array',
         'status' => 'string',
     ];
-
-    public function teacher(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'teacher_id');
-    }
 
     public function users(): BelongsToMany
     {

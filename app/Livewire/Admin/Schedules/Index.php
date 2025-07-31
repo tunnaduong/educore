@@ -39,7 +39,7 @@ class Index extends Component
     public function render()
     {
         $classrooms = Classroom::query()
-            ->with(['teacher', 'students'])
+            ->with(['teachers', 'students'])
             ->when($this->search, function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
             })
@@ -47,7 +47,7 @@ class Index extends Component
                 $query->where('level', $this->filterLevel);
             })
             ->when($this->filterTeacher, function ($query) {
-                $query->whereHas('teacher', function ($q) {
+                $query->whereHas('teachers', function ($q) {
                     $q->where('name', 'like', '%' . $this->filterTeacher . '%');
                 });
             })
