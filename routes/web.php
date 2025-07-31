@@ -122,6 +122,12 @@ Route::middleware(['auth', 'role:teacher'])->name('teacher.')->group(function ()
     // Grading routes
     Route::get('/teacher/grading', \App\Livewire\Teacher\Grading\GradingList::class)->name('grading.index');
     Route::get('/teacher/grading/{assignment}', \App\Livewire\Teacher\Grading\GradeAssignment::class)->name('grading.grade-assignment');
+
+    // Lessons routes
+    Route::get('/teacher/lessons', \App\Livewire\Teacher\Lessons\Index::class)->name('lessons.index');
+    Route::get('/teacher/lessons/create', \App\Livewire\Teacher\Lessons\Create::class)->name('lessons.create');
+    Route::get('/teacher/lessons/{lesson}', \App\Livewire\Teacher\Lessons\Show::class)->name('lessons.show');
+    Route::get('/teacher/lessons/{lesson}/edit', \App\Livewire\Teacher\Lessons\Edit::class)->name('lessons.edit');
 });
 
 // Shared routes for admin and teacher

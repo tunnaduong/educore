@@ -39,41 +39,10 @@
                     <div class="col-md-4">
                         <div class="mb-3">
                             <strong class="text-muted">Video bài học:</strong><br>
-                            @php
-                                $isYoutube = Str::contains($lesson->video, ['youtube.com', 'youtu.be']);
-                                $isDrive = Str::contains($lesson->video, 'drive.google.com/file/d/');
-                                $youtubeId = null;
-                                $driveId = null;
-                                if ($isYoutube) {
-                                    if (Str::contains($lesson->video, 'youtu.be/')) {
-                                        $youtubeId = Str::after($lesson->video, 'youtu.be/');
-                                        $youtubeId = Str::before($youtubeId, '?');
-                                    } elseif (Str::contains($lesson->video, 'v=')) {
-                                        $youtubeId = Str::after($lesson->video, 'v=');
-                                        $youtubeId = Str::before($youtubeId, '&');
-                                    }
-                                }
-                                if ($isDrive) {
-                                    $driveId = Str::between($lesson->video, '/file/d/', '/');
-                                }
-                            @endphp
-                            @if ($isYoutube && $youtubeId)
-                                <div class="ratio ratio-16x9 rounded overflow-hidden mb-2">
-                                    <iframe src="https://www.youtube.com/embed/{{ $youtubeId }}" frameborder="0"
-                                        allowfullscreen></iframe>
-                                </div>
-                            @elseif ($isDrive && $driveId)
-                                <div class="ratio ratio-16x9 rounded overflow-hidden mb-2">
-                                    <iframe src="https://drive.google.com/file/d/{{ $driveId }}/preview"
-                                        width="640" height="480" allow="autoplay"></iframe>
-                                </div>
+                            @if ($lesson->video)
+                                <x-video-embed :url="$lesson->video" title="Video bài học" />
                             @else
-                                @if ($lesson->video)
-                                    <a href="{{ $lesson->video }}" target="_blank" class="btn btn-outline-primary"><i
-                                            class="bi bi-play-circle"></i> Xem video</a>
-                                @else
-                                    <span class="text-muted">Không có video</span>
-                                @endif
+                                <span class="text-muted">Không có video</span>
                             @endif
                         </div>
                         <div class="mb-3">
