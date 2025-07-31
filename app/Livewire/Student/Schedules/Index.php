@@ -13,7 +13,7 @@ class Index extends Component
     public function render()
     {
         $user = Auth::user();
-        $classrooms = $user->enrolledClassrooms()->with('teacher', 'assignments')->get();
+        $classrooms = $user->enrolledClassrooms()->with('teachers', 'assignments')->get();
         $classrooms = $classrooms->filter(function ($classroom) {
             return $classroom->status !== 'completed';
         });
@@ -40,8 +40,10 @@ class Index extends Component
                         $date = $date->addDays($weekdayMap[$day]);
                         for ($i = 0; $i < 16; $i++) {
                             $eventDate = $date->copy()->addWeeks($i);
+                            $teacherNames = $classroom->teachers->pluck('name')->join(', ');
+                            $teacherText = $teacherNames ? ' (' . $teacherNames . ')' : '';
                             $events[] = [
-                                'title' => '' . $classroom->name . ($classroom->teacher ? ' (' . $classroom->teacher->name . ')' : ''),
+                                'title' => '' . $classroom->name . $teacherText,
                                 'start' => $eventDate->format('Y-m-d') . 'T' . $startTime,
                                 'end' => $eventDate->format('Y-m-d') . ($endTime ? 'T' . $endTime : ''),
                                 'allDay' => false,

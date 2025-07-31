@@ -56,14 +56,14 @@ class GradingList extends Component
     public function getAssignmentsProperty()
     {
         $user = Auth::user();
-        
+
         if ($user->role === 'admin') {
             $query = Assignment::withCount('submissions')
-                ->with(['classroom.teacher']);
+                ->with(['classroom.teachers']);
         } else if ($user->role === 'teacher') {
             $classIds = $user->teachingClassrooms->pluck('id');
             $query = Assignment::withCount('submissions')
-                ->with(['classroom.teacher'])
+                ->with(['classroom.teachers'])
                 ->whereIn('class_id', $classIds);
         } else {
             return collect();
@@ -72,7 +72,7 @@ class GradingList extends Component
         // Filter by search
         if ($this->search) {
             $query->where('title', 'like', '%' . $this->search . '%')
-                  ->orWhere('description', 'like', '%' . $this->search . '%');
+                ->orWhere('description', 'like', '%' . $this->search . '%');
         }
 
         // Filter by classroom
@@ -108,13 +108,13 @@ class GradingList extends Component
     public function getClassroomsProperty()
     {
         $user = Auth::user();
-        
+
         if ($user->role === 'admin') {
-            return Classroom::with('teacher')->get();
+            return Classroom::with('teachers')->get();
         } else if ($user->role === 'teacher') {
             return $user->teachingClassrooms;
         }
-        
+
         return collect();
     }
 

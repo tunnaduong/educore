@@ -34,7 +34,13 @@
                             <div class="col-6">
                                 <div class="mb-3">
                                     <label class="form-label text-muted small">Giảng viên</label>
-                                    <div class="fw-medium">{{ $classroom->teacher?->name ?? 'Chưa có' }}</div>
+                                    <div class="fw-medium">
+                                        @if ($classroom->teachers->count())
+                                            {{ $classroom->teachers->pluck('name')->join(', ') }}
+                                        @else
+                                            Chưa có
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-6">

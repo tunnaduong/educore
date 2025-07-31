@@ -60,7 +60,7 @@ class Index extends Component
     public function getAssignmentsProperty()
     {
         $student = Auth::user()->student;
-        
+
         if (!$student) {
             return collect();
         }
@@ -68,24 +68,28 @@ class Index extends Component
         $query = Assignment::whereHas('classroom.students', function ($q) use ($student) {
             $q->where('users.id', $student->user_id);
         })
-        ->with(['classroom.teacher', 'submissions' => function ($q) use ($student) {
-            $q->where('student_id', $student->id);
-        }, 'classroom']); // Thêm classroom để dùng status
+            ->with([
+                'classroom.teachers',
+                'submissions' => function ($q) use ($student) {
+                    $q->where('student_id', $student->id);
+                },
+                'classroom'
+            ]); // Thêm classroom để dùng status
 
         // Lọc assignment theo trạng thái lớp
         $query->where(function ($q) use ($student) {
             $q->whereHas('classroom', function ($c) {
                 $c->where('status', '!=', 'completed');
             })
-            // Nếu lớp đã completed thì chỉ lấy bài đã hoàn thành
-            ->orWhere(function ($q2) use ($student) {
-                $q2->whereHas('classroom', function ($c2) {
-                    $c2->where('status', 'completed');
-                })
-                ->whereHas('submissions', function ($s) use ($student) {
-                    $s->where('student_id', $student->id);
+                // Nếu lớp đã completed thì chỉ lấy bài đã hoàn thành
+                ->orWhere(function ($q2) use ($student) {
+                    $q2->whereHas('classroom', function ($c2) {
+                        $c2->where('status', 'completed');
+                    })
+                        ->whereHas('submissions', function ($s) use ($student) {
+                            $s->where('student_id', $student->id);
+                        });
                 });
-            });
         });
 
         // Filter by status
@@ -107,7 +111,9 @@ class Index extends Component
         // Filter by teacher
         if ($this->filterTeacher) {
             $query->whereHas('classroom', function ($q) {
-                $q->where('teacher_id', $this->filterTeacher);
+                $q->whereHas('teachers', function ($t) {
+                    $t->where('users.id', $this->filterTeacher);
+                });
             });
         }
 
@@ -120,7 +126,7 @@ class Index extends Component
         if ($this->search) {
             $query->where(function ($q) {
                 $q->where('title', 'like', '%' . $this->search . '%')
-                  ->orWhere('description', 'like', '%' . $this->search . '%');
+                    ->orWhere('description', 'like', '%' . $this->search . '%');
             });
         }
 
@@ -130,26 +136,27 @@ class Index extends Component
     public function getClassroomsProperty()
     {
         $student = Auth::user()->student;
-        
+
         if (!$student) {
             return collect();
         }
 
-        return $student->user->enrolledClassrooms()->with('teacher')->get();
+        return $student->user->enrolledClassrooms()->with('teachers')->get();
     }
 
     public function getTeachersProperty()
     {
         $student = Auth::user()->student;
-        
+
         if (!$student) {
             return collect();
         }
 
         return $student->user->enrolledClassrooms()
-            ->with('teacher')
+            ->with('teachers')
             ->get()
-            ->pluck('teacher')
+            ->pluck('teachers')
+            ->flatten()
             ->unique('id');
     }
 
