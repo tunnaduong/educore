@@ -45,9 +45,11 @@
                                 <div class="mb-3">
                                     <label class="form-label fw-bold text-muted">Giáo viên phụ trách</label>
                                     <p class="mb-0">
-                                        @if ($classroom->teacher)
-                                            <i class="bi bi-person-circle me-2"></i>
-                                            {{ $classroom->teacher->name }}
+                                        @if ($classroom->teachers->count())
+                                            <div class="mb-2">
+                                                <i class="bi bi-person-circle me-2"></i>
+                                                {{ $classroom->teachers->pluck('name')->join(', ') }}
+                                            </div>
                                         @else
                                             <span class="text-muted">Chưa phân công</span>
                                         @endif

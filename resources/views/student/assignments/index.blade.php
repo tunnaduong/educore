@@ -107,8 +107,13 @@
                                             <span class="badge bg-info">{{ $assignment->classroom->name }}</span>
                                         </td>
                                         <td>
-                                            <span
-                                                class="badge bg-secondary">{{ $assignment->classroom->teacher->name }}</span>
+                                            @if ($assignment->classroom->teachers->count())
+                                                @foreach ($assignment->classroom->teachers as $teacher)
+                                                    <span class="badge bg-secondary">{{ $teacher->name }}</span>
+                                                @endforeach
+                                            @else
+                                                <span class="text-muted">Chưa có giáo viên</span>
+                                            @endif
                                         </td>
                                         <td>
                                             @if ($assignment->types)

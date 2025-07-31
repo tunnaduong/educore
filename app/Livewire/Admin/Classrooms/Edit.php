@@ -16,7 +16,7 @@ class Edit extends Component
     public $days = [];
     public $time = '';
     public $notes = '';
-    public $teacher_id = '';
+    public $teacher_ids = [];
     public $status = 'active';
 
     protected $rules = [
@@ -25,7 +25,8 @@ class Edit extends Component
         'days' => 'required|array|min:1',
         'time' => 'required|max:50',
         'notes' => 'nullable|max:1000',
-        'teacher_id' => 'required|exists:users,id',
+        'teacher_ids' => 'required|array|min:1',
+        'teacher_ids.*' => 'exists:users,id',
         'status' => 'required|in:active,completed',
     ];
 
@@ -40,8 +41,9 @@ class Edit extends Component
         'time.required' => 'Vui lòng nhập giờ học.',
         'time.max' => 'Giờ học không được vượt quá 50 ký tự.',
         'notes.max' => 'Ghi chú không được vượt quá 1000 ký tự.',
-        'teacher_id.required' => 'Vui lòng chọn giảng viên.',
-        'teacher_id.exists' => 'Giảng viên không tồn tại trong hệ thống.',
+        'teacher_ids.required' => 'Vui lòng chọn ít nhất một giảng viên.',
+        'teacher_ids.min' => 'Vui lòng chọn ít nhất một giảng viên.',
+        'teacher_ids.*.exists' => 'Giảng viên không tồn tại trong hệ thống.',
         'status.required' => 'Vui lòng chọn trạng thái lớp học.',
         'status.in' => 'Trạng thái lớp học không hợp lệ.',
     ];
@@ -52,8 +54,10 @@ class Edit extends Component
         $this->name = $classroom->name;
         $this->level = $classroom->level;
         $this->notes = $classroom->notes;
-        $this->teacher_id = $classroom->teacher_id;
         $this->status = $classroom->status;
+
+        // Lấy danh sách giáo viên hiện tại của lớp
+        $this->teacher_ids = $classroom->teachers()->pluck('users.id')->toArray();
 
         // Set schedule data
         $schedule = $classroom->schedule;
@@ -73,13 +77,14 @@ class Edit extends Component
                 'time' => $this->time,
             ],
             'notes' => $this->notes,
-            'teacher_id' => $this->teacher_id,
             'status' => $this->status,
         ]);
 
-        // Update teacher in class_user table
+        // Cập nhật lại giáo viên trong class_user
         $this->classroom->users()->wherePivot('role', 'teacher')->detach();
-        $this->classroom->users()->attach($this->teacher_id, ['role' => 'teacher']);
+        foreach ($this->teacher_ids as $tid) {
+            $this->classroom->users()->attach($tid, ['role' => 'teacher']);
+        }
 
         session()->flash('success', 'Lớp học đã được cập nhật thành công.');
         return $this->redirect(route('classrooms.index'), navigate: true);
@@ -88,6 +93,9 @@ class Edit extends Component
     public function render()
     {
         $teachers = User::where('role', 'teacher')->get();
-        return view('admin.classrooms.edit', compact('teachers'));
+        return view('admin.classrooms.edit', [
+            'teachers' => $teachers,
+            'teacher_ids' => $this->teacher_ids,
+        ]);
     }
 }

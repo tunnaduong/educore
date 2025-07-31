@@ -15,7 +15,7 @@ class Create extends Component
     public $days = [];
     public $time = '';
     public $notes = '';
-    public $teacher_id = '';
+    public $teacher_ids = [];
     public $status = 'active';
 
     protected $rules = [
@@ -24,7 +24,8 @@ class Create extends Component
         'days' => 'required|array|min:1',
         'time' => 'required|max:50',
         'notes' => 'nullable|max:1000',
-        'teacher_id' => 'required|exists:users,id',
+        'teacher_ids' => 'required|array|min:1',
+        'teacher_ids.*' => 'exists:users,id',
         'status' => 'required|in:active,completed',
     ];
 
@@ -39,17 +40,17 @@ class Create extends Component
         'time.required' => 'Vui lòng nhập giờ học.',
         'time.max' => 'Giờ học không được vượt quá 50 ký tự.',
         'notes.max' => 'Ghi chú không được vượt quá 1000 ký tự.',
-        'teacher_id.required' => 'Vui lòng chọn giảng viên.',
-        'teacher_id.exists' => 'Giảng viên không tồn tại trong hệ thống.',
+        'teacher_ids.required' => 'Vui lòng chọn ít nhất một giảng viên.',
+        'teacher_ids.min' => 'Vui lòng chọn ít nhất một giảng viên.',
+        'teacher_ids.*.exists' => 'Giảng viên không tồn tại trong hệ thống.',
         'status.required' => 'Vui lòng chọn trạng thái lớp học.',
         'status.in' => 'Trạng thái lớp học không hợp lệ.',
     ];
 
     public function mount()
     {
-        // Set current user as default teacher if they are a teacher
         if (Auth::user()->role === 'teacher') {
-            $this->teacher_id = Auth::id();
+            $this->teacher_ids = [Auth::id()];
         }
     }
 
@@ -65,12 +66,13 @@ class Create extends Component
                 'time' => $this->time,
             ]),
             'notes' => $this->notes,
-            'teacher_id' => $this->teacher_id,
             'status' => $this->status,
         ]);
 
-        // Add teacher to class_user table
-        $classroom->users()->attach($this->teacher_id, ['role' => 'teacher']);
+        // Gán nhiều giáo viên vào class_user
+        foreach ($this->teacher_ids as $tid) {
+            $classroom->users()->attach($tid, ['role' => 'teacher']);
+        }
 
         session()->flash('success', 'Lớp học đã được tạo thành công.');
         return $this->redirect(route('classrooms.index'), navigate: true);
@@ -79,6 +81,9 @@ class Create extends Component
     public function render()
     {
         $teachers = User::where('role', 'teacher')->get();
-        return view('admin.classrooms.create', compact('teachers'));
+        return view('admin.classrooms.create', [
+            'teachers' => $teachers,
+            'teacher_ids' => $this->teacher_ids,
+        ]);
     }
 }

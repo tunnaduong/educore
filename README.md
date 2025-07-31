@@ -87,9 +87,9 @@ Dự án này được xây dựng bởi một nhóm các nhà phát triển tâ
 | Dương Tùng Anh | Project Manager / Full-stack Dev | [@tunnaduong](https://github.com/tunnaduong)     |
 | Hoàng Tuấn Anh | Frontend / UI-UX                 | [@anhhtpn00019](https://github.com/anhhtpn00019) |
 | Nguyễn Đức Duy | Backend Dev                      | [@duyandie](https://github.com/duyandie)         |
-| Phạm Linh Chi  | Tester / QA                      | [@chi-pn00026](https://github.com/chi-pn00026)   |
+| Phạm Linh Chi  | Documentation                    | [@chi-pn00026](https://github.com/chi-pn00026)   |
 | Hồ Đức         | Frontend / UI-UX                 | [@Duch147](https://github.com/Duch147)           |
-| Trần Duy Hải   | Documentation                    | [@DuyHai1708](https://github.com/DuyHai1708)     |
+| Trần Duy Hải   | Tester / QA                      | [@DuyHai1708](https://github.com/DuyHai1708)     |
 
 ---
 

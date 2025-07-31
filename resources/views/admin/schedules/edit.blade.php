@@ -16,7 +16,12 @@
                             <h5 class="text-primary">{{ $classroom->name }}</h5>
                             <p class="text-muted mb-0">
                                 <i class="bi bi-person-circle me-2"></i>
-                                Giáo viên: {{ $classroom->teacher ? $classroom->teacher->name : 'Chưa phân công' }}
+                                Giáo viên:
+                                @if ($classroom->teachers->count())
+                                    {{ $classroom->teachers->pluck('name')->join(', ') }}
+                                @else
+                                    Chưa phân công
+                                @endif
                             </p>
                         </div>
 

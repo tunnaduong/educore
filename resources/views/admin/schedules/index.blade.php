@@ -73,13 +73,11 @@
                                             <span class="badge bg-info">{{ $classroom->level }}</span>
                                         </td>
                                         <td>
-                                            @if ($classroom->teacher)
-                                                <div class="d-flex align-items-center">
+                                            @if ($classroom->teachers->count())
+                                                <div class="mb-2">
                                                     <i class="bi bi-person-circle me-2"></i>
-                                                    {{ $classroom->teacher->name }}
+                                                    {{ $classroom->teachers->pluck('name')->join(', ') }}
                                                 </div>
-                                            @else
-                                                <span class="text-muted">Chưa phân công</span>
                                             @endif
                                         </td>
                                         <td>

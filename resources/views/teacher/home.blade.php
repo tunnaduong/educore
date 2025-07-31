@@ -1,6 +1,6 @@
 <x-layouts.dash-teacher active="home">
     <div class="container py-4">
-        <div class="row g-4">
+        <div class="row g-4 gy-5">
             <!-- Lớp học của tôi -->
             <div class="col-6 col-md-3 text-center">
                 <a href="#" wire:navigate class="text-decoration-none text-dark">
@@ -23,7 +23,7 @@
             <div class="col-6 col-md-3 text-center">
                 <a href="#" wire:navigate class="text-decoration-none text-dark">
                     <div class="mb-2">
-                        <i class="bi bi-calendar-check-fill" style="font-size:2.5rem; color:#6f42c1;"></i>
+                        <i class="bi bi-calendar-check" style="font-size:2.5rem; color:#6f42c1;"></i>
                     </div>
                     <div>Điểm danh</div>
                 </a>
@@ -32,7 +32,7 @@
             <div class="col-6 col-md-3 text-center">
                 <a href="#" wire:navigate class="text-decoration-none text-dark">
                     <div class="mb-2">
-                        <i class="bi bi-book-fill" style="font-size:2.5rem; color:#20c997;"></i>
+                        <i class="bi bi-book" style="font-size:2.5rem; color:#20c997;"></i>
                     </div>
                     <div>Bài học</div>
                 </a>
@@ -58,7 +58,8 @@
             <!-- Chấm bài -->
             <div class="col-6 col-md-3 text-center">
                 <a href="{{ route('teacher.grading.index') }}
-                " wire:navigate class="text-decoration-none text-dark">
+                " wire:navigate
+                    class="text-decoration-none text-dark">
                     <div class="mb-2">
                         <i class="bi bi-journal-check" style="font-size:2.5rem; color:#6f42c1;"></i>
                     </div>
@@ -83,6 +84,17 @@
                             style="font-size:0.8rem;">2</span>
                     </div>
                     <div>Thông báo</div>
+                </a>
+            </div>
+            <!-- Tin nhắn -->
+            <div class="col-6 col-md-3 text-center">
+                <a href="#" wire:navigate class="text-decoration-none text-dark">
+                    <div class="mb-2 position-relative d-inline-block">
+                        <i class="bi bi-chat-dots-fill" style="font-size:2.5rem; color:#30c495;"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                            style="font-size:0.8rem;">2</span>
+                    </div>
+                    <div>Tin nhắn</div>
                 </a>
             </div>
         </div>
