@@ -30,7 +30,7 @@
             </div>
             <!-- Bài học -->
             <div class="col-6 col-md-3 text-center">
-                <a href="#" wire:navigate class="text-decoration-none text-dark">
+                <a href="{{ route('teacher.lessons.index') }}" wire:navigate class="text-decoration-none text-dark">
                     <div class="mb-2">
                         <i class="bi bi-book" style="font-size:2.5rem; color:#20c997;"></i>
                     </div>
