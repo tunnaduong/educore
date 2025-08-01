@@ -106,6 +106,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 // Teacher routes
 Route::middleware(['auth', 'role:teacher'])->name('teacher.')->group(function () {
+    // My Class routes
+    Route::get('/teacher/my-class', \App\Livewire\Teacher\MyClass\Index::class)->name('my-class.index');
+    Route::get('/teacher/my-class/{classroomId}', \App\Livewire\Teacher\MyClass\Show::class)->name('my-class.show');
+
     // Other teacher routes...
     Route::get('/teacher/quizzes', \App\Livewire\Teacher\Quizzes\Index::class)->name('quizzes.index');
     Route::get('/teacher/quizzes/create', \App\Livewire\Teacher\Quizzes\Create::class)->name('quizzes.create');
