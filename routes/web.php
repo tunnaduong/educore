@@ -111,8 +111,7 @@ Route::middleware(['auth', 'role:teacher'])->name('teacher.')->group(function ()
     Route::get('/teacher/quizzes/create', \App\Livewire\Teacher\Quizzes\Create::class)->name('quizzes.create');
     Route::get('/teacher/quizzes/{quiz}', \App\Livewire\Teacher\Quizzes\Show::class)->name('quizzes.show');
     Route::get('/teacher/quizzes/{quiz}/edit', \App\Livewire\Teacher\Quizzes\Edit::class)->name('quizzes.edit');
-    // Route kết quả quiz nếu có
-    // Route::get('/teacher/quizzes/{quiz}/results', ...)->name('quizzes.results');
+    Route::get('/teacher/quizzes/{quiz}/results', \App\Livewire\Teacher\Quizzes\Results::class)->name('quizzes.results');
     // Assignments routes
     Route::get('/teacher/assignments', \App\Livewire\Teacher\Assignments\Index::class)->name('assignments.index');
     Route::get('/teacher/assignments/create', \App\Livewire\Teacher\Assignments\Create::class)->name('assignments.create');

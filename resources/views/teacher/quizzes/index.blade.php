@@ -117,7 +117,7 @@
                                                     class="btn btn-sm btn-outline-warning" title="Sửa">
                                                     <i class="bi bi-pencil"></i>
                                                 </a>
-                                                <a href="#" wire:navigate
+                                               <a href="{{ route('teacher.quizzes.show', $quiz) }}" wire:navigate
                                                     class="btn btn-sm btn-outline-info" title="Xem kết quả">
                                                     <i class="bi bi-graph-up"></i>
                                                 </a>
