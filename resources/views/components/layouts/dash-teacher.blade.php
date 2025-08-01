@@ -89,7 +89,7 @@
                         </a>
                     </li>
                     <li class="nav-item mb-2">
-                        <a wire:navigate href="#"
+                        <a wire:navigate href="{{ route('teacher.notifications.index') }}"
                             class="text-white text-decoration-none d-block {{ $active === 'notifications' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
                             <i class="bi bi-bell me-2"></i> Thông báo
                         </a>
