@@ -14,6 +14,7 @@ class Quiz extends Model
         'description',
         'questions',
         'deadline',
+        'time_limit',
     ];
 
     protected $casts = [
