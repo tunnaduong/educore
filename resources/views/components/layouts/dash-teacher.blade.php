@@ -31,19 +31,19 @@
                 <div class="fw-bold text-uppercase small mb-2">Quản lý lớp học</div>
                 <ul class="nav flex-column">
                     <li class="nav-item mb-2">
-                        <a wire:navigate href="#"
-                            class="text-white text-decoration-none d-block {{ $active === 'classrooms' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
+                        <a wire:navigate href="{{ route('teacher.my-class.index') }}"
+                            class="text-white text-decoration-none d-block {{ $active === 'my-class' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
                             <i class="bi bi-diagram-3 me-2"></i> Lớp học của tôi
                         </a>
                     </li>
                     <li class="nav-item mb-2">
-                        <a wire:navigate href="#"
+                        <a wire:navigate href="{{ route('teacher.lessons.index') }}"
                             class="text-white text-decoration-none d-block {{ $active === 'schedules' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
                             <i class="bi bi-calendar3 me-2"></i> Lịch giảng dạy
                         </a>
                     </li>
                     <li class="nav-item mb-2">
-                        <a wire:navigate href="#"
+                        <a wire:navigate href="{{ route('teacher.grading.index') }}"
                             class="text-white text-decoration-none d-block {{ $active === 'attendances' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
                             <i class="bi bi-calendar-check me-2"></i> Điểm danh
                         </a>
@@ -83,7 +83,7 @@
                         </a>
                     </li>
                     <li class="nav-item mb-2">
-                        <a wire:navigate href="#"
+                        <a wire:navigate href="{{ route('teacher.assignments.index') }}"
                             class="text-white text-decoration-none d-block {{ $active === 'reports' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
                             <i class="bi bi-bar-chart me-2"></i> Báo cáo lớp học
                         </a>

@@ -16,6 +16,7 @@
     },
     "dependencies": {
         "bootstrap": "^5.3.6",
+        "build": "^0.1.4",
         "jquery": "^3.7.1",
         "laravel-echo": "^2.1.6",
         "pusher-js": "^8.4.0",
