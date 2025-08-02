@@ -144,6 +144,8 @@ Route::middleware(['auth', 'role:teacher'])->name('teacher.')->group(function ()
 
     // Schedules routes
     Route::get('/teacher/schedules', \App\Livewire\Teacher\Schedules\Index::class)->name('schedules.index');
+    // Chat routes
+    Route::get('/teacher/chat', \App\Livewire\Teacher\Chat\Index::class)->name('chat.index');
 });
 
 // Shared routes for admin and teacher
