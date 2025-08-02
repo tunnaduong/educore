@@ -128,6 +128,14 @@ Route::middleware(['auth', 'role:teacher'])->name('teacher.')->group(function ()
     Route::get('/teacher/lessons/create', \App\Livewire\Teacher\Lessons\Create::class)->name('lessons.create');
     Route::get('/teacher/lessons/{lesson}', \App\Livewire\Teacher\Lessons\Show::class)->name('lessons.show');
     Route::get('/teacher/lessons/{lesson}/edit', \App\Livewire\Teacher\Lessons\Edit::class)->name('lessons.edit');
+
+    // Chat routes
+    Route::get('/teacher/chat', \App\Livewire\Teacher\Chat\Index::class)->name('chat.index');
+    
+    // Test route
+    Route::get('/teacher/test', function() {
+        return 'Teacher test route works!';
+    })->name('test');
 });
 
 // Shared routes for admin and teacher
