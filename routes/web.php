@@ -132,6 +132,20 @@ Route::middleware(['auth', 'role:teacher'])->name('teacher.')->group(function ()
     Route::get('/teacher/lessons/create', \App\Livewire\Teacher\Lessons\Create::class)->name('lessons.create');
     Route::get('/teacher/lessons/{lesson}', \App\Livewire\Teacher\Lessons\Show::class)->name('lessons.show');
     Route::get('/teacher/lessons/{lesson}/edit', \App\Livewire\Teacher\Lessons\Edit::class)->name('lessons.edit');
+
+    // Notifications routes
+    Route::get('/teacher/notifications', \App\Livewire\Teacher\Notifications\Index::class)->name('notifications.index');
+
+    // Attendance routes
+    Route::get('/teacher/attendance', \App\Livewire\Teacher\Attendance\Overview::class)->name('attendance.overview');
+    Route::get('/teacher/attendance/history', \App\Livewire\Teacher\Attendance\History::class)->name('attendance.history');
+    Route::get('/teacher/attendance/{classroom}/take', \App\Livewire\Teacher\Attendance\TakeAttendance::class)->name('attendance.take');
+    Route::get('/teacher/attendance/{classroom}/attendance-history', \App\Livewire\Teacher\Attendance\AttendanceHistory::class)->name('attendance.classroom-history');
+
+    // Schedules routes
+    Route::get('/teacher/schedules', \App\Livewire\Teacher\Schedules\Index::class)->name('schedules.index');
+    // Chat routes
+    Route::get('/teacher/chat', \App\Livewire\Teacher\Chat\Index::class)->name('chat.index');
 });
 
 // Shared routes for admin and teacher

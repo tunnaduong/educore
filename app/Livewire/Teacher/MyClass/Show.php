@@ -56,7 +56,7 @@ class Show extends Component
 
     public function render()
     {
-        return view('livewire.teacher.my-class.show', [
+        return view('teacher.my-class.show', [
             'classroom' => $this->classroom,
             'teacher' => Auth::user()
         ]);
