@@ -37,13 +37,13 @@
                         </a>
                     </li>
                     <li class="nav-item mb-2">
-                        <a wire:navigate href="{{ route('teacher.lessons.index') }}"
+                        <a href="{{ route('teacher.schedules.index') }}"
                             class="text-white text-decoration-none d-block {{ $active === 'schedules' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
                             <i class="bi bi-calendar3 me-2"></i> Lịch giảng dạy
                         </a>
                     </li>
                     <li class="nav-item mb-2">
-                        <a wire:navigate href="{{ route('teacher.grading.index') }}"
+                        <a wire:navigate href="{{ route('teacher.attendance.overview') }}"
                             class="text-white text-decoration-none d-block {{ $active === 'attendances' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
                             <i class="bi bi-calendar-check me-2"></i> Điểm danh
                         </a>
@@ -89,9 +89,15 @@
                         </a>
                     </li>
                     <li class="nav-item mb-2">
-                        <a wire:navigate href="{{ route('teacher.quizzes.index') }}"
+                        <a wire:navigate href="{{ route('teacher.notifications.index') }}"
                             class="text-white text-decoration-none d-block {{ $active === 'notifications' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
                             <i class="bi bi-bell me-2"></i> Thông báo
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a wire:navigate href="{{ route('teacher.chat.index') }}"
+                            class="text-white text-decoration-none d-block {{ $active === 'chat' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
+                            <i class="bi bi-chat-dots me-2"></i> Chat & Tương tác
                         </a>
                     </li>
                 </ul>
