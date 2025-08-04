@@ -4,11 +4,12 @@
         <div class="mb-4">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <a href="{{ route('teacher.grading.index') }}" wire:navigate class="text-decoration-none text-secondary">
-                        <i class="bi bi-arrow-left me-1"></i>Quay lại danh sách
+                    <a href="{{ route('teacher.grading.index') }}" wire:navigate
+                        class="text-decoration-none text-secondary">
+                        <i class="bi bi-arrow-left mr-1"></i>Quay lại danh sách
                     </a>
                     <h4 class="mt-2 mb-0 text-primary fs-4">
-                        <i class="bi bi-check-circle me-2"></i>Chấm điểm bài tập
+                        <i class="bi bi-check-circle mr-2"></i>Chấm điểm bài tập
                     </h4>
                     <p class="text-muted mb-0">{{ $assignment->title }}</p>
                 </div>
@@ -21,7 +22,7 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0">
-                            <i class="bi bi-journal-text me-2"></i>Thông tin bài tập
+                            <i class="bi bi-journal-text mr-2"></i>Thông tin bài tập
                         </h5>
                     </div>
                     <div class="card-body">
@@ -52,8 +53,9 @@
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">Tệp đính kèm:</label>
                                 <div>
-                                    <a href="{{ Storage::url($assignment->attachment) }}" target="_blank" class="btn btn-sm btn-outline-primary">
-                                        <i class="bi bi-download me-1"></i>Tải xuống
+                                    <a href="{{ Storage::url($assignment->attachment) }}" target="_blank"
+                                        class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-download mr-1"></i>Tải xuống
                                     </a>
                                 </div>
                             </div>
@@ -88,7 +90,7 @@
                 <div class="card shadow-sm">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-bar-chart me-2"></i>Thống kê
+                            <i class="bi bi-bar-chart mr-2"></i>Thống kê
                         </h5>
                     </div>
                     <div class="card-body">
@@ -100,7 +102,8 @@
                                 </div>
                             </div>
                             <div class="col-6">
-                                <h4 class="text-success mb-1">{{ $submissions->where('score', '!=', null)->count() }}</h4>
+                                <h4 class="text-success mb-1">{{ $submissions->where('score', '!=', null)->count() }}
+                                </h4>
                                 <small class="text-muted">Đã chấm</small>
                             </div>
                         </div>
@@ -113,7 +116,7 @@
                 <div class="card shadow-sm">
                     <div class="card-header bg-primary text-white d-flex align-items-center justify-content-between">
                         <div>
-                            <i class="bi bi-people me-2"></i>
+                            <i class="bi bi-people mr-2"></i>
                             <span class="mb-0">Danh sách bài nộp của học viên</span>
                         </div>
                         <div class="text-white-50 small">
@@ -138,18 +141,21 @@
                                             <tr>
                                                 <td>
                                                     <div class="d-flex align-items-center">
-                                                        <div class="avatar-sm me-3">
+                                                        <div class="avatar-sm mr-3">
                                                             <i class="bi bi-person-circle fs-4 text-primary"></i>
                                                         </div>
                                                         <div>
-                                                            <div class="fw-medium">{{ $submission->student->user->name ?? '-' }}</div>
-                                                            <small class="text-muted">{{ $submission->student->user->email ?? '' }}</small>
+                                                            <div class="fw-medium">
+                                                                {{ $submission->student->user->name ?? '-' }}</div>
+                                                            <small
+                                                                class="text-muted">{{ $submission->student->user->email ?? '' }}</small>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     @if ($submission->submission_type)
-                                                        <span class="badge bg-info">{{ $this->getSubmissionTypeLabel($submission->submission_type) }}</span>
+                                                        <span
+                                                            class="badge bg-info">{{ $this->getSubmissionTypeLabel($submission->submission_type) }}</span>
                                                         @if ($submission->content)
                                                             <br><small class="text-muted">Có nội dung</small>
                                                         @else
@@ -161,22 +167,26 @@
                                                 </td>
                                                 <td>
                                                     @if ($submission->submitted_at)
-                                                        <div class="fw-medium">{{ $submission->submitted_at->format('d/m/Y H:i') }}</div>
-                                                        <small class="text-muted">{{ $submission->submitted_at->diffForHumans() }}</small>
+                                                        <div class="fw-medium">
+                                                            {{ $submission->submitted_at->format('d/m/Y H:i') }}</div>
+                                                        <small
+                                                            class="text-muted">{{ $submission->submitted_at->diffForHumans() }}</small>
                                                     @else
                                                         <span class="text-muted">Chưa nộp</span>
                                                     @endif
                                                 </td>
                                                 <td>
                                                     @if ($submission->score !== null)
-                                                        <span class="badge bg-success">{{ $submission->score }}/10</span>
+                                                        <span
+                                                            class="badge bg-success">{{ $submission->score }}/10</span>
                                                     @else
                                                         <span class="badge bg-warning">Chưa chấm</span>
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <button wire:click="viewSubmission({{ $submission->id }})" class="btn btn-sm btn-outline-primary">
-                                                        <i class="bi bi-eye me-1"></i>Xem
+                                                    <button wire:click="viewSubmission({{ $submission->id }})"
+                                                        class="btn btn-sm btn-outline-primary">
+                                                        <i class="bi bi-eye mr-1"></i>Xem
                                                     </button>
                                                 </td>
                                             </tr>
@@ -203,7 +213,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">
-                            <i class="bi bi-eye me-2"></i>Chi tiết bài nộp
+                            <i class="bi bi-eye mr-2"></i>Chi tiết bài nộp
                         </h5>
                         <button type="button" class="btn-close" wire:click="closeModal"></button>
                     </div>
@@ -213,26 +223,30 @@
                                 <h6>Thông tin học viên</h6>
                                 <p><strong>Tên:</strong> {{ $selectedSubmission->student->user->name ?? '-' }}</p>
                                 <p><strong>Email:</strong> {{ $selectedSubmission->student->user->email ?? '-' }}</p>
-                                <p><strong>Thời gian nộp:</strong> {{ $selectedSubmission->submitted_at ? $selectedSubmission->submitted_at->format('d/m/Y H:i') : 'Chưa nộp' }}</p>
+                                <p><strong>Thời gian nộp:</strong>
+                                    {{ $selectedSubmission->submitted_at ? $selectedSubmission->submitted_at->format('d/m/Y H:i') : 'Chưa nộp' }}
+                                </p>
                             </div>
                             <div class="col-md-6">
                                 <h6>Nội dung bài nộp</h6>
                                 @if ($selectedSubmission->content)
-                                                                         @if ($selectedSubmission->submission_type === 'text' || $selectedSubmission->submission_type === 'essay')
-                                         <div class="mb-3">
-                                             <div class="border rounded p-3 bg-light">
-                                                 {{ $selectedSubmission->content }}
-                                             </div>
-                                         </div>
+                                    @if ($selectedSubmission->submission_type === 'text' || $selectedSubmission->submission_type === 'essay')
+                                        <div class="mb-3">
+                                            <div class="border rounded p-3 bg-light">
+                                                {{ $selectedSubmission->content }}
+                                            </div>
+                                        </div>
                                     @elseif ($selectedSubmission->submission_type === 'image')
                                         <div class="mb-3">
                                             <label class="form-label fw-semibold">Ảnh bài nộp:</label>
                                             <div>
                                                 <img src="{{ Storage::url($selectedSubmission->content) }}"
-                                                     alt="Bài nộp" class="img-fluid rounded border" style="max-width: 100%;">
+                                                    alt="Bài nộp" class="img-fluid rounded border"
+                                                    style="max-width: 100%;">
                                                 <div class="mt-2">
-                                                    <a href="{{ Storage::url($selectedSubmission->content) }}" target="_blank" class="btn btn-sm btn-outline-primary">
-                                                        <i class="bi bi-download me-1"></i>Tải xuống
+                                                    <a href="{{ Storage::url($selectedSubmission->content) }}"
+                                                        target="_blank" class="btn btn-sm btn-outline-primary">
+                                                        <i class="bi bi-download mr-1"></i>Tải xuống
                                                     </a>
                                                 </div>
                                             </div>
@@ -242,12 +256,14 @@
                                             <label class="form-label fw-semibold">Video bài nộp:</label>
                                             <div>
                                                 <video controls class="w-100 rounded">
-                                                    <source src="{{ Storage::url($selectedSubmission->content) }}" type="video/mp4">
+                                                    <source src="{{ Storage::url($selectedSubmission->content) }}"
+                                                        type="video/mp4">
                                                     Trình duyệt không hỗ trợ video.
                                                 </video>
                                                 <div class="mt-2">
-                                                    <a href="{{ Storage::url($selectedSubmission->content) }}" target="_blank" class="btn btn-sm btn-outline-primary">
-                                                        <i class="bi bi-download me-1"></i>Tải xuống
+                                                    <a href="{{ Storage::url($selectedSubmission->content) }}"
+                                                        target="_blank" class="btn btn-sm btn-outline-primary">
+                                                        <i class="bi bi-download mr-1"></i>Tải xuống
                                                     </a>
                                                 </div>
                                             </div>
@@ -257,12 +273,14 @@
                                             <label class="form-label fw-semibold">Audio bài nộp:</label>
                                             <div>
                                                 <audio controls class="w-100">
-                                                    <source src="{{ Storage::url($selectedSubmission->content) }}" type="audio/mpeg">
+                                                    <source src="{{ Storage::url($selectedSubmission->content) }}"
+                                                        type="audio/mpeg">
                                                     Trình duyệt không hỗ trợ audio.
                                                 </audio>
                                                 <div class="mt-2">
-                                                    <a href="{{ Storage::url($selectedSubmission->content) }}" target="_blank" class="btn btn-sm btn-outline-primary">
-                                                        <i class="bi bi-download me-1"></i>Tải xuống
+                                                    <a href="{{ Storage::url($selectedSubmission->content) }}"
+                                                        target="_blank" class="btn btn-sm btn-outline-primary">
+                                                        <i class="bi bi-download mr-1"></i>Tải xuống
                                                     </a>
                                                 </div>
                                             </div>
@@ -271,8 +289,9 @@
                                         <div class="mb-3">
                                             <label class="form-label fw-semibold">Tệp đính kèm:</label>
                                             <div>
-                                                <a href="{{ Storage::url($selectedSubmission->content) }}" target="_blank" class="btn btn-sm btn-outline-primary">
-                                                    <i class="bi bi-download me-1"></i>Tải xuống
+                                                <a href="{{ Storage::url($selectedSubmission->content) }}"
+                                                    target="_blank" class="btn btn-sm btn-outline-primary">
+                                                    <i class="bi bi-download mr-1"></i>Tải xuống
                                                 </a>
                                             </div>
                                         </div>
@@ -280,7 +299,7 @@
                                 @else
                                     <div class="mb-3">
                                         <div class="alert alert-warning">
-                                            <i class="bi bi-exclamation-triangle me-2"></i>
+                                            <i class="bi bi-exclamation-triangle mr-2"></i>
                                             Không có nội dung bài nộp
                                         </div>
                                     </div>
@@ -293,22 +312,24 @@
                         <!-- Form chấm điểm -->
                         <h6>Chấm điểm</h6>
                         <div class="row">
-                                                         <div class="col-md-6">
-                                 <label class="form-label fw-semibold">Điểm (0-10):</label>
-                                 <input type="number" class="form-control" wire:model.defer="grading.{{ $selectedSubmission->id }}.score"
-                                        min="0" max="10" step="0.1" placeholder="Nhập điểm...">
-                             </div>
-                             <div class="col-md-6">
-                                 <label class="form-label fw-semibold">Nhận xét:</label>
-                                 <textarea class="form-control" wire:model.defer="grading.{{ $selectedSubmission->id }}.feedback"
-                                           rows="3" placeholder="Nhập nhận xét..."></textarea>
-                             </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Điểm (0-10):</label>
+                                <input type="number" class="form-control"
+                                    wire:model.defer="grading.{{ $selectedSubmission->id }}.score" min="0"
+                                    max="10" step="0.1" placeholder="Nhập điểm...">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Nhận xét:</label>
+                                <textarea class="form-control" wire:model.defer="grading.{{ $selectedSubmission->id }}.feedback" rows="3"
+                                    placeholder="Nhập nhận xét..."></textarea>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" wire:click="closeModal">Đóng</button>
-                        <button type="button" class="btn btn-primary" wire:click="saveGrade({{ $selectedSubmission->id }})">
-                            <i class="bi bi-save me-1"></i>Lưu điểm
+                        <button type="button" class="btn btn-primary"
+                            wire:click="saveGrade({{ $selectedSubmission->id }})">
+                            <i class="bi bi-save mr-1"></i>Lưu điểm
                         </button>
                     </div>
                 </div>

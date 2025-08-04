@@ -4,10 +4,10 @@
         <div class="mb-4">
             <a href="{{ route('classrooms.index') }}" wire:navigate
                 class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left me-2"></i>Quay lại
+                <i class="bi bi-arrow-left mr-2"></i>Quay lại
             </a>
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-book me-2"></i>Tạo lớp học mới
+                <i class="bi bi-book mr-2"></i>Tạo lớp học mới
             </h4>
         </div>
 
@@ -32,7 +32,7 @@
                             <div class="mb-3">
                                 <label for="level" class="form-label">Trình độ <span
                                         class="text-danger">*</span></label>
-                                <select wire:model="level" class="form-select @error('level') is-invalid @enderror"
+                                <select wire:model="level" class="form-control @error('level') is-invalid @enderror"
                                     id="level">
                                     <option value="">Chọn trình độ</option>
                                     <option value="HSK1">HSK 1</option>
@@ -88,7 +88,7 @@
                             <div class="mb-3">
                                 <label for="status" class="form-label">Trạng thái <span
                                         class="text-danger">*</span></label>
-                                <select wire:model="status" class="form-select @error('status') is-invalid @enderror"
+                                <select wire:model="status" class="form-control @error('status') is-invalid @enderror"
                                     id="status">
                                     <option value="active">Đang hoạt động</option>
                                     <option value="completed">Đã kết thúc</option>
@@ -145,7 +145,7 @@
                         <div class="d-flex justify-content-end gap-2">
                             <a href="{{ route('classrooms.index') }}" wire:navigate class="btn btn-light">Hủy</a>
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-book me-2"></i>Tạo lớp học
+                                <i class="bi bi-book mr-2"></i>Tạo lớp học
                             </button>
                         </div>
                     </form>

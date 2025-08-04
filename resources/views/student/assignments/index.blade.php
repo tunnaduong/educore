@@ -5,7 +5,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-journal-text me-2"></i>Danh sách bài tập
+                        <i class="bi bi-journal-text mr-2"></i>Danh sách bài tập
                     </h4>
                     <p class="text-muted mb-0">Các bài tập bạn cần hoàn thành</p>
                 </div>
@@ -23,7 +23,7 @@
                     </div>
                     <div class="col-md-2">
                         <label class="form-label">Trạng thái</label>
-                        <select class="form-select" wire:model.live="filterStatus">
+                        <select class="form-control" wire:model.live="filterStatus">
                             <option value="all">Tất cả</option>
                             <option value="upcoming">Chưa đến hạn</option>
                             <option value="overdue">Quá hạn</option>
@@ -32,7 +32,7 @@
                     </div>
                     <div class="col-md-2">
                         <label class="form-label">Lớp học</label>
-                        <select class="form-select" wire:model.live="filterClassroom">
+                        <select class="form-control" wire:model.live="filterClassroom">
                             <option value="">Tất cả</option>
                             @foreach ($classrooms as $classroom)
                                 <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
@@ -41,7 +41,7 @@
                     </div>
                     <div class="col-md-2">
                         <label class="form-label">Giảng viên</label>
-                        <select class="form-select" wire:model.live="filterTeacher">
+                        <select class="form-control" wire:model.live="filterTeacher">
                             <option value="">Tất cả</option>
                             @foreach ($teachers as $teacher)
                                 <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
@@ -50,7 +50,7 @@
                     </div>
                     <div class="col-md-2">
                         <label class="form-label">Loại bài tập</label>
-                        <select class="form-select" wire:model.live="filterType">
+                        <select class="form-control" wire:model.live="filterType">
                             <option value="">Tất cả</option>
                             <option value="text">Điền từ</option>
                             <option value="essay">Tự luận</option>
@@ -69,7 +69,7 @@
         <div class="card shadow-sm">
             <div class="card-header bg-light">
                 <h6 class="mb-0">
-                    <i class="bi bi-list-ul me-2"></i>Danh sách bài tập
+                    <i class="bi bi-list-ul mr-2"></i>Danh sách bài tập
                 </h6>
             </div>
             <div class="card-body">
@@ -118,7 +118,7 @@
                                         <td>
                                             @if ($assignment->types)
                                                 @foreach ($assignment->types as $type)
-                                                    <span class="badge bg-primary me-1">
+                                                    <span class="badge bg-primary mr-1">
                                                         @switch($type)
                                                             @case('text')
                                                                 Điền từ

@@ -5,7 +5,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-bar-chart-fill me-2"></i>Kết quả học tập
+                        <i class="bi bi-bar-chart-fill mr-2"></i>Kết quả học tập
                     </h4>
                     <p class="text-muted mb-0">Tổng quan điểm số và điểm danh của bạn trong quá trình học</p>
                 </div>
@@ -61,7 +61,7 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header bg-primary text-white">
-                        <i class="bi bi-journal-check me-2"></i>Điểm bài tập
+                        <i class="bi bi-journal-check mr-2"></i>Điểm bài tập
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
@@ -97,7 +97,7 @@
                 </div>
                 <div class="card mb-4">
                     <div class="card-header bg-success text-white">
-                        <i class="bi bi-clipboard-check me-2"></i>Điểm kiểm tra
+                        <i class="bi bi-clipboard-check mr-2"></i>Điểm kiểm tra
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
@@ -133,7 +133,7 @@
                 </div>
                 <div class="card">
                     <div class="card-header bg-info text-white">
-                        <i class="bi bi-calendar-check me-2"></i>Thống kê điểm danh
+                        <i class="bi bi-calendar-check mr-2"></i>Thống kê điểm danh
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">

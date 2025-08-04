@@ -7,7 +7,7 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
                             <a href="{{ route('teacher.my-class.index') }}" class="text-decoration-none">
-                                <i class="bi bi-arrow-left me-1"></i>
+                                <i class="bi bi-arrow-left mr-1"></i>
                                 Lớp học của tôi
                             </a>
                         </li>
@@ -15,7 +15,7 @@
                     </ol>
                 </nav>
                 <h2 class="mb-0">
-                    <i class="bi bi-diagram-3-fill text-primary me-2"></i>
+                    <i class="bi bi-diagram-3-fill text-primary mr-2"></i>
                     {{ $classroom->name }}
                 </h2>
                 <p class="text-muted mb-0">{{ $classroom->description }}</p>
@@ -24,15 +24,15 @@
                 <div class="d-flex justify-content-end gap-2">
                     <a href="{{ route('teacher.attendance.take', $classroom) }}" wire:navigate
                         class="btn btn-primary btn-sm">
-                        <i class="bi bi-calendar-check me-1"></i>
+                        <i class="bi bi-calendar-check mr-1"></i>
                         Điểm danh
                     </a>
                     <button class="btn btn-outline-primary btn-sm" wire:click="showAddLessonModal">
-                        <i class="bi bi-plus-circle me-1"></i>
+                        <i class="bi bi-plus-circle mr-1"></i>
                         Thêm bài học
                     </button>
                     <button class="btn btn-outline-success btn-sm" wire:click="showAddAssignmentModal">
-                        <i class="bi bi-plus-circle me-1"></i>
+                        <i class="bi bi-plus-circle mr-1"></i>
                         Thêm bài tập
                     </button>
                 </div>
@@ -86,35 +86,35 @@
                     <li class="nav-item" role="presentation">
                         <button class="nav-link {{ $activeTab === 'overview' ? 'active' : '' }}"
                             wire:click="setActiveTab('overview')" type="button">
-                            <i class="bi bi-house me-1"></i>
+                            <i class="bi bi-house mr-1"></i>
                             Tổng quan
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link {{ $activeTab === 'students' ? 'active' : '' }}"
                             wire:click="setActiveTab('students')" type="button">
-                            <i class="bi bi-people me-1"></i>
+                            <i class="bi bi-people mr-1"></i>
                             Học sinh
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link {{ $activeTab === 'lessons' ? 'active' : '' }}"
                             wire:click="setActiveTab('lessons')" type="button">
-                            <i class="bi bi-book me-1"></i>
+                            <i class="bi bi-book mr-1"></i>
                             Bài học
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link {{ $activeTab === 'assignments' ? 'active' : '' }}"
                             wire:click="setActiveTab('assignments')" type="button">
-                            <i class="bi bi-journal-text me-1"></i>
+                            <i class="bi bi-journal-text mr-1"></i>
                             Bài tập
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link {{ $activeTab === 'attendance' ? 'active' : '' }}"
                             wire:click="setActiveTab('attendance')" type="button">
-                            <i class="bi bi-calendar-check me-1"></i>
+                            <i class="bi bi-calendar-check mr-1"></i>
                             Điểm danh
                         </button>
                     </li>
@@ -126,7 +126,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <h6 class="text-primary mb-3">
-                                <i class="bi bi-info-circle me-2"></i>
+                                <i class="bi bi-info-circle mr-2"></i>
                                 Thông tin lớp học
                             </h6>
                             <div class="mb-3">
@@ -145,7 +145,7 @@
                         </div>
                         <div class="col-md-6">
                             <h6 class="text-success mb-3">
-                                <i class="bi bi-graph-up me-2"></i>
+                                <i class="bi bi-graph-up mr-2"></i>
                                 Thống kê nhanh
                             </h6>
                             <div class="row">
@@ -180,7 +180,7 @@
                     <!-- Recent Activities -->
                     <div class="mt-4">
                         <h6 class="text-info mb-3">
-                            <i class="bi bi-clock-history me-2"></i>
+                            <i class="bi bi-clock-history mr-2"></i>
                             Hoạt động gần đây
                         </h6>
                         <div class="row">
@@ -232,11 +232,11 @@
                 @if ($activeTab === 'students')
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h6 class="text-info mb-0">
-                            <i class="bi bi-people me-2"></i>
+                            <i class="bi bi-people mr-2"></i>
                             Danh sách học sinh ({{ $classroom->students->count() }})
                         </h6>
                         <button class="btn btn-primary btn-sm" wire:click="showAddStudentModal">
-                            <i class="bi bi-plus-circle me-1"></i>
+                            <i class="bi bi-plus-circle mr-1"></i>
                             Thêm học sinh
                         </button>
                     </div>
@@ -258,7 +258,7 @@
                                         <td>{{ $index + 1 }}</td>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2"
+                                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mr-2"
                                                     style="width: 32px; height: 32px; font-size: 14px;">
                                                     {{ strtoupper(substr($student->name, 0, 1)) }}
                                                 </div>
@@ -298,11 +298,11 @@
                 @if ($activeTab === 'lessons')
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h6 class="text-warning mb-0">
-                            <i class="bi bi-book me-2"></i>
+                            <i class="bi bi-book mr-2"></i>
                             Danh sách bài học ({{ $classroom->lessons->count() }})
                         </h6>
                         <button class="btn btn-warning btn-sm" wire:click="showAddLessonModal">
-                            <i class="bi bi-plus-circle me-1"></i>
+                            <i class="bi bi-plus-circle mr-1"></i>
                             Thêm bài học
                         </button>
                     </div>
@@ -347,11 +347,11 @@
                 @if ($activeTab === 'assignments')
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h6 class="text-success mb-0">
-                            <i class="bi bi-journal-text me-2"></i>
+                            <i class="bi bi-journal-text mr-2"></i>
                             Danh sách bài tập ({{ $classroom->assignments->count() }})
                         </h6>
                         <button class="btn btn-success btn-sm" wire:click="showAddAssignmentModal">
-                            <i class="bi bi-plus-circle me-1"></i>
+                            <i class="bi bi-plus-circle mr-1"></i>
                             Thêm bài tập
                         </button>
                     </div>
@@ -397,11 +397,11 @@
                 @if ($activeTab === 'attendance')
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h6 class="text-primary mb-0">
-                            <i class="bi bi-calendar-check me-2"></i>
+                            <i class="bi bi-calendar-check mr-2"></i>
                             Lịch sử điểm danh
                         </h6>
                         <button class="btn btn-primary btn-sm">
-                            <i class="bi bi-plus-circle me-1"></i>
+                            <i class="bi bi-plus-circle mr-1"></i>
                             Điểm danh mới
                         </button>
                     </div>

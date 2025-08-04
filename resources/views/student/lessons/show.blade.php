@@ -4,7 +4,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-book me-2"></i>{{ $lesson->title }}
+                        <i class="bi bi-book mr-2"></i>{{ $lesson->title }}
                     </h4>
                     <p class="text-muted mb-0">Chi tiết bài học</p>
                 </div>

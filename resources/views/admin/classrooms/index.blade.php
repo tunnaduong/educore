@@ -96,7 +96,7 @@
                                         <td class="text-center">
                                             <span
                                                 class="badge badge-{{ $classroom->status == 'active' ? 'success' : 'secondary' }}">
-                                                {{ $classroom->status == 'active' ? @lang('general.active') : @lang('general.inactive') }}
+                                                {{ $classroom->status == 'active' ? __('general.active') : __('general.inactive') }}
                                             </span>
                                         </td>
                                         <td class="text-center">
@@ -105,8 +105,9 @@
                                                     class="btn btn-sm btn-outline-secondary" title="@lang('general.view_details')">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
-                                                <a href="{{ route('classrooms.attendance', $classroom) }}" wire:navigate
-                                                    class="btn btn-sm btn-outline-info" title="@lang('general.take_attendance')">
+                                                <a href="{{ route('classrooms.attendance', $classroom) }}"
+                                                    wire:navigate class="btn btn-sm btn-outline-info"
+                                                    title="@lang('general.take_attendance')">
                                                     <i class="fas fa-calendar-check"></i>
                                                 </a>
                                                 <a href="{{ route('classrooms.attendance-history', $classroom) }}"
@@ -170,7 +171,7 @@
                             @lang('general.showing_results', [
                                 'from' => $classrooms->firstItem() ?? 0,
                                 'to' => $classrooms->lastItem() ?? 0,
-                                'total' => $classrooms->total() ?? 0
+                                'total' => $classrooms->total() ?? 0,
                             ])
                         </div>
                         <div>

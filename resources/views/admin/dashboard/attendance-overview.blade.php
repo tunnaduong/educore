@@ -3,17 +3,17 @@
         <div class="row align-items-center">
             <div class="col-md-6">
                 <h5 class="mb-0 text-primary">
-                    <i class="bi bi-graph-up me-2"></i>Thống kê điểm danh tổng quan
+                    <i class="bi bi-graph-up mr-2"></i>Thống kê điểm danh tổng quan
                 </h5>
             </div>
             <div class="col-md-6">
                 <div class="d-flex gap-2 justify-content-end">
-                    <select wire:model.live="selectedMonth" class="form-select" style="max-width: 150px;">
+                    <select wire:model.live="selectedMonth" class="form-control" style="max-width: 150px;">
                         @for ($month = 1; $month <= 12; $month++)
                             <option value="{{ $month }}">{{ $this->getMonthName($month) }}</option>
                         @endfor
                     </select>
-                    <select wire:model.live="selectedYear" class="form-select" style="max-width: 120px;">
+                    <select wire:model.live="selectedYear" class="form-control" style="max-width: 120px;">
                         @for ($year = date('Y') - 2; $year <= date('Y') + 1; $year++)
                             <option value="{{ $year }}">{{ $year }}</option>
                         @endfor
@@ -93,7 +93,7 @@
                 <div class="card">
                     <div class="card-header bg-light">
                         <h6 class="mb-0 text-primary">
-                            <i class="bi bi-trophy me-2"></i>Top 5 học viên điểm danh tốt nhất
+                            <i class="bi bi-trophy mr-2"></i>Top 5 học viên điểm danh tốt nhất
                         </h6>
                     </div>
                     <div class="card-body">
@@ -146,7 +146,7 @@
                 <div class="card">
                     <div class="card-header bg-light">
                         <h6 class="mb-0 text-primary">
-                            <i class="bi bi-award me-2"></i>Top 5 lớp điểm danh tốt nhất
+                            <i class="bi bi-award mr-2"></i>Top 5 lớp điểm danh tốt nhất
                         </h6>
                     </div>
                     <div class="card-body">

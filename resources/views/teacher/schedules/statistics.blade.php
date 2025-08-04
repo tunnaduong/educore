@@ -74,7 +74,7 @@
         <div class="col-md-4">
             <div class="card border-primary h-100">
                 <div class="card-header bg-primary text-white">
-                    <h6 class="mb-0"><i class="bi bi-clock me-2"></i>Bài học sắp tới</h6>
+                    <h6 class="mb-0"><i class="bi bi-clock mr-2"></i>Bài học sắp tới</h6>
                 </div>
                 <div class="card-body text-center">
                     <h2 class="text-primary mb-0">{{ $upcomingLessons }}</h2>
@@ -87,7 +87,7 @@
         <div class="col-md-4">
             <div class="card border-warning h-100">
                 <div class="card-header bg-warning text-white">
-                    <h6 class="mb-0"><i class="bi bi-hourglass-split me-2"></i>Bài tập chưa đến hạn</h6>
+                    <h6 class="mb-0"><i class="bi bi-hourglass-split mr-2"></i>Bài tập chưa đến hạn</h6>
                 </div>
                 <div class="card-body text-center">
                     <h2 class="text-warning mb-0">{{ $pendingAssignments }}</h2>
@@ -100,7 +100,7 @@
         <div class="col-md-4">
             <div class="card border-success h-100">
                 <div class="card-header bg-success text-white">
-                    <h6 class="mb-0"><i class="bi bi-calendar-week me-2"></i>Tuần này</h6>
+                    <h6 class="mb-0"><i class="bi bi-calendar-week mr-2"></i>Tuần này</h6>
                 </div>
                 <div class="card-body text-center">
                     <h2 class="text-success mb-0">{{ $thisWeekEvents }}</h2>
@@ -115,7 +115,7 @@
         <div class="col-md-6">
             <div class="card border-info h-100">
                 <div class="card-header bg-info text-white">
-                    <h6 class="mb-0"><i class="bi bi-calendar-month me-2"></i>Tháng này</h6>
+                    <h6 class="mb-0"><i class="bi bi-calendar-month mr-2"></i>Tháng này</h6>
                 </div>
                 <div class="card-body text-center">
                     <h2 class="text-info mb-0">{{ $thisMonthEvents }}</h2>
@@ -128,7 +128,7 @@
         <div class="col-md-6">
             <div class="card border-secondary h-100">
                 <div class="card-header bg-secondary text-white">
-                    <h6 class="mb-0"><i class="bi bi-calendar-check me-2"></i>Tổng sự kiện</h6>
+                    <h6 class="mb-0"><i class="bi bi-calendar-check mr-2"></i>Tổng sự kiện</h6>
                 </div>
                 <div class="card-body text-center">
                     <h2 class="text-secondary mb-0">{{ $totalLessons + $totalAssignments + $totalQuizzes }}</h2>
