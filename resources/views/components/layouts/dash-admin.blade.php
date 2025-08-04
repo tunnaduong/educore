@@ -16,9 +16,9 @@
                     @lang('general.language')
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a href="{{ route('lang.switch','vi') }}" class="dropdown-item">🇻🇳 @lang('general.vietnamese')</a>
-                    <a href="{{ route('lang.switch','en') }}" class="dropdown-item">🇬🇧 @lang('general.english')</a>
-                    <a href="{{ route('lang.switch','zh') }}" class="dropdown-item">🇨🇳 @lang('general.chinese')</a>
+                    <a href="{{ route('lang.switch', 'vi') }}" class="dropdown-item">🇻🇳 @lang('general.vietnamese')</a>
+                    <a href="{{ route('lang.switch', 'en') }}" class="dropdown-item">🇬🇧 @lang('general.english')</a>
+                    <a href="{{ route('lang.switch', 'zh') }}" class="dropdown-item">🇨🇳 @lang('general.chinese')</a>
                 </div>
             </li>
             <li class="nav-item">
@@ -42,7 +42,8 @@
         <div class="sidebar">
             <!-- Sidebar Menu -->
             <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
                     <li class="nav-item">
                         <a href="{{ route('dashboard') }}" class="nav-link {{ $active === 'home' ? 'active' : '' }}">
                             <i class="nav-icon fas fa-home"></i>
@@ -50,61 +51,71 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('attendances.overview') }}" class="nav-link {{ $active === 'attendances' ? 'active' : '' }}">
+                        <a href="{{ route('attendances.overview') }}"
+                            class="nav-link {{ $active === 'attendances' ? 'active' : '' }}">
                             <i class="nav-icon fas fa-calendar-check"></i>
                             <p>@lang('general.attendance')</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('classrooms.index') }}" class="nav-link {{ $active === 'classrooms' ? 'active' : '' }}">
+                        <a href="{{ route('classrooms.index') }}"
+                            class="nav-link {{ $active === 'classrooms' ? 'active' : '' }}">
                             <i class="nav-icon fas fa-graduation-cap"></i>
                             <p>@lang('general.classrooms')</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('schedules.index') }}" class="nav-link {{ $active === 'schedules' ? 'active' : '' }}">
+                        <a href="{{ route('schedules.index') }}"
+                            class="nav-link {{ $active === 'schedules' ? 'active' : '' }}">
                             <i class="nav-icon fas fa-calendar-alt"></i>
                             <p>@lang('general.schedules')</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('assignments.overview') }}" class="nav-link {{ $active === 'assignments' ? 'active' : '' }}">
+                        <a href="{{ route('assignments.overview') }}"
+                            class="nav-link {{ $active === 'assignments' ? 'active' : '' }}">
                             <i class="nav-icon fas fa-tasks"></i>
                             <p>@lang('general.assignments')</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('grading.list') }}" class="nav-link {{ $active === 'grading' ? 'active' : '' }}">
+                        <a href="{{ route('grading.list') }}"
+                            class="nav-link {{ $active === 'grading' ? 'active' : '' }}">
                             <i class="nav-icon fas fa-check-circle"></i>
                             <p>@lang('general.grading')</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('quizzes.index') }}" class="nav-link {{ $active === 'quizzes' ? 'active' : '' }}">
+                        <a href="{{ route('quizzes.index') }}"
+                            class="nav-link {{ $active === 'quizzes' ? 'active' : '' }}">
                             <i class="nav-icon fas fa-question-circle"></i>
                             <p>@lang('general.quizzes')</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('lessons.index') }}" class="nav-link {{ $active === 'lessons' ? 'active' : '' }}">
+                        <a href="{{ route('lessons.index') }}"
+                            class="nav-link {{ $active === 'lessons' ? 'active' : '' }}">
                             <i class="nav-icon fas fa-book"></i>
                             <p>@lang('general.lessons')</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('students.index') }}" class="nav-link {{ $active === 'students' ? 'active' : '' }}">
+                        <a href="{{ route('students.index') }}"
+                            class="nav-link {{ $active === 'students' ? 'active' : '' }}">
                             <i class="nav-icon fas fa-users"></i>
                             <p>@lang('general.students')</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('reports.index') }}" class="nav-link {{ $active === 'reports' ? 'active' : '' }}">
+                        <a href="{{ route('reports.index') }}"
+                            class="nav-link {{ $active === 'reports' ? 'active' : '' }}">
                             <i class="nav-icon fas fa-chart-bar"></i>
                             <p>@lang('general.reports')</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('notifications.index') }}" class="nav-link {{ $active === 'notifications' ? 'active' : '' }}">
+                        <a href="{{ route('notifications.index') }}"
+                            class="nav-link {{ $active === 'notifications' ? 'active' : '' }}">
                             <i class="nav-icon fas fa-bell"></i>
                             <p>@lang('general.notifications')</p>
                         </a>
@@ -124,20 +135,9 @@
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1>{{ $title }}</h1>
-                    </div>
-                </div>
-            </div><!-- /.container-fluid -->
-        </section>
-
         <!-- Main content -->
         <section class="content">
-            <div class="container-fluid">
+            <div class="py-4 container-fluid">
                 {{ $slot }}
             </div><!-- /.container-fluid -->
         </section>
