@@ -6,17 +6,19 @@
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="bi bi-list"></i></a>
             </li>
         </ul>
-        <ul class="navbar-nav ms-auto">
+        <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
                 <a class="nav-link" data-bs-toggle="dropdown" href="#">@lang('general.language')</a>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a href="{{ route('lang.switch','vi') }}" class="dropdown-item">🇻🇳 @lang('general.vietnamese')</a></li>
-                    <li><a href="{{ route('lang.switch','en') }}" class="dropdown-item">🇬🇧 @lang('general.english')</a></li>
-                    <li><a href="{{ route('lang.switch','zh') }}" class="dropdown-item">🇨🇳 @lang('general.chinese')</a></li>
+                    <li><a href="{{ route('lang.switch', 'vi') }}" class="dropdown-item">🇻🇳 @lang('general.vietnamese')</a></li>
+                    <li><a href="{{ route('lang.switch', 'en') }}" class="dropdown-item">🇬🇧 @lang('general.english')</a></li>
+                    <li><a href="{{ route('lang.switch', 'zh') }}" class="dropdown-item">🇨🇳 @lang('general.chinese')</a></li>
                 </ul>
             </li>
             <li class="nav-item"><livewire:components.notification-bell /></li>
-            <li class="nav-item"><livewire:components.logout /></li>
+            <li class="nav-item">
+                <livewire:components.logout />
+            </li>
         </ul>
     </nav>
 
@@ -34,55 +36,64 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('teacher.my-class.index') }}" class="nav-link {{ $active === 'my-class' ? 'active' : '' }}">
+                        <a href="{{ route('teacher.my-class.index') }}"
+                            class="nav-link {{ $active === 'my-class' ? 'active' : '' }}">
                             <i class="nav-icon bi bi-diagram-3"></i>
                             <p>@lang('general.my_class')</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('teacher.schedules.index') }}" class="nav-link {{ $active === 'schedules' ? 'active' : '' }}">
+                        <a href="{{ route('teacher.schedules.index') }}"
+                            class="nav-link {{ $active === 'schedules' ? 'active' : '' }}">
                             <i class="nav-icon bi bi-calendar3"></i>
                             <p>@lang('general.schedules')</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('teacher.attendance.overview') }}" class="nav-link {{ $active === 'attendances' ? 'active' : '' }}">
+                        <a href="{{ route('teacher.attendance.overview') }}"
+                            class="nav-link {{ $active === 'attendances' ? 'active' : '' }}">
                             <i class="nav-icon bi bi-calendar-check"></i>
                             <p>@lang('general.attendance')</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('teacher.lessons.index') }}" class="nav-link {{ $active === 'lessons' ? 'active' : '' }}">
+                        <a href="{{ route('teacher.lessons.index') }}"
+                            class="nav-link {{ $active === 'lessons' ? 'active' : '' }}">
                             <i class="nav-icon bi bi-book"></i>
                             <p>@lang('general.lessons')</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('teacher.assignments.index') }}" class="nav-link {{ $active === 'assignments' ? 'active' : '' }}">
+                        <a href="{{ route('teacher.assignments.index') }}"
+                            class="nav-link {{ $active === 'assignments' ? 'active' : '' }}">
                             <i class="nav-icon bi bi-journal-text"></i>
                             <p>@lang('general.assignments')</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('teacher.quizzes.index') }}" class="nav-link {{ $active === 'quizzes' ? 'active' : '' }}">
+                        <a href="{{ route('teacher.quizzes.index') }}"
+                            class="nav-link {{ $active === 'quizzes' ? 'active' : '' }}">
                             <i class="nav-icon bi bi-patch-question"></i>
                             <p>@lang('general.quizzes')</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('teacher.grading.index') }}" class="nav-link {{ $active === 'grading' ? 'active' : '' }}">
+                        <a href="{{ route('teacher.grading.index') }}"
+                            class="nav-link {{ $active === 'grading' ? 'active' : '' }}">
                             <i class="nav-icon bi bi-journal-check"></i>
                             <p>@lang('general.grading')</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('teacher.notifications.index') }}" class="nav-link {{ $active === 'notifications' ? 'active' : '' }}">
+                        <a href="{{ route('teacher.notifications.index') }}"
+                            class="nav-link {{ $active === 'notifications' ? 'active' : '' }}">
                             <i class="nav-icon bi bi-bell"></i>
                             <p>@lang('general.notifications')</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('teacher.chat.index') }}" class="nav-link {{ $active === 'chat' ? 'active' : '' }}">
+                        <a href="{{ route('teacher.chat.index') }}"
+                            class="nav-link {{ $active === 'chat' ? 'active' : '' }}">
                             <i class="nav-icon bi bi-chat-dots"></i>
                             <p>@lang('general.chat')</p>
                         </a>

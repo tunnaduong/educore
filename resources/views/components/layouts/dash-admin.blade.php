@@ -17,12 +17,15 @@
                         @case('vi')
                             🇻🇳 @lang('general.vietnamese')
                         @break
+
                         @case('en')
                             🇬🇧 @lang('general.english')
                         @break
+
                         @case('zh')
                             🇨🇳 @lang('general.chinese')
                         @break
+
                         @default
                             @lang('general.language')
                     @endswitch

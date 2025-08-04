@@ -3,17 +3,17 @@
         <div class="row align-items-center">
             <div class="col-md-6">
                 <h5 class="mb-0 text-primary">
-                    <i class="bi bi-calendar-check me-2"></i>Thống kê điểm danh
+                    <i class="bi bi-calendar-check mr-2"></i>Thống kê điểm danh
                 </h5>
             </div>
             <div class="col-md-6">
                 <div class="d-flex gap-2 justify-content-end">
-                    <select wire:model.live="selectedMonth" class="form-select" style="max-width: 150px;">
+                    <select wire:model.live="selectedMonth" class="form-control" style="max-width: 150px;">
                         @for ($month = 1; $month <= 12; $month++)
                             <option value="{{ $month }}">{{ $this->getMonthName($month) }}</option>
                         @endfor
                     </select>
-                    <select wire:model.live="selectedYear" class="form-select" style="max-width: 120px;">
+                    <select wire:model.live="selectedYear" class="form-control" style="max-width: 120px;">
                         @for ($year = date('Y') - 2; $year <= date('Y') + 1; $year++)
                             <option value="{{ $year }}">{{ $year }}</option>
                         @endfor
@@ -151,7 +151,7 @@
             <!-- Chi tiết điểm danh -->
             <div class="mt-4">
                 <h6 class="text-primary mb-3">
-                    <i class="bi bi-list-ul me-2"></i>Chi tiết điểm danh
+                    <i class="bi bi-list-ul mr-2"></i>Chi tiết điểm danh
                 </h6>
                 @foreach ($attendanceStats as $stat)
                     <div class="card mb-3">

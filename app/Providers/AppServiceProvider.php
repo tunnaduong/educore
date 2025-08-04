@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Livewire::component('components.attendance-stats', AttendanceStats::class);
-        
+
         // Cấu hình pagination sử dụng Bootstrap
         Paginator::useBootstrapFive();
     }

@@ -5,7 +5,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-book me-2"></i>Danh sách bài học
+                        <i class="bi bi-book mr-2"></i>Danh sách bài học
                     </h4>
                     <p class="text-muted mb-0">Các bài học bạn có thể xem và tham khảo</p>
                 </div>
@@ -23,7 +23,7 @@
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">Lớp học</label>
-                        <select class="form-select" wire:model.live="filterClass">
+                        <select class="form-control" wire:model.live="filterClass">
                             <option value="">Tất cả lớp</option>
                             @foreach ($classrooms ?? [] as $classroom)
                                 <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
@@ -32,7 +32,7 @@
                     </div>
                     <div class="col-md-3 d-flex align-items-end">
                         <button class="btn btn-outline-secondary w-100" wire:click="$set('search', '')">
-                            <i class="bi bi-arrow-clockwise me-2"></i>Reset
+                            <i class="bi bi-arrow-clockwise mr-2"></i>Reset
                         </button>
                     </div>
                 </div>
@@ -43,7 +43,7 @@
         <div class="card shadow-sm">
             <div class="card-header bg-light">
                 <h6 class="mb-0">
-                    <i class="bi bi-list-ul me-2"></i>Danh sách bài học
+                    <i class="bi bi-list-ul mr-2"></i>Danh sách bài học
                 </h6>
             </div>
             <div class="card-body">

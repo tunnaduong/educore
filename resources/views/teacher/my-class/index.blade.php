@@ -4,7 +4,7 @@
         <div class="row mb-4">
             <div class="col-md-6">
                 <h4 class="mb-0 fs-4 text-primary">
-                    <i class="bi bi-diagram-3-fill text-primary me-2"></i>
+                    <i class="bi bi-diagram-3-fill text-primary mr-2"></i>
                     Lớp học của tôi
                 </h4>
                 <p class="text-muted mb-0">Quản lý các lớp học bạn đang giảng dạy</p>
@@ -102,14 +102,14 @@
                             <div class="d-grid gap-2">
                                 <a href="{{ route('teacher.my-class.show', $classroom->id) }}"
                                     class="btn btn-outline-primary btn-sm">
-                                    <i class="bi bi-eye me-1"></i>
+                                    <i class="bi bi-eye mr-1"></i>
                                     Xem chi tiết
                                 </a>
                             </div>
                         </div>
                         <div class="card-footer bg-light">
                             <small class="text-muted">
-                                <i class="bi bi-calendar me-1"></i>
+                                <i class="bi bi-calendar mr-1"></i>
                                 Tạo ngày: {{ $classroom->created_at->format('d/m/Y') }}
                             </small>
                         </div>
@@ -141,7 +141,7 @@
                 <div class="modal-content">
                     <div class="modal-header bg-primary text-white">
                         <h5 class="modal-title">
-                            <i class="bi bi-diagram-3-fill me-2"></i>
+                            <i class="bi bi-diagram-3-fill mr-2"></i>
                             {{ $selectedClassroom->name }}
                         </h5>
                         <button type="button" class="btn-close btn-close-white"
@@ -151,7 +151,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <h6 class="text-primary mb-3">
-                                    <i class="bi bi-info-circle me-2"></i>
+                                    <i class="bi bi-info-circle mr-2"></i>
                                     Thông tin lớp học
                                 </h6>
                                 <p><strong>Mô tả:</strong> {{ $selectedClassroom->description }}</p>
@@ -161,7 +161,7 @@
                             </div>
                             <div class="col-md-6">
                                 <h6 class="text-success mb-3">
-                                    <i class="bi bi-graph-up me-2"></i>
+                                    <i class="bi bi-graph-up mr-2"></i>
                                     Thống kê
                                 </h6>
                                 <div class="row text-center">
@@ -186,7 +186,7 @@
                         <!-- Students List -->
                         <div class="mt-4">
                             <h6 class="text-info mb-3">
-                                <i class="bi bi-people me-2"></i>
+                                <i class="bi bi-people mr-2"></i>
                                 Danh sách học sinh ({{ $selectedClassroom->students->count() }})
                             </h6>
                             <div class="table-responsive">
@@ -221,7 +221,7 @@
                         <!-- Recent Lessons -->
                         <div class="mt-4">
                             <h6 class="text-warning mb-3">
-                                <i class="bi bi-book me-2"></i>
+                                <i class="bi bi-book mr-2"></i>
                                 Bài học gần đây
                             </h6>
                             @forelse($selectedClassroom->lessons->take(3) as $lesson)
@@ -247,7 +247,7 @@
                         <button type="button" class="btn btn-secondary"
                             wire:click="closeClassroomDetails">Đóng</button>
                         <a href="#" class="btn btn-primary">
-                            <i class="bi bi-pencil me-1"></i>
+                            <i class="bi bi-pencil mr-1"></i>
                             Chỉnh sửa lớp học
                         </a>
                     </div>

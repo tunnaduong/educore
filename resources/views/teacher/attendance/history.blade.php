@@ -2,10 +2,10 @@
     <div class="container-fluid">
         <div class="mb-4">
             <a href="{{ route('teacher.attendance.overview') }}" wire:navigate class="btn btn-light mb-2">
-                <i class="bi bi-arrow-left me-2"></i>Quay lại tổng quan
+                <i class="bi bi-arrow-left mr-2"></i>Quay lại tổng quan
             </a>
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-list-ul me-2"></i>Lịch sử điểm danh
+                <i class="bi bi-list-ul mr-2"></i>Lịch sử điểm danh
             </h4>
         </div>
 
@@ -18,11 +18,12 @@
                             <span class="input-group-text">
                                 <i class="bi bi-search"></i>
                             </span>
-                            <input wire:model.live="search" type="text" class="form-control" placeholder="Tìm kiếm học viên, lớp học...">
+                            <input wire:model.live="search" type="text" class="form-control"
+                                placeholder="Tìm kiếm học viên, lớp học...">
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <select wire:model.live="selectedMonth" class="form-select">
+                        <select wire:model.live="selectedMonth" class="form-control">
                             <option value="">Tất cả tháng</option>
                             @for ($month = 1; $month <= 12; $month++)
                                 <option value="{{ $month }}">{{ 'Tháng ' . $month }}</option>
@@ -30,7 +31,7 @@
                         </select>
                     </div>
                     <div class="col-md-4">
-                        <select wire:model.live="selectedYear" class="form-select">
+                        <select wire:model.live="selectedYear" class="form-control">
                             <option value="">Tất cả năm</option>
                             @for ($year = date('Y') - 2; $year <= date('Y') + 1; $year++)
                                 <option value="{{ $year }}">{{ $year }}</option>
