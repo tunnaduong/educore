@@ -1,4 +1,4 @@
-<x-layouts.dash-admin active="home" title="Trang chủ">
+<x-layouts.dash-admin active="home" title="@lang('general.dashboard')">
     <div class="row">
         <div class="col-12">
             <div class="row">
