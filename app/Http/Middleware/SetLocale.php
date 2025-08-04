@@ -9,13 +9,17 @@ class SetLocale
 {
     public function handle(Request $request, Closure $next)
     {
-        $locale = $request->segment(1);
-        if (in_array($locale, ['vi','en','zh'])) {
-            App::setLocale($locale);
-            session(['locale' => $locale]);
-        } elseif (session('locale')) {
-            App::setLocale(session('locale'));
+        // Kiểm tra locale từ session trước
+        $sessionLocale = session('locale');
+        
+        if ($sessionLocale && in_array($sessionLocale, ['vi', 'en', 'zh'])) {
+            App::setLocale($sessionLocale);
+        } else {
+            // Fallback về tiếng Việt nếu không có locale trong session
+            App::setLocale('vi');
+            session(['locale' => 'vi']);
         }
+        
         return $next($request);
     }
 }
