@@ -36,9 +36,19 @@ Route::get('/', function () {
 Route::get('/lang/{locale}', function (string $locale) {
     if (in_array($locale, ['vi', 'en', 'zh'])) {
         session(['locale' => $locale]);
+        app()->setLocale($locale);
     }
     return back();
 })->name('lang.switch');
+
+// Test route để debug locale
+Route::get('/test-locale', function () {
+    return response()->json([
+        'current_locale' => app()->getLocale(),
+        'session_locale' => session('locale'),
+        'available_locales' => ['vi', 'en', 'zh']
+    ]);
+})->name('test.locale');
 
 Route::get('/login', Login::class)->name('login');
 Route::post('/logout', function (Request $request) {

@@ -12,8 +12,20 @@
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
-                <a class="nav-link" data-toggle="dropdown" href="#">
-                    @lang('general.language')
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
+                    @switch(app()->getLocale())
+                        @case('vi')
+                            🇻🇳 @lang('general.vietnamese')
+                        @break
+                        @case('en')
+                            🇬🇧 @lang('general.english')
+                        @break
+                        @case('zh')
+                            🇨🇳 @lang('general.chinese')
+                        @break
+                        @default
+                            @lang('general.language')
+                    @endswitch
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
                     <a href="{{ route('lang.switch', 'vi') }}" class="dropdown-item">🇻🇳 @lang('general.vietnamese')</a>
