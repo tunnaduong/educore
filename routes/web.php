@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Livewire\Auth\Login;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Cookie;
 use App\Livewire\Admin\Grading\GradingList;
 use App\Livewire\Admin\Grading\GradeAssignment;
 use App\Livewire\Admin\Users\Edit as UsersEdit;
@@ -36,6 +37,7 @@ Route::get('/', function () {
 Route::get('/lang/{locale}', function ($locale) {
     if (in_array($locale, ['vi', 'en', 'zh'])) {
         session(['locale' => $locale]);
+        Cookie::queue('locale', $locale, 60 * 24 * 365);
     }
     return redirect()->back();
 })->name('lang.switch');
