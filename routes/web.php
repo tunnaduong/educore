@@ -33,6 +33,13 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+Route::get('/lang/{locale}', function (string $locale) {
+    if (in_array($locale, ['vi', 'en', 'zh'])) {
+        session(['locale' => $locale]);
+    }
+    return back();
+})->name('lang.switch');
+
 Route::get('/login', Login::class)->name('login');
 Route::post('/logout', function (Request $request) {
     Auth::logout();

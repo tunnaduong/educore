@@ -1,96 +1,94 @@
-{{-- Navbar Upper --}}
-@props(['active' => null])
+@props(['active' => null, 'title' => __('general.dashboard')])
+<div class="wrapper">
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="bi bi-list"></i></a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-bs-toggle="dropdown" href="#">@lang('general.language')</a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a href="{{ route('lang.switch','vi') }}" class="dropdown-item">🇻🇳 @lang('general.vietnamese')</a></li>
+                    <li><a href="{{ route('lang.switch','en') }}" class="dropdown-item">🇬🇧 @lang('general.english')</a></li>
+                    <li><a href="{{ route('lang.switch','zh') }}" class="dropdown-item">🇨🇳 @lang('general.chinese')</a></li>
+                </ul>
+            </li>
+            <li class="nav-item"><livewire:components.notification-bell /></li>
+            <li class="nav-item"><livewire:components.logout /></li>
+        </ul>
+    </nav>
 
-<div class="min-vh-100 d-flex flex-column">
-    <div class="bg-[#23417e] text-white p-3 d-flex justify-content-between align-items-center"
-        style="background-color: #23417e">
-        <a wire:navigate href="/" class="text-decoration-none">
-            <div class="d-flex align-items-center">
-                <img src="/educore-logo.png" alt="Logo" style="width: 50px; height: 50px;" class="me-2">
-                <span class="fs-4 fw-bold text-white">Edu</span>
-                <span class="fs-4 fw-bold text-warning">Core</span>
-            </div>
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <a href="/" class="brand-link text-center">
+            <span class="brand-text font-weight-light">@lang('general.app_name')</span>
         </a>
-        <div class="d-flex align-items-center">
-            <livewire:components.notification-bell />
-            <livewire:components.logout />
+        <div class="sidebar">
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" role="menu">
+                    <li class="nav-item">
+                        <a href="{{ route('dashboard') }}" class="nav-link {{ $active === 'home' ? 'active' : '' }}">
+                            <i class="nav-icon bi bi-house"></i>
+                            <p>@lang('general.dashboard')</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('student.lessons.index') }}" class="nav-link {{ $active === 'lessons' ? 'active' : '' }}">
+                            <i class="nav-icon bi bi-book"></i>
+                            <p>@lang('general.lessons')</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('student.assignments.overview') }}" class="nav-link {{ $active === 'assignments' ? 'active' : '' }}">
+                            <i class="nav-icon bi bi-journal-text"></i>
+                            <p>@lang('general.assignments')</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('student.quizzes.index') }}" class="nav-link {{ $active === 'quizzes' ? 'active' : '' }}">
+                            <i class="nav-icon bi bi-patch-question"></i>
+                            <p>@lang('general.quizzes')</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('student.schedules') }}" class="nav-link {{ $active === 'schedules' ? 'active' : '' }}">
+                            <i class="nav-icon bi bi-calendar3"></i>
+                            <p>@lang('general.schedules')</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('student.reports.index') }}" class="nav-link {{ $active === 'reports' ? 'active' : '' }}">
+                            <i class="nav-icon bi bi-bar-chart"></i>
+                            <p>@lang('general.reports')</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('student.notifications.index') }}" class="nav-link {{ $active === 'notifications' ? 'active' : '' }}">
+                            <i class="nav-icon bi bi-bell"></i>
+                            <p>@lang('general.notifications')</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('student.chat.index') }}" class="nav-link {{ $active === 'chat' ? 'active' : '' }}">
+                            <i class="nav-icon bi bi-chat-dots"></i>
+                            <p>@lang('general.chat')</p>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
-    </div>
-    <div class="d-flex flex-grow-1" style="min-height: 0;">
-        <!-- Sidebar -->
-        <div class="bg-dark text-white p-4" style="min-width: 260px;width:100%;max-width: 290px;">
-            <ul class="nav flex-column">
-                <li class="nav-item mb-2">
-                    <a wire:navigate href="{{ route('dashboard') }}"
-                        class="text-white text-decoration-none d-block {{ $active === 'home' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                        <i class="bi bi-house me-2"></i> Trang chủ
-                    </a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a href="{{ route('student.schedules') }}"
-                        class="text-white text-decoration-none d-block {{ $active === 'schedules' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                        <i class="bi bi-calendar3 me-2"></i> Lịch học
-                    </a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a wire:navigate href="{{ route('student.lessons.index') }}"
-                        class="text-white text-decoration-none d-block {{ $active === 'courses' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                        <i class="bi bi-book me-2"></i> Bài học
-                    </a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a wire:navigate href="{{ route('student.assignments.overview') }}"
-                        class="text-white text-decoration-none d-block {{ $active === 'assignments' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                        <i class="bi bi-journal-text me-2"></i> Bài tập
-                    </a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a wire:navigate href="{{ route('student.quizzes.index') }}"
-                        class="text-white text-decoration-none d-block {{ $active === 'tests' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                        <i class="bi bi-journal-check me-2"></i> Kiểm tra
-                    </a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a wire:navigate href="{{ route('student.reports.index') }}"
-                        class="text-white text-decoration-none d-block {{ $active === 'reports' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                        <i class="bi bi-bar-chart me-2"></i> Kết quả
-                    </a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a wire:navigate href="{{ route('student.notifications.index') }}"
-                        class="text-white text-decoration-none d-block {{ $active === 'notifications' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                        <i class="bi bi-bell me-2"></i> Thông báo
-                    </a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a wire:navigate href="{{ route('student.chat.index') }}"
-                        class="text-white text-decoration-none d-block {{ $active === 'chat' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                        <i class="bi bi-chat-dots me-2"></i> Tin nhắn
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <!-- Main Content -->
-        <div class="flex-grow-1 p-4 flex flex-col" style="background: #f8fafc;">
-            <div>
+    </aside>
+
+    <div class="content-wrapper">
+        <section class="content pt-3">
+            <div class="container-fluid">
                 {{ $slot }}
             </div>
-            <footer class="text-center mt-4 text-muted small">
-                © 2025 Trung tâm Hanxian Kim Bảng Hà Nam — Powered by EduCore
-            </footer>
-        </div>
+        </section>
     </div>
 
-    <!-- Loading overlay -->
-    <div id="global-loading-overlay" wire:loading.delay.long x-data
-        x-on:hide-loading.window="document.getElementById('global-loading-overlay')?.classList.add('d-none')"
-        x-on:show-loading.window="document.getElementById('global-loading-overlay')?.classList.remove('d-none')"
-        class="position-fixed top-0 start-0 w-100 h-100" style="z-index: 2000; background: rgba(0,0,0,0.3);">
-        <div class="d-flex justify-content-center align-items-center h-100">
-            <div class="spinner-border text-primary" style="width: 4rem; height: 4rem;" role="status">
-                <span class="visually-hidden">Đang tải...</span>
-            </div>
-        </div>
-    </div>
-
+    <footer class="main-footer text-center">
+        <strong>© 2025 EduCore</strong>
+    </footer>
 </div>
