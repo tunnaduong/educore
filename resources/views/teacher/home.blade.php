@@ -7,7 +7,7 @@
                     <div class="mb-2">
                         <i class="bi bi-diagram-3-fill" style="font-size:2.5rem; color:#0d6efd;"></i>
                     </div>
-                    <div>Lớp học của tôi</div>
+                    <div>@lang('general.my_class')</div>
                 </a>
             </div>
             <!-- Lịch giảng dạy -->
@@ -16,7 +16,7 @@
                     <div class="mb-2">
                         <i class="bi bi-calendar3" style="font-size:2.5rem; color:#fd7e14;"></i>
                     </div>
-                    <div>Lịch giảng dạy</div>
+                    <div>@lang('general.teaching_schedule')</div>
                 </a>
             </div>
             <!-- Điểm danh -->
@@ -26,7 +26,7 @@
                     <div class="mb-2">
                         <i class="bi bi-calendar-check" style="font-size:2.5rem; color:#6f42c1;"></i>
                     </div>
-                    <div>Điểm danh</div>
+                    <div>@lang('general.attendance')</div>
                 </a>
             </div>
             <!-- Bài học -->
@@ -35,7 +35,7 @@
                     <div class="mb-2">
                         <i class="bi bi-book" style="font-size:2.5rem; color:#20c997;"></i>
                     </div>
-                    <div>Bài học</div>
+                    <div>@lang('general.lessons')</div>
                 </a>
             </div>
             <!-- Bài tập -->
@@ -44,7 +44,7 @@
                     <div class="mb-2">
                         <i class="bi bi-journal-text" style="font-size:2.5rem; color:#ffc107;"></i>
                     </div>
-                    <div>Bài tập</div>
+                    <div>@lang('general.assignments')</div>
                 </a>
             </div>
             <!-- Kiểm tra & Quiz -->
@@ -53,7 +53,7 @@
                     <div class="mb-2">
                         <i class="bi bi-patch-question-fill" style="font-size:2.5rem; color:#fd5e53;"></i>
                     </div>
-                    <div>Kiểm tra & Quiz</div>
+                    <div>@lang('general.quizzes')</div>
                 </a>
             </div>
             <!-- Chấm bài -->
@@ -62,7 +62,7 @@
                     <div class="mb-2">
                         <i class="bi bi-journal-check" style="font-size:2.5rem; color:#6f42c1;"></i>
                     </div>
-                    <div>Chấm bài</div>
+                    <div>@lang('general.grading')</div>
                 </a>
             </div>
             <!-- Báo cáo lớp học -->
@@ -71,7 +71,7 @@
                     <div class="mb-2">
                         <i class="bi bi-bar-chart-fill" style="font-size:2.5rem; color:#28a745;"></i>
                     </div>
-                    <div>Báo cáo lớp học</div>
+                    <div>@lang('general.class_reports')</div>
                 </a>
             </div>
             <!-- Thông báo -->
@@ -83,7 +83,7 @@
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
                             style="font-size:0.8rem;">2</span>
                     </div>
-                    <div>Thông báo</div>
+                    <div>@lang('general.notifications')</div>
                 </a>
             </div>
             <!-- Tin nhắn -->
@@ -94,7 +94,7 @@
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
                             style="font-size:0.8rem;">2</span>
                     </div>
-                    <div>Tin nhắn</div>
+                    <div>@lang('general.chat')</div>
                 </a>
             </div>
         </div>
