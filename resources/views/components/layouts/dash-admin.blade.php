@@ -2,21 +2,24 @@
 <div class="wrapper">
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="bi bi-list"></i></a>
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
         </ul>
-        <ul class="navbar-nav ms-auto">
+
+        <!-- Right navbar links -->
+        <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
-                <a class="nav-link" data-bs-toggle="dropdown" href="#">
+                <a class="nav-link" data-toggle="dropdown" href="#">
                     @lang('general.language')
                 </a>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a href="{{ route('lang.switch','vi') }}" class="dropdown-item">🇻🇳 @lang('general.vietnamese')</a></li>
-                    <li><a href="{{ route('lang.switch','en') }}" class="dropdown-item">🇬🇧 @lang('general.english')</a></li>
-                    <li><a href="{{ route('lang.switch','zh') }}" class="dropdown-item">🇨🇳 @lang('general.chinese')</a></li>
-                </ul>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a href="{{ route('lang.switch','vi') }}" class="dropdown-item">🇻🇳 @lang('general.vietnamese')</a>
+                    <a href="{{ route('lang.switch','en') }}" class="dropdown-item">🇬🇧 @lang('general.english')</a>
+                    <a href="{{ route('lang.switch','zh') }}" class="dropdown-item">🇨🇳 @lang('general.chinese')</a>
+                </div>
             </li>
             <li class="nav-item">
                 <livewire:components.notification-bell />
@@ -30,100 +33,123 @@
 
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
         <a href="/" class="brand-link text-center">
             <span class="brand-text font-weight-light">@lang('general.app_name')</span>
         </a>
+
+        <!-- Sidebar -->
         <div class="sidebar">
+            <!-- Sidebar Menu -->
             <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <li class="nav-item">
                         <a href="{{ route('dashboard') }}" class="nav-link {{ $active === 'home' ? 'active' : '' }}">
-                            <i class="nav-icon bi bi-house"></i>
+                            <i class="nav-icon fas fa-home"></i>
                             <p>@lang('general.dashboard')</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('attendances.overview') }}" class="nav-link {{ $active === 'attendances' ? 'active' : '' }}">
-                            <i class="nav-icon bi bi-calendar-check"></i>
+                            <i class="nav-icon fas fa-calendar-check"></i>
                             <p>@lang('general.attendance')</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('classrooms.index') }}" class="nav-link {{ $active === 'classrooms' ? 'active' : '' }}">
-                            <i class="nav-icon bi bi-diagram-3"></i>
+                            <i class="nav-icon fas fa-graduation-cap"></i>
                             <p>@lang('general.classrooms')</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('schedules.index') }}" class="nav-link {{ $active === 'schedules' ? 'active' : '' }}">
-                            <i class="nav-icon bi bi-calendar3"></i>
+                            <i class="nav-icon fas fa-calendar-alt"></i>
                             <p>@lang('general.schedules')</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('assignments.overview') }}" class="nav-link {{ $active === 'assignments' ? 'active' : '' }}">
-                            <i class="nav-icon bi bi-journal-text"></i>
+                            <i class="nav-icon fas fa-tasks"></i>
                             <p>@lang('general.assignments')</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('grading.list') }}" class="nav-link {{ $active === 'grading' ? 'active' : '' }}">
-                            <i class="nav-icon bi bi-journal-check"></i>
+                            <i class="nav-icon fas fa-check-circle"></i>
                             <p>@lang('general.grading')</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('quizzes.index') }}" class="nav-link {{ $active === 'quizzes' ? 'active' : '' }}">
-                            <i class="nav-icon bi bi-patch-question"></i>
+                            <i class="nav-icon fas fa-question-circle"></i>
                             <p>@lang('general.quizzes')</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('lessons.index') }}" class="nav-link {{ $active === 'lessons' ? 'active' : '' }}">
-                            <i class="nav-icon bi bi-folder-symlink"></i>
+                            <i class="nav-icon fas fa-book"></i>
                             <p>@lang('general.lessons')</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('students.index') }}" class="nav-link {{ $active === 'students' ? 'active' : '' }}">
-                            <i class="nav-icon bi bi-people"></i>
+                            <i class="nav-icon fas fa-users"></i>
                             <p>@lang('general.students')</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('reports.index') }}" class="nav-link {{ $active === 'reports' ? 'active' : '' }}">
-                            <i class="nav-icon bi bi-bar-chart"></i>
+                            <i class="nav-icon fas fa-chart-bar"></i>
                             <p>@lang('general.reports')</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('notifications.index') }}" class="nav-link {{ $active === 'notifications' ? 'active' : '' }}">
-                            <i class="nav-icon bi bi-bell"></i>
+                            <i class="nav-icon fas fa-bell"></i>
                             <p>@lang('general.notifications')</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('chat.index') }}" class="nav-link {{ $active === 'chat' ? 'active' : '' }}">
-                            <i class="nav-icon bi bi-chat-dots"></i>
+                            <i class="nav-icon fas fa-comments"></i>
                             <p>@lang('general.chat')</p>
                         </a>
                     </li>
                 </ul>
             </nav>
+            <!-- /.sidebar-menu -->
         </div>
+        <!-- /.sidebar -->
     </aside>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-        <section class="content pt-3">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>{{ $title }}</h1>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
             <div class="container-fluid">
                 {{ $slot }}
-            </div>
+            </div><!-- /.container-fluid -->
         </section>
+        <!-- /.content -->
     </div>
+    <!-- /.content-wrapper -->
 
     <!-- Main Footer -->
-    <footer class="main-footer text-center">
-        <strong>© 2025 EduCore</strong>
+    <footer class="main-footer">
+        <div class="float-right d-none d-sm-inline">
+            <strong>© 2025 EduCore</strong>
+        </div>
     </footer>
 </div>
+<!-- ./wrapper -->
