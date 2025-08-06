@@ -5,7 +5,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-journal-check me-2"></i>Danh sách bài tập cần chấm
+                        <i class="bi bi-journal-check mr-2"></i>Danh sách bài tập cần chấm
                     </h4>
                     <p class="text-muted mb-0">Quản lý và chấm điểm các bài tập của học viên</p>
                 </div>
@@ -23,7 +23,7 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Lớp học</label>
-                        <select class="form-select" wire:model.live="filterClassroom">
+                        <select class="form-control" wire:model.live="filterClassroom">
                             <option value="">Tất cả lớp</option>
                             @foreach ($classrooms as $classroom)
                                 <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
@@ -32,7 +32,7 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Trạng thái</label>
-                        <select class="form-select" wire:model.live="filterStatus">
+                        <select class="form-control" wire:model.live="filterStatus">
                             <option value="all">Tất cả</option>
                             <option value="has_submissions">Có bài nộp</option>
                             <option value="no_submissions">Chưa có bài nộp</option>
@@ -40,7 +40,7 @@
                     </div>
                     <div class="col-md-2">
                         <label class="form-label">Sắp xếp</label>
-                        <select class="form-select" wire:model.live="sortBy">
+                        <select class="form-control" wire:model.live="sortBy">
                             <option value="submissions_count">Số bài nộp</option>
                             <option value="created_at">Ngày tạo</option>
                             <option value="deadline">Hạn nộp</option>
@@ -55,7 +55,7 @@
                 <div class="card shadow-sm">
                     <div class="card-header bg-primary text-white d-flex align-items-center justify-content-between">
                         <div>
-                            <i class="bi bi-journal-check me-2"></i>
+                            <i class="bi bi-journal-check mr-2"></i>
                             <span class="mb-0">Danh sách bài tập cần chấm</span>
                         </div>
                         <div class="text-white-50 small">
@@ -99,7 +99,7 @@
                                             <tr>
                                                 <td>
                                                     <span class="fw-semibold">
-                                                        <i class="bi bi-mortarboard me-1"></i>
+                                                        <i class="bi bi-mortarboard mr-1"></i>
                                                         {{ $assignment->classroom?->name ?? '-' }}
                                                     </span>
                                                 </td>
@@ -160,7 +160,7 @@
             <div class="col-lg-3 d-none d-lg-block">
                 <div class="card shadow-sm mb-3">
                     <div class="card-header bg-light">
-                        <i class="bi bi-lightbulb me-2"></i>Hướng dẫn
+                        <i class="bi bi-lightbulb mr-2"></i>Hướng dẫn
                     </div>
                     <div class="card-body small">
                         <ul class="mb-2 ps-3">

@@ -1,19 +1,20 @@
 <x-layouts.dash-admin active="lessons">
+    @include('components.language')
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
             <a href="{{ route('lessons.index') }}" wire:navigate
                 class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left me-2"></i>Quay lại
+                <i class="bi bi-arrow-left mr-2"></i>Quay lại
             </a>
             <h4 class="mb-0 text-success fs-4">
-                <i class="bi bi-folder-symlink-fill me-2"></i>Thêm bài học mới
+                <i class="bi bi-folder-symlink-fill mr-2"></i>Thêm bài học mới
             </h4>
         </div>
 
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-                <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
+                <i class="bi bi-check-circle mr-2"></i>{{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
             </div>
         @endif
@@ -50,7 +51,7 @@
                                 <label for="classroom_id" class="form-label">Lớp học <span
                                         class="text-danger">*</span></label>
                                 <select wire:model="classroom_id"
-                                    class="form-select @error('classroom_id') is-invalid @enderror" id="classroom_id">
+                                    class="form-control @error('classroom_id') is-invalid @enderror" id="classroom_id">
                                     <option value="">Chọn lớp học</option>
                                     @foreach ($classrooms as $class)
                                         <option value="{{ $class->id }}">{{ $class->name }}</option>
@@ -92,7 +93,7 @@
                         <div class="d-flex justify-content-end gap-2">
                             <a href="{{ route('lessons.index') }}" wire:navigate class="btn btn-light">Hủy</a>
                             <button type="submit" class="btn btn-success">
-                                <i class="bi bi-folder-plus me-2"></i>Lưu bài học
+                                <i class="bi bi-folder-plus mr-2"></i>Lưu bài học
                             </button>
                         </div>
                     </form>

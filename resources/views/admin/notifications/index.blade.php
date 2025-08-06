@@ -3,19 +3,19 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-bell me-2"></i>Thông báo & Nhắc lịch
+                <i class="bi bi-bell mr-2"></i>Thông báo & Nhắc lịch
             </h4>
             <p class="text-muted mb-0">Tạo và quản lý thông báo cho học viên</p>
         </div>
         <div class="d-flex gap-2">
             <button wire:click="markAllAsRead" class="btn btn-outline-secondary">
-                <i class="bi bi-check-all me-2"></i>Đánh dấu tất cả đã đọc
+                <i class="bi bi-check-all mr-2"></i>Đánh dấu tất cả đã đọc
             </button>
             <button wire:click="deleteExpired" class="btn btn-outline-warning">
-                <i class="bi bi-trash me-2"></i>Xóa hết hạn
+                <i class="bi bi-trash mr-2"></i>Xóa hết hạn
             </button>
             <button wire:click="create" class="btn btn-primary">
-                <i class="bi bi-plus-circle me-2"></i>Tạo thông báo mới
+                <i class="bi bi-plus-circle mr-2"></i>Tạo thông báo mới
             </button>
         </div>
     </div>
@@ -31,7 +31,7 @@
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Loại thông báo</label>
-                    <select wire:model.live="filterType" class="form-select">
+                    <select wire:model.live="filterType" class="form-control">
                         <option value="">Tất cả</option>
                         <option value="info">Thông tin</option>
                         <option value="warning">Cảnh báo</option>
@@ -42,7 +42,7 @@
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Trạng thái</label>
-                    <select wire:model.live="filterStatus" class="form-select">
+                    <select wire:model.live="filterStatus" class="form-control">
                         <option value="">Tất cả</option>
                         <option value="unread">Chưa đọc</option>
                         <option value="read">Đã đọc</option>
@@ -50,7 +50,7 @@
                 </div>
                 <div class="col-md-2 d-flex align-items-end">
                     <button wire:click="$set('search', '')" class="btn btn-outline-secondary w-100">
-                        <i class="bi bi-arrow-clockwise me-1"></i>Reset
+                        <i class="bi bi-arrow-clockwise mr-1"></i>Reset
                     </button>
                 </div>
             </div>
@@ -107,7 +107,7 @@
                                     <td>
                                         @if ($notification->user)
                                             <div class="d-flex align-items-center">
-                                                <i class="bi bi-person-circle me-2"></i>
+                                                <i class="bi bi-person-circle mr-2"></i>
                                                 {{ $notification->user->name }}
                                             </div>
                                         @else
@@ -186,7 +186,7 @@
                     <h5 class="mt-3 text-muted">Không có thông báo nào</h5>
                     <p class="text-muted">Tạo thông báo đầu tiên để bắt đầu</p>
                     <button wire:click="create" class="btn btn-primary">
-                        <i class="bi bi-plus-circle me-2"></i>Tạo thông báo mới
+                        <i class="bi bi-plus-circle mr-2"></i>Tạo thông báo mới
                     </button>
                 </div>
             @endif
@@ -229,7 +229,8 @@
                                 <div class="col-md-6">
                                     <label class="form-label">Loại thông báo <span
                                             class="text-danger">*</span></label>
-                                    <select wire:model="type" class="form-select @error('type') is-invalid @enderror">
+                                    <select wire:model="type"
+                                        class="form-control @error('type') is-invalid @enderror">
                                         <option value="info">Thông tin</option>
                                         <option value="warning">Cảnh báo</option>
                                         <option value="success">Thành công</option>
@@ -254,7 +255,7 @@
                                 @if (!$is_global)
                                     <div class="col-md-6">
                                         <label class="form-label">Học viên</label>
-                                        <select wire:model="user_id" class="form-select">
+                                        <select wire:model="user_id" class="form-control">
                                             <option value="">Chọn học viên</option>
                                             @foreach ($users as $user)
                                                 <option value="{{ $user->id }}">{{ $user->name }}</option>
@@ -265,7 +266,7 @@
 
                                 <div class="col-md-6">
                                     <label class="form-label">Lớp học</label>
-                                    <select wire:model="class_id" class="form-select">
+                                    <select wire:model="class_id" class="form-control">
                                         <option value="">Chọn lớp học</option>
                                         @foreach ($classrooms as $classroom)
                                             <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
@@ -275,7 +276,7 @@
 
                                 <div class="col-md-6">
                                     <label class="form-label">Lịch gửi</label>
-                                    <input wire:model="scheduled_at" type="datetime-local"
+                                    <input wire:model="scheduled_at" type="datetimr-local"
                                         class="form-control @error('scheduled_at') is-invalid @enderror">
                                     @error('scheduled_at')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -285,7 +286,7 @@
 
                                 <div class="col-md-6">
                                     <label class="form-label">Hết hạn</label>
-                                    <input wire:model="expires_at" type="datetime-local"
+                                    <input wire:model="expires_at" type="datetimr-local"
                                         class="form-control @error('expires_at') is-invalid @enderror">
                                     @error('expires_at')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -298,7 +299,7 @@
                             <button type="button" class="btn btn-secondary"
                                 wire:click="$set('showCreateModal', false)">Hủy</button>
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-check-circle me-2"></i>Tạo thông báo
+                                <i class="bi bi-check-circle mr-2"></i>Tạo thông báo
                             </button>
                         </div>
                     </form>
@@ -342,7 +343,8 @@
                                 <div class="col-md-6">
                                     <label class="form-label">Loại thông báo <span
                                             class="text-danger">*</span></label>
-                                    <select wire:model="type" class="form-select @error('type') is-invalid @enderror">
+                                    <select wire:model="type"
+                                        class="form-control @error('type') is-invalid @enderror">
                                         <option value="info">Thông tin</option>
                                         <option value="warning">Cảnh báo</option>
                                         <option value="success">Thành công</option>
@@ -356,7 +358,7 @@
 
                                 <div class="col-md-6">
                                     <label class="form-label">Học viên</label>
-                                    <select wire:model="user_id" class="form-select">
+                                    <select wire:model="user_id" class="form-control">
                                         <option value="">Chọn học viên</option>
                                         @foreach ($users as $user)
                                             <option value="{{ $user->id }}">{{ $user->name }}</option>
@@ -366,7 +368,7 @@
 
                                 <div class="col-md-6">
                                     <label class="form-label">Lớp học</label>
-                                    <select wire:model="class_id" class="form-select">
+                                    <select wire:model="class_id" class="form-control">
                                         <option value="">Chọn lớp học</option>
                                         @foreach ($classrooms as $classroom)
                                             <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
@@ -376,7 +378,7 @@
 
                                 <div class="col-md-6">
                                     <label class="form-label">Lịch gửi</label>
-                                    <input wire:model="scheduled_at" type="datetime-local"
+                                    <input wire:model="scheduled_at" type="datetimr-local"
                                         class="form-control @error('scheduled_at') is-invalid @enderror">
                                     @error('scheduled_at')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -386,7 +388,7 @@
 
                                 <div class="col-md-6">
                                     <label class="form-label">Hết hạn</label>
-                                    <input wire:model="expires_at" type="datetime-local"
+                                    <input wire:model="expires_at" type="datetimr-local"
                                         class="form-control @error('expires_at') is-invalid @enderror">
                                     @error('expires_at')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -399,7 +401,7 @@
                             <button type="button" class="btn btn-secondary"
                                 wire:click="$set('showEditModal', false)">Hủy</button>
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-check-circle me-2"></i>Cập nhật
+                                <i class="bi bi-check-circle mr-2"></i>Cập nhật
                             </button>
                         </div>
                     </form>
@@ -431,7 +433,7 @@
                         <button type="button" class="btn btn-secondary"
                             wire:click="$set('showDeleteModal', false)">Hủy</button>
                         <button type="button" class="btn btn-danger" wire:click="confirmDelete">
-                            <i class="bi bi-trash me-2"></i>Xóa
+                            <i class="bi bi-trash mr-2"></i>Xóa
                         </button>
                     </div>
                 </div>
@@ -444,8 +446,8 @@
         <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050;">
             <div class="toast show" role="alert">
                 <div class="toast-header">
-                    <i class="bi bi-check-circle text-success me-2"></i>
-                    <strong class="me-auto">Thành công</strong>
+                    <i class="bi bi-check-circle text-success mr-2"></i>
+                    <strong class="mr-auto">Thành công</strong>
                     <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
                 </div>
                 <div class="toast-body">

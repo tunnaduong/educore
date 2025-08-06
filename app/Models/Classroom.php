@@ -61,6 +61,11 @@ class Classroom extends Model
         return $this->hasMany(Assignment::class, 'class_id');
     }
 
+    public function lessons(): HasMany
+    {
+        return $this->hasMany(Lesson::class, 'classroom_id');
+    }
+
     public function messageReads()
     {
         return $this->hasMany(ClassroomMessageRead::class, 'class_id');

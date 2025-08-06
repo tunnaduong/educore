@@ -2,7 +2,7 @@
 
 use App\Livewire\Admin\Home;
 use Illuminate\Http\Request;
-use App\Livewire\Admin\Auth\Login;
+use App\Livewire\Auth\Login;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Admin\Grading\GradingList;
@@ -32,6 +32,35 @@ Route::get('/', function () {
     }
     return redirect()->route('login');
 });
+
+Route::get('/lang/{locale}', function ($locale) {
+    if (in_array($locale, ['vi', 'en', 'zh'])) {
+        session(['locale' => $locale]);
+    }
+    return redirect()->back();
+})->name('lang.switch');
+
+// Test route để debug locale
+Route::get('/test-locale', function () {
+    return response()->json([
+        'current_locale' => app()->getLocale(),
+        'session_locale' => session('locale'),
+        'cookie_locale' => request()->cookie('locale'),
+        'available_locales' => ['vi', 'en', 'zh']
+    ]);
+})->middleware(['web', \App\Http\Middleware\SetLocale::class])->name('test.locale');
+
+// Test route để set locale
+Route::get('/set-locale/{locale}', function (string $locale) {
+    session(['locale' => $locale]);
+    app()->setLocale($locale);
+    return response()->json([
+        'success' => true,
+        'locale' => $locale,
+        'session' => session('locale'),
+        'app_locale' => app()->getLocale()
+    ]);
+})->name('set.locale');
 
 Route::get('/login', Login::class)->name('login');
 Route::post('/logout', function (Request $request) {
@@ -106,6 +135,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 // Teacher routes
 Route::middleware(['auth', 'role:teacher'])->name('teacher.')->group(function () {
+    // My Class routes
+    Route::get('/teacher/my-class', \App\Livewire\Teacher\MyClass\Index::class)->name('my-class.index');
+    Route::get('/teacher/my-class/{classroomId}', \App\Livewire\Teacher\MyClass\Show::class)->name('my-class.show');
+
     // Other teacher routes...
     Route::get('/teacher/quizzes', \App\Livewire\Teacher\Quizzes\Index::class)->name('quizzes.index');
     Route::get('/teacher/quizzes/create', \App\Livewire\Teacher\Quizzes\Create::class)->name('quizzes.create');
@@ -127,11 +160,20 @@ Route::middleware(['auth', 'role:teacher'])->name('teacher.')->group(function ()
     Route::get('/teacher/lessons/create', \App\Livewire\Teacher\Lessons\Create::class)->name('lessons.create');
     Route::get('/teacher/lessons/{lesson}', \App\Livewire\Teacher\Lessons\Show::class)->name('lessons.show');
     Route::get('/teacher/lessons/{lesson}/edit', \App\Livewire\Teacher\Lessons\Edit::class)->name('lessons.edit');
-});
 
-// Shared routes for admin and teacher
-Route::middleware(['auth', 'role:admin,teacher'])->group(function () {
-    // Other shared routes...
+    // Notifications routes
+    Route::get('/teacher/notifications', \App\Livewire\Teacher\Notifications\Index::class)->name('notifications.index');
+
+    // Attendance routes
+    Route::get('/teacher/attendance', \App\Livewire\Teacher\Attendance\Overview::class)->name('attendance.overview');
+    Route::get('/teacher/attendance/history', \App\Livewire\Teacher\Attendance\History::class)->name('attendance.history');
+    Route::get('/teacher/attendance/{classroom}/take', \App\Livewire\Teacher\Attendance\TakeAttendance::class)->name('attendance.take');
+    Route::get('/teacher/attendance/{classroom}/attendance-history', \App\Livewire\Teacher\Attendance\AttendanceHistory::class)->name('attendance.classroom-history');
+
+    // Schedules routes
+    Route::get('/teacher/schedules', \App\Livewire\Teacher\Schedules\Index::class)->name('schedules.index');
+    // Chat routes
+    Route::get('/teacher/chat', \App\Livewire\Teacher\Chat\Index::class)->name('chat.index');
 });
 
 // Student routes

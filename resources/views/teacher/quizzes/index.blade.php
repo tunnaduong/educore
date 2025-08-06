@@ -5,12 +5,12 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-patch-question me-2"></i>Quản lý bài kiểm tra
+                        <i class="bi bi-patch-question mr-2"></i>Quản lý bài kiểm tra
                     </h4>
                     <p class="text-muted mb-0">Danh sách bài kiểm tra của các lớp bạn đang dạy</p>
                 </div>
                 <a href="{{ route('teacher.quizzes.create') }}" wire:navigate class="btn btn-primary">
-                    <i class="bi bi-plus-circle me-2"></i>Tạo bài kiểm tra mới
+                    <i class="bi bi-plus-circle mr-2"></i>Tạo bài kiểm tra mới
                 </a>
             </div>
         </div>
@@ -26,7 +26,7 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Lớp học</label>
-                        <select class="form-select" wire:model.live="filterClass">
+                        <select class="form-control" wire:model.live="filterClass">
                             <option value="">Tất cả lớp</option>
                             @foreach ($classrooms as $classroom)
                                 <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
@@ -35,7 +35,7 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Trạng thái</label>
-                        <select class="form-select" wire:model.live="filterStatus">
+                        <select class="form-control" wire:model.live="filterStatus">
                             <option value="">Tất cả</option>
                             <option value="active">Còn hạn</option>
                             <option value="expired">Hết hạn</option>
@@ -43,7 +43,7 @@
                     </div>
                     <div class="col-md-2 d-flex align-items-end">
                         <button class="btn btn-outline-secondary w-100" wire:click="$set('search', '')">
-                            <i class="bi bi-arrow-clockwise me-2"></i>Reset
+                            <i class="bi bi-arrow-clockwise mr-2"></i>Reset
                         </button>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
         <div class="card shadow-sm">
             <div class="card-header bg-light">
                 <h6 class="mb-0">
-                    <i class="bi bi-list-ul me-2"></i>Danh sách bài kiểm tra
+                    <i class="bi bi-list-ul mr-2"></i>Danh sách bài kiểm tra
                 </h6>
             </div>
             <div class="card-body">
@@ -170,7 +170,7 @@
                         <h5 class="text-muted">Không có bài kiểm tra nào</h5>
                         <p class="text-muted">Hãy tạo bài kiểm tra đầu tiên để bắt đầu.</p>
                         <a href="{{ route('teacher.quizzes.create') }}" wire:navigate class="btn btn-primary">
-                            <i class="bi bi-plus-circle me-2"></i>Tạo bài kiểm tra
+                            <i class="bi bi-plus-circle mr-2"></i>Tạo bài kiểm tra
                         </a>
                     </div>
                 @endif
@@ -181,15 +181,14 @@
         @if (session()->has('message'))
             <div class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3"
                 role="alert">
-                <i class="bi bi-check-circle me-2"></i>{{ session('message') }}
+                <i class="bi bi-check-circle mr-2"></i>{{ session('message') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif
 
         @if (session()->has('error'))
-            <div class="alert alert-danger alert-dismissible fade show position-fixed top-0 end-0 m-3"
-                role="alert">
-                <i class="bi bi-exclamation-triangle me-2"></i>{{ session('error') }}
+            <div class="alert alert-danger alert-dismissible fade show position-fixed top-0 end-0 m-3" role="alert">
+                <i class="bi bi-exclamation-triangle mr-2"></i>{{ session('error') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif

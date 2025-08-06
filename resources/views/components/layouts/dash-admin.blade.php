@@ -1,149 +1,170 @@
-{{-- Navbar Upper --}}
-@props(['active' => null])
+@props(['active' => null, 'title' => __('general.dashboard')])
+<div class="wrapper">
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+            </li>
+        </ul>
 
-<div class="min-vh-100 d-flex flex-column">
-    <div class="bg-[#23417e] text-white p-3 d-flex justify-content-between align-items-center"
-        style="background-color: #23417e">
-        <a wire:navigate href="/" class="text-decoration-none">
-            <div class="d-flex align-items-center">
-                <img src="/educore-logo.png" alt="Logo" style="width: 50px; height: 50px;" class="me-2">
-                <span class="fs-4 fw-bold text-white">Edu</span>
-                <span class="fs-4 fw-bold text-warning">Core</span>
-            </div>
+        <!-- Right navbar links -->
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
+                    @switch(app()->getLocale())
+                        @case('vi')
+                            🇻🇳 @lang('general.vietnamese')
+                        @break
+
+                        @case('en')
+                            🇬🇧 @lang('general.english')
+                        @break
+
+                        @case('zh')
+                            🇨🇳 @lang('general.chinese')
+                        @break
+
+                        @default
+                            @lang('general.language')
+                    @endswitch
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a href="{{ route('lang.switch', 'vi') }}" class="dropdown-item">🇻🇳 @lang('general.vietnamese')</a>
+                    <a href="{{ route('lang.switch', 'en') }}" class="dropdown-item">🇬🇧 @lang('general.english')</a>
+                    <a href="{{ route('lang.switch', 'zh') }}" class="dropdown-item">🇨🇳 @lang('general.chinese')</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <livewire:components.notification-bell />
+            </li>
+            <li class="nav-item">
+                <livewire:components.logout />
+            </li>
+        </ul>
+    </nav>
+    <!-- /.navbar -->
+
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="/" class="brand-link text-center">
+            <span class="brand-text font-weight-light">@lang('general.app_name')</span>
         </a>
-        <div class="d-flex align-items-center">
-            <livewire:components.notification-bell />
-            <livewire:components.logout />
-        </div>
-    </div>
-    <div class="d-flex flex-grow-1" style="min-height: 0;">
+
         <!-- Sidebar -->
-        <div class="bg-dark text-white p-4" style="min-width: 260px;width:100%;max-width: 290px;">
-            <ul class="nav flex-column">
-                <li class="nav-item mb-2">
-                    <a wire:navigate href="{{ route('dashboard') }}"
-                        class="text-white text-decoration-none d-block {{ $active === 'home' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                        <i class="bi bi-house me-2"></i> Trang chủ
-                    </a>
-                </li>
-            </ul>
-            <div class="my-4">
-                <div class="fw-bold text-uppercase small mb-2">Quản lý đào tạo</div>
-                <ul class="nav flex-column">
-                    <li class="nav-item mb-2">
-                        <a wire:navigate href="{{ route('attendances.overview') }}"
-                            class="text-white text-decoration-none d-block {{ $active === 'attendances' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                            <i class="bi bi-calendar-check me-2"></i> Điểm danh
+        <div class="sidebar">
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
+                    <li class="nav-item">
+                        <a href="{{ route('dashboard') }}" class="nav-link {{ $active === 'home' ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-home"></i>
+                            <p>@lang('general.dashboard')</p>
                         </a>
                     </li>
-                    <li class="nav-item mb-2">
-                        <a wire:navigate href="{{ route('classrooms.index') }}"
-                            class="text-white text-decoration-none d-block {{ $active === 'classrooms' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                            <i class="bi bi-diagram-3 me-2"></i> Quản lý lớp học
+                    <li class="nav-item">
+                        <a href="{{ route('attendances.overview') }}"
+                            class="nav-link {{ $active === 'attendances' ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-calendar-check"></i>
+                            <p>@lang('general.attendance')</p>
                         </a>
                     </li>
-                    <li class="nav-item mb-2">
-                        <a wire:navigate href="{{ route('schedules.index') }}"
-                            class="text-white text-decoration-none d-block {{ $active === 'schedules' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                            <i class="bi bi-calendar3 me-2"></i> Lịch học
+                    <li class="nav-item">
+                        <a href="{{ route('classrooms.index') }}"
+                            class="nav-link {{ $active === 'classrooms' ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-graduation-cap"></i>
+                            <p>@lang('general.classrooms')</p>
                         </a>
                     </li>
-                    <li class="nav-item mb-2">
-                        <a wire:navigate href="{{ route('assignments.overview') }}"
-                            class="text-white text-decoration-none d-block {{ $active === 'assignments' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                            <i class="bi bi-journal-text me-2"></i> Giao bài tập
+                    <li class="nav-item">
+                        <a href="{{ route('schedules.index') }}"
+                            class="nav-link {{ $active === 'schedules' ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-calendar-alt"></i>
+                            <p>@lang('general.schedules')</p>
                         </a>
                     </li>
-                    <li class="nav-item mb-2">
-                        <a wire:navigate href="{{ route('grading.list') }}"
-                            class="text-white text-decoration-none d-block {{ $active === 'submissions' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                            <i class="bi bi-journal-check me-2"></i> Chấm bài
+                    <li class="nav-item">
+                        <a href="{{ route('assignments.overview') }}"
+                            class="nav-link {{ $active === 'assignments' ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-tasks"></i>
+                            <p>@lang('general.assignments')</p>
                         </a>
                     </li>
-                    <li class="nav-item mb-2">
-                        <a wire:navigate href="{{ route('quizzes.index') }}"
-                            class="text-white text-decoration-none d-block {{ $active === 'quizzes' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                            <i class="bi bi-patch-question me-2"></i> Kiểm tra & Quiz
+                    <li class="nav-item">
+                        <a href="{{ route('grading.list') }}"
+                            class="nav-link {{ $active === 'grading' ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-check-circle"></i>
+                            <p>@lang('general.grading')</p>
                         </a>
                     </li>
-                    <li class="nav-item mb-2">
-                        <a wire:navigate href="{{ route('lessons.index') }}"
-                            class="text-white text-decoration-none d-block {{ $active === 'lessons' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                            <i class="bi bi-folder-symlink me-2"></i> Bài học & Tài nguyên
+                    <li class="nav-item">
+                        <a href="{{ route('quizzes.index') }}"
+                            class="nav-link {{ $active === 'quizzes' ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-question-circle"></i>
+                            <p>@lang('general.quizzes')</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('lessons.index') }}"
+                            class="nav-link {{ $active === 'lessons' ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-book"></i>
+                            <p>@lang('general.lessons')</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('students.index') }}"
+                            class="nav-link {{ $active === 'students' ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>@lang('general.students')</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('reports.index') }}"
+                            class="nav-link {{ $active === 'reports' ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-chart-bar"></i>
+                            <p>@lang('general.reports')</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('notifications.index') }}"
+                            class="nav-link {{ $active === 'notifications' ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-bell"></i>
+                            <p>@lang('general.notifications')</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('chat.index') }}" class="nav-link {{ $active === 'chat' ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-comments"></i>
+                            <p>@lang('general.chat')</p>
                         </a>
                     </li>
                 </ul>
-            </div>
-            <div class="mb-4">
-                <div class="fw-bold text-uppercase small mb-2">Quản lý học viên</div>
-                <ul class="nav flex-column">
-                    <li class="nav-item mb-2">
-                        <a wire:navigate href="{{ route('students.index') }}"
-                            class="text-white text-decoration-none d-block {{ $active === 'students' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                            <i class="bi bi-people me-2"></i> Danh sách học viên
-                        </a>
-                    </li>
-                    <li class="nav-item mb-2">
-                        <a wire:navigate href="{{ route('reports.index') }}"
-                            class="text-white text-decoration-none d-block {{ $active === 'reports' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                            <i class="bi bi-bar-chart me-2"></i> Báo cáo học tập
-                        </a>
-                    </li>
-                    <li class="nav-item mb-2">
-                        <a wire:navigate href="{{ route('notifications.index') }}"
-                            class="text-white text-decoration-none d-block {{ $active === 'notifications' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                            <i class="bi bi-bell me-2"></i> Thông báo & Nhắc lịch
-                        </a>
-                    </li>
-                    <li class="nav-item mb-2">
-                        <a wire:navigate href="{{ route('chat.index') }}"
-                            class="text-white text-decoration-none d-block {{ $active === 'chat' ? 'active bg-primary rounded px-4 py-2' : 'px-4 py-2' }}">
-                            <i class="bi bi-chat-dots me-2"></i> Chat & Tương tác
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            </nav>
+            <!-- /.sidebar-menu -->
         </div>
-        <!-- Main Content -->
-        <div class="flex-grow-1 p-4 flex flex-col" style="background: #f8fafc;">
-            <div>
+        <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Main content -->
+        <section class="content">
+            <div class="py-4 container-fluid">
                 {{ $slot }}
-            </div>
-            <footer class="text-center mt-4 text-muted small">
-                © 2025 Trung tâm Hanxian Kim Bảng Hà Nam — Powered by EduCore
-            </footer>
-        </div>
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
     </div>
-    <!-- Loading overlay -->
-    <div id="global-loading-overlay" wire:loading.delay.long x-data
-        x-on:hide-loading.window="document.getElementById('global-loading-overlay')?.classList.add('d-none')"
-        x-on:show-loading.window="document.getElementById('global-loading-overlay')?.classList.remove('d-none')"
-        class="position-fixed top-0 start-0 w-100 h-100" style="z-index: 2000; background: rgba(0,0,0,0.3);">
-        <div class="d-flex justify-content-center align-items-center h-100">
-            <div class="spinner-border text-primary" style="width: 4rem; height: 4rem;" role="status">
-                <span class="visually-hidden">Đang tải...</span>
-            </div>
-        </div>
-    </div>
+    <!-- /.content-wrapper -->
 
+    <!-- Main Footer -->
+    <footer class="main-footer">
+        <div class="float-right d-none d-sm-inline">
+            <strong>© 2025 EduCore</strong>
+        </div>
+    </footer>
 </div>
-
-{{-- @push('scripts')
-    <script>
-        function listenLoading() {
-            if (window.Livewire) {
-                Livewire.on('hideLoading', function() {
-                    document.getElementById('global-loading-overlay')?.classList.add('d-none');
-                });
-                Livewire.on('showLoading', function() {
-                    document.getElementById('global-loading-overlay')?.classList.remove('d-none');
-                });
-            }
-        }
-        if (window.Livewire) {
-            listenLoading();
-        } else {
-            document.addEventListener('livewire:load', listenLoading);
-        }
-    </script>
-@endpush --}}
+<!-- ./wrapper -->

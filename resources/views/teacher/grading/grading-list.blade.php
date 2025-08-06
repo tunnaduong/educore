@@ -5,7 +5,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-journal-check me-2"></i>Danh sách bài tập cần chấm
+                        <i class="bi bi-journal-check mr-2"></i>Danh sách bài tập cần chấm
                     </h4>
                     <p class="text-muted mb-0">Quản lý và chấm điểm các bài tập của học viên</p>
                 </div>
@@ -23,7 +23,7 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Lớp học</label>
-                        <select class="form-select" wire:model.live="filterClassroom">
+                        <select class="form-control" wire:model.live="filterClassroom">
                             <option value="">Tất cả lớp</option>
                             @foreach ($classrooms as $classroom)
                                 <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
@@ -32,7 +32,7 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Trạng thái</label>
-                        <select class="form-select" wire:model.live="filterStatus">
+                        <select class="form-control" wire:model.live="filterStatus">
                             <option value="all">Tất cả</option>
                             <option value="has_submissions">Có bài nộp</option>
                             <option value="no_submissions">Chưa có bài nộp</option>
@@ -40,7 +40,7 @@
                     </div>
                     <div class="col-md-2">
                         <label class="form-label">Sắp xếp</label>
-                        <select class="form-select" wire:model.live="sortBy">
+                        <select class="form-control" wire:model.live="sortBy">
                             <option value="submissions_count">Số bài nộp</option>
                             <option value="created_at">Ngày tạo</option>
                             <option value="deadline">Hạn nộp</option>
@@ -55,7 +55,7 @@
                 <div class="card shadow-sm">
                     <div class="card-header bg-primary text-white d-flex align-items-center justify-content-between">
                         <div>
-                            <i class="bi bi-journal-check me-2"></i>
+                            <i class="bi bi-journal-check mr-2"></i>
                             <span class="mb-0">Danh sách bài tập cần chấm</span>
                         </div>
                         <div class="text-white-50 small">
@@ -71,20 +71,23 @@
                                             <th>
                                                 Lớp học
                                                 @if ($sortBy === 'created_at')
-                                                    <i class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
+                                                    <i
+                                                        class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
                                                 @endif
                                             </th>
                                             <th>Tiêu đề</th>
                                             <th>
                                                 Hạn nộp
                                                 @if ($sortBy === 'deadline')
-                                                    <i class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
+                                                    <i
+                                                        class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
                                                 @endif
                                             </th>
                                             <th class="text-center">
                                                 Số bài nộp
                                                 @if ($sortBy === 'submissions_count')
-                                                    <i class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
+                                                    <i
+                                                        class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
                                                 @endif
                                             </th>
                                             <th class="text-center">Trạng thái</th>
@@ -96,31 +99,37 @@
                                             <tr>
                                                 <td>
                                                     <div class="d-flex align-items-center">
-                                                        <div class="avatar-sm me-3">
+                                                        <div class="avatar-sm mr-3">
                                                             <i class="bi bi-mortarboard fs-4 text-primary"></i>
                                                         </div>
                                                         <div>
-                                                            <div class="fw-medium">{{ $assignment->classroom->name ?? '-' }}</div>
-                                                            <small class="text-muted">{{ $assignment->classroom->level ?? '' }}</small>
+                                                            <div class="fw-medium">
+                                                                {{ $assignment->classroom->name ?? '-' }}</div>
+                                                            <small
+                                                                class="text-muted">{{ $assignment->classroom->level ?? '' }}</small>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="fw-medium">{{ $assignment->title }}</div>
                                                     @if ($assignment->description)
-                                                        <small class="text-muted">{{ Str::limit($assignment->description, 50) }}</small>
+                                                        <small
+                                                            class="text-muted">{{ Str::limit($assignment->description, 50) }}</small>
                                                     @endif
                                                 </td>
                                                 <td>
                                                     @if ($assignment->deadline)
-                                                        <div class="fw-medium">{{ $assignment->deadline->format('d/m/Y H:i') }}</div>
-                                                        <small class="text-muted">{{ $assignment->deadline->diffForHumans() }}</small>
+                                                        <div class="fw-medium">
+                                                            {{ $assignment->deadline->format('d/m/Y H:i') }}</div>
+                                                        <small
+                                                            class="text-muted">{{ $assignment->deadline->diffForHumans() }}</small>
                                                     @else
                                                         <span class="text-muted">Không có hạn</span>
                                                     @endif
                                                 </td>
                                                 <td class="text-center">
-                                                    <span class="badge bg-info">{{ $assignment->submissions_count }}</span>
+                                                    <span
+                                                        class="badge bg-info">{{ $assignment->submissions_count }}</span>
                                                 </td>
                                                 <td class="text-center">
                                                     @if ($assignment->submissions_count > 0)
@@ -130,8 +139,9 @@
                                                     @endif
                                                 </td>
                                                 <td class="text-center">
-                                                    <button wire:click="selectAssignment({{ $assignment->id }})" class="btn btn-sm btn-primary">
-                                                        <i class="bi bi-check-circle me-1"></i>Chấm bài
+                                                    <button wire:click="selectAssignment({{ $assignment->id }})"
+                                                        class="btn btn-sm btn-primary">
+                                                        <i class="bi bi-check-circle mr-1"></i>Chấm bài
                                                     </button>
                                                 </td>
                                             </tr>
@@ -160,7 +170,7 @@
                 <div class="card shadow-sm">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-info-circle me-2"></i>Thông tin
+                            <i class="bi bi-info-circle mr-2"></i>Thông tin
                         </h5>
                     </div>
                     <div class="card-body">

@@ -3,9 +3,9 @@
         <!-- Header -->
         <div class="mb-4">
             <a href="{{ route('teacher.assignments.index') }}" wire:navigate class="text-decoration-none text-secondary">
-                <i class="bi bi-arrow-left me-1"></i>Quay lại
+                <i class="bi bi-arrow-left mr-1"></i>Quay lại
             </a>
-            <h4 class="mt-2 text-primary fs-4"><i class="bi bi-journal-text me-2"></i>Chỉnh sửa bài tập</h4>
+            <h4 class="mt-2 text-primary fs-4"><i class="bi bi-journal-text mr-2"></i>Chỉnh sửa bài tập</h4>
         </div>
         <!-- Form -->
         <div class="card shadow-sm">
@@ -28,10 +28,11 @@
                         <div class="col-md-4">
                             <label for="class_id" class="form-label fw-semibold">Lớp học *</label>
                             <select wire:model.defer="class_id"
-                                class="form-select @error('class_id') is-invalid @enderror" id="class_id">
+                                class="form-control @error('class_id') is-invalid @enderror" id="class_id">
                                 <option value="">Chọn lớp</option>
                                 @foreach ($classrooms as $class)
-                                    <option value="{{ $class->id }}">{{ $class->name }} ({{ $class->level }})</option>
+                                    <option value="{{ $class->id }}">{{ $class->name }} ({{ $class->level }})
+                                    </option>
                                 @endforeach
                             </select>
                             @error('class_id')
@@ -43,7 +44,7 @@
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <label for="deadline" class="form-label fw-semibold">Hạn nộp *</label>
-                            <input wire:model.defer="deadline" type="datetime-local"
+                            <input wire:model.defer="deadline" type="datetimr-local"
                                 class="form-control @error('deadline') is-invalid @enderror" id="deadline">
                             @error('deadline')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -63,7 +64,8 @@
                                 <div class="form-check">
                                     <input wire:model.defer="types" class="form-check-input" type="checkbox"
                                         value="{{ $key }}" id="type_{{ $key }}">
-                                    <label class="form-check-label" for="type_{{ $key }}">{{ $label }}</label>
+                                    <label class="form-check-label"
+                                        for="type_{{ $key }}">{{ $label }}</label>
                                 </div>
                             @endforeach
                         </div>
@@ -86,7 +88,8 @@
                             <input wire:model="attachment" type="file"
                                 class="form-control @error('attachment') is-invalid @enderror" id="attachment">
                             @if ($attachment)
-                                <div class="small text-success mt-1">Tệp: {{ $attachment->getClientOriginalName() }}</div>
+                                <div class="small text-success mt-1">Tệp: {{ $attachment->getClientOriginalName() }}
+                                </div>
                             @endif
                             @error('attachment')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -94,12 +97,13 @@
                         </div>
                         <div class="col-md-6">
                             <label for="description" class="form-label">Mô tả</label>
-                            <textarea wire:model.defer="description" class="form-control" id="description" rows="3" placeholder="Mô tả chi tiết về bài tập, hướng dẫn, yêu cầu..."></textarea>
+                            <textarea wire:model.defer="description" class="form-control" id="description" rows="3"
+                                placeholder="Mô tả chi tiết về bài tập, hướng dẫn, yêu cầu..."></textarea>
                         </div>
                     </div>
                     <div class="d-flex justify-content-end">
                         <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-save me-2"></i>Lưu thay đổi
+                            <i class="bi bi-save mr-2"></i>Lưu thay đổi
                         </button>
                     </div>
                 </form>
