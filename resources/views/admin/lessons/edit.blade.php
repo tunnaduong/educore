@@ -1,4 +1,5 @@
 <x-layouts.dash-admin active="lessons">
+    @include('components.language')
     <div class="container-fluid">
         <div class="mb-4">
             <a href="{{ route('lessons.index') }}" wire:navigate

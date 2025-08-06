@@ -1,4 +1,5 @@
 <x-layouts.dash-student active="assignments">
+    @include('components.language')
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">

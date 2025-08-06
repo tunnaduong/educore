@@ -1,4 +1,6 @@
 <x-layouts.dash-admin active="schedules">
+    @include('components.language')
+
     <div class="container-fluid">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="d-flex align-items-center fs-4 text-primary mb-0">

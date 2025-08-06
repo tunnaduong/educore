@@ -1,4 +1,5 @@
 <x-layouts.dash-admin active="submissions" title="@lang('general.grade_assignment')">
+    @include('components.language')
     <div class="row">
         <div class="col-12">
             <!-- Breadcrumb -->
