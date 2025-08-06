@@ -6,7 +6,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="createEventModalLabel">
-                            <i class="bi bi-plus-circle me-2"></i>Thêm sự kiện mới
+                            <i class="bi bi-plus-circle mr-2"></i>Thêm sự kiện mới
                         </h5>
                         <button type="button" class="btn-close" wire:click="closeModal" aria-label="Close"></button>
                     </div>
@@ -34,7 +34,8 @@
                                         <label for="eventType" class="form-label">Loại sự kiện <span
                                                 class="text-danger">*</span></label>
                                         <select wire:model.live="eventType"
-                                            class="form-select @error('eventType') is-invalid @enderror" id="eventType">
+                                            class="form-control @error('eventType') is-invalid @enderror"
+                                            id="eventType">
                                             <option value="lesson">Bài học</option>
                                             <option value="assignment">Bài tập</option>
                                             <option value="quiz">Kiểm tra</option>
@@ -49,7 +50,7 @@
                                         <label for="classroomId" class="form-label">Lớp học <span
                                                 class="text-danger">*</span></label>
                                         <select wire:model="classroomId"
-                                            class="form-select @error('classroomId') is-invalid @enderror"
+                                            class="form-control @error('classroomId') is-invalid @enderror"
                                             id="classroomId">
                                             <option value="">Chọn lớp học</option>
                                             @foreach ($this->classrooms as $classroom)
@@ -89,7 +90,7 @@
                                         <div class="mb-3">
                                             <label for="startTime" class="form-label">Thời gian bắt đầu <span
                                                     class="text-danger">*</span></label>
-                                            <input type="datetime-local" wire:model="startTime"
+                                            <input type="datetimr-local" wire:model="startTime"
                                                 class="form-control @error('startTime') is-invalid @enderror"
                                                 id="startTime">
                                             @error('startTime')
@@ -101,7 +102,7 @@
                                         <div class="mb-3">
                                             <label for="endTime" class="form-label">Thời gian kết thúc <span
                                                     class="text-danger">*</span></label>
-                                            <input type="datetime-local" wire:model="endTime"
+                                            <input type="datetimr-local" wire:model="endTime"
                                                 class="form-control @error('endTime') is-invalid @enderror"
                                                 id="endTime">
                                             @error('endTime')
@@ -160,7 +161,7 @@
                                         <div class="mb-3">
                                             <label for="dueDate" class="form-label">Hạn nộp <span
                                                     class="text-danger">*</span></label>
-                                            <input type="datetime-local" wire:model="dueDate"
+                                            <input type="datetimr-local" wire:model="dueDate"
                                                 class="form-control @error('dueDate') is-invalid @enderror"
                                                 id="dueDate">
                                             @error('dueDate')
@@ -198,7 +199,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" wire:click="closeModal">Hủy</button>
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-plus-circle me-2"></i>Tạo sự kiện
+                                <i class="bi bi-plus-circle mr-2"></i>Tạo sự kiện
                             </button>
                         </div>
                     </form>

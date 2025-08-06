@@ -2,17 +2,17 @@
     <div class="container py-4">
         <a href="{{ route('lessons.index') }}" wire:navigate
             class="text-decoration-none text-secondary d-inline-block mb-3">
-            <i class="bi bi-arrow-left me-2"></i>Quay lại danh sách
+            <i class="bi bi-arrow-left mr-2"></i>Quay lại danh sách
         </a>
         <div class="card shadow-lg border-0">
             <div class="card-body p-4">
                 <div class="row g-4 align-items-start">
                     <div class="col-md-8">
                         <h3 class="mb-3 text-success fw-bold">
-                            <i class="bi bi-journal-richtext me-2"></i>{{ $lesson->title }}
+                            <i class="bi bi-journal-richtext mr-2"></i>{{ $lesson->title }}
                         </h3>
                         <div class="mb-2">
-                            <span class="badge bg-info me-2"><i class="bi bi-hash"></i> Bài số:
+                            <span class="badge bg-info mr-2"><i class="bi bi-hash"></i> Bài số:
                                 {{ $lesson->number }}</span>
                             <span class="badge bg-secondary"><i class="bi bi-calendar-event"></i>
                                 {{ $lesson->created_at?->format('d/m/Y H:i') }}</span>
@@ -30,10 +30,10 @@
                         @endif
                         <div class="d-flex gap-2 mt-4">
                             <a href="{{ route('lessons.edit', $lesson->id) }}" wire:navigate class="btn btn-warning"><i
-                                    class="bi bi-pencil me-1"></i>Sửa</a>
+                                    class="bi bi-pencil mr-1"></i>Sửa</a>
                             <button type="button" class="btn btn-danger" wire:click="deleteLesson({{ $lesson->id }})"
                                 wire:confirm="Bạn có chắc chắn muốn xóa bài học '{{ $lesson->title }}' không?"><i
-                                    class="bi bi-trash me-1"></i>Xóa</button>
+                                    class="bi bi-trash mr-1"></i>Xóa</button>
                         </div>
                     </div>
                     <div class="col-md-4">

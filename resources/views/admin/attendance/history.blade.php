@@ -2,10 +2,10 @@
     <div class="container-fluid">
         <div class="mb-4">
             <a href="{{ route('attendances.overview') }}" wire:navigate class="btn btn-light mb-2">
-                <i class="bi bi-arrow-left me-2"></i>Quay lại tổng quan
+                <i class="bi bi-arrow-left mr-2"></i>Quay lại tổng quan
             </a>
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-list-ul me-2"></i>Lịch sử điểm danh
+                <i class="bi bi-list-ul mr-2"></i>Lịch sử điểm danh
             </h4>
         </div>
         <div class="card shadow-sm">

@@ -6,7 +6,7 @@
                 <div class="card shadow-sm">
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0">
-                            <i class="bi bi-chat-dots-fill me-2"></i>
+                            <i class="bi bi-chat-dots-fill mr-2"></i>
                             Chat & Tương tác
                         </h5>
                     </div>
@@ -26,20 +26,21 @@
                         <ul class="nav nav-tabs nav-fill" id="chatTabs" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link @if ($activeTab === 'students') active @endif"
-                                    wire:click="setActiveTab('students')" id="students-tab" type="button" role="tab">
-                                    <i class="bi bi-mortarboard-fill me-1"></i>Học sinh
+                                    wire:click="setActiveTab('students')" id="students-tab" type="button"
+                                    role="tab">
+                                    <i class="bi bi-mortarboard-fill mr-1"></i>Học sinh
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link @if ($activeTab === 'classes') active @endif"
                                     wire:click="setActiveTab('classes')" id="classes-tab" type="button" role="tab">
-                                    <i class="bi bi-diagram-3-fill me-1"></i>Lớp học
+                                    <i class="bi bi-diagram-3-fill mr-1"></i>Lớp học
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link @if ($activeTab === 'users') active @endif"
                                     wire:click="setActiveTab('users')" id="users-tab" type="button" role="tab">
-                                    <i class="bi bi-people-fill me-1"></i>Giáo viên
+                                    <i class="bi bi-people-fill mr-1"></i>Giáo viên
                                 </button>
                             </li>
                         </ul>
@@ -60,7 +61,7 @@
                                                         class="text-white fw-bold">{{ strtoupper(substr($student->user->name, 0, 1)) }}</span>
                                                 </div>
                                             </div>
-                                            <div class="flex-grow-1 ms-3">
+                                            <div class="flex-grow-1 ml-3">
                                                 <h6 class="mb-0">{{ $student->user->name }}</h6>
                                                 <small>{{ $student->user->email }}</small>
                                             </div>
@@ -71,7 +72,8 @@
                                         </button>
                                     @empty
                                         <div class="list-group-item text-center text-muted">
-                                            <i class="bi bi-mortarboard-fill" style="font-size: 2rem; color: #dee2e6;"></i>
+                                            <i class="bi bi-mortarboard-fill"
+                                                style="font-size: 2rem; color: #dee2e6;"></i>
                                             <p class="mt-2">Không có học sinh nào</p>
                                         </div>
                                     @endforelse
@@ -97,10 +99,10 @@
                                                     </div>
                                                 @endif
                                             </div>
-                                            <div class="flex-grow-1 ms-3">
+                                            <div class="flex-grow-1 ml-3">
                                                 <h6 class="mb-0">{{ $class->name }}</h6>
                                             </div>
-                                            <span class="badge bg-danger rounded-pill ms-auto" style="min-width: 28px;">
+                                            <span class="badge bg-danger rounded-pill ml-auto" style="min-width: 28px;">
                                                 {{ $class->unread_messages_count ?? 0 }}
                                             </span>
                                         </button>
@@ -128,7 +130,7 @@
                                                         class="text-white fw-bold">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
                                                 </div>
                                             </div>
-                                            <div class="flex-grow-1 ms-3">
+                                            <div class="flex-grow-1 ml-3">
                                                 <h6 class="mb-0">{{ $user->name }}</h6>
                                                 <small>{{ $user->email }}</small>
                                             </div>
@@ -158,7 +160,7 @@
                         <div class="card-header bg-light d-flex align-items-center justify-content-between">
                             <div class="d-flex align-items-center">
                                 @if ($selectedStudent)
-                                    <div class="rounded-circle bg-success d-flex align-items-center justify-content-center me-3"
+                                    <div class="rounded-circle bg-success d-flex align-items-center justify-content-center mr-3"
                                         style="width: 40px; height: 40px;">
                                         <span
                                             class="text-white fw-bold">{{ strtoupper(substr($selectedStudent->user->name, 0, 1)) }}</span>
@@ -168,7 +170,7 @@
                                         <small class="text-muted">Học sinh</small>
                                     </div>
                                 @elseif ($selectedUser)
-                                    <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center me-3"
+                                    <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center mr-3"
                                         style="width: 40px; height: 40px;">
                                         <span
                                             class="text-white fw-bold">{{ strtoupper(substr($selectedUser->name, 0, 1)) }}</span>
@@ -178,7 +180,7 @@
                                         <small class="text-muted">{{ $selectedUser->email }}</small>
                                     </div>
                                 @elseif($selectedClass)
-                                    <div class="rounded-circle bg-info d-flex align-items-center justify-content-center me-3"
+                                    <div class="rounded-circle bg-info d-flex align-items-center justify-content-center mr-3"
                                         style="width: 40px; height: 40px;">
                                         <i class="bi bi-diagram-3-fill text-white"></i>
                                     </div>
@@ -209,7 +211,7 @@
                                                         alt="Avatar" class="rounded-circle"
                                                         style="width: 35px; height: 35px; object-fit: cover;">
                                                 @else
-                                                    <div class="rounded-circle d-flex align-items-center justify-content-center {{ $isMine ? 'ms-3' : 'me-3' }}"
+                                                    <div class="rounded-circle d-flex align-items-center justify-content-center {{ $isMine ? 'ms-3' : 'mr-3' }}"
                                                         style="width: 35px; height: 35px; background-color: {{ $isMine ? '#0d6efd' : '#6c757d' }};">
                                                         <span
                                                             class="text-white fw-bold">{{ strtoupper(substr($sender->name, 0, 1)) }}</span>
@@ -231,12 +233,13 @@
                                                                 <a href="{{ Storage::url($message->attachment) }}"
                                                                     target="_blank"
                                                                     class="btn btn-sm {{ $isMine ? 'btn-light' : 'btn-outline-primary' }}">
-                                                                    <i class="bi bi-paperclip me-1"></i>
+                                                                    <i class="bi bi-paperclip mr-1"></i>
                                                                     Tệp đính kèm
                                                                 </a>
                                                             </div>
                                                         @endif
-                                                        <small class="{{ $isMine ? 'text-white' : 'text-muted' }} d-block mt-1"
+                                                        <small
+                                                            class="{{ $isMine ? 'text-white' : 'text-muted' }} d-block mt-1"
                                                             style="font-size: 0.85rem;">
                                                             {{ $message->created_at->format('H:i d/m/Y') }}
                                                         </small>
@@ -284,10 +287,11 @@
                                         </div>
                                     </div>
                                 </form>
-                                
+
                                 <!-- Drag & Drop Zone -->
-                                <div id="dragDropZone" class="mt-2 p-3 border-2 border-dashed border-secondary rounded text-center" 
-                                     style="display: none; background-color: rgba(0,123,255,0.1);">
+                                <div id="dragDropZone"
+                                    class="mt-2 p-3 border-2 border-dashed border-secondary rounded text-center"
+                                    style="display: none; background-color: rgba(0,123,255,0.1);">
                                     <i class="bi bi-cloud-upload fs-1 text-primary"></i>
                                     <p class="mb-0 mt-2">Kéo thả file vào đây để đính kèm</p>
                                 </div>
@@ -300,7 +304,8 @@
                             <div class="text-center">
                                 <i class="bi bi-chat-dots-fill" style="font-size: 4rem; color: #0dcaf0;"></i>
                                 <h4 class="mt-3">Chào mừng đến với Chat & Tương tác</h4>
-                                <p class="text-muted">Chọn một học sinh, lớp học hoặc giáo viên để bắt đầu cuộc trò chuyện</p>
+                                <p class="text-muted">Chọn một học sinh, lớp học hoặc giáo viên để bắt đầu cuộc trò
+                                    chuyện</p>
                             </div>
                         </div>
                     @endif
@@ -411,9 +416,11 @@
                             const dt = new DataTransfer();
                             dt.items.add(files[0]);
                             fileInput.files = dt.files;
-                            
+
                             // Trigger Livewire file upload
-                            fileInput.dispatchEvent(new Event('change', { bubbles: true }));
+                            fileInput.dispatchEvent(new Event('change', {
+                                bubbles: true
+                            }));
                         }
                     });
 
@@ -454,7 +461,7 @@
                         ' border-0 position-fixed bottom-0 end-0 m-3';
                     toast.style.zIndex = 9999;
                     toast.innerHTML =
-                        `<div class="d-flex"><div class="toast-body">${message}</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div>`;
+                        `<div class="d-flex"><div class="toast-body">${message}</div><button type="button" class="btn-close btn-close-white mr-2 m-auto" data-bs-dismiss="toast"></button></div>`;
                     document.body.appendChild(toast);
                     var bsToast = new bootstrap.Toast(toast, {
                         delay: 2500
@@ -468,4 +475,4 @@
         </script>
     @endpush
 
-</x-layouts.dash-teacher> 
+</x-layouts.dash-teacher>
