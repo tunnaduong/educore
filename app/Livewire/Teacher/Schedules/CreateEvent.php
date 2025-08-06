@@ -36,7 +36,7 @@ class CreateEvent extends Component
         'endTime' => 'required_if:eventType,lesson,quiz|date|after:startTime',
         'location' => 'nullable|string|max:255',
         'dueDate' => 'required_if:eventType,assignment|date',
-        'maxScore' => 'nullable|numeric|min:0',
+        'maxScore' => 'nullable|numeric|min:0|max:10',
         'duration' => 'required_if:eventType,quiz|numeric|min:1',
     ];
 
@@ -49,6 +49,9 @@ class CreateEvent extends Component
         'dueDate.required_if' => 'Vui lòng nhập hạn nộp.',
         'duration.required_if' => 'Vui lòng nhập thời gian làm bài.',
         'duration.min' => 'Thời gian làm bài phải lớn hơn 0.',
+        'maxScore.numeric' => 'Điểm phải là số hợp lệ.',
+        'maxScore.min' => 'Điểm không được nhỏ hơn 0.',
+        'maxScore.max' => 'Điểm không được vượt quá 10.',
     ];
 
     public function mount($selectedDate = null)
