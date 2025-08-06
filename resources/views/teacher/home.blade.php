@@ -1,4 +1,5 @@
 <x-layouts.dash-teacher active="home">
+    @include('components.language')
     <div class="container py-4">
         <div class="row g-4 gy-5">
             <!-- Lớp học của tôi -->

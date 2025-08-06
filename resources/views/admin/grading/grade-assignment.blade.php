@@ -1,22 +1,218 @@
-<x-layouts.dash-admin active="submissions">
-    <div class="container-fluid">
-        <a href="{{ route('grading.list') }}" wire:navigate
-            class="text-decoration-none text-secondary d-inline-block mb-3">
-            <i class="bi bi-arrow-left me-2"></i>Quay lại danh sách
-        </a>
-        <div class="row mb-4">
-            <div class="col-lg-8">
-                <div class="card shadow-sm mb-3">
-                    <div class="card-body">
-                        <h4 class="card-title mb-2 text-primary">
-                            <i class="bi bi-journal-check me-2"></i>Chấm bài: <span
-                                class="fw-bold">{{ $assignment->title }}</span>
-                        </h4>
-                        <div class="mb-2">
-                            <span class="badge bg-info text-dark me-2"><i class="bi bi-mortarboard"></i> Lớp:
-                                {{ $assignment->classroom?->name ?? '-' }}</span>
-                            <span class="badge bg-warning text-dark"><i class="bi bi-calendar3"></i> Hạn nộp:
-                                {{ $assignment->deadline ? $assignment->deadline->format('d/m/Y H:i') : '-' }}</span>
+<x-layouts.dash-admin active="submissions" title="@lang('general.grade_assignment')">
+    @include('components.language')
+    <div class="row">
+        <div class="col-12">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb bg-white shadow-sm rounded">
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('grading.list') }}" wire:navigate class="text-decoration-none">
+                            <i class="fas fa-arrow-left mr-1"></i>@lang('general.back_to_list')
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">@lang('general.grade_assignment')</li>
+                </ol>
+            </nav>
+
+            <div class="row">
+                <div class="col-lg-8">
+                    <!-- Assignment Header Card -->
+                    <div class="card border-0 shadow-sm mb-4"
+                        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <div class="card-body text-white p-4">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <h3 class="mb-2 font-weight-bold">
+                                        <i class="fas fa-check-circle mr-2"></i>{{ $assignment->title }}
+                                    </h3>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge badge-light text-dark">
+                                            <i class="fas fa-graduation-cap mr-1"></i>
+                                            {{ $assignment->classroom?->name ?? '-' }}
+                                        </span>
+                                        <span class="badge badge-warning">
+                                            <i class="fas fa-calendar-alt mr-1"></i>
+                                            {{ $assignment->deadline ? $assignment->deadline->format('d/m/Y H:i') : '-' }}
+                                        </span>
+                                        <span class="badge badge-info">
+                                            <i class="fas fa-users mr-1"></i>
+                                            {{ $submissions->count() }} @lang('general.submissions')
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 text-right">
+                                    <div class="text-center">
+                                        <div class="h2 mb-0 font-weight-bold">
+                                            {{ $submissions->where('score', '!=', null)->count() }}/{{ $submissions->count() }}
+                                        </div>
+                                        <small>@lang('general.graded')</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submissions List -->
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-white border-0 py-3">
+                            <h5 class="mb-0 text-primary font-weight-bold">
+                                <i class="fas fa-list-alt mr-2"></i>@lang('general.submission_list')
+                            </h5>
+                        </div>
+                        <div class="card-body p-0">
+                            @if ($submissions->count() > 0)
+                                <div class="p-3">
+                                    @foreach ($submissions as $submission)
+                                        <div class="card mb-3 border-0 shadow-sm hover-shadow"
+                                            style="transition: all 0.3s ease; {{ $submission->score !== null ? 'border-left: 4px solid #28a745 !important;' : 'border-left: 4px solid #6c757d !important;' }}">
+                                            <div class="card-body p-4">
+                                                <div class="row align-items-center">
+                                                    <!-- Student Info -->
+                                                    <div class="col-md-4 mb-3 mb-md-0">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="mr-3">
+                                                                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+                                                                    style="width: 50px; height: 50px; font-size: 20px;">
+                                                                    {{ substr($submission->student?->user?->name ?? 'A', 0, 1) }}
+                                                                </div>
+                                                            </div>
+                                                            <div>
+                                                                <h6 class="mb-1 font-weight-bold">
+                                                                    {{ $submission->student?->user?->name ?? '-' }}</h6>
+                                                                <div class="d-flex flex-wrap gap-1">
+                                                                    <span class="badge badge-secondary badge-pill">
+                                                                        @switch($submission->submission_type)
+                                                                            @case('text')
+                                                                                @lang('general.text')
+                                                                            @break
+
+                                                                            @case('essay')
+                                                                                @lang('general.essay')
+                                                                            @break
+
+                                                                            @case('image')
+                                                                                @lang('general.image')
+                                                                            @break
+
+                                                                            @case('audio')
+                                                                                @lang('general.audio')
+                                                                            @break
+
+                                                                            @case('video')
+                                                                                @lang('general.video')
+                                                                            @break
+
+                                                                            @default
+                                                                                {{ $submission->submission_type }}
+                                                                        @endswitch
+                                                                    </span>
+                                                                    @if ($submission->submitted_at)
+                                                                        <span class="badge badge-info badge-pill">
+                                                                            <i class="fas fa-clock mr-1"></i>
+                                                                            {{ $submission->submitted_at->format('d/m/Y H:i') }}
+                                                                        </span>
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Grading Status -->
+                                                    <div class="col-md-2 mb-3 mb-md-0 text-center">
+                                                        @if ($submission->score !== null)
+                                                            <div class="text-success">
+                                                                <i class="fas fa-check-circle fa-2x"></i>
+                                                                <div class="small font-weight-bold">@lang('general.graded')
+                                                                </div>
+                                                            </div>
+                                                        @else
+                                                            <div class="text-muted">
+                                                                <i class="fas fa-hourglass-half fa-2x"></i>
+                                                                <div class="small">@lang('general.not_graded')</div>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+
+                                                    <!-- Score Input -->
+                                                    <div class="col-md-2 mb-3 mb-md-0">
+                                                        <div class="form-group mb-0">
+                                                            <label
+                                                                class="small text-muted mb-1">@lang('general.score')</label>
+                                                            <input type="number" min="0" max="10"
+                                                                step="0.1"
+                                                                class="form-control form-control-sm text-center"
+                                                                wire:model.defer="grading.{{ $submission->id }}.score"
+                                                                placeholder="0-10" style="border-radius: 20px;"
+                                                                oninput="if(this.value > 10) this.value = 10; if(this.value < 0) this.value = 0;">
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Actions -->
+                                                    <div class="col-md-4">
+                                                        <div class="d-flex gap-2">
+                                                            <button class="btn btn-outline-primary btn-sm flex-fill"
+                                                                wire:click="viewSubmission({{ $submission->id }})"
+                                                                style="border-radius: 20px;">
+                                                                <i class="fas fa-eye mr-1"></i>@lang('general.view')
+                                                            </button>
+                                                            <button class="btn btn-success btn-sm flex-fill"
+                                                                wire:click="saveGrade({{ $submission->id }})"
+                                                                style="border-radius: 20px;">
+                                                                <i class="fas fa-save mr-1"></i>@lang('general.save')
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Feedback -->
+                                                <div class="mt-3">
+                                                    <div class="form-group mb-0">
+                                                        <label class="small text-muted mb-1">@lang('general.feedback')</label>
+                                                        <textarea class="form-control form-control-sm" wire:model.defer="grading.{{ $submission->id }}.feedback"
+                                                            placeholder="@lang('general.feedback')..." rows="2" style="border-radius: 10px; resize: none;"></textarea>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Previous Feedback Display -->
+                                                @if ($submission->score !== null && $submission->feedback)
+                                                    <div class="mt-3 p-3 bg-light rounded"
+                                                        style="border-left: 3px solid #28a745;">
+                                                        <div class="small text-muted mb-1">
+                                                            <i class="fas fa-comment mr-1"></i>@lang('general.previous_feedback'):
+                                                        </div>
+                                                        <div class="font-weight-bold">{{ $submission->feedback }}</div>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+
+                                <!-- Success/Error Messages -->
+                                @if (session()->has('success'))
+                                    <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
+                                        <i class="fas fa-check-circle mr-2"></i>{{ session('success') }}
+                                        <button type="button" class="close" data-dismiss="alert">
+                                            <span>&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+
+                                @if (session()->has('error'))
+                                    <div class="alert alert-danger alert-dismissible fade show m-3" role="alert">
+                                        <i class="fas fa-exclamation-triangle mr-2"></i>{{ session('error') }}
+                                        <button type="button" class="close" data-dismiss="alert">
+                                            <span>&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            @else
+                                <div class="text-center py-5">
+                                    <i class="fas fa-inbox fa-4x text-muted mb-3"></i>
+                                    <h5 class="text-muted">@lang('general.no_submissions')</h5>
+                                    <p class="text-muted">@lang('general.no_submissions_desc')</p>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -164,7 +360,8 @@
                     </div>
                     <div class="card-body small">
                         <ul class="mb-2 ps-3">
-                            <li>Bấm <span class="badge bg-primary"><i class="bi bi-eye"></i> Xem</span> để xem nội dung
+                            <li>Bấm <span class="badge bg-primary"><i class="bi bi-eye"></i> Xem</span> để xem nội
+                                dung
                                 bài nộp.</li>
                             <li>Nhập điểm (0-10) và nhận xét cho từng bài nộp.</li>
                             <li>Bấm <span class="badge bg-success"><i class="bi bi-save"></i></span> để lưu lại.</li>
@@ -185,7 +382,8 @@
                         <div><b>Lớp:</b> {{ $assignment->classroom?->name ?? '-' }}</div>
                         <div><b>Hạn nộp:</b>
                             {{ $assignment->deadline ? $assignment->deadline->format('d/m/Y H:i') : '-' }}</div>
-                        <div><b>Mô tả:</b> <span class="text-muted">{{ $assignment->description ?? 'Không có' }}</span>
+                        <div><b>Mô tả:</b> <span
+                                class="text-muted">{{ $assignment->description ?? 'Không có' }}</span>
                         </div>
                     </div>
                 </div>

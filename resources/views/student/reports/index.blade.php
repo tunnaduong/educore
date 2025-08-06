@@ -1,4 +1,5 @@
 <x-layouts.dash-student active="reports">
+    @include('components.language')
     <div class="container">
         <!-- Header -->
         <div class="mb-4">
