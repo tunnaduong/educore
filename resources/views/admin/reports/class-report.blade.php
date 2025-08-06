@@ -6,7 +6,7 @@
     </div>
     <div class="card mb-4">
         <div class="card-body">
-            <h4 class="mb-3 text-primary"><i class="bi bi-diagram-3 me-2"></i>Báo cáo chi tiết lớp học</h4>
+            <h4 class="mb-3 text-primary"><i class="bi bi-diagram-3 mr-2"></i>Báo cáo chi tiết lớp học</h4>
             <div class="row g-3">
                 <div class="col-md-6">
                     <div class="fw-bold">Tên lớp:</div>
@@ -41,21 +41,23 @@
                                 <td>{{ $row['student_name'] }}</td>
                                 <td>
                                     <div class="progress" style="height: 18px;">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: {{ $row['progress'] }}%">{{ $row['progress'] }}%</div>
+                                        <div class="progress-bar bg-success" role="progressbar"
+                                            style="width: {{ $row['progress'] }}%">{{ $row['progress'] }}%</div>
                                     </div>
                                 </td>
                                 <td><span class="fw-bold">{{ $row['avg_score'] }}</span></td>
                                 <td>{{ $row['submit_rate'] }}%</td>
                                 <td>{{ $row['attendance_count'] }}</td>
                                 <td>
-                                    @if($row['need_support'])
+                                    @if ($row['need_support'])
                                         <span class="badge bg-danger">Cần hỗ trợ</span>
                                     @else
                                         <span class="badge bg-success">Ổn định</span>
                                     @endif
                                 </td>
                                 <td>
-                                    <a wire:navigate href="{{ route('reports.student', $row['student_id']) }}" class="btn btn-sm btn-outline-primary">Xem</a>
+                                    <a wire:navigate href="{{ route('reports.student', $row['student_id']) }}"
+                                        class="btn btn-sm btn-outline-primary">Xem</a>
                                 </td>
                             </tr>
                         @empty

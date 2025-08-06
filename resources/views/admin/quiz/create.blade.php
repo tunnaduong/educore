@@ -4,10 +4,10 @@
         <div class="mb-4">
             <a href="{{ route('quizzes.index') }}" wire:navigate
                 class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left me-2"></i>Quay lại danh sách bài kiểm tra
+                <i class="bi bi-arrow-left mr-2"></i>Quay lại danh sách bài kiểm tra
             </a>
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-plus-circle me-2"></i>Tạo bài kiểm tra mới
+                <i class="bi bi-plus-circle mr-2"></i>Tạo bài kiểm tra mới
             </h4>
             <p class="text-muted mb-0">Thêm bài kiểm tra mới vào hệ thống</p>
         </div>
@@ -19,7 +19,7 @@
                     <div class="card shadow-sm mb-4">
                         <div class="card-header bg-light">
                             <h6 class="mb-0">
-                                <i class="bi bi-info-circle me-2"></i>Thông tin cơ bản
+                                <i class="bi bi-info-circle mr-2"></i>Thông tin cơ bản
                             </h6>
                         </div>
                         <div class="card-body">
@@ -44,7 +44,7 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Lớp học <span class="text-danger">*</span></label>
-                                <select class="form-select @error('class_id') is-invalid @enderror"
+                                <select class="form-control @error('class_id') is-invalid @enderror"
                                     wire:model="class_id">
                                     <option value="">Chọn lớp học...</option>
                                     @foreach ($classrooms as $classroom)
@@ -58,7 +58,7 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Hạn nộp</label>
-                                <input type="datetime-local"
+                                <input type="datetimr-local"
                                     class="form-control @error('deadline') is-invalid @enderror" wire:model="deadline">
                                 @error('deadline')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -73,7 +73,7 @@
                     <div class="card shadow-sm mb-4">
                         <div class="card-header bg-light">
                             <h6 class="mb-0">
-                                <i class="bi bi-plus-circle me-2"></i>Thêm câu hỏi mới
+                                <i class="bi bi-plus-circle mr-2"></i>Thêm câu hỏi mới
                             </h6>
                         </div>
                         <div class="card-body">
@@ -93,7 +93,7 @@
                                     <div class="mb-3">
                                         <label class="form-label">Loại câu hỏi <span
                                                 class="text-danger">*</span></label>
-                                        <select class="form-select @error('currentQuestion.type') is-invalid @enderror"
+                                        <select class="form-control @error('currentQuestion.type') is-invalid @enderror"
                                             wire:model="currentQuestion.type">
                                             <option value="multiple_choice">Trắc nghiệm</option>
                                             <option value="fill_blank">Điền từ</option>
@@ -137,14 +137,14 @@
                                     @endforeach
                                     <button type="button" class="btn btn-sm btn-outline-primary"
                                         wire:click="addOption">
-                                        <i class="bi bi-plus me-1"></i>Thêm đáp án
+                                        <i class="bi bi-plus mr-1"></i>Thêm đáp án
                                     </button>
                                 </div>
 
                                 <div class="mb-3">
                                     <label class="form-label">Đáp án đúng <span class="text-danger">*</span></label>
                                     <select
-                                        class="form-select @error('currentQuestion.correct_answer') is-invalid @enderror"
+                                        class="form-control @error('currentQuestion.correct_answer') is-invalid @enderror"
                                         wire:model.live="currentQuestion.correct_answer">
                                         <option value="">Chọn đáp án đúng...</option>
                                         @foreach ($currentQuestion['options'] as $index => $option)
@@ -173,7 +173,7 @@
 
                             <div class="text-end">
                                 <button type="button" class="btn btn-primary" wire:click="addQuestion">
-                                    <i class="bi bi-plus-circle me-2"></i>Thêm câu hỏi
+                                    <i class="bi bi-plus-circle mr-2"></i>Thêm câu hỏi
                                 </button>
                             </div>
                         </div>
@@ -184,7 +184,7 @@
                         <div class="card shadow-sm">
                             <div class="card-header bg-light">
                                 <h6 class="mb-0">
-                                    <i class="bi bi-list-ul me-2"></i>Danh sách câu hỏi ({{ count($questions) }})
+                                    <i class="bi bi-list-ul mr-2"></i>Danh sách câu hỏi ({{ count($questions) }})
                                 </h6>
                             </div>
                             <div class="card-body">
@@ -192,7 +192,7 @@
                                     <div class="border rounded p-3 mb-3">
                                         <div class="d-flex justify-content-between align-items-start mb-2">
                                             <div>
-                                                <span class="badge bg-primary me-2">Câu {{ $index + 1 }}</span>
+                                                <span class="badge bg-primary mr-2">Câu {{ $index + 1 }}</span>
                                                 <span
                                                     class="badge bg-secondary">{{ ucfirst($question['type']) }}</span>
                                                 <span class="badge bg-info">{{ $question['score'] }} điểm</span>
@@ -238,12 +238,12 @@
                 <div class="col-12">
                     <div class="card shadow-sm">
                         <div class="card-body text-end">
-                            <a href="{{ route('quizzes.index') }}" wire:navigate class="btn btn-secondary me-2">
-                                <i class="bi bi-x-circle me-2"></i>Hủy
+                            <a href="{{ route('quizzes.index') }}" wire:navigate class="btn btn-secondary mr-2">
+                                <i class="bi bi-x-circle mr-2"></i>Hủy
                             </a>
                             <button type="submit" class="btn btn-primary"
                                 @if (count($questions) === 0) disabled @endif>
-                                <i class="bi bi-check-circle me-2"></i>Lưu bài kiểm tra
+                                <i class="bi bi-check-circle mr-2"></i>Lưu bài kiểm tra
                             </button>
                         </div>
                     </div>
@@ -255,7 +255,7 @@
         @if (session()->has('message'))
             <div class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3"
                 role="alert">
-                <i class="bi bi-check-circle me-2"></i>{{ session('message') }}
+                <i class="bi bi-check-circle mr-2"></i>{{ session('message') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif

@@ -4,10 +4,10 @@
         <div class="mb-4">
             <a href="{{ route('assignments.overview') }}" wire:navigate
                 class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left me-2"></i>Quay lại tổng quan bài tập
+                <i class="bi bi-arrow-left mr-2"></i>Quay lại tổng quan bài tập
             </a>
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-journal-text me-2"></i>Chi tiết bài tập
+                <i class="bi bi-journal-text mr-2"></i>Chi tiết bài tập
             </h4>
             <p class="text-muted mb-0">{{ $assignment->title }}</p>
         </div>
@@ -18,7 +18,7 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-info-circle me-2"></i>Thông tin bài tập
+                            <i class="bi bi-info-circle mr-2"></i>Thông tin bài tập
                         </h5>
                     </div>
                     <div class="card-body">
@@ -79,7 +79,7 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-people me-2"></i>Danh sách học viên & tình trạng nộp bài
+                            <i class="bi bi-people mr-2"></i>Danh sách học viên & tình trạng nộp bài
                         </h5>
                     </div>
                     <div class="card-body">
@@ -104,7 +104,7 @@
                                             <tr>
                                                 <td>
                                                     <div class="d-flex align-items-center">
-                                                        <div class="avatar-sm me-3">
+                                                        <div class="avatar-sm mr-3">
                                                             <i class="bi bi-person-circle fs-4 text-primary"></i>
                                                         </div>
                                                         <div>

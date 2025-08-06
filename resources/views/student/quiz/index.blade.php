@@ -6,7 +6,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-clipboard-check-fill me-2"></i>Danh sách bài kiểm tra
+                        <i class="bi bi-clipboard-check-fill mr-2"></i>Danh sách bài kiểm tra
                     </h4>
                     <p class="text-muted mb-0">Các bài kiểm tra bạn cần hoàn thành</p>
                 </div>
@@ -24,7 +24,7 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Lớp học</label>
-                        <select class="form-select" wire:model.live="filterClass">
+                        <select class="form-control" wire:model.live="filterClass">
                             <option value="">Tất cả lớp</option>
                             @foreach ($classrooms as $classroom)
                                 <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
@@ -33,7 +33,7 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Trạng thái</label>
-                        <select class="form-select" wire:model.live="filterStatus">
+                        <select class="form-control" wire:model.live="filterStatus">
                             <option value="">Tất cả</option>
                             <option value="active">Còn hạn</option>
                             <option value="expired">Hết hạn</option>
@@ -41,7 +41,7 @@
                     </div>
                     <div class="col-md-2 d-flex align-items-end">
                         <button class="btn btn-outline-secondary w-100" wire:click="$set('search', '')">
-                            <i class="bi bi-arrow-clockwise me-2"></i>Reset
+                            <i class="bi bi-arrow-clockwise mr-2"></i>Reset
                         </button>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
         <div class="card shadow-sm">
             <div class="card-header bg-light">
                 <h6 class="mb-0">
-                    <i class="bi bi-list-ul me-2"></i>Danh sách bài kiểm tra
+                    <i class="bi bi-list-ul mr-2"></i>Danh sách bài kiểm tra
                 </h6>
             </div>
             <div class="card-body">
@@ -118,8 +118,9 @@
                                         </td>
                                         <td>
                                             @if ($result && $result->submitted_at)
-                                                <a href="{{ route('student.quizzes.review', ['quizId' => $quiz->id]) }}" wire:navigate
-                                                    class="btn btn-sm btn-outline-info" title="Xem lại bài">
+                                                <a href="{{ route('student.quizzes.review', ['quizId' => $quiz->id]) }}"
+                                                    wire:navigate class="btn btn-sm btn-outline-info"
+                                                    title="Xem lại bài">
                                                     <i class="bi bi-eye"></i> Xem lại
                                                 </a>
                                             @elseif ($quiz->isExpired())
@@ -138,34 +139,37 @@
                     </div>
                     <!-- Pagination -->
                     <div class="d-flex justify-content-center mt-4">
-                        @if($totalQuizzes > $perPage)
+                        @if ($totalQuizzes > $perPage)
                             <nav aria-label="Quiz pagination">
                                 <ul class="pagination">
-                                    @if($currentPage > 1)
+                                    @if ($currentPage > 1)
                                         <li class="page-item">
-                                            <a class="page-link" href="?page={{ $currentPage - 1 }}{{ $search ? '&search=' . $search : '' }}{{ $filterClass ? '&filterClass=' . $filterClass : '' }}{{ $filterStatus ? '&filterStatus=' . $filterStatus : '' }}">
+                                            <a class="page-link"
+                                                href="?page={{ $currentPage - 1 }}{{ $search ? '&search=' . $search : '' }}{{ $filterClass ? '&filterClass=' . $filterClass : '' }}{{ $filterStatus ? '&filterStatus=' . $filterStatus : '' }}">
                                                 <i class="bi bi-chevron-left"></i>
                                             </a>
                                         </li>
                                     @endif
-                                    
+
                                     @php
                                         $totalPages = ceil($totalQuizzes / $perPage);
                                         $startPage = max(1, $currentPage - 2);
                                         $endPage = min($totalPages, $currentPage + 2);
                                     @endphp
-                                    
-                                    @for($i = $startPage; $i <= $endPage; $i++)
+
+                                    @for ($i = $startPage; $i <= $endPage; $i++)
                                         <li class="page-item {{ $i == $currentPage ? 'active' : '' }}">
-                                            <a class="page-link" href="?page={{ $i }}{{ $search ? '&search=' . $search : '' }}{{ $filterClass ? '&filterClass=' . $filterClass : '' }}{{ $filterStatus ? '&filterStatus=' . $filterStatus : '' }}">
+                                            <a class="page-link"
+                                                href="?page={{ $i }}{{ $search ? '&search=' . $search : '' }}{{ $filterClass ? '&filterClass=' . $filterClass : '' }}{{ $filterStatus ? '&filterStatus=' . $filterStatus : '' }}">
                                                 {{ $i }}
                                             </a>
                                         </li>
                                     @endfor
-                                    
-                                    @if($currentPage < $totalPages)
+
+                                    @if ($currentPage < $totalPages)
                                         <li class="page-item">
-                                            <a class="page-link" href="?page={{ $currentPage + 1 }}{{ $search ? '&search=' . $search : '' }}{{ $filterClass ? '&filterClass=' . $filterClass : '' }}{{ $filterStatus ? '&filterStatus=' . $filterStatus : '' }}">
+                                            <a class="page-link"
+                                                href="?page={{ $currentPage + 1 }}{{ $search ? '&search=' . $search : '' }}{{ $filterClass ? '&filterClass=' . $filterClass : '' }}{{ $filterStatus ? '&filterStatus=' . $filterStatus : '' }}">
                                                 <i class="bi bi-chevron-right"></i>
                                             </a>
                                         </li>
@@ -179,7 +183,7 @@
                         <i class="bi bi-journal-x fs-1 text-muted mb-3"></i>
                         <h5 class="text-muted">Không có bài kiểm tra nào</h5>
                         <p class="text-muted">
-                            @if($search || $filterClass || $filterStatus)
+                            @if ($search || $filterClass || $filterStatus)
                                 Không tìm thấy bài kiểm tra nào phù hợp với bộ lọc hiện tại.
                             @else
                                 Bạn chưa có bài kiểm tra nào cần làm.

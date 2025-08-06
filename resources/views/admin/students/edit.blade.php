@@ -5,10 +5,10 @@
         <div class="mb-4">
             <a href="{{ route('students.index') }}" wire:navigate
                 class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left me-2"></i>Quay lại
+                <i class="bi bi-arrow-left mr-2"></i>Quay lại
             </a>
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-pencil-square me-2"></i>Chỉnh sửa học viên
+                <i class="bi bi-pencil-square mr-2"></i>Chỉnh sửa học viên
             </h4>
             <p class="text-muted mb-0">{{ $student->name }}</p>
         </div>
@@ -90,7 +90,7 @@
                                         <label for="status" class="form-label">Trạng thái <span
                                                 class="text-danger">*</span></label>
                                         <select wire:model="status"
-                                            class="form-select @error('status') is-invalid @enderror" id="status">
+                                            class="form-control @error('status') is-invalid @enderror" id="status">
                                             <option value="active">Đang học</option>
                                             <option value="paused">Nghỉ</option>
                                             <option value="dropped">Bảo lưu</option>
@@ -104,7 +104,7 @@
                                     <div class="mb-3">
                                         <label for="level" class="form-label">Trình độ</label>
                                         <select wire:model="level"
-                                            class="form-select @error('level') is-invalid @enderror" id="level">
+                                            class="form-control @error('level') is-invalid @enderror" id="level">
                                             <option value="">Chọn trình độ</option>
                                             <option value="HSK1">HSK 1</option>
                                             <option value="HSK2">HSK 2</option>
@@ -138,7 +138,7 @@
                         <div class="d-flex justify-content-end gap-2">
                             <a href="{{ route('students.index') }}" wire:navigate class="btn btn-light">Hủy</a>
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-check-circle me-2"></i>Cập nhật
+                                <i class="bi bi-check-circle mr-2"></i>Cập nhật
                             </button>
                         </div>
                     </form>

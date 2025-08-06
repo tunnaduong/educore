@@ -6,7 +6,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-pencil me-2"></i>Làm bài tập: {{ $assignment->title }}
+                        <i class="bi bi-pencil mr-2"></i>Làm bài tập: {{ $assignment->title }}
                     </h4>
                     <p class="text-muted mb-0">{{ $assignment->classroom->name }} -
                         @if ($assignment->classroom->teachers->count())
@@ -28,7 +28,7 @@
         <div class="card shadow-sm mb-4">
             <div class="card-header bg-light">
                 <h6 class="mb-0">
-                    <i class="bi bi-info-circle me-2"></i>Thông tin bài tập
+                    <i class="bi bi-info-circle mr-2"></i>Thông tin bài tập
                 </h6>
             </div>
             <div class="card-body">
@@ -84,7 +84,7 @@
                                     <h6 class="card-title">Tài liệu đính kèm</h6>
                                     <a href="{{ Storage::url($assignment->attachment_path) }}" target="_blank"
                                         class="btn btn-outline-primary btn-sm">
-                                        <i class="bi bi-download me-2"></i>Tải xuống tài liệu
+                                        <i class="bi bi-download mr-2"></i>Tải xuống tài liệu
                                     </a>
                                 </div>
                             </div>
@@ -110,13 +110,13 @@
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
                 <h6 class="mb-0">
-                    <i class="bi bi-upload me-2"></i>Nộp bài tập
+                    <i class="bi bi-upload mr-2"></i>Nộp bài tập
                 </h6>
             </div>
             <div class="card-body">
                 @if (session('error'))
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        <i class="bi bi-exclamation-triangle mr-2"></i>
                         {{ session('error') }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
                     </div>
@@ -124,7 +124,7 @@
 
                 @if (session('success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <i class="bi bi-check-circle me-2"></i>
+                        <i class="bi bi-check-circle mr-2"></i>
                         {{ session('success') }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
                     </div>
@@ -137,10 +137,10 @@
                             @if (in_array('text', $assignment->types))
                                 <div class="col-md-4">
                                     <div class="form-check border rounded p-3 h-100">
-                                        <input class="form-check-input ms-0 me-3" type="radio"
+                                        <input class="form-check-input ml-0 mr-3" type="radio"
                                             wire:model.live="submissionType" id="type_text" value="text">
                                         <label class="form-check-label" for="type_text">
-                                            <i class="bi bi-pencil-square text-primary me-2"></i>
+                                            <i class="bi bi-pencil-square text-primary mr-2"></i>
                                             <strong>Điền từ</strong>
                                             <div class="small text-muted mt-1">Nhập câu trả lời ngắn</div>
                                         </label>
@@ -151,10 +151,10 @@
                             @if (in_array('essay', $assignment->types))
                                 <div class="col-md-4">
                                     <div class="form-check border rounded p-3 h-100">
-                                        <input class="form-check-input ms-0 me-3" type="radio"
+                                        <input class="form-check-input ml-0 mr-3" type="radio"
                                             wire:model.live="submissionType" id="type_essay" value="essay">
                                         <label class="form-check-label" for="type_essay">
-                                            <i class="bi bi-file-text text-success me-2"></i>
+                                            <i class="bi bi-file-text text-success mr-2"></i>
                                             <strong>Bài luận</strong>
                                             <div class="small text-muted mt-1">Viết bài luận dài</div>
                                         </label>
@@ -165,10 +165,10 @@
                             @if (in_array('image', $assignment->types))
                                 <div class="col-md-4">
                                     <div class="form-check border rounded p-3 h-100">
-                                        <input class="form-check-input ms-0 me-3" type="radio"
+                                        <input class="form-check-input ml-0 mr-3" type="radio"
                                             wire:model.live="submissionType" id="type_image" value="image">
                                         <label class="form-check-label" for="type_image">
-                                            <i class="bi bi-image text-info me-2"></i>
+                                            <i class="bi bi-image text-info mr-2"></i>
                                             <strong>Upload ảnh</strong>
                                             <div class="small text-muted mt-1">Tải lên ảnh bài viết tay</div>
                                         </label>
@@ -179,10 +179,10 @@
                             @if (in_array('audio', $assignment->types))
                                 <div class="col-md-4">
                                     <div class="form-check border rounded p-3 h-100">
-                                        <input class="form-check-input ms-0 me-3" type="radio"
+                                        <input class="form-check-input ml-0 mr-3" type="radio"
                                             wire:model.live="submissionType" id="type_audio" value="audio">
                                         <label class="form-check-label" for="type_audio">
-                                            <i class="bi bi-mic text-warning me-2"></i>
+                                            <i class="bi bi-mic text-warning mr-2"></i>
                                             <strong>Ghi âm</strong>
                                             <div class="small text-muted mt-1">Thu âm luyện nói</div>
                                         </label>
@@ -193,10 +193,10 @@
                             @if (in_array('video', $assignment->types))
                                 <div class="col-md-4">
                                     <div class="form-check border rounded p-3 h-100">
-                                        <input class="form-check-input ms-0 me-3" type="radio"
+                                        <input class="form-check-input ml-0 mr-3" type="radio"
                                             wire:model.live="submissionType" id="type_video" value="video">
                                         <label class="form-check-label" for="type_video">
-                                            <i class="bi bi-camera-video text-danger me-2"></i>
+                                            <i class="bi bi-camera-video text-danger mr-2"></i>
                                             <strong>Video</strong>
                                             <div class="small text-muted mt-1">Quay video luyện nói</div>
                                         </label>
@@ -296,14 +296,14 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <a href="{{ route('student.assignments.show', $assignment->id) }}"
                             class="btn btn-outline-secondary" wire:navigate>
-                            <i class="bi bi-arrow-left me-2"></i>Quay lại
+                            <i class="bi bi-arrow-left mr-2"></i>Quay lại
                         </a>
                         <button type="submit" class="btn btn-primary" wire:loading.attr="disabled">
                             <span wire:loading.remove>
-                                <i class="bi bi-upload me-2"></i>Nộp bài
+                                <i class="bi bi-upload mr-2"></i>Nộp bài
                             </span>
                             <span wire:loading>
-                                <i class="bi bi-hourglass-split me-2"></i>Đang tải...
+                                <i class="bi bi-hourglass-split mr-2"></i>Đang tải...
                             </span>
                         </button>
                     </div>

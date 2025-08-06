@@ -4,10 +4,10 @@
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-people-fill me-2"></i>Quản lý học viên
+                <i class="bi bi-people-fill mr-2"></i>Quản lý học viên
             </h4>
             <a href="{{ route('students.create') ?? '#' }}" wire:navigate class="btn btn-primary">
-                <i class="bi bi-plus-circle me-2"></i>Thêm học viên
+                <i class="bi bi-plus-circle mr-2"></i>Thêm học viên
             </a>
         </div>
 
@@ -32,7 +32,7 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <select wire:model.live="statusFilter" class="form-select">
+                        <select wire:model.live="statusFilter" class="form-control">
                             <option value="">Trạng thái</option>
                             <option value="active">Đang học</option>
                             <option value="paused">Nghỉ</option>
@@ -40,7 +40,7 @@
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <select wire:model.live="classroomFilter" class="form-select">
+                        <select wire:model.live="classroomFilter" class="form-control">
                             <option value="">Lớp học</option>
                             @foreach ($classrooms as $classroom)
                                 <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
@@ -49,7 +49,7 @@
                     </div>
                     <div class="col-md-2">
                         <button wire:click="resetFilters" class="btn btn-outline-secondary w-100">
-                            <i class="bi bi-arrow-clockwise me-1"></i>Reset
+                            <i class="bi bi-arrow-clockwise mr-1"></i>Reset
                         </button>
                     </div>
                 </div>
@@ -78,7 +78,7 @@
                                     <td class="text-center">{{ $index + 1 }}</td>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <div class="avatar-sm me-3">
+                                            <div class="avatar-sm mr-3">
                                                 <i class="bi bi-person-circle fs-4 text-primary"></i>
                                             </div>
                                             <div>
@@ -96,17 +96,17 @@
                                     <td>
                                         <div>
                                             <div class="small">
-                                                <i class="bi bi-envelope me-1"></i>{{ $student->email }}
+                                                <i class="bi bi-envelope mr-1"></i>{{ $student->email }}
                                             </div>
                                             <div class="small text-muted">
-                                                <i class="bi bi-telephone me-1"></i>{{ $student->phone ?? 'Chưa có' }}
+                                                <i class="bi bi-telephone mr-1"></i>{{ $student->phone ?? 'Chưa có' }}
                                             </div>
                                         </div>
                                     </td>
                                     <td>
                                         @if ($student->enrolledClassrooms->count() > 0)
                                             @foreach ($student->enrolledClassrooms->take(2) as $classroom)
-                                                <span class="badge bg-info me-1">{{ $classroom->name }}</span>
+                                                <span class="badge bg-info mr-1">{{ $classroom->name }}</span>
                                             @endforeach
                                             @if ($student->enrolledClassrooms->count() > 2)
                                                 <span

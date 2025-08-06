@@ -3,9 +3,9 @@
         <!-- Header -->
         <div class="mb-4">
             <a href="{{ route('assignments.overview') }}" wire:navigate class="text-decoration-none text-secondary">
-                <i class="bi bi-arrow-left me-1"></i>Quay lại
+                <i class="bi bi-arrow-left mr-1"></i>Quay lại
             </a>
-            <h4 class="mt-2 text-primary fs-4"><i class="bi bi-journal-text me-2"></i>Chỉnh sửa bài tập</h4>
+            <h4 class="mt-2 text-primary fs-4"><i class="bi bi-journal-text mr-2"></i>Chỉnh sửa bài tập</h4>
         </div>
 
         <!-- Form -->
@@ -30,7 +30,7 @@
                         <div class="col-md-4">
                             <label for="class_id" class="form-label fw-semibold">Lớp học *</label>
                             <select wire:model.defer="class_id"
-                                class="form-select @error('class_id') is-invalid @enderror" id="class_id">
+                                class="form-control @error('class_id') is-invalid @enderror" id="class_id">
                                 <option value="">Chọn lớp</option>
                                 @foreach ($classrooms as $class)
                                     <option value="{{ $class->id }}">{{ $class->name }} ({{ $class->level }})
@@ -47,7 +47,7 @@
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <label for="deadline" class="form-label fw-semibold">Hạn nộp *</label>
-                            <input wire:model.defer="deadline" type="datetime-local"
+                            <input wire:model.defer="deadline" type="datetimr-local"
                                 class="form-control @error('deadline') is-invalid @enderror" id="deadline">
                             @error('deadline')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -136,7 +136,7 @@
                         <a href="{{ route('assignments.overview') }}" wire:navigate
                             class="btn btn-outline-secondary">Hủy</a>
                         <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-send me-1"></i> Cập nhật
+                            <i class="bi bi-send mr-1"></i> Cập nhật
                         </button>
                     </div>
                 </form>

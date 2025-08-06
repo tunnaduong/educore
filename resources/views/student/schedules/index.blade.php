@@ -6,7 +6,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-calendar3 me-2"></i>Lịch học của bạn
+                        <i class="bi bi-calendar3 mr-2"></i>Lịch học của bạn
                     </h4>
                     <p class="text-muted mb-0">Xem thời khóa biểu các buổi học, kiểm tra, bài tập</p>
                 </div>

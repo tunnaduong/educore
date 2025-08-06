@@ -5,10 +5,10 @@
         <div class="mb-4">
             <a href="{{ route('users.index') }}" wire:navigate
                 class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left me-2"></i>Quay lại
+                <i class="bi bi-arrow-left mr-2"></i>Quay lại
             </a>
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-pencil-square me-2"></i>Cập nhật thông tin người dùng
+                <i class="bi bi-pencil-square mr-2"></i>Cập nhật thông tin người dùng
             </h4>
         </div>
 
@@ -53,7 +53,7 @@
                             <div class="mb-3">
                                 <label for="role" class="form-label">Vai trò <span
                                         class="text-danger">*</span></label>
-                                <select wire:model="role" class="form-select @error('role') is-invalid @enderror"
+                                <select wire:model="role" class="form-control @error('role') is-invalid @enderror"
                                     id="role">
                                     <option value="">Chọn vai trò</option>
                                     <option value="admin">Quản trị viên</option>
@@ -90,7 +90,7 @@
                         <div class="d-flex justify-content-end gap-2">
                             <a href="{{ route('users.index') }}" wire:navigate class="btn btn-light">Hủy</a>
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-save me-2"></i>Lưu thay đổi
+                                <i class="bi bi-save mr-2"></i>Lưu thay đổi
                             </button>
                         </div>
                     </form>

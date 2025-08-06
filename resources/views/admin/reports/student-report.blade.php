@@ -6,7 +6,7 @@
     </div>
     <div class="card mb-4">
         <div class="card-body">
-            <h4 class="mb-3 text-primary"><i class="bi bi-person-circle me-2"></i>Báo cáo chi tiết học viên</h4>
+            <h4 class="mb-3 text-primary"><i class="bi bi-person-circle mr-2"></i>Báo cáo chi tiết học viên</h4>
             <div class="row g-3">
                 <div class="col-md-4">
                     <div class="fw-bold">Họ tên:</div>
@@ -14,9 +14,9 @@
                 </div>
                 <div class="col-md-4">
                     <div class="fw-bold">Lớp:</div>
-                    @if(isset($classNames) && count($classNames))
-                        @foreach($classNames as $cname)
-                            <span class="badge bg-secondary me-1">{{ $cname }}</span>
+                    @if (isset($classNames) && count($classNames))
+                        @foreach ($classNames as $cname)
+                            <span class="badge bg-secondary mr-1">{{ $cname }}</span>
                         @endforeach
                     @else
                         <span class="text-muted">-</span>
@@ -81,9 +81,9 @@
         </div>
     </div>
     <div class="alert alert-info">
-        <i class="bi bi-lightbulb me-2"></i>
+        <i class="bi bi-lightbulb mr-2"></i>
         <b>Gợi ý hỗ trợ:</b>
-        @if($needSupport)
+        @if ($needSupport)
             Học viên này cần được quan tâm thêm do tiến độ, điểm hoặc tỷ lệ nộp bài thấp.
         @else
             Học viên đang có tiến độ ổn định.
