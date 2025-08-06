@@ -1,5 +1,6 @@
 <x-layouts.dash-student active="schedules">
-    <div class="container-fluid">
+    @include('components.language')
+    <div class="row">
         <!-- Header -->
         <div class="mb-4">
             <div class="d-flex justify-content-between align-items-center">
@@ -15,13 +16,16 @@
             <div class="d-flex align-items-center gap-4 flex-wrap">
                 <div><span
                         style="display:inline-block;width:18px;height:18px;background:#0d6efd;border-radius:4px;margin-right:6px;"></span>
-                    <b>Lịch học</b></div>
+                    <b>Lịch học</b>
+                </div>
                 <div><span
                         style="display:inline-block;width:18px;height:18px;background:#fd7e14;border-radius:4px;margin-right:6px;"></span>
-                    <b>Bài tập</b></div>
+                    <b>Bài tập</b>
+                </div>
                 <div><span
                         style="display:inline-block;width:18px;height:18px;background:#20c997;border-radius:4px;margin-right:6px;"></span>
-                    <b>Kiểm tra</b></div>
+                    <b>Kiểm tra</b>
+                </div>
             </div>
         </div>
         <!-- Calendar -->

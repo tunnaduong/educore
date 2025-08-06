@@ -1,4 +1,5 @@
 <x-layouts.dash-teacher active="my-class">
+    @include('components.language')
     <div class="container">
         <!-- Header -->
         <div class="row mb-4">

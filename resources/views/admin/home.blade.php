@@ -1,4 +1,5 @@
 <x-layouts.dash-admin active="home" title="@lang('general.dashboard')">
+    @include('components.language')
     <div class="row">
         <div class="col-12">
             <div class="row">

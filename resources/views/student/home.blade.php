@@ -1,4 +1,5 @@
 <x-layouts.dash-student active="home">
+    @include('components.language')
     <div class="container py-4">
         <div class="row g-5">
             <div class="col-6 col-md-3 text-center">

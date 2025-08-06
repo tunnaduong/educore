@@ -1,4 +1,5 @@
 <x-layouts.dash-admin active="classrooms" title="@lang('general.manage_classrooms')">
+    @include('components.language')
     <div class="row">
         <div class="col-12">
             <!-- Header -->
@@ -181,5 +182,4 @@
                 </div>
             </div>
         </div>
-    </div>
 </x-layouts.dash-admin>

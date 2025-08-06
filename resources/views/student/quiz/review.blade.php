@@ -1,5 +1,6 @@
-<x-layouts.dash-student active="tests">
-    <div class="container-fluid">
+<x-layouts.dash-student active="quizzes">
+    @include('components.language')
+    <div class="row">
         <!-- Header -->
         <div class="mb-4">
             <a href="{{ route('student.quizzes.index') }}" wire:navigate
