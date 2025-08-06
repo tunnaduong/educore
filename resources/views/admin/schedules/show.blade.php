@@ -4,10 +4,10 @@
             <h2 class="mb-0 fs-4">Chi tiết lịch học</h2>
             <div class="btn-group" role="group">
                 <a wire:navigate href="{{ route('schedules.index') }}" class="btn btn-outline-secondary">
-                    <i class="bi bi-arrow-left me-2"></i>Quay lại
+                    <i class="bi bi-arrow-left mr-2"></i>Quay lại
                 </a>
                 <a wire:navigate href="{{ route('schedules.edit', $classroom) }}" class="btn btn-warning">
-                    <i class="bi bi-pencil me-2"></i>Chỉnh sửa
+                    <i class="bi bi-pencil mr-2"></i>Chỉnh sửa
                 </a>
             </div>
         </div>
@@ -18,7 +18,7 @@
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="mb-0">
-                            <i class="bi bi-calendar3 me-2 text-primary"></i>
+                            <i class="bi bi-calendar3 mr-2 text-primary"></i>
                             Thông tin lớp học
                         </h5>
                     </div>
@@ -47,7 +47,7 @@
                                     <p class="mb-0">
                                         @if ($classroom->teachers->count())
                                             <div class="mb-2">
-                                                <i class="bi bi-person-circle me-2"></i>
+                                                <i class="bi bi-person-circle mr-2"></i>
                                                 {{ $classroom->teachers->pluck('name')->join(', ') }}
                                             </div>
                                         @else
@@ -81,7 +81,7 @@
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="mb-0">
-                            <i class="bi bi-clock me-2 text-success"></i>
+                            <i class="bi bi-clock mr-2 text-success"></i>
                             Lịch học
                         </h5>
                     </div>
@@ -106,7 +106,7 @@
                                                         ];
                                                     @endphp
                                                     <span
-                                                        class="badge bg-primary me-2 mb-2">{{ $dayNames[$day] ?? $day }}</span>
+                                                        class="badge bg-primary mr-2 mb-2">{{ $dayNames[$day] ?? $day }}</span>
                                                 @endforeach
                                             @else
                                                 <span class="text-muted">Chưa có thông tin</span>
@@ -119,7 +119,7 @@
                                         <label class="form-label fw-bold text-muted">Thời gian học</label>
                                         <p class="mb-0 fs-5">
                                             @if (isset($classroom->schedule['time']))
-                                                <i class="bi bi-clock me-2"></i>
+                                                <i class="bi bi-clock mr-2"></i>
                                                 {{ $classroom->schedule['time'] }}
                                             @else
                                                 <span class="text-muted">Chưa có thông tin</span>
@@ -134,7 +134,7 @@
                                 <h6 class="mt-3 text-muted">Chưa có lịch học</h6>
                                 <a wire:navigate href="{{ route('schedules.edit', $classroom) }}"
                                     class="btn btn-primary">
-                                    <i class="bi bi-plus-circle me-2"></i>Thêm lịch học
+                                    <i class="bi bi-plus-circle mr-2"></i>Thêm lịch học
                                 </a>
                             </div>
                         @endif
@@ -148,7 +148,7 @@
                 <div class="card mb-4">
                     <div class="card-header">
                         <h6 class="mb-0">
-                            <i class="bi bi-graph-up me-2 text-info"></i>
+                            <i class="bi bi-graph-up mr-2 text-info"></i>
                             Thống kê nhanh
                         </h6>
                     </div>
@@ -190,7 +190,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h6 class="mb-0">
-                            <i class="bi bi-people me-2 text-success"></i>
+                            <i class="bi bi-people mr-2 text-success"></i>
                             Danh sách học viên
                         </h6>
                     </div>
@@ -199,7 +199,7 @@
                             <div class="list-group list-group-flush">
                                 @foreach ($classroom->students->take(5) as $student)
                                     <div class="list-group-item d-flex align-items-center px-0">
-                                        <i class="bi bi-person-circle me-3 text-primary"></i>
+                                        <i class="bi bi-person-circle mr-3 text-primary"></i>
                                         <div>
                                             <h6 class="mb-0">{{ $student->name }}</h6>
                                             <small class="text-muted">{{ $student->email }}</small>

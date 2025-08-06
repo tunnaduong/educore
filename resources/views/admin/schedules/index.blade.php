@@ -1,12 +1,14 @@
 <x-layouts.dash-admin active="schedules">
+    @include('components.language')
+
     <div class="container-fluid">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="d-flex align-items-center fs-4 text-primary mb-0">
-                <i class="bi bi-calendar3 me-2 text-primary"></i>
+                <i class="bi bi-calendar3 mr-2 text-primary"></i>
                 Lịch học
             </h2>
             <a wire:navigate href="{{ route('schedules.create') }}" class="btn btn-primary">
-                <i class="bi bi-plus-circle me-2"></i>Thêm lịch học
+                <i class="bi bi-plus-circle mr-2"></i>Thêm lịch học
             </a>
         </div>
 
@@ -21,7 +23,7 @@
                     </div>
                     <div class="col-md-3">
                         <label for="filterLevel" class="form-label">Cấp độ</label>
-                        <select wire:model.live="filterLevel" class="form-select" id="filterLevel">
+                        <select wire:model.live="filterLevel" class="form-control" id="filterLevel">
                             <option value="">Tất cả cấp độ</option>
                             @foreach ($levels as $level)
                                 <option value="{{ $level }}">{{ $level }}</option>
@@ -30,7 +32,7 @@
                     </div>
                     <div class="col-md-3">
                         <label for="filterTeacher" class="form-label">Giáo viên</label>
-                        <select wire:model.live="filterTeacher" class="form-select" id="filterTeacher">
+                        <select wire:model.live="filterTeacher" class="form-control" id="filterTeacher">
                             <option value="">Tất cả giáo viên</option>
                             @foreach ($teachers as $teacher)
                                 <option value="{{ $teacher->name }}">{{ $teacher->name }}</option>
@@ -39,7 +41,7 @@
                     </div>
                     <div class="col-md-2 d-flex align-items-end">
                         <button wire:click="resetFilters" class="btn btn-outline-secondary w-100">
-                            <i class="bi bi-arrow-clockwise me-1"></i>Làm mới
+                            <i class="bi bi-arrow-clockwise mr-1"></i>Làm mới
                         </button>
                     </div>
                 </div>
@@ -75,14 +77,14 @@
                                         <td>
                                             @if ($classroom->teachers->count())
                                                 <div class="mb-2">
-                                                    <i class="bi bi-person-circle me-2"></i>
+                                                    <i class="bi bi-person-circle mr-2"></i>
                                                     {{ $classroom->teachers->pluck('name')->join(', ') }}
                                                 </div>
                                             @endif
                                         </td>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <i class="bi bi-calendar3 me-2 text-primary"></i>
+                                                <i class="bi bi-calendar3 mr-2 text-primary"></i>
                                                 <span>{{ $this->formatSchedule($classroom->schedule) }}</span>
                                             </div>
                                         </td>

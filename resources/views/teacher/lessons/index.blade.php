@@ -1,17 +1,18 @@
 <x-layouts.dash-teacher active="lessons">
+    @include('components.language')
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-success fs-4">
-                        <i class="bi bi-folder-symlink-fill me-2"></i>Bài học & Tài nguyên
+                        <i class="bi bi-folder-symlink-fill mr-2"></i>Bài học & Tài nguyên
                     </h4>
                     <p class="text-muted mb-0">Quản lý, lưu trữ và tra cứu các bài học, tài liệu, video, slide...</p>
                 </div>
                 <div>
                     <a href="{{ route('teacher.lessons.create') }}" wire:navigate class="btn btn-success"><i
-                            class="bi bi-plus-circle me-1"></i> Thêm bài học</a>
+                            class="bi bi-plus-circle mr-1"></i> Thêm bài học</a>
                 </div>
             </div>
         </div>
@@ -26,7 +27,7 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Lọc theo lớp học</label>
-                        <select class="form-select" wire:model.live="filterClass">
+                        <select class="form-control" wire:model.live="filterClass">
                             <option value="">Tất cả lớp</option>
                             @foreach ($classrooms ?? [] as $classroom)
                                 <option value="{{ $classroom->id }}" @selected($filterClass == $classroom->id)>{{ $classroom->name }}
@@ -35,8 +36,9 @@
                         </select>
                     </div>
                     <div class="col-md-2 d-flex align-items-end">
-                        <button class="btn btn-outline-secondary w-100" wire:click="$set('search', ''); $set('filterClass', '')" type="button">
-                            <i class="bi bi-arrow-clockwise me-2"></i>Reset
+                        <button class="btn btn-outline-secondary w-100"
+                            wire:click="$set('search', ''); $set('filterClass', '')" type="button">
+                            <i class="bi bi-arrow-clockwise mr-2"></i>Reset
                         </button>
                     </div>
                 </div>
@@ -46,7 +48,7 @@
         <div class="card shadow-sm">
             <div class="card-header bg-light">
                 <h6 class="mb-0">
-                    <i class="bi bi-list-ul me-2"></i>Danh sách bài học & tài nguyên
+                    <i class="bi bi-list-ul mr-2"></i>Danh sách bài học & tài nguyên
                 </h6>
             </div>
             <div class="card-body">
@@ -147,4 +149,4 @@
         </div>
         <div class="modal-backdrop fade show"></div>
     @endif
-</x-layouts.dash-teacher> 
+</x-layouts.dash-teacher>

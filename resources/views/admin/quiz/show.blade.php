@@ -4,26 +4,26 @@
         <div class="mb-4">
             <a href="{{ route('quizzes.index') }}" wire:navigate
                 class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left me-2"></i>Quay lại danh sách bài kiểm tra
+                <i class="bi bi-arrow-left mr-2"></i>Quay lại danh sách bài kiểm tra
             </a>
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-journal-text me-2"></i>Chi tiết bài kiểm tra
+                        <i class="bi bi-journal-text mr-2"></i>Chi tiết bài kiểm tra
                     </h4>
                     <p class="text-muted mb-0">{{ $quiz->title }}</p>
                 </div>
                 <div class="btn-group">
                     <a href="{{ route('quizzes.edit', $quiz) }}" wire:navigate class="btn btn-warning">
-                        <i class="bi bi-pencil me-2"></i>Sửa
+                        <i class="bi bi-pencil mr-2"></i>Sửa
                     </a>
                     <a href="{{ route('quizzes.results', $quiz) }}" wire:navigate class="btn btn-info">
-                        <i class="bi bi-graph-up me-2"></i>Kết quả
+                        <i class="bi bi-graph-up mr-2"></i>Kết quả
                     </a>
                     <button type="button" class="btn btn-danger"
                         onclick="confirm('Bạn có chắc chắn muốn xóa bài kiểm tra này?') || event.stopImmediatePropagation()"
                         wire:click="deleteQuiz">
-                        <i class="bi bi-trash me-2"></i>Xóa
+                        <i class="bi bi-trash mr-2"></i>Xóa
                     </button>
                 </div>
             </div>
@@ -35,7 +35,7 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h6 class="mb-0">
-                            <i class="bi bi-info-circle me-2"></i>Thông tin bài kiểm tra
+                            <i class="bi bi-info-circle mr-2"></i>Thông tin bài kiểm tra
                         </h6>
                     </div>
                     <div class="card-body">
@@ -53,9 +53,9 @@
                                 @if ($quiz->deadline)
                                     {{ $quiz->deadline->format('d/m/Y H:i') }}
                                     @if ($quiz->isExpired())
-                                        <span class="badge bg-danger ms-2">Hết hạn</span>
+                                        <span class="badge bg-danger ml-2">Hết hạn</span>
                                     @else
-                                        <span class="badge bg-success ms-2">Còn hạn</span>
+                                        <span class="badge bg-success ml-2">Còn hạn</span>
                                     @endif
                                 @else
                                     <span class="text-muted">Không có hạn</span>
@@ -85,7 +85,7 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h6 class="mb-0">
-                            <i class="bi bi-graph-up me-2"></i>Thống kê
+                            <i class="bi bi-graph-up mr-2"></i>Thống kê
                         </h6>
                     </div>
                     <div class="card-body">
@@ -129,7 +129,7 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h6 class="mb-0">
-                            <i class="bi bi-list-ul me-2"></i>Danh sách câu hỏi
+                            <i class="bi bi-list-ul mr-2"></i>Danh sách câu hỏi
                         </h6>
                     </div>
                     <div class="card-body">
@@ -138,7 +138,7 @@
                                 <div class="border rounded p-3 mb-3">
                                     <div class="d-flex justify-content-between align-items-start mb-2">
                                         <div>
-                                            <span class="badge bg-primary me-2">Câu {{ $index + 1 }}</span>
+                                            <span class="badge bg-primary mr-2">Câu {{ $index + 1 }}</span>
                                             <span class="badge bg-secondary">{{ ucfirst($question['type']) }}</span>
                                             <span class="badge bg-info">{{ $question['score'] }} điểm</span>
                                         </div>
@@ -155,7 +155,7 @@
                                                         class="form-check-label {{ $option === $question['correct_answer'] ? 'fw-bold text-success' : '' }}">
                                                         {{ $option }}
                                                         @if ($option === $question['correct_answer'])
-                                                            <i class="bi bi-check-circle-fill text-success ms-1"></i>
+                                                            <i class="bi bi-check-circle-fill text-success ml-1"></i>
                                                         @endif
                                                     </label>
                                                 </div>
@@ -190,7 +190,7 @@
                 <div class="card shadow-sm">
                     <div class="card-header bg-light">
                         <h6 class="mb-0">
-                            <i class="bi bi-people me-2"></i>Danh sách học viên & kết quả
+                            <i class="bi bi-people mr-2"></i>Danh sách học viên & kết quả
                         </h6>
                     </div>
                     <div class="card-body">
@@ -211,12 +211,14 @@
                                     <tbody>
                                         @foreach ($students as $student)
                                             @php
-                                                $result = $student->student ? $results->firstWhere('student_id', $student->student->id) : null;
+                                                $result = $student->student
+                                                    ? $results->firstWhere('student_id', $student->student->id)
+                                                    : null;
                                             @endphp
                                             <tr>
                                                 <td>
                                                     <div class="d-flex align-items-center">
-                                                        <div class="avatar-sm me-3">
+                                                        <div class="avatar-sm mr-3">
                                                             <i class="bi bi-person-circle fs-4 text-primary"></i>
                                                         </div>
                                                         <div>
@@ -296,7 +298,7 @@
         @if (session()->has('message'))
             <div class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3"
                 role="alert">
-                <i class="bi bi-check-circle me-2"></i>{{ session('message') }}
+                <i class="bi bi-check-circle mr-2"></i>{{ session('message') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif

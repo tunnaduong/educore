@@ -1,13 +1,14 @@
 <x-layouts.dash-admin active="attendances">
+    @include('components.language')
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
             <a href="{{ route('classrooms.index') }}" wire:navigate
                 class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left me-2"></i>Quay lại lớp học
+                <i class="bi bi-arrow-left mr-2"></i>Quay lại lớp học
             </a>
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-calendar-check me-2"></i>Điểm danh - {{ $classroom->name }}
+                <i class="bi bi-calendar-check mr-2"></i>Điểm danh - {{ $classroom->name }}
             </h4>
         </div>
 
@@ -81,7 +82,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-6">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-calendar-event me-2"></i>Điểm danh ngày
+                            <i class="bi bi-calendar-event mr-2"></i>Điểm danh ngày
                             {{ \Carbon\Carbon::parse($selectedDate)->format('d/m/Y') }}
                         </h5>
                     </div>
@@ -90,7 +91,7 @@
                             <input wire:model.live="selectedDate" type="date" class="form-control"
                                 style="max-width: 200px;">
                             <button wire:click="saveAttendance" class="btn btn-primary">
-                                <i class="bi bi-save me-2"></i>Lưu điểm danh
+                                <i class="bi bi-save mr-2"></i>Lưu điểm danh
                             </button>
                         </div>
                     </div>
@@ -128,7 +129,7 @@
                                         <td class="text-center">{{ $index + 1 }}</td>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <div class="avatar-sm me-3">
+                                                <div class="avatar-sm mr-3">
                                                     <i class="bi bi-person-circle fs-4 text-primary"></i>
                                                 </div>
                                                 <div>
@@ -170,7 +171,7 @@
                                             @if (!$data['present'])
                                                 <button wire:click="openReasonModal({{ $data['student_record']->id }})"
                                                     class="btn btn-sm btn-outline-primary">
-                                                    <i class="bi bi-pencil me-1"></i>Lý do
+                                                    <i class="bi bi-pencil mr-1"></i>Lý do
                                                 </button>
                                             @endif
                                         </td>
@@ -191,7 +192,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">
-                            <i class="bi bi-exclamation-triangle me-2"></i>Lý do nghỉ học
+                            <i class="bi bi-exclamation-triangle mr-2"></i>Lý do nghỉ học
                         </h5>
                         <button type="button" class="btn-close"
                             wire:click="$set('showReasonModal', false)"></button>
@@ -211,7 +212,7 @@
                             Hủy
                         </button>
                         <button type="button" class="btn btn-primary" wire:click="saveReason">
-                            <i class="bi bi-check-circle me-2"></i>Lưu lý do
+                            <i class="bi bi-check-circle mr-2"></i>Lưu lý do
                         </button>
                     </div>
                 </div>

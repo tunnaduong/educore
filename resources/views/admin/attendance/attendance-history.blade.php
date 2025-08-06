@@ -1,13 +1,14 @@
 <x-layouts.dash-admin active="attendances">
+    @include('components.language')
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
             <a href="{{ route('classrooms.show', $classroom) }}" wire:navigate
                 class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left me-2"></i>Quay lại lớp học
+                <i class="bi bi-arrow-left mr-2"></i>Quay lại lớp học
             </a>
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-calendar-week me-2"></i>Lịch sử điểm danh - {{ $classroom->name }}
+                <i class="bi bi-calendar-week mr-2"></i>Lịch sử điểm danh - {{ $classroom->name }}
             </h4>
         </div>
 
@@ -17,17 +18,17 @@
                 <div class="row align-items-center">
                     <div class="col-md-6">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-funnel me-2"></i>Lọc theo tháng
+                            <i class="bi bi-funnel mr-2"></i>Lọc theo tháng
                         </h5>
                     </div>
                     <div class="col-md-6">
                         <div class="d-flex gap-2 justify-content-end">
-                            <select wire:model.live="selectedMonth" class="form-select" style="max-width: 150px;">
+                            <select wire:model.live="selectedMonth" class="form-control" style="max-width: 150px;">
                                 @for ($month = 1; $month <= 12; $month++)
                                     <option value="{{ $month }}">{{ $this->getMonthName($month) }}</option>
                                 @endfor
                             </select>
-                            <select wire:model.live="selectedYear" class="form-select" style="max-width: 120px;">
+                            <select wire:model.live="selectedYear" class="form-control" style="max-width: 120px;">
                                 @for ($year = date('Y') - 2; $year <= date('Y') + 1; $year++)
                                     <option value="{{ $year }}">{{ $year }}</option>
                                 @endfor
@@ -106,7 +107,7 @@
         <div class="card shadow-sm">
             <div class="card-header bg-light">
                 <h5 class="mb-0 text-primary">
-                    <i class="bi bi-table me-2"></i>Thống kê điểm danh chi tiết -
+                    <i class="bi bi-table mr-2"></i>Thống kê điểm danh chi tiết -
                     {{ $this->getMonthName($selectedMonth) }} {{ $selectedYear }}
                 </h5>
             </div>
@@ -136,7 +137,7 @@
                                     <tr>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <div class="avatar-sm me-3">
+                                                <div class="avatar-sm mr-3">
                                                     <i class="bi bi-person-circle fs-4 text-primary"></i>
                                                 </div>
                                                 <div>

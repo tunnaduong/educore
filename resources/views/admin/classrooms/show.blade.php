@@ -1,13 +1,14 @@
 <x-layouts.dash-admin active="classrooms">
+    @include('components.language')
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
             <a href="{{ route('classrooms.index') }}" wire:navigate
                 class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left me-2"></i>Quay lại danh sách lớp học
+                <i class="bi bi-arrow-left mr-2"></i>Quay lại danh sách lớp học
             </a>
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-mortarboard me-2"></i>Chi tiết lớp học
+                <i class="bi bi-mortarboard mr-2"></i>Chi tiết lớp học
             </h4>
             <p class="text-muted mb-0">{{ $classroom->name }}</p>
         </div>
@@ -18,7 +19,7 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-info-circle me-2"></i>Thông tin lớp học
+                            <i class="bi bi-info-circle mr-2"></i>Thông tin lớp học
                         </h5>
                     </div>
                     <div class="card-body">
@@ -93,7 +94,7 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-graph-up me-2"></i>Thống kê nhanh
+                            <i class="bi bi-graph-up mr-2"></i>Thống kê nhanh
                         </h5>
                     </div>
                     <div class="card-body">
@@ -121,11 +122,11 @@
                     <div class="card-header bg-light">
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="mb-0 text-primary">
-                                <i class="bi bi-people me-2"></i>Danh sách học viên
+                                <i class="bi bi-people mr-2"></i>Danh sách học viên
                             </h5>
                             <a href="{{ route('classrooms.assign-students', $classroom) }}" wire:navigate
                                 class="btn btn-sm btn-primary">
-                                <i class="bi bi-person-plus me-2"></i>Gán học viên
+                                <i class="bi bi-person-plus mr-2"></i>Gán học viên
                             </a>
                         </div>
                     </div>
@@ -146,7 +147,7 @@
                                             <tr>
                                                 <td>
                                                     <div class="d-flex align-items-center">
-                                                        <div class="avatar-sm me-3">
+                                                        <div class="avatar-sm mr-3">
                                                             <i class="bi bi-person-circle fs-4 text-primary"></i>
                                                         </div>
                                                         <div>
@@ -198,7 +199,7 @@
                                 <p class="text-muted">Vui lòng gán học viên vào lớp học.</p>
                                 <a href="{{ route('classrooms.assign-students', $classroom) }}" wire:navigate
                                     class="btn btn-primary">
-                                    <i class="bi bi-person-plus me-2"></i>Gán học viên
+                                    <i class="bi bi-person-plus mr-2"></i>Gán học viên
                                 </a>
                             </div>
                         @endif
@@ -209,7 +210,7 @@
                 <div class="card shadow-sm">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-gear me-2"></i>Hành động
+                            <i class="bi bi-gear mr-2"></i>Hành động
                         </h5>
                     </div>
                     <div class="card-body">
@@ -217,25 +218,25 @@
                             <div class="col-md-6">
                                 <a href="{{ route('classrooms.attendance', $classroom) }}" wire:navigate
                                     class="btn btn-outline-primary w-100">
-                                    <i class="bi bi-calendar-check me-2"></i>Điểm danh
+                                    <i class="bi bi-calendar-check mr-2"></i>Điểm danh
                                 </a>
                             </div>
                             <div class="col-md-6">
                                 <a href="{{ route('classrooms.attendance-history', $classroom) }}" wire:navigate
                                     class="btn btn-outline-info w-100">
-                                    <i class="bi bi-calendar-week me-2"></i>Lịch sử điểm danh
+                                    <i class="bi bi-calendar-week mr-2"></i>Lịch sử điểm danh
                                 </a>
                             </div>
                             <div class="col-md-6">
                                 <a href="{{ route('classrooms.assign-students', $classroom) }}" wire:navigate
                                     class="btn btn-outline-success w-100">
-                                    <i class="bi bi-person-plus me-2"></i>Gán học viên
+                                    <i class="bi bi-person-plus mr-2"></i>Gán học viên
                                 </a>
                             </div>
                             <div class="col-md-6">
                                 <a href="{{ route('classrooms.edit', $classroom) }}" wire:navigate
                                     class="btn btn-outline-warning w-100">
-                                    <i class="bi bi-pencil-square me-2"></i>Chỉnh sửa
+                                    <i class="bi bi-pencil-square mr-2"></i>Chỉnh sửa
                                 </a>
                             </div>
                         </div>

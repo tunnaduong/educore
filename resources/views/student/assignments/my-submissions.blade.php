@@ -1,15 +1,16 @@
 <x-layouts.dash-student active="assignments">
+    @include('components.language')
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
             <a href="{{ route('student.assignments.overview') }}" wire:navigate
                 class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left me-2"></i>Quay lại
+                <i class="bi bi-arrow-left mr-2"></i>Quay lại
             </a>
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-folder-check me-2"></i>Bài tập đã nộp
+                        <i class="bi bi-folder-check mr-2"></i>Bài tập đã nộp
                     </h4>
                     <p class="text-muted mb-0">Danh sách các bài tập bạn đã hoàn thành</p>
                 </div>
@@ -27,7 +28,7 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Trạng thái chấm điểm</label>
-                        <select class="form-select" wire:model.live="filterGraded">
+                        <select class="form-control" wire:model.live="filterGraded">
                             <option value="">Tất cả</option>
                             <option value="graded">Đã chấm điểm</option>
                             <option value="ungraded">Chưa chấm điểm</option>
@@ -35,7 +36,7 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Lớp học</label>
-                        <select class="form-select" wire:model.live="filterClassroom">
+                        <select class="form-control" wire:model.live="filterClassroom">
                             <option value="">Tất cả lớp</option>
                             @foreach ($classrooms as $classroom)
                                 <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
@@ -97,7 +98,7 @@
         <div class="card shadow-sm">
             <div class="card-header bg-light">
                 <h6 class="mb-0">
-                    <i class="bi bi-list-ul me-2"></i>Danh sách bài nộp
+                    <i class="bi bi-list-ul mr-2"></i>Danh sách bài nộp
                 </h6>
             </div>
             <div class="card-body">
@@ -203,7 +204,7 @@
                         <h5 class="text-muted">Chưa có bài tập nào được nộp</h5>
                         <p class="text-muted">Bạn chưa nộp bài tập nào hoặc không có bài tập nào phù hợp với bộ lọc.</p>
                         <a href="{{ route('student.assignments.overview') }}" class="btn btn-primary" wire:navigate>
-                            <i class="bi bi-journal-text me-2"></i>Xem danh sách bài tập
+                            <i class="bi bi-journal-text mr-2"></i>Xem danh sách bài tập
                         </a>
                     </div>
                 @endif

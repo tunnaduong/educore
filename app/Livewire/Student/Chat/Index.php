@@ -5,68 +5,58 @@ namespace App\Livewire\Student\Chat;
 use App\Models\Message;
 use App\Models\User;
 use App\Models\Classroom;
+use App\Models\Student;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class Index extends Component
 {
     use WithPagination, WithFileUploads;
 
-    public $selectedTeacher = null;
+    public $selectedUser = null;
     public $selectedClass = null;
     public $messageText = '';
     public $attachment = null;
     public $searchTerm = '';
+    public $messageType = 'user'; // 'user', 'class'
     public $unreadCount = 0;
-    public $activeTab = 'teachers'; // 'teachers' hoặc 'classes'
+    public $activeTab = 'classes'; // 'classes', 'users'
+    public $isDragging = false;
 
     protected $listeners = [
-        'messageReceived' => 'refreshMessages'
+        'messageReceived' => 'refreshMessages',
+        'fileDropped' => 'handleFileDrop'
     ];
 
     public function mount()
     {
-        $this->unreadCount = Message::unread(Auth::id())->count();
+        $this->unreadCount = Message::unread(auth()->id())->count();
     }
 
-    public function setActiveTab($tab)
+    public function selectUser($userId)
     {
-        $this->activeTab = $tab;
-        $this->selectedTeacher = null;
+        $this->selectedUser = User::find($userId);
         $this->selectedClass = null;
+        $this->messageType = 'user';
+        $this->activeTab = 'users';
         $this->resetPage();
-    }
-
-    public function selectTeacher($teacherId)
-    {
-        $this->selectedTeacher = User::find($teacherId);
-        $this->selectedClass = null;
-        $this->activeTab = 'teachers';
-        $this->resetPage();
-        
-        // Đánh dấu đã đọc tin nhắn từ giáo viên này
-        Message::where('sender_id', $teacherId)
-            ->where('receiver_id', Auth::id())
-            ->whereNull('read_at')
-            ->update(['read_at' => now()]);
     }
 
     public function selectClass($classId)
     {
         $this->selectedClass = Classroom::with('users')->find($classId);
-        $this->selectedTeacher = null;
+        $this->selectedUser = null;
+        $this->messageType = 'class';
         $this->activeTab = 'classes';
         $this->resetPage();
         
-        // Đánh dấu đã đọc tin nhắn lớp
+        // Đánh dấu đã đọc
         $lastMsg = Message::where('class_id', $classId)->latest('id')->first();
         if ($lastMsg) {
             \App\Models\ClassroomMessageRead::updateOrCreate(
                 [
-                    'user_id' => Auth::id(),
+                    'user_id' => auth()->id(),
                     'class_id' => $classId,
                 ],
                 [
@@ -77,6 +67,11 @@ class Index extends Component
         }
     }
 
+    public function setActiveTab($tab)
+    {
+        $this->activeTab = $tab;
+    }
+
     public function sendMessage()
     {
         $this->validate([
@@ -85,13 +80,13 @@ class Index extends Component
         ]);
 
         $messageData = [
-            'sender_id' => Auth::id(),
+            'sender_id' => auth()->id(),
             'message' => $this->messageText,
         ];
 
-        if ($this->selectedTeacher) {
-            $messageData['receiver_id'] = $this->selectedTeacher->id;
-        } elseif ($this->selectedClass) {
+        if ($this->messageType === 'user' && $this->selectedUser) {
+            $messageData['receiver_id'] = $this->selectedUser->id;
+        } elseif ($this->messageType === 'class' && $this->selectedClass) {
             $messageData['class_id'] = $this->selectedClass->id;
         }
 
@@ -102,6 +97,8 @@ class Index extends Component
 
         $message = Message::create($messageData);
 
+        // Dispatch event để broadcast tin nhắn
+        \Illuminate\Support\Facades\Log::info('Dispatching MessageSent event', ['message_id' => $message->id]);
         \App\Events\MessageSent::dispatch($message);
 
         $this->messageText = '';
@@ -109,14 +106,22 @@ class Index extends Component
         $this->dispatch('messageSent');
     }
 
+    public function handleFileDrop($fileData)
+    {
+        // Xử lý file được kéo thả
+        if (isset($fileData['file'])) {
+            $this->attachment = $fileData['file'];
+        }
+    }
+
     public function getMessagesProperty()
     {
-        if ($this->selectedTeacher) {
+        if ($this->selectedUser) {
             return Message::where(function ($query) {
-                $query->where('sender_id', Auth::id())
-                    ->where('receiver_id', $this->selectedTeacher->id)
-                    ->orWhere('sender_id', $this->selectedTeacher->id)
-                    ->where('receiver_id', Auth::id());
+                $query->where('sender_id', auth()->id())
+                    ->where('receiver_id', $this->selectedUser->id)
+                    ->orWhere('sender_id', $this->selectedUser->id)
+                    ->where('receiver_id', auth()->id());
             })->with(['sender', 'receiver'])->orderBy('created_at', 'desc')->paginate(20);
         }
 
@@ -130,9 +135,10 @@ class Index extends Component
         return collect();
     }
 
-    public function getTeachersProperty()
+    public function getUsersProperty()
     {
-        $query = User::where('role', 'teacher');
+        $query = User::where('id', '!=', auth()->id())
+            ->whereIn('role', ['admin', 'teacher']);
 
         if ($this->searchTerm) {
             $query->where(function ($q) {
@@ -141,43 +147,31 @@ class Index extends Component
             });
         }
 
-        $teachers = $query->orderBy('name')->get();
-
-        // Tính số tin nhắn chưa đọc cho mỗi giáo viên
-        foreach ($teachers as $teacher) {
-            $teacher->unread_messages_count = Message::where('sender_id', $teacher->id)
-                ->where('receiver_id', Auth::id())
-                ->whereNull('read_at')
-                ->count();
-        }
-
-        return $teachers;
+        return $query->orderBy('name')->get();
     }
 
     public function getClassesProperty()
     {
-        $loggedInUser = Auth::user();
-        $query = Classroom::whereHas('users', function ($q) use ($loggedInUser) {
-            $q->where('users.id', $loggedInUser->id);
+        $query = Classroom::whereHas('users', function ($q) {
+            $q->where('users.id', auth()->id());
         });
 
         if ($this->searchTerm) {
             $query->where('name', 'like', '%' . $this->searchTerm . '%');
         }
 
-        $classes = $query->with('users')->orderBy('name')->get();
+        $classes = $query->orderBy('name')->get();
 
-        // Tính số tin nhắn chưa đọc cho mỗi lớp
         foreach ($classes as $class) {
-            $class->unread_messages_count = $class->unreadMessagesCountForUser(Auth::id());
+            $class->unread_messages_count = $class->unreadMessagesCountForUser(auth()->id());
         }
-
+        
         return $classes;
     }
 
     public function refreshMessages()
     {
-        $this->unreadCount = Message::unread(Auth::id())->count();
+        $this->unreadCount = Message::unread(auth()->id())->count();
     }
 
     public function handleNewMessage($event)
@@ -186,15 +180,11 @@ class Index extends Component
         if ($message) {
             $isRelevant = false;
 
-            // Kiểm tra tin nhắn 1-1 với giáo viên
-            if ($this->selectedTeacher && $message['receiver_id'] == $this->selectedTeacher->id && $message['sender_id'] == Auth::id()) {
+            if ($this->selectedUser && $message['receiver_id'] == $this->selectedUser->id && $message['sender_id'] == auth()->id()) {
                 $isRelevant = true;
-            } elseif ($this->selectedTeacher && $message['sender_id'] == $this->selectedTeacher->id && $message['receiver_id'] == Auth::id()) {
+            } elseif ($this->selectedUser && $message['sender_id'] == $this->selectedUser->id && $message['receiver_id'] == auth()->id()) {
                 $isRelevant = true;
-            }
-            
-            // Kiểm tra tin nhắn nhóm lớp
-            elseif ($this->selectedClass && $message['class_id'] == $this->selectedClass->id) {
+            } elseif ($this->selectedClass && $message['class_id'] == $this->selectedClass->id) {
                 $isRelevant = true;
             }
 
@@ -209,7 +199,7 @@ class Index extends Component
     {
         return view('student.chat.index', [
             'messages' => $this->messages,
-            'teachers' => $this->teachers,
+            'users' => $this->users,
             'classes' => $this->classes,
         ]);
     }

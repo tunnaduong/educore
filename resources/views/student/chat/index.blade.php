@@ -1,12 +1,13 @@
 <x-layouts.dash-student active="chat">
+    @include('components.language')
     <div class="container-fluid py-2">
         <div class="row">
-            <!-- Sidebar - Danh sách người dùng và lớp học -->
+            <!-- Sidebar - Danh sách giáo viên và lớp học -->
             <div class="col-md-5 col-lg-4">
                 <div class="card shadow-sm">
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0">
-                            <i class="bi bi-chat-dots-fill me-2"></i>
+                            <i class="bi bi-chat-dots-fill mr-2"></i>
                             Chat & Tương tác
                         </h5>
                     </div>
@@ -25,53 +26,21 @@
                         <!-- Tabs -->
                         <ul class="nav nav-tabs nav-fill" id="chatTabs" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link @if ($activeTab === 'teachers') active @endif"
-                                    wire:click="setActiveTab('teachers')" id="teachers-tab" type="button" role="tab">
-                                    <i class="bi bi-person-workspace me-1"></i>Giảng viên
+                                <button class="nav-link @if ($activeTab === 'classes') active @endif"
+                                    wire:click="setActiveTab('classes')" id="classes-tab" type="button" role="tab">
+                                    <i class="bi bi-diagram-3-fill mr-1"></i>Lớp học
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link @if ($activeTab === 'classes') active @endif"
-                                    wire:click="setActiveTab('classes')" id="classes-tab" type="button" role="tab">
-                                    <i class="bi bi-diagram-3-fill me-1"></i>Lớp học
+                                <button class="nav-link @if ($activeTab === 'users') active @endif"
+                                    wire:click="setActiveTab('users')" id="users-tab" type="button" role="tab">
+                                    <i class="bi bi-people-fill mr-1"></i>Giáo viên
                                 </button>
                             </li>
                         </ul>
 
                         <!-- Tab content -->
                         <div class="tab-content" id="chatTabsContent">
-                            <!-- Teachers tab -->
-                            <div class="tab-pane fade @if ($activeTab === 'teachers') show active @endif"
-                                id="teachers" role="tabpanel">
-                                <div class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
-                                    @forelse($teachers as $teacher)
-                                        <button wire:click="selectTeacher({{ $teacher->id }})"
-                                            class="list-group-item list-group-item-action d-flex align-items-center {{ $selectedTeacher && $selectedTeacher->id === $teacher->id ? 'active' : '' }}">
-                                            <div class="flex-shrink-0">
-                                                <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center"
-                                                    style="width: 40px; height: 40px;">
-                                                    <span
-                                                        class="text-white fw-bold">{{ strtoupper(substr($teacher->name, 0, 1)) }}</span>
-                                                </div>
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <h6 class="mb-0">{{ $teacher->name }}</h6>
-                                                <small>{{ $teacher->email }}</small>
-                                            </div>
-                                            @if ($teacher->unread_messages_count > 0)
-                                                <span
-                                                    class="badge bg-danger rounded-pill">{{ $teacher->unread_messages_count }}</span>
-                                            @endif
-                                        </button>
-                                    @empty
-                                        <div class="list-group-item text-center text-muted">
-                                            <i class="bi bi-person-workspace" style="font-size: 2rem; color: #dee2e6;"></i>
-                                            <p class="mt-2">Không có giảng viên nào</p>
-                                        </div>
-                                    @endforelse
-                                </div>
-                            </div>
-
                             <!-- Classes tab -->
                             <div class="tab-pane fade @if ($activeTab === 'classes') show active @endif"
                                 id="classes" role="tabpanel">
@@ -85,26 +54,56 @@
                                                         class="rounded-circle"
                                                         style="width: 40px; height: 40px; object-fit: cover;">
                                                 @else
-                                                    <div class="rounded-circle bg-success d-flex align-items-center justify-content-center"
+                                                    <div class="rounded-circle bg-info d-flex align-items-center justify-content-center"
                                                         style="width: 40px; height: 40px;">
                                                         <i class="bi bi-diagram-3-fill text-white"></i>
                                                     </div>
                                                 @endif
                                             </div>
-                                            <div class="flex-grow-1 ms-3">
+                                            <div class="flex-grow-1 ml-3">
                                                 <h6 class="mb-0">{{ $class->name }}</h6>
-                                                <small class="text-muted">{{ $class->users->count() }} thành viên</small>
                                             </div>
-                                            @if ($class->unread_messages_count > 0)
-                                                <span
-                                                    class="badge bg-danger rounded-pill">{{ $class->unread_messages_count }}</span>
-                                            @endif
+                                            <span class="badge bg-danger rounded-pill ml-auto" style="min-width: 28px;">
+                                                {{ $class->unread_messages_count ?? 0 }}
+                                            </span>
                                         </button>
                                     @empty
                                         <div class="list-group-item text-center text-muted">
                                             <i class="bi bi-diagram-3-fill"
                                                 style="font-size: 2rem; color: #dee2e6;"></i>
                                             <p class="mt-2">Không có lớp học nào</p>
+                                        </div>
+                                    @endforelse
+                                </div>
+                            </div>
+
+                            <!-- Users tab -->
+                            <div class="tab-pane fade @if ($activeTab === 'users') show active @endif"
+                                id="users" role="tabpanel">
+                                <div class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
+                                    @forelse($users as $user)
+                                        <button wire:click="selectUser({{ $user->id }})"
+                                            class="list-group-item list-group-item-action d-flex align-items-center {{ $selectedUser && $selectedUser->id === $user->id ? 'active' : '' }}">
+                                            <div class="flex-shrink-0">
+                                                <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center"
+                                                    style="width: 40px; height: 40px;">
+                                                    <span
+                                                        class="text-white fw-bold">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="flex-grow-1 ml-3">
+                                                <h6 class="mb-0">{{ $user->name }}</h6>
+                                                <small>{{ $user->email }}</small>
+                                            </div>
+                                            @if ($user->unread_messages_count > 0)
+                                                <span
+                                                    class="badge bg-danger rounded-pill">{{ $user->unread_messages_count }}</span>
+                                            @endif
+                                        </button>
+                                    @empty
+                                        <div class="list-group-item text-center text-muted">
+                                            <i class="bi bi-people-fill" style="font-size: 2rem; color: #dee2e6;"></i>
+                                            <p class="mt-2">Không có giáo viên nào</p>
                                         </div>
                                     @endforelse
                                 </div>
@@ -117,28 +116,28 @@
             <!-- Main chat area -->
             <div class="col-md-7 col-lg-8">
                 <div class="card shadow-sm h-100">
-                    @if ($selectedTeacher || $selectedClass)
+                    @if ($selectedUser || $selectedClass)
                         <!-- Chat header -->
                         <div class="card-header bg-light d-flex align-items-center justify-content-between">
                             <div class="d-flex align-items-center">
-                                @if ($selectedTeacher)
-                                    <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center me-3"
+                                @if ($selectedUser)
+                                    <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center mr-3"
                                         style="width: 40px; height: 40px;">
                                         <span
-                                            class="text-white fw-bold">{{ strtoupper(substr($selectedTeacher->name, 0, 1)) }}</span>
+                                            class="text-white fw-bold">{{ strtoupper(substr($selectedUser->name, 0, 1)) }}</span>
                                     </div>
                                     <div>
-                                        <h6 class="mb-0">{{ $selectedTeacher->name }}</h6>
-                                        <small class="text-muted">{{ $selectedTeacher->email }}</small>
+                                        <h6 class="mb-0">{{ $selectedUser->name }}</h6>
+                                        <small class="text-muted">{{ $selectedUser->email }}</small>
                                     </div>
                                 @elseif($selectedClass)
-                                    <div class="rounded-circle bg-success d-flex align-items-center justify-content-center me-3"
+                                    <div class="rounded-circle bg-info d-flex align-items-center justify-content-center mr-3"
                                         style="width: 40px; height: 40px;">
                                         <i class="bi bi-diagram-3-fill text-white"></i>
                                     </div>
                                     <div>
                                         <h6 class="mb-0">{{ $selectedClass->name }}</h6>
-                                        <small class="text-muted">Lớp học - {{ $selectedClass->users->count() }} thành viên</small>
+                                        <small class="text-muted">Lớp học</small>
                                     </div>
                                 @endif
                             </div>
@@ -163,7 +162,7 @@
                                                         alt="Avatar" class="rounded-circle"
                                                         style="width: 35px; height: 35px; object-fit: cover;">
                                                 @else
-                                                    <div class="rounded-circle d-flex align-items-center justify-content-center {{ $isMine ? 'ms-3' : 'me-3' }}"
+                                                    <div class="rounded-circle d-flex align-items-center justify-content-center {{ $isMine ? 'ms-3' : 'mr-3' }}"
                                                         style="width: 35px; height: 35px; background-color: {{ $isMine ? '#0d6efd' : '#6c757d' }};">
                                                         <span
                                                             class="text-white fw-bold">{{ strtoupper(substr($sender->name, 0, 1)) }}</span>
@@ -173,7 +172,7 @@
                                             <!-- Message content -->
                                             <div class="flex-grow-1" style="max-width: 70%;">
                                                 <div
-                                                    class="card {{ $isMine ? 'bg-primary text-white' : 'bg-dark text-white' }}">
+                                                    class="card {{ $isMine ? 'bg-primary text-white' : 'bg-light' }}">
                                                     <div class="card-body py-2 px-3">
                                                         <div class="d-flex align-items-center mb-1">
                                                             <span class="fw-bold"
@@ -184,13 +183,14 @@
                                                             <div class="mt-2">
                                                                 <a href="{{ Storage::url($message->attachment) }}"
                                                                     target="_blank"
-                                                                    class="btn btn-sm {{ $isMine ? 'btn-light' : 'btn-outline-light' }}">
-                                                                    <i class="bi bi-paperclip me-1"></i>
+                                                                    class="btn btn-sm {{ $isMine ? 'btn-light' : 'btn-outline-primary' }}">
+                                                                    <i class="bi bi-paperclip mr-1"></i>
                                                                     Tệp đính kèm
                                                                 </a>
                                                             </div>
                                                         @endif
-                                                        <small class="text-white d-block mt-1"
+                                                        <small
+                                                            class="{{ $isMine ? 'text-white' : 'text-muted' }} d-block mt-1"
                                                             style="font-size: 0.85rem;">
                                                             {{ $message->created_at->format('H:i d/m/Y') }}
                                                         </small>
@@ -208,7 +208,7 @@
                                 @endforelse
                             </div>
 
-                            <!-- Message input -->
+                            <!-- Message input with drag & drop -->
                             <div class="border-top pt-3">
                                 <form wire:submit="sendMessage">
                                     <div class="row g-2">
@@ -238,6 +238,14 @@
                                         </div>
                                     </div>
                                 </form>
+
+                                <!-- Drag & Drop Zone -->
+                                <div id="dragDropZone"
+                                    class="mt-2 p-3 border-2 border-dashed border-secondary rounded text-center"
+                                    style="display: none; background-color: rgba(0,123,255,0.1);">
+                                    <i class="bi bi-cloud-upload fs-1 text-primary"></i>
+                                    <p class="mb-0 mt-2">Kéo thả file vào đây để đính kèm</p>
+                                </div>
                             </div>
                         </div>
                     @else
@@ -247,7 +255,7 @@
                             <div class="text-center">
                                 <i class="bi bi-chat-dots-fill" style="font-size: 4rem; color: #0dcaf0;"></i>
                                 <h4 class="mt-3">Chào mừng đến với Chat & Tương tác</h4>
-                                <p class="text-muted">Chọn một giảng viên hoặc lớp học để bắt đầu cuộc trò chuyện</p>
+                                <p class="text-muted">Chọn một lớp học hoặc giáo viên để bắt đầu cuộc trò chuyện</p>
                             </div>
                         </div>
                     @endif
@@ -311,6 +319,70 @@
                 Notification.requestPermission();
             }
 
+            // Drag & Drop functionality
+            document.addEventListener('DOMContentLoaded', function() {
+                const dragDropZone = document.getElementById('dragDropZone');
+                const messageInput = document.querySelector('input[wire\\:model="messageText"]');
+                const fileInput = document.getElementById('attachment');
+
+                if (dragDropZone && messageInput) {
+                    // Show drag zone when hovering over input area
+                    messageInput.addEventListener('dragenter', function(e) {
+                        e.preventDefault();
+                        dragDropZone.style.display = 'block';
+                    });
+
+                    messageInput.addEventListener('dragover', function(e) {
+                        e.preventDefault();
+                        dragDropZone.style.display = 'block';
+                    });
+
+                    messageInput.addEventListener('dragleave', function(e) {
+                        e.preventDefault();
+                        if (!dragDropZone.contains(e.relatedTarget)) {
+                            dragDropZone.style.display = 'none';
+                        }
+                    });
+
+                    // Handle file drop
+                    dragDropZone.addEventListener('dragover', function(e) {
+                        e.preventDefault();
+                        dragDropZone.style.background = 'rgba(0,123,255,0.2)';
+                    });
+
+                    dragDropZone.addEventListener('dragleave', function(e) {
+                        e.preventDefault();
+                        dragDropZone.style.background = 'rgba(0,123,255,0.1)';
+                    });
+
+                    dragDropZone.addEventListener('drop', function(e) {
+                        e.preventDefault();
+                        dragDropZone.style.display = 'none';
+                        dragDropZone.style.background = 'rgba(0,123,255,0.1)';
+
+                        const files = e.dataTransfer.files;
+                        if (files.length > 0) {
+                            // Create a new FileList-like object
+                            const dt = new DataTransfer();
+                            dt.items.add(files[0]);
+                            fileInput.files = dt.files;
+
+                            // Trigger Livewire file upload
+                            fileInput.dispatchEvent(new Event('change', {
+                                bubbles: true
+                            }));
+                        }
+                    });
+
+                    // Hide drag zone when clicking outside
+                    document.addEventListener('click', function(e) {
+                        if (!dragDropZone.contains(e.target) && !messageInput.contains(e.target)) {
+                            dragDropZone.style.display = 'none';
+                        }
+                    });
+                }
+            });
+
             // Real-time typing indicator
             let typingTimer;
             const messageInput = document.querySelector('input[wire\\:model="messageText"]');
@@ -329,11 +401,7 @@
     @push('scripts')
         <script>
             document.addEventListener('livewire:load', function() {
-                window.addEventListener('closeAddMemberModal', function() {
-                    var modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('addMemberModal'));
-                    if (modal) modal.hide();
-                });
-                // Hiển thị toast khi thêm thành viên
+                // Hiển thị toast khi có thông báo
                 Livewire.on('showToast', function(data) {
                     let type = data.type || 'info';
                     let message = data.message || '';
@@ -343,7 +411,7 @@
                         ' border-0 position-fixed bottom-0 end-0 m-3';
                     toast.style.zIndex = 9999;
                     toast.innerHTML =
-                        `<div class="d-flex"><div class="toast-body">${message}</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div>`;
+                        `<div class="d-flex"><div class="toast-body">${message}</div><button type="button" class="btn-close btn-close-white mr-2 m-auto" data-bs-dismiss="toast"></button></div>`;
                     document.body.appendChild(toast);
                     var bsToast = new bootstrap.Toast(toast, {
                         delay: 2500
