@@ -197,4 +197,7 @@ Route::middleware(['auth', 'verified', 'role:student'])->name('student.')->prefi
     // Lịch học
     Route::get('/schedules', \App\Livewire\Student\Schedules\Index::class)->name('schedules');
     Route::get('/chat', App\Livewire\Student\Chat\Index::class)->name('chat.index');
+
+    // Đánh giá chất lượng học
+    Route::get('/evaluation', \App\Livewire\Student\Evaluation\Index::class)->name('evaluation');
 });
