@@ -49,4 +49,9 @@ class Student extends Model
     {
         return $this->hasMany(AssignmentSubmission::class, 'student_id');
     }
+
+    public function evaluations(): HasMany
+    {
+        return $this->hasMany(Evaluation::class, 'student_id');
+    }
 }

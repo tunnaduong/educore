@@ -1,5 +1,6 @@
 @props(['active' => null, 'title' => __('general.dashboard')])
 <div class="wrapper">
+    @include('components.evaluation')
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
         <ul class="navbar-nav">
             <li class="nav-item">
