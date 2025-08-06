@@ -53,7 +53,9 @@
                         <div class="col-md-6">
                             <label for="score" class="form-label fw-semibold">Điểm tối đa (tuỳ chọn)</label>
                             <input wire:model.defer="score" type="number" class="form-control" id="score"
-                                placeholder="VD: 100" min="0">
+                                placeholder="VD: 10" min="0" max="10" step="0.1"
+                                oninput="if(this.value > 10) this.value = 10; if(this.value < 0) this.value = 0;"
+                                onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 46 || event.charCode === 8 || event.charCode === 9">
                         </div>
                     </div>
                     <!-- Loại bài tập -->
