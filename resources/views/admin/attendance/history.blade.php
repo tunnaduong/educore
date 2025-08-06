@@ -62,5 +62,4 @@
             </div>
         </div>
     </div>
-    </div>
 </x-layouts.dash-admin>
