@@ -316,7 +316,9 @@
                                 <label class="form-label fw-semibold">Điểm (0-10):</label>
                                 <input type="number" class="form-control"
                                     wire:model.defer="grading.{{ $selectedSubmission->id }}.score" min="0"
-                                    max="10" step="0.1" placeholder="Nhập điểm...">
+                                    max="10" step="0.1" placeholder="Nhập điểm..."
+                                    oninput="if(this.value > 10) this.value = 10; if(this.value < 0) this.value = 0;"
+                                    onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 46 || event.charCode === 8 || event.charCode === 9">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold">Nhận xét:</label>
