@@ -4,13 +4,13 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h4 class="mb-0 text-primary fs-4">
-                    <i class="bi bi-journal-text me-2"></i>Tổng quan giao bài tập
+                    <i class="bi bi-journal-text mr-2"></i>Tổng quan giao bài tập
                 </h4>
                 <p class="text-muted mb-0">Quản lý và theo dõi tình hình giao - nộp bài tập</p>
             </div>
             <div class="d-flex gap-2">
                 <a href="{{ route('teacher.assignments.create') }}" wire:navigate class="btn btn-outline-primary">
-                    <i class="bi bi-plus-circle me-2"></i>Giao bài tập mới
+                    <i class="bi bi-plus-circle mr-2"></i>Giao bài tập mới
                 </a>
             </div>
         </div>
@@ -21,17 +21,17 @@
                 <div class="row align-items-center">
                     <div class="col-md-6">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-funnel me-2"></i>Lọc theo tháng
+                            <i class="bi bi-funnel mr-2"></i>Lọc theo tháng
                         </h5>
                     </div>
                     <div class="col-md-6">
                         <div class="d-flex gap-2 justify-content-end">
-                            <select wire:model.live="selectedMonth" class="form-select" style="max-width: 150px;">
+                            <select wire:model.live="selectedMonth" class="form-control" style="max-width: 150px;">
                                 @for ($month = 1; $month <= 12; $month++)
                                     <option value="{{ $month }}">Tháng {{ $month }}</option>
                                 @endfor
                             </select>
-                            <select wire:model.live="selectedYear" class="form-select" style="max-width: 120px;">
+                            <select wire:model.live="selectedYear" class="form-control" style="max-width: 120px;">
                                 @for ($year = date('Y') - 2; $year <= date('Y') + 1; $year++)
                                     <option value="{{ $year }}">{{ $year }}</option>
                                 @endfor
@@ -112,7 +112,7 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-trophy me-2"></i>Top 5 lớp có nhiều bài tập nhất
+                            <i class="bi bi-trophy mr-2"></i>Top 5 lớp có nhiều bài tập nhất
                         </h5>
                     </div>
                     <div class="card-body">
@@ -130,18 +130,20 @@
                                             <tr>
                                                 <td>
                                                     <div class="d-flex align-items-center">
-                                                        <div class="avatar-sm me-3">
+                                                        <div class="avatar-sm mr-3">
                                                             <i class="bi bi-mortarboard fs-4 text-primary"></i>
                                                         </div>
                                                         <div>
                                                             <div class="fw-medium">
                                                                 {{ $classData['classroom']->name ?? '-' }}</div>
-                                                            <small class="text-muted">{{ $classData['classroom']->level ?? '' }}</small>
+                                                            <small
+                                                                class="text-muted">{{ $classData['classroom']->level ?? '' }}</small>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td class="text-center">
-                                                    <span class="badge bg-secondary">{{ $classData['total_assignments'] }}</span>
+                                                    <span
+                                                        class="badge bg-secondary">{{ $classData['total_assignments'] }}</span>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -162,7 +164,7 @@
                     <div class="card-header bg-light">
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="mb-0 text-primary">
-                                <i class="bi bi-clock-history me-2"></i>Bài tập gần đây
+                                <i class="bi bi-clock-history mr-2"></i>Bài tập gần đây
                             </h5>
                         </div>
                     </div>
@@ -184,36 +186,51 @@
                                             <tr>
                                                 <td>{{ $assignment->title }}</td>
                                                 <td>{{ $assignment->classroom->name ?? '-' }}</td>
-                                                <td>{{ $assignment->deadline ? $assignment->deadline->format('d/m/Y H:i') : '-' }}</td>
+                                                <td>{{ $assignment->deadline ? $assignment->deadline->format('d/m/Y H:i') : '-' }}
+                                                </td>
                                                 <td>{{ $assignment->created_at->format('d/m/Y H:i') }}</td>
                                                 <td>
-                                                    <a href="{{ route('teacher.assignments.show', $assignment->id) }}" wire:navigate class="btn btn-sm btn-outline-primary">
+                                                    <a href="{{ route('teacher.assignments.show', $assignment->id) }}"
+                                                        wire:navigate class="btn btn-sm btn-outline-primary">
                                                         <i class="bi bi-eye"></i>
                                                     </a>
-                                                    <a href="{{ route('teacher.assignments.edit', $assignment->id) }}" wire:navigate class="btn btn-sm btn-outline-warning">
+                                                    <a href="{{ route('teacher.assignments.edit', $assignment->id) }}"
+                                                        wire:navigate class="btn btn-sm btn-outline-warning">
                                                         <i class="bi bi-pencil-square"></i>
                                                     </a>
-                                                    <button type="button" data-bs-toggle="modal" data-bs-target="#deleteAssignmentModal{{ $assignment->id }}" class="btn btn-sm btn-outline-danger">
+                                                    <button type="button" data-bs-toggle="modal"
+                                                        data-bs-target="#deleteAssignmentModal{{ $assignment->id }}"
+                                                        class="btn btn-sm btn-outline-danger">
                                                         <i class="bi bi-trash"></i>
                                                     </button>
                                                 </td>
                                             </tr>
 
                                             <!-- Delete Confirmation Modal -->
-                                            <div class="modal fade" id="deleteAssignmentModal{{ $assignment->id }}" tabindex="-1" aria-labelledby="deleteAssignmentModalLabel{{ $assignment->id }}" aria-hidden="true">
+                                            <div class="modal fade" id="deleteAssignmentModal{{ $assignment->id }}"
+                                                tabindex="-1"
+                                                aria-labelledby="deleteAssignmentModalLabel{{ $assignment->id }}"
+                                                aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="deleteAssignmentModalLabel{{ $assignment->id }}">
+                                                            <h5 class="modal-title"
+                                                                id="deleteAssignmentModalLabel{{ $assignment->id }}">
                                                                 Xác nhận xóa bài tập</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            Bạn có chắc chắn muốn xóa bài tập "{{ $assignment->title }}"? Hành động này không thể hoàn tác.
+                                                            Bạn có chắc chắn muốn xóa bài tập
+                                                            "{{ $assignment->title }}"? Hành động này không thể hoàn
+                                                            tác.
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                                            <button type="button" class="btn btn-danger" wire:click="deleteAssignment({{ $assignment->id }})" data-bs-dismiss="modal">Xóa</button>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Hủy</button>
+                                                            <button type="button" class="btn btn-danger"
+                                                                wire:click="deleteAssignment({{ $assignment->id }})"
+                                                                data-bs-dismiss="modal">Xóa</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -237,14 +254,15 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-star me-2"></i>Top 5 học viên nộp bài đúng hạn
+                            <i class="bi bi-star mr-2"></i>Top 5 học viên nộp bài đúng hạn
                         </h5>
                     </div>
                     <div class="card-body">
                         @if ($topStudents->count() > 0)
                             @foreach ($topStudents as $index => $studentData)
-                                <div class="d-flex align-items-center mb-3 {{ $index < 3 ? 'p-2 bg-light rounded' : '' }}">
-                                    <div class="me-3">
+                                <div
+                                    class="d-flex align-items-center mb-3 {{ $index < 3 ? 'p-2 bg-light rounded' : '' }}">
+                                    <div class="mr-3">
                                         @if ($index < 3)
                                             <span class="badge bg-warning">{{ $index + 1 }}</span>
                                         @else
@@ -257,7 +275,8 @@
                                     </div>
                                     <div class="text-end">
                                         <div class="fw-bold text-success">{{ $studentData['on_time_rate'] }}%</div>
-                                        <small class="text-muted">{{ $studentData['on_time'] }}/{{ $studentData['total_submissions'] }}</small>
+                                        <small
+                                            class="text-muted">{{ $studentData['on_time'] }}/{{ $studentData['total_submissions'] }}</small>
                                     </div>
                                 </div>
                             @endforeach

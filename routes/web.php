@@ -2,7 +2,7 @@
 
 use App\Livewire\Admin\Home;
 use Illuminate\Http\Request;
-use App\Livewire\Admin\Auth\Login;
+use App\Livewire\Auth\Login;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Admin\Grading\GradingList;
@@ -32,6 +32,35 @@ Route::get('/', function () {
     }
     return redirect()->route('login');
 });
+
+Route::get('/lang/{locale}', function ($locale) {
+    if (in_array($locale, ['vi', 'en', 'zh'])) {
+        session(['locale' => $locale]);
+    }
+    return redirect()->back();
+})->name('lang.switch');
+
+// Test route để debug locale
+Route::get('/test-locale', function () {
+    return response()->json([
+        'current_locale' => app()->getLocale(),
+        'session_locale' => session('locale'),
+        'cookie_locale' => request()->cookie('locale'),
+        'available_locales' => ['vi', 'en', 'zh']
+    ]);
+})->middleware(['web', \App\Http\Middleware\SetLocale::class])->name('test.locale');
+
+// Test route để set locale
+Route::get('/set-locale/{locale}', function (string $locale) {
+    session(['locale' => $locale]);
+    app()->setLocale($locale);
+    return response()->json([
+        'success' => true,
+        'locale' => $locale,
+        'session' => session('locale'),
+        'app_locale' => app()->getLocale()
+    ]);
+})->name('set.locale');
 
 Route::get('/login', Login::class)->name('login');
 Route::post('/logout', function (Request $request) {
@@ -146,11 +175,6 @@ Route::middleware(['auth', 'role:teacher'])->name('teacher.')->group(function ()
     Route::get('/teacher/schedules', \App\Livewire\Teacher\Schedules\Index::class)->name('schedules.index');
     // Chat routes
     Route::get('/teacher/chat', \App\Livewire\Teacher\Chat\Index::class)->name('chat.index');
-});
-
-// Shared routes for admin and teacher
-Route::middleware(['auth', 'role:admin,teacher'])->group(function () {
-    // Other shared routes...
 });
 
 // Student routes

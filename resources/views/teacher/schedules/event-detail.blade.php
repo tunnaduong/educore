@@ -7,13 +7,13 @@
                     <div class="modal-header">
                         <h5 class="modal-title" id="eventDetailModalLabel">
                             @if ($eventType === 'schedule')
-                                <i class="bi bi-calendar3 text-primary me-2"></i>Chi tiết lịch học
+                                <i class="bi bi-calendar3 text-primary mr-2"></i>Chi tiết lịch học
                             @elseif ($eventType === 'lesson')
-                                <i class="bi bi-book text-primary me-2"></i>Chi tiết bài học
+                                <i class="bi bi-book text-primary mr-2"></i>Chi tiết bài học
                             @elseif($eventType === 'assignment')
-                                <i class="bi bi-journal-text text-warning me-2"></i>Chi tiết bài tập
+                                <i class="bi bi-journal-text text-warning mr-2"></i>Chi tiết bài tập
                             @elseif($eventType === 'quiz')
-                                <i class="bi bi-patch-question text-success me-2"></i>Chi tiết kiểm tra
+                                <i class="bi bi-patch-question text-success mr-2"></i>Chi tiết kiểm tra
                             @endif
                         </h5>
                         <button type="button" class="btn-close" wire:click="closeModal" aria-label="Close"></button>
@@ -222,20 +222,20 @@
                         @if ($eventData)
                             @if ($eventType === 'schedule')
                                 <a href="{{ route('admin.schedules.edit', $eventData->id) }}" class="btn btn-primary">
-                                    <i class="bi bi-pencil me-2"></i>Chỉnh sửa lịch học
+                                    <i class="bi bi-pencil mr-2"></i>Chỉnh sửa lịch học
                                 </a>
                             @elseif ($eventType === 'lesson')
                                 <a href="{{ route('teacher.lessons.edit', $eventData->id) }}" class="btn btn-primary">
-                                    <i class="bi bi-pencil me-2"></i>Chỉnh sửa
+                                    <i class="bi bi-pencil mr-2"></i>Chỉnh sửa
                                 </a>
                             @elseif($eventType === 'assignment')
                                 <a href="{{ route('teacher.assignments.edit', $eventData->id) }}"
                                     class="btn btn-warning">
-                                    <i class="bi bi-pencil me-2"></i>Chỉnh sửa
+                                    <i class="bi bi-pencil mr-2"></i>Chỉnh sửa
                                 </a>
                             @elseif($eventType === 'quiz')
                                 <a href="{{ route('teacher.quizzes.edit', $eventData->id) }}" class="btn btn-success">
-                                    <i class="bi bi-pencil me-2"></i>Chỉnh sửa
+                                    <i class="bi bi-pencil mr-2"></i>Chỉnh sửa
                                 </a>
                             @endif
                         @endif

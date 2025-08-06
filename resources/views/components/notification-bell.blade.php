@@ -2,16 +2,16 @@
     <div class="dropdown" x-data="{ open: false }">
         <button class="btn btn-link text-white text-decoration-none position-relative" @click="open = !open"
             @click.away="open = false" type="button">
-            <i class="bi bi-bell fs-5"></i>
+            <i class="fas fa-bell"></i>
             @if ($unreadCount > 0)
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                <span class="position-absolute top-0 start-100 translate-middle badge badge-danger badge-pill"
                     style="font-size: 0.7rem;">
                     {{ $unreadCount > 99 ? '99+' : $unreadCount }}
                 </span>
             @endif
         </button>
 
-        <div class="dropdown-menu dropdown-menu-start" :class="{ 'show': open }"
+        <div class="dropdown-menu dropdown-menu-left" :class="{ 'show': open }"
             style="width: 350px; max-height: 400px; overflow-y: auto; z-index: 1050;" x-show="open"
             x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95"
             x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75"
@@ -38,16 +38,16 @@
                                             'reminder' => 'info',
                                         ];
                                         $typeIcons = [
-                                            'info' => 'bi-info-circle',
-                                            'warning' => 'bi-exclamation-triangle',
-                                            'success' => 'bi-check-circle',
-                                            'danger' => 'bi-x-circle',
-                                            'reminder' => 'bi-clock',
+                                            'info' => 'fas fa-info-circle',
+                                            'warning' => 'fas fa-exclamation-triangle',
+                                            'success' => 'fas fa-check-circle',
+                                            'danger' => 'fas fa-times-circle',
+                                            'reminder' => 'fas fa-clock',
                                         ];
                                     @endphp
                                     <i
-                                        class="bi {{ $typeIcons[$notification->type] }} text-{{ $typeColors[$notification->type] }} me-2"></i>
-                                    <h6 class="mb-0 {{ $notification->is_read ? '' : 'fw-bold' }}"
+                                        class="{{ $typeIcons[$notification->type] }} text-{{ $typeColors[$notification->type] }} mr-2"></i>
+                                    <h6 class="mb-0 {{ $notification->is_read ? '' : 'font-weight-bold' }}"
                                         style="font-size: 0.9rem;">
                                         {{ Str::limit($notification->title, 30) }}
                                     </h6>
@@ -78,7 +78,7 @@
                 </div>
             @else
                 <div class="dropdown-item text-center p-4">
-                    <i class="bi bi-bell-slash text-muted" style="font-size: 2rem;"></i>
+                    <i class="fas fa-bell-slash text-muted" style="font-size: 2rem;"></i>
                     <p class="text-muted mb-0 mt-2">Không có thông báo mới</p>
                 </div>
             @endif

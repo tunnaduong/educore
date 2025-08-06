@@ -5,7 +5,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-journal-text me-2"></i>{{ $assignment->title }}
+                        <i class="bi bi-journal-text mr-2"></i>{{ $assignment->title }}
                     </h4>
                     <p class="text-muted mb-0">{{ $assignment->classroom->name }} -
                         @if ($assignment->classroom->teachers->count())
@@ -36,7 +36,7 @@
         <div class="card shadow-sm mb-4">
             <div class="card-header bg-light">
                 <h6 class="mb-0">
-                    <i class="bi bi-info-circle me-2"></i>Chi tiết bài tập
+                    <i class="bi bi-info-circle mr-2"></i>Chi tiết bài tập
                 </h6>
             </div>
             <div class="card-body">
@@ -91,17 +91,17 @@
                                 <h6 class="card-title">Thông tin bài tập</h6>
                                 <ul class="list-unstyled mb-0">
                                     <li class="mb-2">
-                                        <i class="bi bi-calendar3 me-2"></i>
+                                        <i class="bi bi-calendar3 mr-2"></i>
                                         <strong>Hạn nộp:</strong><br>
                                         {{ $assignment->deadline->format('d/m/Y H:i') }}
                                     </li>
                                     <li class="mb-2">
-                                        <i class="bi bi-people me-2"></i>
+                                        <i class="bi bi-people mr-2"></i>
                                         <strong>Lớp học:</strong><br>
                                         {{ $assignment->classroom->name }}
                                     </li>
                                     <li class="mb-2">
-                                        <i class="bi bi-person me-2"></i>
+                                        <i class="bi bi-person mr-2"></i>
                                         <strong>Giảng viên:</strong><br>
                                         @if ($assignment->classroom->teachers->count())
                                             {{ $assignment->classroom->teachers->pluck('name')->join(', ') }}
@@ -119,7 +119,7 @@
                                     <h6 class="card-title">Tài liệu đính kèm</h6>
                                     <a href="{{ Storage::url($assignment->attachment_path) }}" target="_blank"
                                         class="btn btn-outline-primary btn-sm">
-                                        <i class="bi bi-download me-2"></i>Tải xuống tài liệu
+                                        <i class="bi bi-download mr-2"></i>Tải xuống tài liệu
                                     </a>
                                 </div>
                             </div>
@@ -147,7 +147,7 @@
                 <div class="card shadow-sm mb-4 border-success">
                     <div class="card-header bg-success text-white">
                         <h6 class="mb-0">
-                            <i class="bi bi-check-circle me-2"></i>Bài nộp của bạn -
+                            <i class="bi bi-check-circle mr-2"></i>Bài nộp của bạn -
                             @switch($submission->submission_type)
                                 @case('text')
                                     Điền từ
@@ -235,12 +235,12 @@
                                         <h6 class="card-title">Thông tin nộp bài</h6>
                                         <ul class="list-unstyled mb-0">
                                             <li class="mb-2">
-                                                <i class="bi bi-clock me-2"></i>
+                                                <i class="bi bi-clock mr-2"></i>
                                                 <strong>Nộp lúc:</strong><br>
                                                 {{ $submission->submitted_at->format('d/m/Y H:i') }}
                                             </li>
                                             <li class="mb-2">
-                                                <i class="bi bi-file-earmark me-2"></i>
+                                                <i class="bi bi-file-earmark mr-2"></i>
                                                 <strong>Loại bài nộp:</strong><br>
                                                 @switch($submission->submission_type)
                                                     @case('text')
@@ -305,7 +305,7 @@
                     @if ($this->canSubmit())
                         <a href="{{ route('student.assignments.submit', $assignment->id) }}"
                             class="btn btn-primary btn-lg" wire:navigate>
-                            <i class="bi bi-pencil me-2"></i>Bắt đầu làm bài
+                            <i class="bi bi-pencil mr-2"></i>Bắt đầu làm bài
                         </a>
                     @elseif($this->isOverdue())
                         <div class="text-center">
@@ -321,7 +321,7 @@
         @if ($submissions->count() > 0 && $this->canRedo())
             <div class="text-center mb-3">
                 <button class="btn btn-warning" wire:click="redoSubmission">
-                    <i class="bi bi-arrow-clockwise me-2"></i>Nộp lại bài
+                    <i class="bi bi-arrow-clockwise mr-2"></i>Nộp lại bài
                 </button>
             </div>
         @endif
@@ -329,7 +329,7 @@
         <!-- Back Button -->
         <div class="text-center mt-4">
             <a href="{{ route('student.assignments.overview') }}" class="btn btn-outline-secondary" wire:navigate>
-                <i class="bi bi-arrow-left me-2"></i>Quay lại danh sách
+                <i class="bi bi-arrow-left mr-2"></i>Quay lại danh sách
             </a>
         </div>
     </div>
