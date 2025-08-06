@@ -33,6 +33,43 @@ class Show extends Component
     {
         $score = $this->grading[$submissionId]['score'] ?? null;
         $feedback = $this->grading[$submissionId]['feedback'] ?? null;
+
+        // Validation cho điểm
+        if ($score !== null && $score !== '') {
+            // Kiểm tra xem có phải là số hợp lệ không
+            if (!is_numeric($score) || !is_finite($score)) {
+                session()->flash('error', 'Điểm phải là số hợp lệ!');
+                return;
+            }
+
+            // Chuyển đổi thành float để so sánh chính xác
+            $score = (float) $score;
+
+            if ($score < 0) {
+                session()->flash('error', 'Điểm không được nhỏ hơn 0!');
+                return;
+            }
+
+            if ($score > 10) {
+                session()->flash('error', 'Điểm không được vượt quá 10!');
+                return;
+            }
+
+            // Kiểm tra số thập phân (chỉ cho phép tối đa 1 chữ số thập phân)
+            if (strpos((string) $score, '.') !== false) {
+                $decimalPlaces = strlen(substr(strrchr((string) $score, "."), 1));
+                if ($decimalPlaces > 1) {
+                    session()->flash('error', 'Điểm chỉ được có tối đa 1 chữ số thập phân!');
+                    return;
+                }
+            }
+        }
+
+        // Nếu điểm là rỗng (empty string), set null
+        if ($score === '' || $score === null) {
+            $score = null;
+        }
+
         $submission = AssignmentSubmission::find($submissionId);
         if ($submission) {
             $submission->score = $score;
