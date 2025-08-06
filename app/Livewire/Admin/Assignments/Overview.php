@@ -16,6 +16,7 @@ class Overview extends Component
     public $topClasses = [];
     public $recentAssignments = [];
     public $topStudents = [];
+    public $monthlyStats = [];
     public $selectedMonth;
     public $selectedYear;
 
@@ -85,6 +86,26 @@ class Overview extends Component
             ];
         })->sortByDesc('on_time_rate')->take(5);
         $this->topStudents = $studentStats;
+
+        // Thống kê theo tháng
+        $this->monthlyStats = collect(range(1, 12))->map(function ($month) use ($year) {
+            $monthAssignments = Assignment::whereYear('created_at', $year)
+                ->whereMonth('created_at', $month)
+                ->count();
+
+            $monthSubmissions = AssignmentSubmission::whereYear('created_at', $year)
+                ->whereMonth('created_at', $month)
+                ->count();
+
+            return [
+                'month' => $month,
+                'month_name' => $this->getMonthName($month),
+                'assignments_count' => $monthAssignments,
+                'submissions_count' => $monthSubmissions,
+            ];
+        })->filter(function ($stat) {
+            return $stat['assignments_count'] > 0 || $stat['submissions_count'] > 0;
+        });
     }
 
     public function getMonthName($month)

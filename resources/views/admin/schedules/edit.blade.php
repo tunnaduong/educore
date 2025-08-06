@@ -7,7 +7,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <h4 class="mb-0 fs-4">Chỉnh sửa lịch học</h4>
                             <a wire:navigate href="{{ route('schedules.index') }}" class="btn btn-outline-secondary">
-                                <i class="bi bi-arrow-left me-2"></i>Quay lại
+                                <i class="bi bi-arrow-left mr-2"></i>Quay lại
                             </a>
                         </div>
                     </div>
@@ -15,7 +15,7 @@
                         <div class="mb-4">
                             <h5 class="text-primary">{{ $classroom->name }}</h5>
                             <p class="text-muted mb-0">
-                                <i class="bi bi-person-circle me-2"></i>
+                                <i class="bi bi-person-circle mr-2"></i>
                                 Giáo viên:
                                 @if ($classroom->teachers->count())
                                     {{ $classroom->teachers->pluck('name')->join(', ') }}
@@ -85,12 +85,12 @@
                             @if ($selectedDays && $startTime && $endTime)
                                 <div class="alert alert-info mb-4">
                                     <h6 class="alert-heading">
-                                        <i class="bi bi-calendar-check me-2"></i>Xem trước lịch học
+                                        <i class="bi bi-calendar-check mr-2"></i>Xem trước lịch học
                                     </h6>
                                     <p class="mb-0">
                                         <strong>Ngày học:</strong>
                                         @foreach ($selectedDays as $day)
-                                            <span class="badge bg-primary me-1">{{ $availableDays[$day] }}</span>
+                                            <span class="badge bg-primary mr-1">{{ $availableDays[$day] }}</span>
                                         @endforeach
                                     </p>
                                     <p class="mb-0">
@@ -102,10 +102,10 @@
                             <!-- Nút thao tác -->
                             <div class="d-flex justify-content-end gap-2">
                                 <a wire:navigate href="{{ route('schedules.index') }}" class="btn btn-secondary">
-                                    <i class="bi bi-x-circle me-2"></i>Hủy
+                                    <i class="bi bi-x-circle mr-2"></i>Hủy
                                 </a>
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="bi bi-check-circle me-2"></i>Lưu thay đổi
+                                    <i class="bi bi-check-circle mr-2"></i>Lưu thay đổi
                                 </button>
                             </div>
                         </form>

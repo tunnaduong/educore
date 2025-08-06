@@ -6,14 +6,14 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-bell me-2"></i>Thông báo & Nhắc lịch
+                        <i class="bi bi-bell mr-2"></i>Thông báo & Nhắc lịch
                     </h4>
                     <p class="text-muted mb-0">Xem các thông báo và nhắc nhở từ giáo viên</p>
                 </div>
                 <div class="d-flex gap-2">
                     @if ($this->unreadCount > 0)
                         <button wire:click="markAllAsRead" class="btn btn-outline-primary">
-                            <i class="bi bi-check-all me-2"></i>Đánh dấu tất cả đã đọc
+                            <i class="bi bi-check-all mr-2"></i>Đánh dấu tất cả đã đọc
                         </button>
                     @endif
                     <div class="position-relative">
@@ -40,7 +40,7 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Loại thông báo</label>
-                        <select wire:model.live="filterType" class="form-select">
+                        <select wire:model.live="filterType" class="form-control">
                             <option value="">Tất cả</option>
                             <option value="info">Thông tin</option>
                             <option value="warning">Cảnh báo</option>
@@ -51,7 +51,7 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Trạng thái</label>
-                        <select wire:model.live="filterStatus" class="form-select">
+                        <select wire:model.live="filterStatus" class="form-control">
                             <option value="">Tất cả</option>
                             <option value="unread">Chưa đọc</option>
                             <option value="read">Đã đọc</option>
@@ -59,7 +59,7 @@
                     </div>
                     <div class="col-md-2 d-flex align-items-end">
                         <button wire:click="resetFilters" class="btn btn-outline-secondary w-100">
-                            <i class="bi bi-arrow-clockwise me-1"></i>Reset
+                            <i class="bi bi-arrow-clockwise mr-1"></i>Reset
                         </button>
                     </div>
                 </div>
@@ -70,7 +70,7 @@
         <div class="card shadow-sm">
             <div class="card-header bg-light">
                 <h6 class="mb-0">
-                    <i class="bi bi-list-ul me-2"></i>Danh sách thông báo
+                    <i class="bi bi-list-ul mr-2"></i>Danh sách thông báo
                 </h6>
             </div>
             <div class="card-body">
@@ -109,7 +109,7 @@
                                                     ];
                                                 @endphp
                                                 <i
-                                                    class="bi {{ $typeIcons[$notification->type] }} text-{{ $typeColors[$notification->type] }} me-2 mt-1"></i>
+                                                    class="bi {{ $typeIcons[$notification->type] }} text-{{ $typeColors[$notification->type] }} mr-2 mt-1"></i>
                                                 <div>
                                                     <div class="fw-medium {{ $notification->is_read ? '' : 'fw-bold' }}"
                                                         style="cursor: pointer;"
@@ -139,7 +139,7 @@
                                             @if ($notification->classroom)
                                                 <span class="badge bg-secondary">
                                                     <i
-                                                        class="bi bi-diagram-3 me-1"></i>{{ $notification->classroom->name }}
+                                                        class="bi bi-diagram-3 mr-1"></i>{{ $notification->classroom->name }}
                                                 </span>
                                             @else
                                                 <span class="text-muted">-</span>
@@ -148,13 +148,13 @@
                                         <td>
                                             <div>
                                                 <small class="text-muted">
-                                                    <i class="bi bi-clock me-1"></i>
+                                                    <i class="bi bi-clock mr-1"></i>
                                                     {{ $notification->created_at->diffForHumans() }}
                                                 </small>
                                                 @if ($notification->scheduled_at)
                                                     <br>
                                                     <small class="text-info">
-                                                        <i class="bi bi-calendar-event me-1"></i>
+                                                        <i class="bi bi-calendar-event mr-1"></i>
                                                         Lịch: {{ $notification->scheduled_at->format('d/m/Y H:i') }}
                                                     </small>
                                                 @endif
@@ -164,11 +164,11 @@
                                         <td>
                                             @if ($notification->is_read)
                                                 <span class="badge bg-success">
-                                                    <i class="bi bi-check me-1"></i>Đã đọc
+                                                    <i class="bi bi-check mr-1"></i>Đã đọc
                                                 </span>
                                             @else
                                                 <span class="badge bg-warning text-dark">
-                                                    <i class="bi bi-exclamation me-1"></i>Mới
+                                                    <i class="bi bi-exclamation mr-1"></i>Mới
                                                 </span>
                                             @endif
                                         </td>
@@ -176,7 +176,7 @@
                                             @if (!$notification->is_read)
                                                 <button wire:click="markAsRead({{ $notification->id }})"
                                                     class="btn btn-sm btn-outline-success">
-                                                    <i class="bi bi-check me-1"></i>Đánh dấu đã đọc
+                                                    <i class="bi bi-check mr-1"></i>Đánh dấu đã đọc
                                                 </button>
                                             @else
                                                 <span class="text-muted">-</span>
@@ -208,8 +208,8 @@
         <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050;">
             <div class="toast show" role="alert">
                 <div class="toast-header">
-                    <i class="bi bi-check-circle text-success me-2"></i>
-                    <strong class="me-auto">Thành công</strong>
+                    <i class="bi bi-check-circle text-success mr-2"></i>
+                    <strong class="mr-auto">Thành công</strong>
                     <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
                 </div>
                 <div class="toast-body">
@@ -244,7 +244,7 @@
                                 ];
                             @endphp
                             <i
-                                class="bi {{ $typeIcons[$selectedNotification->type] }} text-{{ $typeColors[$selectedNotification->type] }} me-2"></i>
+                                class="bi {{ $typeIcons[$selectedNotification->type] }} text-{{ $typeColors[$selectedNotification->type] }} mr-2"></i>
                             <h5 class="modal-title" id="notificationModalLabel">{{ $selectedNotification->title }}
                             </h5>
                         </div>
@@ -270,19 +270,19 @@
                                         'reminder' => 'Nhắc nhở',
                                     ];
                                 @endphp
-                                <span class="badge bg-{{ $typeColors[$selectedNotification->type] }} ms-2">
+                                <span class="badge bg-{{ $typeColors[$selectedNotification->type] }} ml-2">
                                     {{ $typeLabels[$selectedNotification->type] }}
                                 </span>
                             </div>
                             <div class="col-md-6">
                                 <strong>Trạng thái:</strong>
                                 @if ($selectedNotification->is_read)
-                                    <span class="badge bg-success ms-2">
-                                        <i class="bi bi-check me-1"></i>Đã đọc
+                                    <span class="badge bg-success ml-2">
+                                        <i class="bi bi-check mr-1"></i>Đã đọc
                                     </span>
                                 @else
-                                    <span class="badge bg-warning text-dark ms-2">
-                                        <i class="bi bi-exclamation me-1"></i>Mới
+                                    <span class="badge bg-warning text-dark ml-2">
+                                        <i class="bi bi-exclamation mr-1"></i>Mới
                                     </span>
                                 @endif
                             </div>
@@ -291,8 +291,8 @@
                         @if ($selectedNotification->classroom)
                             <div class="mt-3">
                                 <strong>Lớp học:</strong>
-                                <span class="badge bg-secondary ms-2">
-                                    <i class="bi bi-diagram-3 me-1"></i>{{ $selectedNotification->classroom->name }}
+                                <span class="badge bg-secondary ml-2">
+                                    <i class="bi bi-diagram-3 mr-1"></i>{{ $selectedNotification->classroom->name }}
                                 </span>
                             </div>
                         @endif
@@ -324,7 +324,7 @@
                         @if (!$selectedNotification->is_read)
                             <button type="button" class="btn btn-success"
                                 wire:click="markAsRead({{ $selectedNotification->id }})">
-                                <i class="bi bi-check me-1"></i>Đánh dấu đã đọc
+                                <i class="bi bi-check mr-1"></i>Đánh dấu đã đọc
                             </button>
                         @endif
                         <button type="button" class="btn btn-secondary" wire:click="closeNotification">Đóng</button>

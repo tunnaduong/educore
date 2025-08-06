@@ -4,10 +4,10 @@
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-people-fill me-2"></i>Quản lý người dùng
+                <i class="bi bi-people-fill mr-2"></i>Quản lý người dùng
             </h4>
             <a href="{{ route('users.create') ?? '#' }}" wire:navigate class="btn btn-primary">
-                <i class="bi bi-plus-circle me-2"></i>Thêm người dùng
+                <i class="bi bi-plus-circle mr-2"></i>Thêm người dùng
             </a>
         </div>
 
@@ -25,7 +25,7 @@
                         </div>
                     </div>
                     <div class="col">
-                        <select wire:model.live="filterRole" class="form-select">
+                        <select wire:model.live="filterRole" class="form-control">
                             <option value="">Tất cả vai trò</option>
                             <option value="admin">Quản trị viên</option>
                             <option value="teacher">Giảng viên</option>
@@ -33,7 +33,7 @@
                         </select>
                     </div>
                     <div class="col">
-                        <select wire:model.live="filterStatus" class="form-select">
+                        <select wire:model.live="filterStatus" class="form-control">
                             <option value="">Tất cả trạng thái</option>
                             <option value="active">Hoạt động</option>
                             <option value="inactive">Không hoạt động</option>
@@ -64,7 +64,7 @@
                                     <td class="text-center">{{ $index + 1 }}</td>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <div class="avatar-sm me-3">
+                                            <div class="avatar-sm mr-3">
                                                 <i class="bi bi-person-circle fs-4"></i>
                                             </div>
                                             <div>

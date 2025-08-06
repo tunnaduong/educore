@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Admin\Auth;
+namespace App\Livewire\Auth;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
@@ -11,12 +11,12 @@ class Login extends Component
     public $phone, $password, $remember = false;
 
     protected $messages = [
-        'phone.required'    => 'Vui lòng nhập số điện thoại',
-        'phone.min'         => 'Tối thiểu :min ký tự',
-        'phone.max'         => 'Tối đa :max ký tự',
+        'phone.required' => 'Vui lòng nhập số điện thoại',
+        'phone.min' => 'Tối thiểu :min ký tự',
+        'phone.max' => 'Tối đa :max ký tự',
         'password.required' => 'Vui lòng nhập mật khẩu',
-        'password.min'      => 'Mật khẩu phải có ít nhất :min ký tự',
-        'password.string'   => 'Mật khẩu phải là chuỗi ký tự',
+        'password.min' => 'Mật khẩu phải có ít nhất :min ký tự',
+        'password.string' => 'Mật khẩu phải là chuỗi ký tự',
     ];
 
     public function login()
@@ -53,6 +53,6 @@ class Login extends Component
 
     public function render()
     {
-        return view('admin.auth.login');
+        return view('auth.login');
     }
 }

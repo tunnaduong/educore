@@ -5,10 +5,10 @@
         <div class="mb-4">
             <a href="{{ route('classrooms.index') }}" wire:navigate
                 class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left me-2"></i>Quay lại
+                <i class="bi bi-arrow-left mr-2"></i>Quay lại
             </a>
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-people-fill me-2"></i>Gán học viên cho lớp học
+                <i class="bi bi-people-fill mr-2"></i>Gán học viên cho lớp học
             </h4>
             <p class="text-muted mb-0">{{ $classroom->name }}</p>
         </div>
@@ -27,14 +27,14 @@
                     <div class="card-header bg-light">
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="mb-0 text-primary">
-                                <i class="bi bi-person-plus me-2"></i>Danh sách học viên có sẵn
+                                <i class="bi bi-person-plus mr-2"></i>Danh sách học viên có sẵn
                             </h5>
                             <div class="d-flex gap-2">
                                 <button wire:click="selectAll" class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-check-all me-1"></i>Chọn tất cả
+                                    <i class="bi bi-check-all mr-1"></i>Chọn tất cả
                                 </button>
                                 <button wire:click="deselectAll" class="btn btn-sm btn-outline-secondary">
-                                    <i class="bi bi-x-circle me-1"></i>Bỏ chọn tất cả
+                                    <i class="bi bi-x-circle mr-1"></i>Bỏ chọn tất cả
                                 </button>
                             </div>
                         </div>
@@ -87,7 +87,7 @@
                                             </td>
                                             <td>
                                                 <div class="d-flex align-items-center">
-                                                    <div class="avatar-sm me-3">
+                                                    <div class="avatar-sm mr-3">
                                                         <i class="bi bi-person-circle fs-4 text-primary"></i>
                                                     </div>
                                                     <div>
@@ -148,7 +148,7 @@
                 <div class="card shadow-sm">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-people me-2"></i>Tổng quan học viên
+                            <i class="bi bi-people mr-2"></i>Tổng quan học viên
                         </h5>
                     </div>
                     <div class="card-body">
@@ -163,13 +163,13 @@
 
                         @if ($enrolledStudentsToKeep->count() > 0)
                             <h6 class="text-success mb-3">
-                                <i class="bi bi-check-circle me-2"></i>Học viên đã gán
+                                <i class="bi bi-check-circle mr-2"></i>Học viên đã gán
                                 ({{ $enrolledStudentsToKeep->count() }})
                             </h6>
                             <div class="list-group list-group-flush mb-4">
                                 @foreach ($enrolledStudentsToKeep as $student)
                                     <div class="list-group-item d-flex align-items-center px-0">
-                                        <div class="avatar-sm me-3">
+                                        <div class="avatar-sm mr-3">
                                             <i class="bi bi-person-circle fs-4 text-success"></i>
                                         </div>
                                         <div class="flex-grow-1">
@@ -194,13 +194,13 @@
 
                         @if ($selectedStudentsNotEnrolled->count() > 0)
                             <h6 class="text-primary mb-3">
-                                <i class="bi bi-plus-circle me-2"></i>Học viên sẽ thêm mới
+                                <i class="bi bi-plus-circle mr-2"></i>Học viên sẽ thêm mới
                                 ({{ $selectedStudentsNotEnrolled->count() }})
                             </h6>
                             <div class="list-group list-group-flush mb-4">
                                 @foreach ($selectedStudentsNotEnrolled as $student)
                                     <div class="list-group-item d-flex align-items-center px-0">
-                                        <div class="avatar-sm me-3">
+                                        <div class="avatar-sm mr-3">
                                             <i class="bi bi-person-circle fs-4 text-primary"></i>
                                         </div>
                                         <div class="flex-grow-1">
@@ -224,13 +224,13 @@
 
                         @if ($enrolledStudentsToRemove->count() > 0)
                             <h6 class="text-danger mb-3">
-                                <i class="bi bi-trash me-2"></i>Học viên sẽ bị xóa
+                                <i class="bi bi-trash mr-2"></i>Học viên sẽ bị xóa
                                 ({{ $enrolledStudentsToRemove->count() }})
                             </h6>
                             <div class="list-group list-group-flush mb-4">
                                 @foreach ($enrolledStudentsToRemove as $student)
                                     <div class="list-group-item d-flex align-items-center px-0">
-                                        <div class="avatar-sm me-3">
+                                        <div class="avatar-sm mr-3">
                                             <i class="bi bi-person-circle fs-4 text-danger"></i>
                                         </div>
                                         <div class="flex-grow-1">
@@ -260,7 +260,7 @@
                         <div class="mt-4">
                             <button wire:click="assignStudents" class="btn btn-primary w-100"
                                 {{ empty($selectedStudents) && $enrolledStudents->count() == 0 ? 'disabled' : '' }}>
-                                <i class="bi bi-check-circle me-2"></i>
+                                <i class="bi bi-check-circle mr-2"></i>
                                 Cập nhật danh sách học viên
                             </button>
                         </div>

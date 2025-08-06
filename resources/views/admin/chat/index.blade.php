@@ -6,7 +6,7 @@
                 <div class="card shadow-sm">
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0">
-                            <i class="bi bi-chat-dots-fill me-2"></i>
+                            <i class="bi bi-chat-dots-fill mr-2"></i>
                             Chat & Tương tác
                         </h5>
                     </div>
@@ -27,13 +27,13 @@
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link @if ($activeTab === 'users') active @endif"
                                     wire:click="setActiveTab('users')" id="users-tab" type="button" role="tab">
-                                    <i class="bi bi-people-fill me-1"></i>Người dùng
+                                    <i class="bi bi-people-fill mr-1"></i>Người dùng
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link @if ($activeTab === 'classes') active @endif"
                                     wire:click="setActiveTab('classes')" id="classes-tab" type="button" role="tab">
-                                    <i class="bi bi-diagram-3-fill me-1"></i>Lớp học
+                                    <i class="bi bi-diagram-3-fill mr-1"></i>Lớp học
                                 </button>
                             </li>
                         </ul>
@@ -54,7 +54,7 @@
                                                         class="text-white fw-bold">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
                                                 </div>
                                             </div>
-                                            <div class="flex-grow-1 ms-3">
+                                            <div class="flex-grow-1 ml-3">
                                                 <h6 class="mb-0">{{ $user->name }}</h6>
                                                 <small>{{ $user->email }}</small>
                                             </div>
@@ -91,10 +91,10 @@
                                                     </div>
                                                 @endif
                                             </div>
-                                            <div class="flex-grow-1 ms-3">
+                                            <div class="flex-grow-1 ml-3">
                                                 <h6 class="mb-0">{{ $class->name }}</h6>
                                             </div>
-                                            <span class="badge bg-danger rounded-pill ms-auto" style="min-width: 28px;">
+                                            <span class="badge bg-danger rounded-pill ml-auto" style="min-width: 28px;">
                                                 {{ $class->unread_messages_count ?? 0 }}
                                             </span>
                                         </button>
@@ -120,7 +120,7 @@
                         <div class="card-header bg-light d-flex align-items-center justify-content-between">
                             <div class="d-flex align-items-center">
                                 @if ($selectedUser)
-                                    <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center me-3"
+                                    <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center mr-3"
                                         style="width: 40px; height: 40px;">
                                         <span
                                             class="text-white fw-bold">{{ strtoupper(substr($selectedUser->name, 0, 1)) }}</span>
@@ -130,7 +130,7 @@
                                         <small class="text-muted">{{ $selectedUser->email }}</small>
                                     </div>
                                 @elseif($selectedClass)
-                                    <div class="rounded-circle bg-success d-flex align-items-center justify-content-center me-3"
+                                    <div class="rounded-circle bg-success d-flex align-items-center justify-content-center mr-3"
                                         style="width: 40px; height: 40px;">
                                         <i class="bi bi-diagram-3-fill text-white"></i>
                                     </div>
@@ -161,7 +161,7 @@
                                                         alt="Avatar" class="rounded-circle"
                                                         style="width: 35px; height: 35px; object-fit: cover;">
                                                 @else
-                                                    <div class="rounded-circle d-flex align-items-center justify-content-center {{ $isMine ? 'ms-3' : 'me-3' }}"
+                                                    <div class="rounded-circle d-flex align-items-center justify-content-center {{ $isMine ? 'ms-3' : 'mr-3' }}"
                                                         style="width: 35px; height: 35px; background-color: {{ $isMine ? '#0d6efd' : '#6c757d' }};">
                                                         <span
                                                             class="text-white fw-bold">{{ strtoupper(substr($sender->name, 0, 1)) }}</span>
@@ -183,7 +183,7 @@
                                                                 <a href="{{ Storage::url($message->attachment) }}"
                                                                     target="_blank"
                                                                     class="btn btn-sm {{ $isMine ? 'btn-light' : 'btn-outline-light' }}">
-                                                                    <i class="bi bi-paperclip me-1"></i>
+                                                                    <i class="bi bi-paperclip mr-1"></i>
                                                                     Tệp đính kèm
                                                                 </a>
                                                             </div>
@@ -343,7 +343,7 @@
                         ' border-0 position-fixed bottom-0 end-0 m-3';
                     toast.style.zIndex = 9999;
                     toast.innerHTML =
-                        `<div class="d-flex"><div class="toast-body">${message}</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div>`;
+                        `<div class="d-flex"><div class="toast-body">${message}</div><button type="button" class="btn-close btn-close-white mr-2 m-auto" data-bs-dismiss="toast"></button></div>`;
                     document.body.appendChild(toast);
                     var bsToast = new bootstrap.Toast(toast, {
                         delay: 2500

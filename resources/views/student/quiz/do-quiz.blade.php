@@ -9,7 +9,7 @@
                         <h3 class="mb-3">403 | Không thể truy cập bài kiểm tra</h3>
                         <p class="lead">{{ $accessDenied }}</p>
                         <a href="{{ route('student.quizzes.index') }}" wire:navigate class="btn btn-primary mt-3">
-                            <i class="bi bi-arrow-left me-1"></i>Quay lại danh sách bài kiểm tra
+                            <i class="bi bi-arrow-left mr-1"></i>Quay lại danh sách bài kiểm tra
                         </a>
                     </div>
                 </div>
@@ -23,7 +23,7 @@
                     <div class="card shadow-sm">
                         <div class="card-header bg-success text-white">
                             <h4 class="mb-0">
-                                <i class="bi bi-check-circle me-2"></i>Hoàn thành bài kiểm tra
+                                <i class="bi bi-check-circle mr-2"></i>Hoàn thành bài kiểm tra
                             </h4>
                         </div>
                         <div class="card-body text-center py-5">
@@ -62,7 +62,7 @@
 
                             <div class="mt-4">
                                 <a href="{{ route('student.quizzes.index') }}" wire:navigate class="btn btn-primary">
-                                    <i class="bi bi-house me-2"></i>Về trang chủ
+                                    <i class="bi bi-house mr-2"></i>Về trang chủ
                                 </a>
                             </div>
                         </div>
@@ -86,7 +86,7 @@
                                 <div class="col-md-6 text-md-end">
                                     @if ($timeRemaining)
                                         <div class="d-inline-block bg-warning text-dark px-3 py-2 rounded">
-                                            <i class="bi bi-clock me-2"></i>
+                                            <i class="bi bi-clock mr-2"></i>
                                             <span id="timer">{{ gmdate('H:i:s', $timeRemaining) }}</span>
                                         </div>
                                     @endif
@@ -103,7 +103,7 @@
                     <div class="card shadow-sm mb-4">
                         <div class="card-header bg-light">
                             <h6 class="mb-0">
-                                <i class="bi bi-list-ul me-2"></i>Danh sách câu hỏi
+                                <i class="bi bi-list-ul mr-2"></i>Danh sách câu hỏi
                             </h6>
                         </div>
                         <div class="card-body">
@@ -130,7 +130,7 @@
                             <div class="card-header bg-light">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h6 class="mb-0">
-                                        <i class="bi bi-question-circle me-2"></i>
+                                        <i class="bi bi-question-circle mr-2"></i>
                                         Câu hỏi {{ $currentQuestionIndex + 1 }} / {{ count($questions) }}
                                     </h6>
                                     <span class="badge bg-primary">{{ ucfirst($currentQuestion['type']) }}</span>
@@ -180,11 +180,11 @@
 
                                         @case('drag_drop')
                                             <div class="alert alert-info">
-                                                <i class="bi bi-info-circle me-2"></i>
+                                                <i class="bi bi-info-circle mr-2"></i>
                                                 Kéo thả các đáp án vào vị trí đúng
                                             </div>
                                             <div class="form-group">
-                                                <select class="form-select" wire:model="answers.{{ $currentQuestionIndex }}">
+                                                <select class="form-control" wire:model="answers.{{ $currentQuestionIndex }}">
                                                     <option value="">Chọn đáp án...</option>
                                                     @foreach ($currentQuestion['options'] as $option)
                                                         <option value="{{ $option }}">{{ $option }}</option>
@@ -206,17 +206,17 @@
                                 <div class="d-flex justify-content-between">
                                     <button class="btn btn-outline-secondary" wire:click="previousQuestion"
                                         {{ $currentQuestionIndex === 0 ? 'disabled' : '' }}>
-                                        <i class="bi bi-arrow-left me-2"></i>Câu trước
+                                        <i class="bi bi-arrow-left mr-2"></i>Câu trước
                                     </button>
 
                                     @if ($currentQuestionIndex === count($questions) - 1)
                                         <button class="btn btn-success" wire:click="submitQuiz"
                                             onclick="return confirm('Bạn có chắc chắn muốn nộp bài?')">
-                                            <i class="bi bi-check-circle me-2"></i>Nộp bài
+                                            <i class="bi bi-check-circle mr-2"></i>Nộp bài
                                         </button>
                                     @else
                                         <button class="btn btn-primary" wire:click="nextQuestion">
-                                            Câu tiếp<i class="bi bi-arrow-right ms-2"></i>
+                                            Câu tiếp<i class="bi bi-arrow-right ml-2"></i>
                                         </button>
                                     @endif
                                 </div>

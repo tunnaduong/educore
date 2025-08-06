@@ -5,13 +5,13 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-calendar3 me-2"></i>Lịch giảng dạy
+                        <i class="bi bi-calendar3 mr-2"></i>Lịch giảng dạy
                     </h4>
                     <p class="text-muted mb-0">Xem thời khóa biểu các buổi giảng dạy, bài tập, kiểm tra</p>
                 </div>
                 <div>
                     <button type="button" class="btn btn-primary" wire:click="$dispatch('openCreateEventModal')">
-                        <i class="bi bi-plus-circle me-2"></i>Thêm sự kiện
+                        <i class="bi bi-plus-circle mr-2"></i>Thêm sự kiện
                     </button>
                 </div>
             </div>
@@ -118,17 +118,17 @@
                             var typeClass = '';
 
                             if (ev.extendedProps && ev.extendedProps.type === 'schedule') {
-                                typeIcon = '<i class="bi bi-calendar3 me-2"></i>';
+                                typeIcon = '<i class="bi bi-calendar3 mr-2"></i>';
                                 typeClass = 'text-primary';
                             } else if (ev.extendedProps && ev.extendedProps.type === 'lesson') {
-                                typeIcon = '<i class="bi bi-book me-2"></i>';
+                                typeIcon = '<i class="bi bi-book mr-2"></i>';
                                 typeClass = 'text-primary';
                             } else if (ev.extendedProps && ev.extendedProps.type ===
                                 'assignment') {
-                                typeIcon = '<i class="bi bi-journal-text me-2"></i>';
+                                typeIcon = '<i class="bi bi-journal-text mr-2"></i>';
                                 typeClass = 'text-warning';
                             } else if (ev.extendedProps && ev.extendedProps.type === 'quiz') {
-                                typeIcon = '<i class="bi bi-patch-question me-2"></i>';
+                                typeIcon = '<i class="bi bi-patch-question mr-2"></i>';
                                 typeClass = 'text-success';
                             }
 

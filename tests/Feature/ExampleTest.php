@@ -5,7 +5,7 @@ namespace Tests\Feature;
 // use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Livewire\Livewire;
-use App\Livewire\Admin\Auth\Login;
+use App\Livewire\Auth\Login;
 
 class ExampleTest extends TestCase
 {

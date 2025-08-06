@@ -5,13 +5,13 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h4 class="mb-0 text-primary fs-4">
-                    <i class="bi bi-calendar-check me-2"></i>Tổng quan điểm danh
+                    <i class="bi bi-calendar-check mr-2"></i>Tổng quan điểm danh
                 </h4>
                 <p class="text-muted mb-0">Quản lý và theo dõi điểm danh học viên</p>
             </div>
             <div class="d-flex gap-2">
                 <a href="{{ route('classrooms.index') }}" wire:navigate class="btn btn-outline-primary">
-                    <i class="bi bi-mortarboard me-2"></i>Quản lý lớp học
+                    <i class="bi bi-mortarboard mr-2"></i>Quản lý lớp học
                 </a>
             </div>
         </div>
@@ -22,17 +22,17 @@
                 <div class="row align-items-center">
                     <div class="col-md-6">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-funnel me-2"></i>Lọc theo tháng
+                            <i class="bi bi-funnel mr-2"></i>Lọc theo tháng
                         </h5>
                     </div>
                     <div class="col-md-6">
                         <div class="d-flex gap-2 justify-content-end">
-                            <select wire:model.live="selectedMonth" class="form-select" style="max-width: 150px;">
+                            <select wire:model.live="selectedMonth" class="form-control" style="max-width: 150px;">
                                 @for ($month = 1; $month <= 12; $month++)
                                     <option value="{{ $month }}">{{ $this->getMonthName($month) }}</option>
                                 @endfor
                             </select>
-                            <select wire:model.live="selectedYear" class="form-select" style="max-width: 120px;">
+                            <select wire:model.live="selectedYear" class="form-control" style="max-width: 120px;">
                                 @for ($year = date('Y') - 2; $year <= date('Y') + 1; $year++)
                                     <option value="{{ $year }}">{{ $year }}</option>
                                 @endfor
@@ -148,7 +148,7 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-trophy me-2"></i>Top 5 lớp học có điểm danh nhiều nhất
+                            <i class="bi bi-trophy mr-2"></i>Top 5 lớp học có điểm danh nhiều nhất
                         </h5>
                     </div>
                     <div class="card-body">
@@ -169,7 +169,7 @@
                                             <tr>
                                                 <td>
                                                     <div class="d-flex align-items-center">
-                                                        <div class="avatar-sm me-3">
+                                                        <div class="avatar-sm mr-3">
                                                             <i class="bi bi-mortarboard fs-4 text-primary"></i>
                                                         </div>
                                                         <div>
@@ -239,7 +239,7 @@
                 <div class="card shadow-sm">
                     <div class="card-header bg-light d-flex justify-content-between align-items-center">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-clock-history me-2"></i>Điểm danh gần đây
+                            <i class="bi bi-clock-history mr-2"></i>Điểm danh gần đây
                         </h5>
                         <a href="{{ route('attendances.history') }}" wire:navigate
                             class="btn btn-sm btn-outline-secondary float-end">
@@ -310,14 +310,14 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-star me-2"></i>Top 5 học viên xuất sắc
+                            <i class="bi bi-star mr-2"></i>Top 5 học viên xuất sắc
                         </h5>
                     </div>
                     <div class="card-body">
                         @if ($topStudents->count() > 0)
                             @foreach ($topStudents as $index => $studentData)
                                 <div class="d-flex align-items-center mb-3">
-                                    <div class="me-3">
+                                    <div class="mr-3">
                                         @if ($loop->index + 1 < 4)
                                             <span class="badge bg-warning">{{ $loop->index + 1 }}</span>
                                         @else
@@ -348,7 +348,7 @@
                 <div class="card shadow-sm">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-lightning me-2"></i>Hành động nhanh
+                            <i class="bi bi-lightning mr-2"></i>Hành động nhanh
                         </h5>
                     </div>
                     <div class="card-body">
@@ -356,13 +356,13 @@
                             <div class="col-md-6 mb-3">
                                 <a href="{{ route('classrooms.index') }}" wire:navigate
                                     class="btn btn-primary w-100">
-                                    <i class="bi bi-calendar-check me-2"></i>Điểm danh theo lớp
+                                    <i class="bi bi-calendar-check mr-2"></i>Điểm danh theo lớp
                                 </a>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <a href="{{ route('classrooms.create') }}" wire:navigate
                                     class="btn btn-outline-primary w-100">
-                                    <i class="bi bi-plus-circle me-2"></i>Tạo lớp học mới
+                                    <i class="bi bi-plus-circle mr-2"></i>Tạo lớp học mới
                                 </a>
                             </div>
                         </div>
