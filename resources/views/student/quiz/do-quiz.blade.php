@@ -1,4 +1,5 @@
-<x-layouts.dash-student>
+<x-layouts.dash-student active="quizzes">
+    @include('components.language')
     @if ($accessDenied)
         <div class="container-fluid">
             <div class="row justify-content-center align-items-center" style="min-height: 60vh;">

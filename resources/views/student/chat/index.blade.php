@@ -1,4 +1,5 @@
 <x-layouts.dash-student active="chat">
+    @include('components.language')
     <div class="container-fluid py-2">
         <div class="row">
             <!-- Sidebar - Danh sách giáo viên và lớp học -->

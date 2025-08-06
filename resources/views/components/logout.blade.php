@@ -1,5 +1,5 @@
-<div class="dropdown ms-3 position-relative" x-data="{ open: false }">
-    <button class="btn btn-link fw-bold text-white text-decoration-none dropdown-toggle" @click="open = !open"
+<div class="dropdown position-relative" x-data="{ open: false }">
+    <button class="btn btn-link font-weight-bold text-muted text-decoration-none dropdown-toggle" @click="open = !open"
         @click.away="open = false" type="button">
         {{ auth()->user()->name }}
         <i class="bi bi-person-circle fs-5 ms-2"></i>

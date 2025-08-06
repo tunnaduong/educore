@@ -1,5 +1,6 @@
 <x-layouts.dash-student active="schedules">
-    <div class="container-fluid">
+    @include('components.language')
+    <div class="row">
         <!-- Header -->
         <div class="mb-4">
             <div class="d-flex justify-content-between align-items-center">
@@ -13,9 +14,18 @@
         </div>
         <div class="mb-3">
             <div class="d-flex align-items-center gap-4 flex-wrap">
-                <div><span style="display:inline-block;width:18px;height:18px;background:#0d6efd;border-radius:4px;margin-right:6px;"></span> <b>Lịch học</b></div>
-                <div><span style="display:inline-block;width:18px;height:18px;background:#fd7e14;border-radius:4px;margin-right:6px;"></span> <b>Bài tập</b></div>
-                <div><span style="display:inline-block;width:18px;height:18px;background:#20c997;border-radius:4px;margin-right:6px;"></span> <b>Kiểm tra</b></div>
+                <div><span
+                        style="display:inline-block;width:18px;height:18px;background:#0d6efd;border-radius:4px;margin-right:6px;"></span>
+                    <b>Lịch học</b>
+                </div>
+                <div><span
+                        style="display:inline-block;width:18px;height:18px;background:#fd7e14;border-radius:4px;margin-right:6px;"></span>
+                    <b>Bài tập</b>
+                </div>
+                <div><span
+                        style="display:inline-block;width:18px;height:18px;background:#20c997;border-radius:4px;margin-right:6px;"></span>
+                    <b>Kiểm tra</b>
+                </div>
             </div>
         </div>
         <!-- Calendar -->
@@ -28,14 +38,22 @@
     @push('styles')
         <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet" />
         <style>
-            .fc th, .fc a, .fc-daygrid-day-number, .fc-col-header-cell-cushion {
+            .fc th,
+            .fc a,
+            .fc-daygrid-day-number,
+            .fc-col-header-cell-cushion {
                 text-decoration: none !important;
             }
         </style>
         <!-- Modal CSS -->
         <style>
-            .modal-backdrop { z-index: 1040 !important; }
-            .modal { z-index: 1050 !important; }
+            .modal-backdrop {
+                z-index: 1040 !important;
+            }
+
+            .modal {
+                z-index: 1050 !important;
+            }
         </style>
     @endpush
     @push('scripts')
@@ -49,13 +67,17 @@
                     initialView: 'listWeek',
                     locale: 'vi',
                     buttonText: {
-                        today:    'Hôm nay',
-                        month:    'Tháng',
-                        week:     'Tuần',
-                        day:      'Ngày',
-                        list:     'Danh sách'
+                        today: 'Hôm nay',
+                        month: 'Tháng',
+                        week: 'Tuần',
+                        day: 'Ngày',
+                        list: 'Danh sách'
                     },
-                    titleFormat: { year: 'numeric', month: 'long', day: 'numeric' },
+                    titleFormat: {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    },
                     allDayText: 'Cả ngày',
                     noEventsText: 'Không có sự kiện để hiển thị',
                     headerToolbar: {
@@ -72,18 +94,21 @@
                             return ev.start.startsWith(clickedDate);
                         });
                         var html = '';
-                        if(dayEvents.length === 0) {
+                        if (dayEvents.length === 0) {
                             html = '<p class="text-center">Không có sự kiện nào trong ngày này.</p>';
                         } else {
                             html = '<ul class="list-group">';
                             dayEvents.forEach(function(ev) {
-                                html += '<li class="list-group-item">'
-                                    + '<span style="display:inline-block;width:12px;height:12px;background:' + ev.backgroundColor + ';border-radius:50%;margin-right:8px;"></span>'
-                                    + '<b>' + ev.title + '</b>';
-                                if(ev.start && ev.end) {
+                                html += '<li class="list-group-item">' +
+                                    '<span style="display:inline-block;width:12px;height:12px;background:' +
+                                    ev.backgroundColor +
+                                    ';border-radius:50%;margin-right:8px;"></span>' +
+                                    '<b>' + ev.title + '</b>';
+                                if (ev.start && ev.end) {
                                     var start = ev.start.substring(11, 16);
                                     var end = ev.end.substring(11, 16);
-                                    html += ' <span class="text-muted">(' + start + ' - ' + end + ')</span>';
+                                    html += ' <span class="text-muted">(' + start + ' - ' + end +
+                                        ')</span>';
                                 }
                                 html += '</li>';
                             });

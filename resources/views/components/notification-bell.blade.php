@@ -1,6 +1,6 @@
 <div>
     <div class="dropdown" x-data="{ open: false }">
-        <button class="btn btn-link text-white text-decoration-none position-relative" @click="open = !open"
+        <button class="btn btn-link text-muted text-decoration-none position-relative" @click="open = !open"
             @click.away="open = false" type="button">
             <i class="bi bi-bell fs-5"></i>
             @if ($unreadCount > 0)
@@ -13,9 +13,11 @@
 
         <div class="dropdown-menu dropdown-menu-start" :class="{ 'show': open }"
             style="width: 350px; max-height: 400px; overflow-y: auto; z-index: 1050;" x-show="open"
-            x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95"
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="transform opacity-0 scale-95"
             x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75"
-            x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95">
+            x-transition:leave-start="transform opacity-100 scale-100"
+            x-transition:leave-end="transform opacity-0 scale-95">
             <div class="dropdown-header d-flex justify-content-between align-items-center">
                 <h6 class="mb-0">Thông báo</h6>
                 @if ($unreadCount > 0)
@@ -56,8 +58,7 @@
                                     {{ Str::limit($notification->message, 45) }}
                                 </p>
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <small
-                                        class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                                    <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
                                     @if (!$notification->is_read)
                                         <button wire:click="markAsRead({{ $notification->id }})"
                                             class="btn btn-sm btn-outline-primary" style="font-size: 0.7rem;">

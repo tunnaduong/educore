@@ -1,5 +1,6 @@
-<x-layouts.dash-student active="tests">
-    <div class="container-fluid">
+<x-layouts.dash-student active="quizzes">
+    @include('components.language')
+    <div class="row">
         <!-- Header -->
         <div class="mb-4">
             <div class="d-flex justify-content-between align-items-center">

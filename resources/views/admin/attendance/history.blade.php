@@ -1,4 +1,5 @@
 <x-layouts.dash-admin active="attendances">
+    @include('components.language')
     <div class="container-fluid">
         <div class="mb-4">
             <a href="{{ route('attendances.overview') }}" wire:navigate class="btn btn-light mb-2">
@@ -60,5 +61,6 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </x-layouts.dash-admin>
