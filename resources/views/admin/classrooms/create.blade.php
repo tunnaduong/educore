@@ -123,15 +123,27 @@
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="mb-3">
-                                <label for="time" class="form-label">Giờ học <span
-                                        class="text-danger">*</span></label>
-                                <input wire:model="time" type="text"
-                                    class="form-control @error('time') is-invalid @enderror" id="time"
-                                    placeholder="Ví dụ: 19:15 - 20:45">
-                                @error('time')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                            
+                            <!-- Thời gian học -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="startTime" class="form-label">Giờ bắt đầu <span
+                                            class="text-danger">*</span></label>
+                                    <input type="time" wire:model="startTime"
+                                        class="form-control @error('startTime') is-invalid @enderror" id="startTime">
+                                    @error('startTime')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="endTime" class="form-label">Giờ kết thúc <span
+                                            class="text-danger">*</span></label>
+                                    <input type="time" wire:model="endTime"
+                                        class="form-control @error('endTime') is-invalid @enderror" id="endTime">
+                                    @error('endTime')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label for="notes" class="form-label">Mô tả</label>
