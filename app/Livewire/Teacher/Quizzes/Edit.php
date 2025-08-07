@@ -22,6 +22,8 @@ class Edit extends Component
     public $questions = [];
     public $showQuestionForm = false;
     public $editingQuestionIndex = null;
+    public $minAssignedDate;
+    public $oldDeadline;
 
     protected $rules = [
         'title' => 'required|string|max:255',
@@ -31,10 +33,7 @@ class Edit extends Component
         'time_limit' => 'nullable|integer|min:1|max:480',
         'questions' => 'required|array|min:1',
         'questions.*.question' => 'required|string|max:500',
-        'questions.*.type' => 'required|in:multiple_choice,true_false,essay',
         'questions.*.score' => 'required|integer|min:1|max:10',
-        'questions.*.options' => 'required_if:questions.*.type,multiple_choice|array|min:2',
-        'questions.*.correct_answer' => 'required_if:questions.*.type,multiple_choice,true_false|string',
     ];
 
     protected $messages = [
@@ -46,9 +45,10 @@ class Edit extends Component
         'time_limit.max' => 'Thời gian làm bài tối đa là 480 phút (8 giờ).',
     ];
 
-    public function mount($quizId)
+    public function mount(Quiz $quiz)
     {
-        $this->quiz = Quiz::findOrFail($quizId);
+        $this->minAssignedDate = now()->format('Y-m-d\TH:i');
+        $this->quiz = $quiz;
         
         // Kiểm tra quyền chỉnh sửa
         $teacherClassIds = Auth::user()->teachingClassrooms->pluck('id');
@@ -61,7 +61,9 @@ class Edit extends Component
         $this->title = $this->quiz->title;
         $this->description = $this->quiz->description;
         $this->class_id = $this->quiz->class_id;
-        $this->deadline = $this->quiz->deadline ? $this->quiz->deadline->format('Y-m-d\TH:i') : '';
+        $this->deadline = $this->quiz->deadline ? $this->quiz->deadline->format('Y-m-d\TH:i') : null;
+        $this->oldDeadline = $this->quiz->deadline ? $this->quiz->deadline->format('Y-m-d\TH:i') : null;
+        $this->assigned_date = $this->quiz->assigned_date ? $this->quiz->assigned_date->format('Y-m-d\TH:i') : null;
         $this->time_limit = $this->quiz->time_limit;
         $this->questions = $this->quiz->questions ?? [];
     }
@@ -70,12 +72,12 @@ class Edit extends Component
     {
         $this->questions[] = [
             'question' => '',
-            'type' => 'multiple_choice',
             'score' => 1,
             'options' => ['', '', '', ''],
             'correct_answer' => '',
             'explanation' => '',
         ];
+        $this->editingQuestionIndex = count($this->questions) - 1;
         $this->showQuestionForm = true;
     }
 
@@ -108,11 +110,14 @@ class Edit extends Component
 
     public function updatedQuestions($value, $key)
     {
-        // Reset correct_answer when question type changes
-        if (str_contains($key, 'type')) {
+        // Reset correct_answer khi thay đổi options
+        if (str_contains($key, 'options')) {
             $parts = explode('.', $key);
             $questionIndex = $parts[0];
-            $this->questions[$questionIndex]['correct_answer'] = '';
+            $optionIndex = $parts[2] ?? null;
+            if ($optionIndex !== null) {
+                $this->questions[$questionIndex]['correct_answer'] = '';
+            }
         }
     }
 
@@ -120,10 +125,7 @@ class Edit extends Component
     {
         $this->validate([
             'questions.*.question' => 'required|string|max:500',
-            'questions.*.type' => 'required|in:multiple_choice,true_false,essay',
             'questions.*.score' => 'required|integer|min:1|max:10',
-            'questions.*.options' => 'required_if:questions.*.type,multiple_choice|array|min:2',
-            'questions.*.correct_answer' => 'required_if:questions.*.type,multiple_choice,true_false|string',
         ]);
 
         $this->showQuestionForm = false;
@@ -132,7 +134,11 @@ class Edit extends Component
 
     public function save()
     {
-        $this->validate();
+        $this->validate([
+            'deadline' => 'required|date|after_or_equal:' . $this->oldDeadline,
+        ], [
+            'deadline.after_or_equal' => 'Hạn nộp mới phải sau hoặc bằng hạn nộp cũ.',
+        ]);
 
         // Kiểm tra xem lớp học có thuộc giáo viên không
         $teacherClassIds = Auth::user()->teachingClassrooms->pluck('id');

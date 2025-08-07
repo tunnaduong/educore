@@ -21,9 +21,9 @@ class Results extends Component
         'filterScore' => ['except' => ''],
     ];
 
-    public function mount($quizId)
+    public function mount(Quiz $quiz)
     {
-        $this->quiz = Quiz::with(['classroom'])->findOrFail($quizId);
+        $this->quiz = $quiz->load(['classroom']);
         
         // Kiểm tra quyền xem
         $teacherClassIds = Auth::user()->teachingClassrooms->pluck('id');
