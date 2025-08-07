@@ -40,17 +40,25 @@ class StudentStats extends Component
                 $q->where('name', $this->filterClass);
             });
         }
-        $students = $query->get();
+        $students = $query->with('enrolledClassrooms')->get();
         $this->students = $students->map(function ($student) {
-            $totalPaid = Payment::where('user_id', $student->id)->where('status', 'paid')->sum('amount');
-            $required = 5000000; // Giả sử học phí chuẩn là 5 triệu
-            $status = $totalPaid >= $required ? 'paid' : ($totalPaid > 0 ? 'partial' : 'unpaid');
+            $classrooms = $student->enrolledClassrooms->map(function ($class) use ($student) {
+                $totalPaid = Payment::where('user_id', $student->id)
+                    ->where('class_id', $class->id)
+                    ->where('status', 'paid')
+                    ->sum('amount');
+                $required = 5000000; // Giả sử học phí chuẩn là 5 triệu
+                $status = $totalPaid >= $required ? 'paid' : ($totalPaid > 0 ? 'partial' : 'unpaid');
+                return [
+                    'class_id' => $class->id,
+                    'class_name' => $class->name,
+                    'status' => $status,
+                ];
+            });
             return [
                 'id' => $student->id,
                 'name' => $student->name,
-                'class' => optional($student->enrolledClassrooms->first())->name,
-                'course' => '',
-                'status' => $status,
+                'classes' => $classrooms,
             ];
         });
     }

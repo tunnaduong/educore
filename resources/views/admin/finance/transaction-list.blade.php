@@ -26,7 +26,12 @@
                                 @endif
                             </td>
                             <td>{{ $tran['user_code'] }}</td>
-                            <td>{{ $tran['item'] }}</td>
+                            <td>
+                                @php
+                                    $typeMap = ['tuition' => 'Học phí', 'material' => 'Tài liệu', 'other' => 'Khác'];
+                                @endphp
+                                {{ $typeMap[$tran['item']] ?? $tran['item'] }}
+                            </td>
                             <td>{{ number_format($tran['amount']) }}₫</td>
                             <td>{{ $tran['created_at'] }}</td>
                             <td>{{ $tran['operator'] }}</td>

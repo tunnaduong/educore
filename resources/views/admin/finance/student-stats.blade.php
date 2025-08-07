@@ -4,8 +4,9 @@
             <label>Lọc theo lớp</label>
             <select class="form-control" wire:model="filterClass">
                 <option value="">Tất cả</option>
-                <option value="Lớp 1">Lớp 1</option>
-                <option value="Lớp 2">Lớp 2</option>
+                @foreach ($students->flatMap(fn($s) => $s['classes'])->unique('class_id') as $class)
+                    <option value="{{ $class['class_name'] }}">{{ $class['class_name'] }}</option>
+                @endforeach
             </select>
         </div>
         <div class="col-md-3">
@@ -25,7 +26,7 @@
                     <tr>
                         <th>#</th>
                         <th>Họ tên</th>
-                        <th>Lớp</th>
+                        <th>Lớp tham gia</th>
                         <th>Trạng thái học phí</th>
                         <th>Thao tác</th>
                     </tr>
@@ -35,15 +36,24 @@
                         <tr>
                             <td>{{ $student['id'] }}</td>
                             <td>{{ $student['name'] }}</td>
-                            <td>{{ $student['class'] }}</td>
                             <td>
-                                @if ($student['status'] === 'paid')
-                                    <span class="badge badge-success">✅ Đã đóng đủ</span>
-                                @elseif($student['status'] === 'partial')
-                                    <span class="badge badge-warning">⚠️ Còn thiếu</span>
-                                @else
-                                    <span class="badge badge-danger">❌ Chưa đóng</span>
-                                @endif
+                                @foreach ($student['classes'] as $class)
+                                    <div>{{ $class['class_name'] }}</div>
+                                @endforeach
+                            </td>
+                            <td>
+                                @foreach ($student['classes'] as $class)
+                                    @if ($class['status'] === 'paid')
+                                        <span class="badge badge-success">✅ {{ $class['class_name'] }}: Đã đóng
+                                            đủ</span><br>
+                                    @elseif ($class['status'] === 'partial')
+                                        <span class="badge badge-warning">⚠️ {{ $class['class_name'] }}: Còn
+                                            thiếu</span><br>
+                                    @else
+                                        <span class="badge badge-danger">❌ {{ $class['class_name'] }}: Chưa
+                                            đóng</span><br>
+                                    @endif
+                                @endforeach
                             </td>
                             <td>
                                 <a href="{{ route('admin.finance.payment.show', $student['id']) }}"
