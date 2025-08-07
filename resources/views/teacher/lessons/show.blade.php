@@ -98,12 +98,19 @@
                                     <small class="text-muted">Tài liệu bài học</small>
                                 </div>
                             </div>
-                            <div class="mt-3">
+                            <div class="mt-3 d-flex gap-2">
                                 <a href="{{ asset('storage/' . $lesson->attachment) }}" target="_blank"
-                                    class="btn btn-success w-100">
+                                    class="btn btn-success flex-fill">
                                     <i class="bi bi-download mr-1"></i>Tải xuống
                                 </a>
+                                <button class="btn btn-outline-primary flex-fill" type="button" onclick="openPreviewModal()">
+                                    <i class="bi bi-eye"></i> Xem trước tài liệu
+                                </button>
                             </div>
+                            @php
+                                $ext = strtolower(pathinfo($lesson->attachment, PATHINFO_EXTENSION));
+                                $fileUrl = asset('storage/' . $lesson->attachment);
+                            @endphp
                         </div>
                     </div>
                 @endif
@@ -132,3 +139,87 @@
         </div>
     </div>
 </x-layouts.dash-teacher>
+
+<!-- Modal Preview -->
+<style>
+    .modal-custom {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+    }
+    .modal-content-custom {
+        background-color: #fefefe;
+        margin: 5% auto;
+        padding: 0;
+        border: none;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 1000px;
+        max-height: 90vh;
+        overflow: hidden;
+    }
+    .modal-header-custom {
+        padding: 15px 20px;
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .modal-body-custom {
+        padding: 0;
+        max-height: calc(90vh - 80px);
+        overflow: auto;
+    }
+    .close-custom {
+        color: #aaa;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        border: none;
+        background: none;
+    }
+    .close-custom:hover {
+        color: #000;
+    }
+</style>
+<div id="previewModal" class="modal-custom">
+    <div class="modal-content-custom">
+        <div class="modal-header-custom">
+            <h5 class="modal-title">Xem trước tài liệu</h5>
+            <button type="button" class="close-custom" onclick="closePreviewModal()">&times;</button>
+        </div>
+        <div class="modal-body-custom">
+            @if ($lesson->attachment)
+                @if (in_array($ext, ['pdf']))
+                    <iframe src="{{ $fileUrl }}" width="100%" height="600px" style="border:1px solid #ccc;"></iframe>
+                @elseif (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp']))
+                    <img src="{{ $fileUrl }}" alt="Tài liệu hình ảnh" class="img-fluid border rounded d-block mx-auto" style="max-height:600px;">
+                @elseif (in_array($ext, ['doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx']))
+                    <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={{ urlencode($fileUrl) }}" width="100%" height="600px" frameborder="0"></iframe>
+                @else
+                    <div class="alert alert-info m-3">Không hỗ trợ xem trước loại tệp này. Vui lòng tải về để xem chi tiết.</div>
+                @endif
+            @endif
+        </div>
+    </div>
+</div>
+<script>
+    function openPreviewModal() {
+        document.getElementById('previewModal').style.display = 'block';
+    }
+    function closePreviewModal() {
+        document.getElementById('previewModal').style.display = 'none';
+    }
+    window.onclick = function(event) {
+        var modal = document.getElementById('previewModal');
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+</script>

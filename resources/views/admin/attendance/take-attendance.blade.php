@@ -90,7 +90,8 @@
                         <div class="d-flex gap-2 justify-content-end">
                             <input wire:model.live="selectedDate" type="date" class="form-control"
                                 style="max-width: 200px;">
-                            <button wire:click="saveAttendance" class="btn btn-primary">
+                            <button wire:click="saveAttendance" class="btn btn-primary" 
+                                {{ !$canTakeAttendance ? 'disabled' : '' }}>
                                 <i class="bi bi-save mr-2"></i>Lưu điểm danh
                             </button>
                         </div>
@@ -101,6 +102,21 @@
                 @if (session()->has('message'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         {{ session('message') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                @endif
+
+                @if (session()->has('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                @endif
+
+                @if (!$canTakeAttendance && $attendanceMessage)
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <i class="bi bi-exclamation-triangle mr-2"></i>
+                        <strong>Lưu ý:</strong> {{ $attendanceMessage }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
                 @endif
@@ -144,6 +160,7 @@
                                                     @click="$dispatch('hide-loading')"
                                                     wire:click="toggleAttendance({{ $data['student_record']->id }})"
                                                     {{ $data['present'] ? 'checked' : '' }}
+                                                    {{ !$canTakeAttendance ? 'disabled' : '' }}
                                                     id="attendance_{{ $data['student_record']->id }}">
                                                 <label class="form-check-label"
                                                     for="attendance_{{ $data['student_record']->id }}">
@@ -170,7 +187,8 @@
                                         <td>
                                             @if (!$data['present'])
                                                 <button wire:click="openReasonModal({{ $data['student_record']->id }})"
-                                                    class="btn btn-sm btn-outline-primary">
+                                                    class="btn btn-sm btn-outline-primary"
+                                                    {{ !$canTakeAttendance ? 'disabled' : '' }}>
                                                     <i class="bi bi-pencil mr-1"></i>Lý do
                                                 </button>
                                             @endif
