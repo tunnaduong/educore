@@ -50,7 +50,7 @@
                         @foreach ($teacherQuestions as $key => $question)
                             <div class="mb-4">
                                 <label class="form-label fw-bold">
-                                    {{ $key }}. {{ $question }}
+                                    {{ $loop->iteration }}. {{ $question }}
                                 </label>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="text-muted small">Rất không đồng ý</span>
@@ -87,7 +87,7 @@
                         @foreach ($courseQuestions as $key => $question)
                             <div class="mb-4">
                                 <label class="form-label fw-bold">
-                                    {{ $key }}. {{ $question }}
+                                    {{ $loop->iteration + count($teacherQuestions) }}. {{ $question }}
                                 </label>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="text-muted small">Rất không đồng ý</span>
@@ -121,29 +121,31 @@
                         </h5>
                     </div>
                     <div class="card-body">
-                        <div class="mb-4">
-                            <label class="form-label fw-bold">
-                                10. Bạn có hài lòng với trải nghiệm học kỳ này không?
-                            </label>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="text-muted small">Rất không hài lòng</span>
-                                <div class="btn-group" role="group">
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        <input type="radio" class="btn-check"
-                                               wire:model="personal_satisfaction"
-                                               value="{{ $i }}"
-                                               id="personal_{{ $i }}">
-                                        <label class="btn btn-outline-warning" for="personal_{{ $i }}">
-                                            {{ $i }}
-                                        </label>
-                                    @endfor
+                        @foreach ($personalQuestions as $key => $question)
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">
+                                    {{ $loop->iteration + count($teacherQuestions) + count($courseQuestions) }}. {{ $question }}
+                                </label>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-muted small">Rất không hài lòng</span>
+                                    <div class="btn-group" role="group">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <input type="radio" class="btn-check"
+                                                   wire:model="personal_satisfaction"
+                                                   value="{{ $i }}"
+                                                   id="personal_{{ $key }}_{{ $i }}">
+                                            <label class="btn btn-outline-warning" for="personal_{{ $key }}_{{ $i }}">
+                                                {{ $i }}
+                                            </label>
+                                        @endfor
+                                    </div>
+                                    <span class="text-muted small">Rất hài lòng</span>
                                 </div>
-                                <span class="text-muted small">Rất hài lòng</span>
+                                @error('personal_satisfaction')
+                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
-                            @error('personal_satisfaction')
-                                <div class="text-danger small mt-1">{{ $message }}</div>
-                            @enderror
-                        </div>
+                        @endforeach
 
                         <div class="mb-3">
                             <label for="suggestions" class="form-label fw-bold">
