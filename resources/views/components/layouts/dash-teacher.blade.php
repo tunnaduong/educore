@@ -71,7 +71,7 @@
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('teacher.schedules.index') }}"
-                            class="nav-link {{ $active === 'schedules' ? 'active' : '' }}" wire:navigate>
+                            class="nav-link {{ $active === 'schedules' ? 'active' : '' }}">
                             <i class="nav-icon bi bi-calendar3"></i>
                             <p>@lang('general.schedules')</p>
                         </a>

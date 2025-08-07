@@ -9,11 +9,6 @@
                     </h4>
                     <p class="text-muted mb-0">Xem thời khóa biểu các buổi giảng dạy, bài tập, kiểm tra</p>
                 </div>
-                <div>
-                    <button type="button" class="btn btn-primary" wire:click="$dispatch('openCreateEventModal')">
-                        <i class="bi bi-plus-circle mr-2"></i>Thêm sự kiện
-                    </button>
-                </div>
             </div>
         </div>
 
@@ -41,12 +36,6 @@
                 <div id="calendar"></div>
             </div>
         </div>
-
-        <!-- Event Detail Component -->
-        <livewire:teacher.schedules.event-detail />
-
-        <!-- Create Event Component -->
-        <livewire:teacher.schedules.create-event />
 </x-layouts.dash-teacher>
 
 @push('styles')
