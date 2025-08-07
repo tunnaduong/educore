@@ -16,8 +16,20 @@ class ShowPayment extends Component
     public $proof;
     public $selectedPaymentId;
 
+    // Thêm các trường cho form tạo payment mới
+    public $newAmount;
+    public $newType = 'tuition';
+    public $newStatus = 'unpaid';
+    public $newPaidAt;
+    public $newClassId;
+    public $showCreateModal = false;
+
     protected $rules = [
-        'proof' => 'image|max:2048',
+        'proof' => 'image|mimes:jpeg,png,jpg,gif,webp|max:4096',
+        'newAmount' => 'nullable|numeric|min:0',
+        'newType' => 'nullable|string',
+        'newStatus' => 'nullable|string',
+        'newPaidAt' => 'nullable|date',
     ];
 
     public function mount(User $user)
@@ -33,7 +45,7 @@ class ShowPayment extends Component
 
     public function uploadProof($paymentId)
     {
-        $this->validate();
+        $this->validateOnly('proof');
         $payment = Payment::findOrFail($paymentId);
         $path = $this->proof->store('payment_proofs', 'public');
         $payment->proof_path = $path;
@@ -50,6 +62,52 @@ class ShowPayment extends Component
         $payment->save();
         $this->loadPayments();
         session()->flash('success', 'Cập nhật trạng thái thành công!');
+    }
+
+    public function deletePayment($paymentId)
+    {
+        $payment = Payment::findOrFail($paymentId);
+        $payment->delete();
+        $this->loadPayments();
+        session()->flash('success', 'Xóa giao dịch học phí thành công!');
+    }
+
+    public function getClassroomsProperty()
+    {
+        return $this->user->enrolledClassrooms;
+    }
+
+    public function openCreateModal()
+    {
+        $this->showCreateModal = true;
+    }
+    public function closeCreateModal()
+    {
+        $this->showCreateModal = false;
+        $this->reset(['newAmount', 'newType', 'newStatus', 'newPaidAt', 'newClassId']);
+    }
+
+    public function createPayment()
+    {
+        $this->newAmount = preg_replace('/\D/', '', $this->newAmount);
+        $this->validate([
+            'newAmount' => 'required|numeric|min:1',
+            'newType' => 'required|string|in:tuition,material,other',
+            'newStatus' => 'required|string|in:unpaid,partial,paid',
+            'newPaidAt' => 'nullable|date|before_or_equal:today',
+            'newClassId' => 'required|exists:classrooms,id',
+        ]);
+        Payment::create([
+            'user_id' => $this->user->id,
+            'class_id' => $this->newClassId,
+            'amount' => $this->newAmount,
+            'type' => $this->newType,
+            'status' => $this->newStatus,
+            'paid_at' => $this->newPaidAt,
+        ]);
+        $this->reset(['newAmount', 'newType', 'newStatus', 'newPaidAt', 'newClassId', 'showCreateModal']);
+        $this->loadPayments();
+        session()->flash('success', 'Tạo giao dịch học phí mới thành công!');
     }
 
     public function render()
