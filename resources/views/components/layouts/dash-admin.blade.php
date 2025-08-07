@@ -139,6 +139,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('evaluation-management') }}"
+                            class="nav-link {{ $active === 'evaluation-management' ? 'active' : '' }}" wire:navigate>
+                            <i class="nav-icon fas fa-star"></i>
+                            <p>Quản lý đánh giá</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ route('notifications.index') }}"
                             class="nav-link {{ $active === 'notifications' ? 'active' : '' }}" wire:navigate>
                             <i class="nav-icon fas fa-bell"></i>

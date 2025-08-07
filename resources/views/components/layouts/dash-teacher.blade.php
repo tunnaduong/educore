@@ -125,6 +125,13 @@
                             <p>@lang('general.chat')</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ route('teacher.evaluations.report') }}"
+                            class="nav-link {{ $active === 'evaluations-report' ? 'active' : '' }}" wire:navigate>
+                            <i class="nav-icon bi bi-bar-chart"></i>
+                            <p>Báo cáo đánh giá</p>
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>
