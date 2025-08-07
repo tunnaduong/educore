@@ -40,28 +40,6 @@ Route::get('/lang/{locale}', function ($locale) {
     return redirect()->back();
 })->name('lang.switch');
 
-// Test route để debug locale
-Route::get('/test-locale', function () {
-    return response()->json([
-        'current_locale' => app()->getLocale(),
-        'session_locale' => session('locale'),
-        'cookie_locale' => request()->cookie('locale'),
-        'available_locales' => ['vi', 'en', 'zh']
-    ]);
-})->middleware(['web', \App\Http\Middleware\SetLocale::class])->name('test.locale');
-
-// Test route để set locale
-Route::get('/set-locale/{locale}', function (string $locale) {
-    session(['locale' => $locale]);
-    app()->setLocale($locale);
-    return response()->json([
-        'success' => true,
-        'locale' => $locale,
-        'session' => session('locale'),
-        'app_locale' => app()->getLocale()
-    ]);
-})->name('set.locale');
-
 Route::get('/login', Login::class)->name('login');
 Route::post('/logout', function (Request $request) {
     Auth::logout();
@@ -131,6 +109,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/reports', \App\Livewire\Admin\Reports\Index::class)->name('reports.index');
     Route::get('/admin/reports/student/{student}', \App\Livewire\Admin\Reports\StudentReport::class)->name('reports.student');
     Route::get('/admin/reports/class/{classroom}', \App\Livewire\Admin\Reports\ClassReport::class)->name('reports.class');
+    // Finance statistics
+    Route::get('/admin/finance', \App\Livewire\Admin\Finance\Index::class)->name('admin.finance.index');
+    Route::get('/admin/finance/payment/{user}', \App\Livewire\Admin\Finance\ShowPayment::class)->name('admin.finance.payment.show');
 });
 
 // Teacher routes
