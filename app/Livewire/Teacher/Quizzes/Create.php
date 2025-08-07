@@ -18,22 +18,24 @@ class Create extends Component
     public $class_id = '';
     public $deadline = '';
     public $time_limit = '';
+    public $assigned_date = '';
     public $questions = [];
     public $showQuestionForm = false;
     public $editingQuestionIndex = null;
+    public $minAssignedDate;
 
     protected $rules = [
         'title' => 'required|string|max:255',
         'description' => 'nullable|string|max:1000',
         'class_id' => 'required|exists:classrooms,id',
-        'deadline' => 'nullable|date|after:now',
+        'assigned_date' => 'nullable|date|after_or_equal:today',
+        'deadline' => 'nullable|date|after:assigned_date',
         'time_limit' => 'nullable|integer|min:1|max:480',
         'questions' => 'required|array|min:1',
         'questions.*.question' => 'required|string|max:500',
-        'questions.*.type' => 'required|in:multiple_choice,true_false,essay',
         'questions.*.score' => 'required|integer|min:1|max:10',
-        'questions.*.options' => 'required_if:questions.*.type,multiple_choice|array|min:2',
-        'questions.*.correct_answer' => 'required_if:questions.*.type,multiple_choice,true_false|string',
+        'questions.*.options' => 'required|array|min:2',
+        'questions.*.correct_answer' => 'required|string',
     ];
 
     protected $messages = [
@@ -41,13 +43,15 @@ class Create extends Component
         'class_id.required' => 'Vui lòng chọn lớp học.',
         'questions.required' => 'Vui lòng thêm ít nhất một câu hỏi.',
         'questions.min' => 'Vui lòng thêm ít nhất một câu hỏi.',
-        'deadline.after' => 'Hạn nộp phải sau thời gian hiện tại.',
+        'assigned_date.after_or_equal' => 'Ngày giao bài phải từ hôm nay trở đi.',
+        'deadline.after' => 'Hạn nộp phải sau ngày giao bài.',
         'time_limit.min' => 'Thời gian làm bài tối thiểu là 1 phút.',
         'time_limit.max' => 'Thời gian làm bài tối đa là 480 phút (8 giờ).',
     ];
 
     public function mount()
     {
+        $this->minAssignedDate = now()->format('Y-m-d\TH:i');
         $this->addQuestion();
     }
 
@@ -55,7 +59,6 @@ class Create extends Component
     {
         $this->questions[] = [
             'question' => '',
-            'type' => 'multiple_choice',
             'score' => 1,
             'options' => ['', '', '', ''],
             'correct_answer' => '',
@@ -93,17 +96,14 @@ class Create extends Component
 
     public function updatedQuestions($value, $key)
     {
-        // Reset correct_answer when question type changes
-        if (str_contains($key, 'type')) {
+        // Reset correct_answer khi options thay đổi
+        if (str_contains($key, 'options')) {
             $parts = explode('.', $key);
             $questionIndex = $parts[0];
-            $this->questions[$questionIndex]['correct_answer'] = '';
+            $optionIndex = $parts[2] ?? null;
             
-            // Reset options for essay type
-            if ($value === 'essay') {
-                $this->questions[$questionIndex]['options'] = [];
-            } elseif ($value === 'multiple_choice' && empty($this->questions[$questionIndex]['options'])) {
-                $this->questions[$questionIndex]['options'] = ['', '', '', ''];
+            if ($optionIndex !== null) {
+                $this->questions[$questionIndex]['correct_answer'] = '';
             }
         }
     }
@@ -112,118 +112,112 @@ class Create extends Component
     {
         $this->validate([
             'questions.*.question' => 'required|string|max:500',
-            'questions.*.type' => 'required|in:multiple_choice,true_false,essay',
             'questions.*.score' => 'required|integer|min:1|max:10',
-            'questions.*.options' => 'required_if:questions.*.type,multiple_choice|array|min:2',
-            'questions.*.correct_answer' => 'required_if:questions.*.type,multiple_choice,true_false|string',
+            'questions.*.options' => 'required|array|min:2',
+            'questions.*.correct_answer' => 'required|string',
         ]);
 
         $this->showQuestionForm = false;
         $this->editingQuestionIndex = null;
     }
 
-    public function debugForm()
+    public function testCreateQuiz()
     {
-        \Log::info('Form data:', [
-            'title' => $this->title,
-            'class_id' => $this->class_id,
-            'questions' => $this->questions
-        ]);
+        // Test tạo quiz đơn giản
+        $this->title = 'Test Quiz';
+        $this->class_id = Auth::user()->teachingClassrooms->first()->id ?? 1;
+        $this->description = 'Test description';
+        $this->questions = [
+            [
+                'question' => 'Câu hỏi test?',
+                'score' => 1,
+                'options' => ['Đáp án A', 'Đáp án B', 'Đáp án C', 'Đáp án D'],
+                'correct_answer' => 'A',
+                'explanation' => 'Test explanation'
+            ]
+        ];
         
-        session()->flash('message', 'Debug data đã được ghi vào log. Kiểm tra storage/logs/laravel.log');
+        session()->flash('message', 'Đã load dữ liệu test. Bạn có thể chỉnh sửa và submit.');
     }
+
+
+
 
     public function save()
     {
         try {
+            \Log::info('DATA SUBMIT', [
+                'title' => $this->title,
+                'description' => $this->description,
+                'class_id' => $this->class_id,
+                'deadline' => $this->deadline,
+                'assigned_date' => $this->assigned_date,
+                'time_limit' => $this->time_limit,
+                'questions' => $this->questions,
+            ]);
             // Validate cơ bản
             $this->validate([
                 'title' => 'required|string|max:255',
                 'description' => 'nullable|string|max:1000',
                 'class_id' => 'required|exists:classrooms,id',
-                'deadline' => 'nullable|date|after:now',
+                'assigned_date' => 'nullable|date|after_or_equal:today',
+                'deadline' => 'nullable|date|after:assigned_date',
                 'time_limit' => 'nullable|integer|min:1|max:480',
                 'questions' => 'required|array|min:1',
             ]);
-
             // Kiểm tra xem lớp học có thuộc giáo viên không
             $teacherClassIds = Auth::user()->teachingClassrooms->pluck('id');
             if (!$teacherClassIds->contains($this->class_id)) {
                 session()->flash('error', 'Bạn không có quyền tạo bài kiểm tra cho lớp này.');
                 return;
             }
-
             // Lọc bỏ các câu hỏi trống và xử lý dữ liệu
             $validQuestions = [];
             foreach ($this->questions as $index => $question) {
                 if (!empty($question['question'])) {
-                    // Validate từng câu hỏi
                     $this->validate([
                         "questions.{$index}.question" => 'required|string|max:500',
-                        "questions.{$index}.type" => 'required|in:multiple_choice,true_false,essay',
                         "questions.{$index}.score" => 'required|integer|min:1|max:10',
+                        "questions.{$index}.options" => 'required|array|min:2',
+                        "questions.{$index}.correct_answer" => 'required|string',
                     ]);
-
-                    // Xử lý theo loại câu hỏi
-                    if ($question['type'] === 'essay') {
-                        $question['options'] = [];
-                        $question['correct_answer'] = '';
-                    } elseif ($question['type'] === 'multiple_choice') {
-                        // Kiểm tra options
-                        $validOptions = array_filter($question['options'], function($option) {
-                            return !empty(trim($option));
-                        });
-                        if (count($validOptions) < 2) {
-                            session()->flash('error', "Câu hỏi " . ($index + 1) . " cần ít nhất 2 lựa chọn có nội dung.");
-                            return;
-                        }
-                        $question['options'] = array_values($validOptions);
-                        
-                        // Kiểm tra đáp án đúng
-                        if (empty($question['correct_answer'])) {
-                            session()->flash('error', "Câu hỏi " . ($index + 1) . " cần chọn đáp án đúng.");
-                            return;
-                        }
-                    } elseif ($question['type'] === 'true_false') {
-                        if (empty($question['correct_answer'])) {
-                            session()->flash('error', "Câu hỏi " . ($index + 1) . " cần chọn đáp án đúng.");
-                            return;
-                        }
+                    $validOptions = array_filter($question['options'], function($option) {
+                        return !empty(trim($option));
+                    });
+                    if (count($validOptions) < 2) {
+                        session()->flash('error', "Câu hỏi " . ($index + 1) . " cần ít nhất 2 lựa chọn có nội dung.");
+                        return;
                     }
-                    
+                    $question['options'] = array_values($validOptions);
+                    if (empty($question['correct_answer'])) {
+                        session()->flash('error', "Câu hỏi " . ($index + 1) . " cần chọn đáp án đúng.");
+                        return;
+                    }
                     $validQuestions[] = $question;
                 }
             }
-
             if (empty($validQuestions)) {
                 session()->flash('error', 'Vui lòng thêm ít nhất một câu hỏi hợp lệ.');
                 return;
             }
-
-            // Debug: Log dữ liệu trước khi tạo
-            \Log::info('Creating quiz with data:', [
-                'class_id' => $this->class_id,
-                'title' => $this->title,
-                'questions_count' => count($validQuestions),
-                'questions' => $validQuestions
-            ]);
-
             $quiz = Quiz::create([
                 'class_id' => $this->class_id,
                 'title' => $this->title,
                 'description' => $this->description,
                 'questions' => array_values($validQuestions),
+                'assigned_date' => $this->assigned_date ? now()->parse($this->assigned_date) : null,
                 'deadline' => $this->deadline ? now()->parse($this->deadline) : null,
                 'time_limit' => $this->time_limit ?: null,
             ]);
-
             session()->flash('message', 'Bài kiểm tra đã được tạo thành công!');
             return redirect()->route('teacher.quizzes.index');
-            
         } catch (\Illuminate\Validation\ValidationException $e) {
-            session()->flash('error', 'Dữ liệu không hợp lệ: ' . implode(', ', $e->errors()));
+            $errors = [];
+            foreach ($e->errors() as $field => $messages) {
+                $errors[] = implode(', ', $messages);
+            }
+            session()->flash('error', 'Dữ liệu không hợp lệ: ' . implode('; ', $errors));
         } catch (\Exception $e) {
-            \Log::error('Error creating quiz: ' . $e->getMessage());
             session()->flash('error', 'Có lỗi xảy ra khi tạo bài kiểm tra: ' . $e->getMessage());
         }
     }

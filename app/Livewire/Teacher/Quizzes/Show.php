@@ -10,9 +10,9 @@ class Show extends Component
 {
     public Quiz $quiz;
 
-    public function mount($quizId)
+    public function mount(Quiz $quiz)
     {
-        $this->quiz = Quiz::with(['classroom', 'results'])->findOrFail($quizId);
+        $this->quiz = $quiz->load(['classroom', 'results']);
         
         // Kiểm tra quyền xem
         $teacherClassIds = Auth::user()->teachingClassrooms->pluck('id');
