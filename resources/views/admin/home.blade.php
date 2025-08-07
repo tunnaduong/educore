@@ -93,6 +93,15 @@
                         <div>@lang('general.statistics_reports')</div>
                     </a>
                 </div>
+                <!-- Quản lý đánh giá -->
+                <div class="col-6 col-md-3 text-center mb-4">
+                    <a href="{{ route('evaluation-management') }}" wire:navigate class="text-decoration-none text-dark">
+                        <div class="mb-2">
+                            <i class="fas fa-star" style="font-size:2.5rem; color:#e91e63;"></i>
+                        </div>
+                        <div>Quản lý đánh giá</div>
+                    </a>
+                </div>
                 <!-- Thông báo & nhắc lịch -->
                 <div class="col-6 col-md-3 text-center mb-4">
                     <a href="{{ route('notifications.index') }}" wire:navigate class="text-decoration-none text-dark">
