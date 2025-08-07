@@ -139,6 +139,6 @@
     </div>
 
     <footer class="main-footer text-center">
-        <strong>© 2025 EduCore</strong>
+        <strong>© 2025 Trung tâm Hanxian Kim Bảng Hà Nam - Powered by EduCore</strong>
     </footer>
 </div>
