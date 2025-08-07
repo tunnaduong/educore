@@ -125,6 +125,12 @@
                             <p>@lang('general.chat')</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ route('teacher.reports.index') }}" class="nav-link {{ $active === 'reports' ? 'active' : '' }}" wire:navigate>
+                            <i class="nav-icon bi bi-bar-chart"></i>
+                            <p>@lang('general.class_reports')</p>
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>

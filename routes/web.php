@@ -174,6 +174,9 @@ Route::middleware(['auth', 'role:teacher'])->name('teacher.')->group(function ()
     Route::get('/teacher/schedules', \App\Livewire\Teacher\Schedules\Index::class)->name('schedules.index');
     // Chat routes
     Route::get('/teacher/chat', \App\Livewire\Teacher\Chat\Index::class)->name('chat.index');
+
+    // Báo cáo - Reports cho giáo viên
+    Route::get('/teacher/reports', \App\Livewire\Teacher\Reports\Index::class)->name('reports.index');
 });
 
 // Student routes
