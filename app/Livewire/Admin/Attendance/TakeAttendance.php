@@ -17,6 +17,8 @@ class TakeAttendance extends Component
     public $showReasonModal = false;
     public $selectedStudentId;
     public $absenceReason = '';
+    public $canTakeAttendance = true;
+    public $attendanceMessage = '';
 
     protected function rules()
     {
@@ -40,6 +42,14 @@ class TakeAttendance extends Component
         $this->classroom = $classroom;
         $this->selectedDate = now()->format('Y-m-d');
         $this->loadAttendanceData();
+        $this->checkAttendancePermission();
+    }
+
+    public function checkAttendancePermission()
+    {
+        $result = Attendance::canTakeAttendance($this->classroom, $this->selectedDate);
+        $this->canTakeAttendance = $result['can'];
+        $this->attendanceMessage = $result['message'];
     }
 
     public function loadAttendanceData()
@@ -75,10 +85,16 @@ class TakeAttendance extends Component
     public function updatedSelectedDate()
     {
         $this->loadAttendanceData();
+        $this->checkAttendancePermission();
     }
 
     public function toggleAttendance($studentId)
     {
+        if (!$this->canTakeAttendance) {
+            session()->flash('error', $this->attendanceMessage);
+            return;
+        }
+
         if (isset($this->attendanceData[$studentId])) {
             $this->attendanceData[$studentId]['present'] = !$this->attendanceData[$studentId]['present'];
 
@@ -92,6 +108,11 @@ class TakeAttendance extends Component
 
     public function openReasonModal($studentId)
     {
+        if (!$this->canTakeAttendance) {
+            session()->flash('error', $this->attendanceMessage);
+            return;
+        }
+
         $this->selectedStudentId = $studentId;
         $this->absenceReason = $this->attendanceData[$studentId]['reason'] ?? '';
         $this->showReasonModal = true;
@@ -114,6 +135,11 @@ class TakeAttendance extends Component
 
     public function saveAttendance()
     {
+        if (!$this->canTakeAttendance) {
+            session()->flash('error', $this->attendanceMessage);
+            return;
+        }
+
         $this->dispatch('show-loading');
         $this->validate();
 

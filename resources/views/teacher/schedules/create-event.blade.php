@@ -144,8 +144,10 @@
                                                 <label for="maxScore" class="form-label">Điểm tối đa</label>
                                                 <input type="number" wire:model="maxScore"
                                                     class="form-control @error('maxScore') is-invalid @enderror"
-                                                    id="maxScore" min="0" step="0.1"
-                                                    placeholder="Nhập điểm tối đa">
+                                                    id="maxScore" min="0" max="10" step="0.1"
+                                                    placeholder="Nhập điểm tối đa"
+                                                    oninput="if(this.value > 10) this.value = 10; if(this.value < 0) this.value = 0;"
+                                                    onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 46 || event.charCode === 8 || event.charCode === 9">
                                                 @error('maxScore')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -174,8 +176,10 @@
                                             <label for="maxScore" class="form-label">Điểm tối đa</label>
                                             <input type="number" wire:model="maxScore"
                                                 class="form-control @error('maxScore') is-invalid @enderror"
-                                                id="maxScore" min="0" step="0.1"
-                                                placeholder="Nhập điểm tối đa">
+                                                id="maxScore" min="0" max="10" step="0.1"
+                                                placeholder="Nhập điểm tối đa"
+                                                oninput="if(this.value > 10) this.value = 10; if(this.value < 0) this.value = 0;"
+                                                onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 46 || event.charCode === 8 || event.charCode === 9">
                                             @error('maxScore')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -189,7 +193,9 @@
                                     <label for="maxScore" class="form-label">Điểm tối đa</label>
                                     <input type="number" wire:model="maxScore"
                                         class="form-control @error('maxScore') is-invalid @enderror" id="maxScore"
-                                        min="0" step="0.1" placeholder="Nhập điểm tối đa">
+                                        min="0" max="10" step="0.1" placeholder="Nhập điểm tối đa"
+                                        oninput="if(this.value > 10) this.value = 10; if(this.value < 0) this.value = 0;"
+                                        onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 46 || event.charCode === 8 || event.charCode === 9">
                                     @error('maxScore')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror

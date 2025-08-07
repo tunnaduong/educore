@@ -13,7 +13,8 @@ class Create extends Component
     public $name = '';
     public $level = '';
     public $days = [];
-    public $time = '';
+    public $startTime = '';
+    public $endTime = '';
     public $notes = '';
     public $teacher_ids = [];
     public $status = 'active';
@@ -22,7 +23,8 @@ class Create extends Component
         'name' => 'required|min:3|max:255',
         'level' => 'required|max:50',
         'days' => 'required|array|min:1',
-        'time' => 'required|max:50',
+        'startTime' => 'required|date_format:H:i',
+        'endTime' => 'required|date_format:H:i|after:startTime',
         'notes' => 'nullable|max:1000',
         'teacher_ids' => 'required|array|min:1',
         'teacher_ids.*' => 'exists:users,id',
@@ -37,8 +39,11 @@ class Create extends Component
         'level.max' => 'Trình độ không được vượt quá 50 ký tự.',
         'days.required' => 'Vui lòng chọn ít nhất một ngày học.',
         'days.min' => 'Vui lòng chọn ít nhất một ngày học.',
-        'time.required' => 'Vui lòng nhập giờ học.',
-        'time.max' => 'Giờ học không được vượt quá 50 ký tự.',
+        'startTime.required' => 'Vui lòng nhập giờ bắt đầu.',
+        'startTime.date_format' => 'Giờ bắt đầu không đúng định dạng.',
+        'endTime.required' => 'Vui lòng nhập giờ kết thúc.',
+        'endTime.date_format' => 'Giờ kết thúc không đúng định dạng.',
+        'endTime.after' => 'Giờ kết thúc phải sau giờ bắt đầu.',
         'notes.max' => 'Ghi chú không được vượt quá 1000 ký tự.',
         'teacher_ids.required' => 'Vui lòng chọn ít nhất một giảng viên.',
         'teacher_ids.min' => 'Vui lòng chọn ít nhất một giảng viên.',
@@ -63,7 +68,7 @@ class Create extends Component
             'level' => $this->level,
             'schedule' => json_encode([
                 'days' => $this->days,
-                'time' => $this->time,
+                'time' => $this->startTime . ' - ' . $this->endTime,
             ]),
             'notes' => $this->notes,
             'status' => $this->status,
