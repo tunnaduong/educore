@@ -1,5 +1,159 @@
 <x-layouts.dash-admin active="classrooms">
     @include('components.language')
+    <style>
+        /* Days Selector Styling */
+        .days-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .day-item {
+            position: relative;
+        }
+
+        .day-checkbox {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .day-label {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            color: #6c757d;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .day-label:hover {
+            background-color: #e9ecef;
+            border-color: #dee2e6;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .day-checkbox:checked+.day-label {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: white;
+            box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+        }
+
+        .day-checkbox:checked+.day-label:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .day-checkbox:focus+.day-label {
+            outline: 2px solid #80bdff;
+            outline-offset: 2px;
+        }
+
+        /* Animation when checking */
+        .day-checkbox:checked+.day-label {
+            animation: checkBounce 0.3s ease;
+        }
+
+        @keyframes checkBounce {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 576px) {
+            .days-selector {
+                gap: 6px;
+            }
+
+            .day-label {
+                padding: 6px 12px;
+                font-size: 13px;
+                min-width: 70px;
+            }
+        }
+
+        /* Teacher Dropdown Styling */
+        .dropdown-menu {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .dropdown-item {
+            padding: 8px 16px;
+            transition: background-color 0.2s ease;
+            cursor: pointer;
+            color: #495057 !important;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f8f9fa !important;
+            color: #495057 !important;
+        }
+
+        .dropdown-item:focus {
+            background-color: #f8f9fa !important;
+            color: #495057 !important;
+        }
+
+        .dropdown-item:active {
+            background-color: #e9ecef !important;
+            color: #495057 !important;
+        }
+
+        .dropdown-item input[type="checkbox"] {
+            transform: scale(1.1);
+            margin-right: 8px;
+        }
+
+        .dropdown-toggle::after {
+            display: none;
+        }
+
+        /* Custom button styling for teacher selector */
+        .btn-outline-secondary {
+            border-color: #ced4da;
+            color: #495057;
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: #f8f9fa;
+            border-color: #adb5bd;
+        }
+
+        .btn-outline-secondary:focus {
+            box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.25);
+        }
+
+        /* Rotation animation for chevron */
+        .fa-chevron-down {
+            transition: transform 0.3s ease;
+        }
+
+        .fa-rotate-180 {
+            transform: rotate(180deg);
+        }
+    </style>
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
@@ -56,11 +210,10 @@
                             <div class="mb-3">
                                 <label for="teacher_ids" class="form-label">Giảng viên <span
                                         class="text-danger">*</span></label>
-                                <div class="dropdown">
+                                <div class="dropdown" x-data="{ open: false }" @click.away="open = false">
                                     <button
-                                        class="btn w-100 d-flex justify-content-between align-items-center border border-gray-300 bg-white text-start"
-                                        type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                                        style="height: 48px;">
+                                        class="form-control w-100 d-flex justify-content-between align-items-center text-left"
+                                        type="button" @click="open = !open" aria-haspopup="true" style="height: 48px;">
                                         <span class="text-truncate">
                                             @if (count($teacher_ids))
                                                 {{ collect($teachers)->whereIn('id', $teacher_ids)->pluck('name')->join(', ') }}
@@ -68,19 +221,19 @@
                                                 Chọn giảng viên
                                             @endif
                                         </span>
-                                        <span class="ms-2"><i class="bi bi-chevron-down"></i></span>
+                                        <span class="ml-2"><i class="fas fa-chevron-down"
+                                                :class="{ 'fa-rotate-180': open }"></i></span>
                                     </button>
-                                    <ul class="dropdown-menu w-100" style="max-height: 300px; overflow-y: auto;">
+                                    <div class="dropdown-menu w-100" :class="{ 'show': open }"
+                                        style="max-height: 300px; overflow-y: auto;" @click.stop>
                                         @foreach ($teachers as $teacher)
-                                            <li>
-                                                <label class="dropdown-item mb-0">
-                                                    <input type="checkbox" value="{{ $teacher->id }}"
-                                                        wire:model="teacher_ids">
-                                                    {{ $teacher->name }}
-                                                </label>
-                                            </li>
+                                            <label class="dropdown-item mb-0 d-flex align-items-center" @click.stop>
+                                                <input type="checkbox" value="{{ $teacher->id }}"
+                                                    wire:model.live="teacher_ids" class="mr-2" @click.stop>
+                                                <span>{{ $teacher->name }}</span>
+                                            </label>
                                         @endforeach
-                                    </ul>
+                                    </div>
                                     @error('teacher_ids')
                                         <div class="text-danger small mt-1">{{ $message }}</div>
                                     @enderror
@@ -100,7 +253,7 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Ngày học <span class="text-danger">*</span></label>
-                                <div class="d-flex flex-wrap gap-2">
+                                <div class="days-selector">
                                     @foreach ([
         'Monday' => 'Thứ 2',
         'Tuesday' => 'Thứ 3',
@@ -110,10 +263,10 @@
         'Saturday' => 'Thứ 7',
         'Sunday' => 'Chủ nhật',
     ] as $value => $label)
-                                        <div class="form-check">
-                                            <input wire:model="days" class="form-check-input" type="checkbox"
+                                        <div class="day-item">
+                                            <input wire:model="days" class="day-checkbox" type="checkbox"
                                                 value="{{ $value }}" id="day_{{ $value }}">
-                                            <label class="form-check-label" for="day_{{ $value }}">
+                                            <label class="day-label" for="day_{{ $value }}">
                                                 {{ $label }}
                                             </label>
                                         </div>
@@ -123,7 +276,7 @@
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
                             </div>
-                            
+
                             <!-- Thời gian học -->
                             <div class="row mb-3">
                                 <div class="col-md-6">
