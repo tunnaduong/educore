@@ -14,11 +14,14 @@ class Quiz extends Model
         'description',
         'questions',
         'deadline',
+        'assigned_date',
+        'time_limit',
     ];
 
     protected $casts = [
         'questions' => 'array',
         'deadline' => 'datetime',
+        'assigned_date' => 'datetime',
     ];
 
     /**
