@@ -29,4 +29,4 @@ return new class extends Migration
             $table->dropIndex(['student_id', 'date']);
         });
     }
-}; 
+};
