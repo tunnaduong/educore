@@ -40,28 +40,6 @@ Route::get('/lang/{locale}', function ($locale) {
     return redirect()->back();
 })->name('lang.switch');
 
-// Test route để debug locale
-Route::get('/test-locale', function () {
-    return response()->json([
-        'current_locale' => app()->getLocale(),
-        'session_locale' => session('locale'),
-        'cookie_locale' => request()->cookie('locale'),
-        'available_locales' => ['vi', 'en', 'zh']
-    ]);
-})->middleware(['web', \App\Http\Middleware\SetLocale::class])->name('test.locale');
-
-// Test route để set locale
-Route::get('/set-locale/{locale}', function (string $locale) {
-    session(['locale' => $locale]);
-    app()->setLocale($locale);
-    return response()->json([
-        'success' => true,
-        'locale' => $locale,
-        'session' => session('locale'),
-        'app_locale' => app()->getLocale()
-    ]);
-})->name('set.locale');
-
 Route::get('/login', Login::class)->name('login');
 Route::post('/logout', function (Request $request) {
     Auth::logout();
@@ -113,6 +91,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/assignments/{assignmentId}/edit', \App\Livewire\Admin\Assignments\Edit::class)->name('assignments.edit');
     Route::get('/admin/grading', GradingList::class)->name('grading.list');
     Route::get('/admin/grading/{assignment}', GradeAssignment::class)->name('grading.grade-assignment');
+  
     // Chat routes
     Route::get('/admin/chat', \App\Livewire\Admin\Chat\Index::class)->name('chat.index');
 
@@ -123,7 +102,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/lessons/{lesson}/edit', \App\Livewire\Admin\Lessons\Edit::class)->name('lessons.edit');
     Route::delete('/admin/lessons/{lesson}', [\App\Livewire\Admin\Lessons\Show::class, 'deleteLesson'])->name('lessons.destroy');
 
-
     // Notifications routes
     Route::get('/admin/notifications', AdminNotificationsIndex::class)->name('notifications.index');
 
@@ -131,6 +109,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/reports', \App\Livewire\Admin\Reports\Index::class)->name('reports.index');
     Route::get('/admin/reports/student/{student}', \App\Livewire\Admin\Reports\StudentReport::class)->name('reports.student');
     Route::get('/admin/reports/class/{classroom}', \App\Livewire\Admin\Reports\ClassReport::class)->name('reports.class');
+
+    // Finance statistics
+    Route::get('/admin/finance', \App\Livewire\Admin\Finance\Index::class)->name('admin.finance.index');
+    Route::get('/admin/finance/payment/{user}', \App\Livewire\Admin\Finance\ShowPayment::class)->name('admin.finance.payment.show');
 
     // Evaluation Management routes
     Route::get('/admin/evaluation-management', \App\Livewire\Admin\EvaluationManagement::class)->name('evaluation-management');

@@ -139,6 +139,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('admin.finance.index') }}"
+                            class="nav-link {{ $active === 'finance' ? 'active' : '' }}" wire:navigate>
+                            <i class="nav-icon fas fa-coins"></i>
+                            <p>Thống kê thu chi</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">                    
                         <a href="{{ route('evaluation-management') }}"
                             class="nav-link {{ $active === 'evaluation-management' ? 'active' : '' }}" wire:navigate>
                             <i class="nav-icon fas fa-star"></i>
