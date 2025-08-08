@@ -131,6 +131,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/reports', \App\Livewire\Admin\Reports\Index::class)->name('reports.index');
     Route::get('/admin/reports/student/{student}', \App\Livewire\Admin\Reports\StudentReport::class)->name('reports.student');
     Route::get('/admin/reports/class/{classroom}', \App\Livewire\Admin\Reports\ClassReport::class)->name('reports.class');
+
+    // Evaluation Management routes
+    Route::get('/admin/evaluation-management', \App\Livewire\Admin\EvaluationManagement::class)->name('evaluation-management');
 });
 
 // Teacher routes
@@ -172,11 +175,15 @@ Route::middleware(['auth', 'role:teacher'])->name('teacher.')->group(function ()
 
     // Schedules routes
     Route::get('/teacher/schedules', \App\Livewire\Teacher\Schedules\Index::class)->name('schedules.index');
+  
     // Chat routes
     Route::get('/teacher/chat', \App\Livewire\Teacher\Chat\Index::class)->name('chat.index');
 
     // Báo cáo - Reports cho giáo viên
     Route::get('/teacher/reports', \App\Livewire\Teacher\Reports\Index::class)->name('reports.index');
+
+    // Báo cáo đánh giá sinh viên
+    Route::get('/teacher/evaluations', \App\Livewire\Teacher\EvaluationReport::class)->name('evaluations.report');
 });
 
 // Student routes
