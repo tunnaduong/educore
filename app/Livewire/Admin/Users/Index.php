@@ -56,10 +56,23 @@ class Index extends Component
      */
     public function delete(int $id): void
     {
-        $user = User::find($id);
-        if ($user) {
+        try {
+            $user = User::find($id);
+            if (!$user) {
+                session()->flash('error', 'Không tìm thấy người dùng!');
+                return;
+            }
+
+            // Check if trying to delete current user
+            if ($user->id === auth()->id()) {
+                session()->flash('error', 'Không thể xóa tài khoản của chính bạn!');
+                return;
+            }
+
             $user->delete();
             session()->flash('success', 'Xóa người dùng thành công!');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Không thể xóa người dùng: ' . $e->getMessage());
         }
     }
 }
