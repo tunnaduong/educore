@@ -22,6 +22,7 @@ class ShowPayment extends Component
     public $newStatus = 'unpaid';
     public $newPaidAt;
     public $newClassId;
+    public $newNotes;
     public $showCreateModal = false;
 
     protected $rules = [
@@ -84,7 +85,7 @@ class ShowPayment extends Component
     public function closeCreateModal()
     {
         $this->showCreateModal = false;
-        $this->reset(['newAmount', 'newType', 'newStatus', 'newPaidAt', 'newClassId']);
+        $this->reset(['newAmount', 'newType', 'newStatus', 'newPaidAt', 'newClassId', 'newNotes']);
     }
 
     public function createPayment()
@@ -104,8 +105,10 @@ class ShowPayment extends Component
             'type' => $this->newType,
             'status' => $this->newStatus,
             'paid_at' => $this->newPaidAt,
+            'note' => $this->newNotes,
+            'operator' => auth()->user()->name,
         ]);
-        $this->reset(['newAmount', 'newType', 'newStatus', 'newPaidAt', 'newClassId', 'showCreateModal']);
+        $this->reset(['newAmount', 'newType', 'newStatus', 'newPaidAt', 'newClassId', 'newNotes', 'showCreateModal']);
         $this->loadPayments();
         session()->flash('success', 'Tạo giao dịch học phí mới thành công!');
     }

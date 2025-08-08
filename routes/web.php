@@ -113,6 +113,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // Finance statistics
     Route::get('/admin/finance', \App\Livewire\Admin\Finance\Index::class)->name('admin.finance.index');
     Route::get('/admin/finance/payment/{user}', \App\Livewire\Admin\Finance\ShowPayment::class)->name('admin.finance.payment.show');
+    Route::get('/admin/finance/expenses', \App\Livewire\Admin\Finance\ExpenseManagement::class)->name('admin.finance.expenses');
 
     // Evaluation Management routes
     Route::get('/admin/evaluation-management', \App\Livewire\Admin\EvaluationManagement::class)->name('evaluation-management');

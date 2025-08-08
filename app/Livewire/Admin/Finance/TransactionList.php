@@ -26,7 +26,7 @@ class TransactionList extends Component
                 'item' => $p->type,
                 'amount' => $p->amount,
                 'created_at' => $p->paid_at,
-                'operator' => '-',
+                'operator' => $p->operator ?? 'Hệ thống',
                 'note' => $p->note,
             ];
         });
@@ -38,7 +38,7 @@ class TransactionList extends Component
                 'item' => $e->type,
                 'amount' => $e->amount,
                 'created_at' => $e->spent_at,
-                'operator' => '-',
+                'operator' => optional($e->staff)->name ?? 'Hệ thống',
                 'note' => $e->note,
             ];
         });
