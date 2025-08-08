@@ -4,6 +4,7 @@ namespace App\Livewire\Student\Evaluation;
 
 use Livewire\Component;
 use App\Models\Evaluation;
+use App\Models\EvaluationQuestion;
 use Illuminate\Support\Facades\Auth;
 
 class Index extends Component
@@ -16,21 +17,10 @@ class Index extends Component
     public $currentEvaluation;
     public $isSubmitted = false;
 
-    // Câu hỏi đánh giá
-    public $teacherQuestions = [
-        1 => 'Giảng viên truyền đạt nội dung dễ hiểu và có logic',
-        2 => 'Giảng viên sẵn sàng giải đáp thắc mắc của học viên',
-        3 => 'Giảng viên có sử dụng ví dụ/thực hành giúp học viên dễ hiểu hơn',
-        4 => 'Phong thái giảng dạy chuyên nghiệp và thân thiện',
-        5 => 'Giảng viên đúng giờ và đảm bảo thời lượng giảng dạy đầy đủ'
-    ];
-
-    public $courseQuestions = [
-        6 => 'Nội dung bài giảng phù hợp với mục tiêu môn học',
-        7 => 'Tài liệu học tập dễ tiếp cận và đầy đủ',
-        8 => 'Bài tập và kiểm tra giúp củng cố kiến thức',
-        9 => 'Hệ thống học trực tuyến ổn định và dễ sử dụng'
-    ];
+    // Câu hỏi đánh giá sẽ được load từ database
+    public $teacherQuestions = [];
+    public $courseQuestions = [];
+    public $personalQuestions = [];
 
     protected $rules = [
         'teacher_ratings.*' => 'required|integer|min:1|max:5',
@@ -39,9 +29,47 @@ class Index extends Component
         'suggestions' => 'nullable|string|max:1000',
     ];
 
+    protected $messages = [
+        'teacher_ratings.*.required' => 'Vui lòng trả lời câu hỏi này.',
+        'teacher_ratings.*.integer' => 'Điểm đánh giá phải là số nguyên.',
+        'teacher_ratings.*.min' => 'Điểm đánh giá phải từ 1-5.',
+        'teacher_ratings.*.max' => 'Điểm đánh giá phải từ 1-5.',
+        'course_ratings.*.required' => 'Vui lòng trả lời câu hỏi này.',
+        'course_ratings.*.integer' => 'Điểm đánh giá phải là số nguyên.',
+        'course_ratings.*.min' => 'Điểm đánh giá phải từ 1-5.',
+        'course_ratings.*.max' => 'Điểm đánh giá phải từ 1-5.',
+        'personal_satisfaction.required' => 'Vui lòng đánh giá mức độ hài lòng cá nhân.',
+        'personal_satisfaction.integer' => 'Điểm đánh giá phải là số nguyên.',
+        'personal_satisfaction.min' => 'Điểm đánh giá phải từ 1-5.',
+        'personal_satisfaction.max' => 'Điểm đánh giá phải từ 1-5.',
+        'suggestions.max' => 'Đề xuất không được quá 1000 ký tự.',
+    ];
+
     public function mount()
     {
+        $this->loadQuestions();
         $this->loadCurrentEvaluation();
+    }
+
+    public function loadQuestions()
+    {
+        $this->teacherQuestions = EvaluationQuestion::active()
+            ->byCategory('teacher')
+            ->ordered()
+            ->pluck('question', 'order')
+            ->toArray();
+
+        $this->courseQuestions = EvaluationQuestion::active()
+            ->byCategory('course')
+            ->ordered()
+            ->pluck('question', 'order')
+            ->toArray();
+
+        $this->personalQuestions = EvaluationQuestion::active()
+            ->byCategory('personal')
+            ->ordered()
+            ->pluck('question', 'order')
+            ->toArray();
     }
 
     public function loadCurrentEvaluation()
