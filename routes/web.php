@@ -91,7 +91,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/assignments/{assignmentId}/edit', \App\Livewire\Admin\Assignments\Edit::class)->name('assignments.edit');
     Route::get('/admin/grading', GradingList::class)->name('grading.list');
     Route::get('/admin/grading/{assignment}', GradeAssignment::class)->name('grading.grade-assignment');
-  
+
     // Chat routes
     Route::get('/admin/chat', \App\Livewire\Admin\Chat\Index::class)->name('chat.index');
 
@@ -158,7 +158,7 @@ Route::middleware(['auth', 'role:teacher'])->name('teacher.')->group(function ()
 
     // Schedules routes
     Route::get('/teacher/schedules', \App\Livewire\Teacher\Schedules\Index::class)->name('schedules.index');
-  
+
     // Chat routes
     Route::get('/teacher/chat', \App\Livewire\Teacher\Chat\Index::class)->name('chat.index');
 
