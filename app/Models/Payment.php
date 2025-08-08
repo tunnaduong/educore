@@ -13,7 +13,9 @@ class Payment extends Model
         'type',
         'status',
         'paid_at',
-        'proof_path'
+        'proof_path',
+        'note',
+        'operator'
     ];
     protected $casts = [
         'paid_at' => 'datetime',

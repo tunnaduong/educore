@@ -16,13 +16,14 @@
         <ul class="nav nav-tabs mb-4" id="evaluationTabs" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link {{ $activeTab === 'evaluations' ? 'active' : '' }}"
-                        wire:click="$set('activeTab', 'evaluations')" type="button" role="tab" style="cursor: pointer;">
+                    wire:click="$set('activeTab', 'evaluations')" type="button" role="tab"
+                    style="cursor: pointer;">
                     <i class="bi bi-list-check me-2"></i>Danh sách đánh giá
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link {{ $activeTab === 'questions' ? 'active' : '' }}"
-                        wire:click="$set('activeTab', 'questions')" type="button" role="tab" style="cursor: pointer;">
+                    wire:click="$set('activeTab', 'questions')" type="button" role="tab" style="cursor: pointer;">
                     <i class="bi bi-question-circle me-2"></i>Quản lý câu hỏi
                 </button>
             </li>
@@ -48,9 +49,9 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <label for="classroomFilter" class="form-label">Lọc theo lớp:</label>
-                                <select wire:model.live="classroomId" class="form-select" id="classroomFilter">
+                                <select wire:model.live="classroomId" class="form-control" id="classroomFilter">
                                     <option value="">Tất cả lớp</option>
-                                    @foreach($classrooms as $classroom)
+                                    @foreach ($classrooms as $classroom)
                                         <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
                                     @endforeach
                                 </select>
@@ -74,7 +75,8 @@
                                     </div>
                                 </div>
                                 <div class="progress mt-2" style="height: 6px;">
-                                    <div class="progress-bar bg-light" style="width: {{ ($avgTeacher / 5) * 100 }}%"></div>
+                                    <div class="progress-bar bg-light" style="width: {{ ($avgTeacher / 5) * 100 }}%">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -92,7 +94,8 @@
                                     </div>
                                 </div>
                                 <div class="progress mt-2" style="height: 6px;">
-                                    <div class="progress-bar bg-light" style="width: {{ ($avgCourse / 5) * 100 }}%"></div>
+                                    <div class="progress-bar bg-light" style="width: {{ ($avgCourse / 5) * 100 }}%">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -110,7 +113,8 @@
                                     </div>
                                 </div>
                                 <div class="progress mt-2" style="height: 6px;">
-                                    <div class="progress-bar bg-light" style="width: {{ ($avgPersonal / 5) * 100 }}%"></div>
+                                    <div class="progress-bar bg-light" style="width: {{ ($avgPersonal / 5) * 100 }}%">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -123,7 +127,7 @@
                         <h6 class="mb-0">Danh sách đánh giá ({{ $total }} đánh giá)</h6>
                     </div>
                     <div class="card-body">
-                        @if($evaluations->count() > 0)
+                        @if ($evaluations->count() > 0)
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
@@ -137,45 +141,60 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($evaluations as $evaluation)
+                                        @foreach ($evaluations as $evaluation)
                                             <tr>
                                                 <td>
                                                     <div class="d-flex align-items-center">
-                                                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 40px; height: 40px;">
-                                                            <span class="text-white fw-bold">{{ substr($evaluation->student->user->name ?? 'N/A', 0, 1) }}</span>
+                                                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-2"
+                                                            style="width: 40px; height: 40px;">
+                                                            <span
+                                                                class="text-white fw-bold">{{ substr($evaluation->student->user->name ?? 'N/A', 0, 1) }}</span>
                                                         </div>
                                                         <div>
-                                                            <div class="fw-bold">{{ $evaluation->student->user->name ?? 'N/A' }}</div>
-                                                            <small class="text-muted">{{ $evaluation->student->user->email ?? 'N/A' }}</small>
+                                                            <div class="fw-bold">
+                                                                {{ $evaluation->student->user->name ?? 'N/A' }}</div>
+                                                            <small
+                                                                class="text-muted">{{ $evaluation->student->user->email ?? 'N/A' }}</small>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>{{ $evaluation->student->classroom->name ?? 'N/A' }}</td>
                                                 <td>
                                                     <div class="d-flex align-items-center">
-                                                        <span class="fw-bold me-2">{{ number_format($evaluation->getOverallRating(), 1) }}/5.0</span>
+                                                        <span
+                                                            class="fw-bold me-2">{{ number_format($evaluation->getOverallRating(), 1) }}/5.0</span>
                                                         @php
                                                             $rating = $evaluation->getOverallRating();
-                                                            $color = $rating >= 4 ? 'success' : ($rating >= 3 ? 'warning' : 'danger');
+                                                            $color =
+                                                                $rating >= 4
+                                                                    ? 'success'
+                                                                    : ($rating >= 3
+                                                                        ? 'warning'
+                                                                        : 'danger');
                                                         @endphp
                                                         <span class="badge bg-{{ $color }}">
-                                                            @if($rating >= 4) Hài lòng
-                                                            @elseif($rating >= 3) Bình thường
-                                                            @else Không hài lòng
+                                                            @if ($rating >= 4)
+                                                                Hài lòng
+                                                            @elseif($rating >= 3)
+                                                                Bình thường
+                                                            @else
+                                                                Không hài lòng
                                                             @endif
                                                         </span>
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    @if($evaluation->submitted_at)
+                                                    @if ($evaluation->submitted_at)
                                                         <span class="badge bg-success">Đã gửi</span>
                                                     @else
                                                         <span class="badge bg-warning">Chưa gửi</span>
                                                     @endif
                                                 </td>
-                                                <td>{{ $evaluation->submitted_at ? $evaluation->submitted_at->format('d/m/Y H:i') : 'N/A' }}</td>
+                                                <td>{{ $evaluation->submitted_at ? $evaluation->submitted_at->format('d/m/Y H:i') : 'N/A' }}
+                                                </td>
                                                 <td>
-                                                    <button class="btn btn-sm btn-outline-primary" wire:click="showEvaluationDetail({{ $evaluation->id }})">
+                                                    <button class="btn btn-sm btn-outline-primary"
+                                                        wire:click="showEvaluationDetail({{ $evaluation->id }})">
                                                         <i class="bi bi-eye me-1"></i>Xem chi tiết
                                                     </button>
                                                 </td>
@@ -210,7 +229,7 @@
                                 <i class="bi bi-plus-circle me-2"></i>Thêm câu hỏi
                             </button>
                         </div>
-                        @if($questions->count() > 0)
+                        @if ($questions->count() > 0)
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
@@ -223,25 +242,27 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($questions as $question)
+                                        @foreach ($questions as $question)
                                             <tr>
                                                 <td>{{ $question->order }}</td>
                                                 <td>
                                                     @switch($question->category)
                                                         @case('teacher')
                                                             <span class="badge bg-primary">Giáo viên</span>
-                                                            @break
+                                                        @break
+
                                                         @case('course')
                                                             <span class="badge bg-success">Khóa học</span>
-                                                            @break
+                                                        @break
+
                                                         @case('personal')
                                                             <span class="badge bg-warning">Cá nhân</span>
-                                                            @break
+                                                        @break
                                                     @endswitch
                                                 </td>
                                                 <td>{{ $question->question }}</td>
                                                 <td>
-                                                    @if($question->is_active)
+                                                    @if ($question->is_active)
                                                         <span class="badge bg-success">Hoạt động</span>
                                                     @else
                                                         <span class="badge bg-secondary">Không hoạt động</span>
@@ -249,16 +270,19 @@
                                                 </td>
                                                 <td>
                                                     <div class="btn-group btn-group-sm">
-                                                        <button class="btn btn-outline-primary" wire:click="showEditQuestionModal({{ $question->id }})">
+                                                        <button class="btn btn-outline-primary"
+                                                            wire:click="showEditQuestionModal({{ $question->id }})">
                                                             <i class="bi bi-pencil"></i>
                                                         </button>
-                                                        <button class="btn btn-outline-{{ $question->is_active ? 'warning' : 'success' }}"
-                                                                wire:click="toggleQuestionStatus({{ $question->id }})">
-                                                            <i class="bi bi-{{ $question->is_active ? 'pause' : 'play' }}"></i>
+                                                        <button
+                                                            class="btn btn-outline-{{ $question->is_active ? 'warning' : 'success' }}"
+                                                            wire:click="toggleQuestionStatus({{ $question->id }})">
+                                                            <i
+                                                                class="bi bi-{{ $question->is_active ? 'pause' : 'play' }}"></i>
                                                         </button>
                                                         <button class="btn btn-outline-danger"
-                                                                wire:click="deleteQuestion({{ $question->id }})"
-                                                                onclick="return confirm('Bạn có chắc chắn muốn xóa câu hỏi này?')">
+                                                            wire:click="deleteQuestion({{ $question->id }})"
+                                                            onclick="return confirm('Bạn có chắc chắn muốn xóa câu hỏi này?')">
                                                             <i class="bi bi-trash"></i>
                                                         </button>
                                                     </div>
@@ -272,7 +296,8 @@
                             <div class="text-center py-4">
                                 <i class="bi bi-question-circle fs-1 text-muted mb-3"></i>
                                 <h5 class="text-muted">Chưa có câu hỏi nào</h5>
-                                <p class="text-muted">Hãy thêm câu hỏi đánh giá để học viên có thể đánh giá chất lượng học tập.</p>
+                                <p class="text-muted">Hãy thêm câu hỏi đánh giá để học viên có thể đánh giá chất lượng
+                                    học tập.</p>
                                 <button class="btn btn-primary" wire:click="showAddQuestionModal">
                                     <i class="bi bi-plus-circle me-2"></i>Thêm câu hỏi đầu tiên
                                 </button>
@@ -284,124 +309,147 @@
         </div>
 
         <!-- Modal chi tiết đánh giá -->
-        @if($selectedEvaluation)
-        <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5); z-index: 1050;" tabindex="-1">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title text-primary fw-bold fs-4">
-                            <i class="bi bi-star-fill text-warning me-2"></i>
-                            Chi tiết đánh giá của {{ $selectedEvaluation->student->user->name ?? 'Học viên' }}
-                        </h5>
-                        <button type="button" class="btn-close" wire:click="closeEvaluationDetail">
-                            <i class="bi bi-x-lg"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <strong>Nhóm 1 - Đánh giá giáo viên:</strong>
-                            <ul class="mb-2">
-                                @foreach ($selectedEvaluation->teacher_ratings ?? [] as $k => $v)
-                                    @php
-                                        $question = $questions->where('category', 'teacher')->where('order', $k)->first();
-                                    @endphp
-                                    <li>{{ $question ? $question->question : "Câu hỏi $k" }}: {{ $v }}/5</li>
-                                @endforeach
-                            </ul>
+        @if ($selectedEvaluation)
+            <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5); z-index: 1050;"
+                tabindex="-1">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-primary fw-bold fs-4">
+                                <i class="bi bi-star-fill text-warning me-2"></i>
+                                Chi tiết đánh giá của {{ $selectedEvaluation->student->user->name ?? 'Học viên' }}
+                            </h5>
+                            <button type="button" class="btn-close" wire:click="closeEvaluationDetail">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
                         </div>
-                        <div class="mb-3">
-                            <strong>Nhóm 2 - Đánh giá khóa học:</strong>
-                            <ul class="mb-2">
-                                @foreach ($selectedEvaluation->course_ratings ?? [] as $k => $v)
-                                    @php
-                                        $question = $questions->where('category', 'course')->where('order', $k)->first();
-                                    @endphp
-                                    <li>{{ $question ? $question->question : "Câu hỏi $k" }}: {{ $v }}/5</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        <div class="mb-3">
-                            <strong>Nhóm 3 - Mức độ hài lòng cá nhân:</strong>
-                            @php
-                                $personalQuestion = $questions->where('category', 'personal')->first();
-                            @endphp
-                            <p class="mb-2">{{ $personalQuestion ? $personalQuestion->question : 'Mức độ hài lòng cá nhân' }}: {{ $selectedEvaluation->personal_satisfaction }}/5</p>
-                        </div>
-                        @if($selectedEvaluation->suggestions)
+                        <div class="modal-body">
                             <div class="mb-3">
-                                <strong>Đề xuất cải thiện:</strong>
-                                <p class="mb-0">{{ $selectedEvaluation->suggestions }}</p>
+                                <strong>Nhóm 1 - Đánh giá giáo viên:</strong>
+                                <ul class="mb-2">
+                                    @foreach ($selectedEvaluation->teacher_ratings ?? [] as $k => $v)
+                                        @php
+                                            $question = $questions
+                                                ->where('category', 'teacher')
+                                                ->where('order', $k)
+                                                ->first();
+                                        @endphp
+                                        <li>{{ $question ? $question->question : "Câu hỏi $k" }}:
+                                            {{ $v }}/5</li>
+                                    @endforeach
+                                </ul>
                             </div>
-                        @endif
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" wire:click="closeEvaluationDetail">
-                            Đóng
-                        </button>
+                            <div class="mb-3">
+                                <strong>Nhóm 2 - Đánh giá khóa học:</strong>
+                                <ul class="mb-2">
+                                    @foreach ($selectedEvaluation->course_ratings ?? [] as $k => $v)
+                                        @php
+                                            $question = $questions
+                                                ->where('category', 'course')
+                                                ->where('order', $k)
+                                                ->first();
+                                        @endphp
+                                        <li>{{ $question ? $question->question : "Câu hỏi $k" }}:
+                                            {{ $v }}/5</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Nhóm 3 - Mức độ hài lòng cá nhân:</strong>
+                                @php
+                                    $personalQuestion = $questions->where('category', 'personal')->first();
+                                @endphp
+                                <p class="mb-2">
+                                    {{ $personalQuestion ? $personalQuestion->question : 'Mức độ hài lòng cá nhân' }}:
+                                    {{ $selectedEvaluation->personal_satisfaction }}/5</p>
+                            </div>
+                            @if ($selectedEvaluation->suggestions)
+                                <div class="mb-3">
+                                    <strong>Đề xuất cải thiện:</strong>
+                                    <p class="mb-0">{{ $selectedEvaluation->suggestions }}</p>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" wire:click="closeEvaluationDetail">
+                                Đóng
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         @endif
 
         <!-- Modal thêm/sửa câu hỏi -->
-        @if($showQuestionModal)
-        <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5); z-index: 1050;" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">
-                            <i class="bi bi-question-circle me-2"></i>
-                            {{ $editingQuestion ? 'Sửa câu hỏi' : 'Thêm câu hỏi mới' }}
-                        </h5>
-                        <button type="button" class="btn-close" wire:click="closeQuestionModal">
-                            <i class="bi bi-x-lg"></i>
-                        </button>
-                    </div>
-                    <form wire:submit.prevent="saveQuestion">
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="category" class="form-label">Danh mục <span class="text-danger">*</span></label>
-                                <select wire:model="questionForm.category" class="form-select" id="category">
-                                    <option value="">Chọn danh mục</option>
-                                    <option value="teacher">Giáo viên</option>
-                                    <option value="course">Khóa học</option>
-                                    <option value="personal">Cá nhân</option>
-                                </select>
-                                @error('questionForm.category') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="mb-3">
-                                <label for="question" class="form-label">Câu hỏi <span class="text-danger">*</span></label>
-                                <textarea wire:model="questionForm.question" class="form-control" id="question" rows="3" placeholder="Nhập câu hỏi đánh giá..."></textarea>
-                                @error('questionForm.question') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="mb-3">
-                                <label for="order" class="form-label">Thứ tự hiển thị</label>
-                                <input type="number" wire:model="questionForm.order" class="form-control" id="order" min="0" placeholder="0">
-                                @error('questionForm.order') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="mb-3">
-                                <div class="form-check">
-                                    <input wire:model="questionForm.is_active" class="form-check-input" type="checkbox" id="is_active">
-                                    <label class="form-check-label" for="is_active">
-                                        Câu hỏi hoạt động
-                                    </label>
+        @if ($showQuestionModal)
+            <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5); z-index: 1050;"
+                tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                <i class="bi bi-question-circle me-2"></i>
+                                {{ $editingQuestion ? 'Sửa câu hỏi' : 'Thêm câu hỏi mới' }}
+                            </h5>
+                            <button type="button" class="btn-close" wire:click="closeQuestionModal">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                        </div>
+                        <form wire:submit.prevent="saveQuestion">
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="category" class="form-label">Danh mục <span
+                                            class="text-danger">*</span></label>
+                                    <select wire:model="questionForm.category" class="form-control" id="category">
+                                        <option value="">Chọn danh mục</option>
+                                        <option value="teacher">Giáo viên</option>
+                                        <option value="course">Khóa học</option>
+                                        <option value="personal">Cá nhân</option>
+                                    </select>
+                                    @error('questionForm.category')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label for="question" class="form-label">Câu hỏi <span
+                                            class="text-danger">*</span></label>
+                                    <textarea wire:model="questionForm.question" class="form-control" id="question" rows="3"
+                                        placeholder="Nhập câu hỏi đánh giá..."></textarea>
+                                    @error('questionForm.question')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label for="order" class="form-label">Thứ tự hiển thị</label>
+                                    <input type="number" wire:model="questionForm.order" class="form-control"
+                                        id="order" min="0" placeholder="0">
+                                    @error('questionForm.order')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input wire:model="questionForm.is_active" class="form-check-input"
+                                            type="checkbox" id="is_active">
+                                        <label class="form-check-label" for="is_active">
+                                            Câu hỏi hoạt động
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" wire:click="closeQuestionModal">
-                                Hủy
-                            </button>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-check-circle me-2"></i>
-                                {{ $editingQuestion ? 'Cập nhật' : 'Thêm mới' }}
-                            </button>
-                        </div>
-                    </form>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" wire:click="closeQuestionModal">
+                                    Hủy
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-check-circle me-2"></i>
+                                    {{ $editingQuestion ? 'Cập nhật' : 'Thêm mới' }}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
         @endif
     </div>
 
