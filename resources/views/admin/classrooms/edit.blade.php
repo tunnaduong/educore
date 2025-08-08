@@ -212,7 +212,7 @@
                                         class="text-danger">*</span></label>
                                 <div class="dropdown" x-data="{ open: false }" @click.away="open = false">
                                     <button
-                                        class="btn btn-outline-secondary w-100 d-flex justify-content-between align-items-center text-left"
+                                        class="form-control w-100 d-flex justify-content-between align-items-center text-left"
                                         type="button" @click="open = !open" aria-haspopup="true" style="height: 48px;">
                                         <span class="text-truncate">
                                             @if (count($teacher_ids))
