@@ -95,12 +95,12 @@
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">Lọc theo điểm</label>
-                        <select class="form-select" wire:model.live="filterScore">
+                        <select class="form-control" wire:model.live="filterScore">
                             <option value="">Tất cả</option>
                             <option value="excellent">Xuất sắc (≥90%)</option>
                             <option value="good">Tốt (70-89%)</option>
                             <option value="average">Trung bình (50-69%)</option>
-                            <option value="poor">Yếu (<50%)</option>
+                            <option value="poor">Yếu (<50%)< /option>
                         </select>
                     </div>
                     <div class="col-md-2 d-flex align-items-end">
@@ -137,8 +137,11 @@
                             <tbody>
                                 @foreach ($results as $index => $result)
                                     @php
-                                        $percentage = $quiz->getMaxScore() > 0 ? ($result->score / $quiz->getMaxScore()) * 100 : 0;
-                                        $status = match(true) {
+                                        $percentage =
+                                            $quiz->getMaxScore() > 0
+                                                ? ($result->score / $quiz->getMaxScore()) * 100
+                                                : 0;
+                                        $status = match (true) {
                                             $percentage >= 90 => ['text' => 'Xuất sắc', 'class' => 'bg-success'],
                                             $percentage >= 70 => ['text' => 'Tốt', 'class' => 'bg-info'],
                                             $percentage >= 50 => ['text' => 'Trung bình', 'class' => 'bg-warning'],
@@ -149,15 +152,16 @@
                                         <td>{{ $index + 1 + ($results->currentPage() - 1) * $results->perPage() }}</td>
                                         <td>
                                             <div class="fw-medium">{{ $result->student->user->name ?? 'N/A' }}</div>
-                                            <small class="text-muted">{{ $result->student->user->email ?? 'N/A' }}</small>
+                                            <small
+                                                class="text-muted">{{ $result->student->user->email ?? 'N/A' }}</small>
                                         </td>
                                         <td>
                                             <div class="fw-bold">{{ $result->score }}/{{ $quiz->getMaxScore() }}</div>
                                         </td>
                                         <td>
                                             <div class="progress" style="height: 20px;">
-                                                <div class="progress-bar {{ $status['class'] }}" 
-                                                     style="width: {{ $percentage }}%">
+                                                <div class="progress-bar {{ $status['class'] }}"
+                                                    style="width: {{ $percentage }}%">
                                                     {{ number_format($percentage, 1) }}%
                                                 </div>
                                             </div>
@@ -171,8 +175,10 @@
                                         </td>
                                         <td>
                                             @if ($result->completed_at)
-                                                <div class="fw-medium">{{ $result->completed_at->format('d/m/Y') }}</div>
-                                                <small class="text-muted">{{ $result->completed_at->format('H:i') }}</small>
+                                                <div class="fw-medium">{{ $result->completed_at->format('d/m/Y') }}
+                                                </div>
+                                                <small
+                                                    class="text-muted">{{ $result->completed_at->format('H:i') }}</small>
                                             @else
                                                 <span class="text-muted">Chưa hoàn thành</span>
                                             @endif
@@ -202,19 +208,17 @@
 
         <!-- Flash Message -->
         @if (session()->has('message'))
-            <div class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3"
-                role="alert">
+            <div class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3" role="alert">
                 <i class="bi bi-check-circle me-2"></i>{{ session('message') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif
 
         @if (session()->has('error'))
-            <div class="alert alert-danger alert-dismissible fade show position-fixed top-0 end-0 m-3"
-                role="alert">
+            <div class="alert alert-danger alert-dismissible fade show position-fixed top-0 end-0 m-3" role="alert">
                 <i class="bi bi-exclamation-triangle me-2"></i>{{ session('error') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif
     </div>
-</x-layouts.dash-teacher> 
+</x-layouts.dash-teacher>

@@ -3,7 +3,7 @@
         <!-- Header -->
         <div class="mb-4">
             <div class="d-flex justify-content-between align-items-center">
-<div>
+                <div>
                     <h4 class="mb-0 text-primary fs-4">
                         <i class="bi bi-bar-chart-line mr-2"></i>Báo cáo đánh giá chất lượng học viên
                     </h4>
@@ -25,7 +25,7 @@
                 <form wire:submit.prevent="loadEvaluations" class="row g-3 align-items-end">
                     <div class="col-md-4">
                         <label for="classroomId" class="form-label">Lọc theo lớp học</label>
-                        <select wire:model="classroomId" id="classroomId" class="form-select">
+                        <select wire:model="classroomId" id="classroomId" class="form-control">
                             <option value="">Tất cả lớp</option>
                             @foreach ($classrooms as $class)
                                 <option value="{{ $class->id }}">{{ $class->name }}</option>
@@ -59,8 +59,9 @@
                         <div class="col">
                             <div class="fw-bold">{{ $level }}</div>
                             <div class="progress mb-1" style="height: 18px;">
-                                <div class="progress-bar bg-{{ $level == 5 ? 'success' : ($level == 1 ? 'danger' : ($level >= 4 ? 'info' : 'warning')) }}" role="progressbar" style="width: {{ round($count/$totalEva*100) }}%">
-                                    {{ round($count/$totalEva*100) }}%
+                                <div class="progress-bar bg-{{ $level == 5 ? 'success' : ($level == 1 ? 'danger' : ($level >= 4 ? 'info' : 'warning')) }}"
+                                    role="progressbar" style="width: {{ round(($count / $totalEva) * 100) }}%">
+                                    {{ round(($count / $totalEva) * 100) }}%
                                 </div>
                             </div>
                             <small class="text-muted">{{ $count }} lượt</small>
@@ -133,7 +134,8 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <button class="btn btn-sm btn-outline-info" wire:click="showEvaluationDetail({{ $eva->id }})">
+                                        <button class="btn btn-sm btn-outline-info"
+                                            wire:click="showEvaluationDetail({{ $eva->id }})">
                                             <i class="bi bi-eye"></i> Xem chi tiết
                                         </button>
                                     </td>
@@ -147,66 +149,77 @@
                     </table>
                 </div>
             </div>
-</div>
+        </div>
 
         <!-- Modal chi tiết đánh giá -->
-        @if($selectedEvaluation)
-        <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5); z-index: 1050;" tabindex="-1">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title fw-bold text-primary fs-4">Chi tiết đánh giá của {{ $selectedEvaluation->student->user->name ?? 'Học viên' }}</h5>
-                        <button type="button" class="btn-close" wire:click="closeEvaluationDetail">
-                            <i class="bi bi-x-lg"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <strong>Nhóm 1 - Đánh giá giáo viên:</strong>
-                            <ul class="mb-2">
-                                @foreach ($selectedEvaluation->teacher_ratings ?? [] as $k => $v)
-                                    @php
-                                        $question = $questions->where('category', 'teacher')->where('order', $k)->first();
-                                    @endphp
-                                    <li>
-                                        {{ $question ? $question->question : 'Câu hỏi '.$k }}: <b>{{ $v }}/5</b>
-                                    </li>
-                                @endforeach
-                            </ul>
+        @if ($selectedEvaluation)
+            <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5); z-index: 1050;"
+                tabindex="-1">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title fw-bold text-primary fs-4">Chi tiết đánh giá của
+                                {{ $selectedEvaluation->student->user->name ?? 'Học viên' }}</h5>
+                            <button type="button" class="btn-close" wire:click="closeEvaluationDetail">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
                         </div>
-                        <div class="mb-3">
-                            <strong>Nhóm 2 - Đánh giá khóa học:</strong>
-                            <ul class="mb-2">
-                                @foreach ($selectedEvaluation->course_ratings ?? [] as $k => $v)
-                                    @php
-                                        $question = $questions->where('category', 'course')->where('order', $k)->first();
-                                    @endphp
-                                    <li>
-                                        {{ $question ? $question->question : 'Câu hỏi '.$k }}: <b>{{ $v }}/5</b>
-                                    </li>
-                                @endforeach
-                            </ul>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <strong>Nhóm 1 - Đánh giá giáo viên:</strong>
+                                <ul class="mb-2">
+                                    @foreach ($selectedEvaluation->teacher_ratings ?? [] as $k => $v)
+                                        @php
+                                            $question = $questions
+                                                ->where('category', 'teacher')
+                                                ->where('order', $k)
+                                                ->first();
+                                        @endphp
+                                        <li>
+                                            {{ $question ? $question->question : 'Câu hỏi ' . $k }}:
+                                            <b>{{ $v }}/5</b>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Nhóm 2 - Đánh giá khóa học:</strong>
+                                <ul class="mb-2">
+                                    @foreach ($selectedEvaluation->course_ratings ?? [] as $k => $v)
+                                        @php
+                                            $question = $questions
+                                                ->where('category', 'course')
+                                                ->where('order', $k)
+                                                ->first();
+                                        @endphp
+                                        <li>
+                                            {{ $question ? $question->question : 'Câu hỏi ' . $k }}:
+                                            <b>{{ $v }}/5</b>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Nhóm 3 - Hài lòng cá nhân:</strong>
+                                @php
+                                    $personalQuestion = $questions->where('category', 'personal')->first();
+                                @endphp
+                                <div>{{ $personalQuestion ? $personalQuestion->question : 'Mức độ hài lòng cá nhân' }}:
+                                    <b>{{ $selectedEvaluation->personal_satisfaction }}/5</b></div>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Đề xuất/Góp ý:</strong>
+                                <div>{{ $selectedEvaluation->suggestions ?: '-' }}</div>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <strong>Nhóm 3 - Hài lòng cá nhân:</strong>
-                            @php
-                                $personalQuestion = $questions->where('category', 'personal')->first();
-                            @endphp
-                            <div>{{ $personalQuestion ? $personalQuestion->question : 'Mức độ hài lòng cá nhân' }}: <b>{{ $selectedEvaluation->personal_satisfaction }}/5</b></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" wire:click="closeEvaluationDetail">
+                                Đóng
+                            </button>
                         </div>
-                        <div class="mb-3">
-                            <strong>Đề xuất/Góp ý:</strong>
-                            <div>{{ $selectedEvaluation->suggestions ?: '-' }}</div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" wire:click="closeEvaluationDetail">
-                            Đóng
-                        </button>
                     </div>
                 </div>
             </div>
-        </div>
         @endif
     </div>
 

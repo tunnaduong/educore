@@ -34,11 +34,16 @@ class Overview extends Component
 
     public function loadStats()
     {
+        $fromDate = $this->fromDate ? Carbon::parse($this->fromDate)->startOfDay() : Carbon::now()->startOfMonth();
+        $toDate = $this->toDate ? Carbon::parse($this->toDate)->endOfDay() : Carbon::now()->endOfMonth();
+
         $this->totalIncome = Payment::where('status', 'paid')
-            ->whereBetween('paid_at', [$this->fromDate, $this->toDate])
+            ->whereBetween('paid_at', [$fromDate, $toDate])
             ->sum('amount');
-        $this->totalExpense = Expense::whereBetween('spent_at', [$this->fromDate, $this->toDate])
+        
+        $this->totalExpense = Expense::whereBetween('spent_at', [$fromDate, $toDate])
             ->sum('amount');
+            
         $this->profit = $this->totalIncome - $this->totalExpense;
     }
 
