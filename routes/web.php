@@ -91,6 +91,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/assignments/{assignmentId}/edit', \App\Livewire\Admin\Assignments\Edit::class)->name('assignments.edit');
     Route::get('/admin/grading', GradingList::class)->name('grading.list');
     Route::get('/admin/grading/{assignment}', GradeAssignment::class)->name('grading.grade-assignment');
+  
     // Chat routes
     Route::get('/admin/chat', \App\Livewire\Admin\Chat\Index::class)->name('chat.index');
 
@@ -101,7 +102,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/lessons/{lesson}/edit', \App\Livewire\Admin\Lessons\Edit::class)->name('lessons.edit');
     Route::delete('/admin/lessons/{lesson}', [\App\Livewire\Admin\Lessons\Show::class, 'deleteLesson'])->name('lessons.destroy');
 
-
     // Notifications routes
     Route::get('/admin/notifications', AdminNotificationsIndex::class)->name('notifications.index');
 
@@ -109,9 +109,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/reports', \App\Livewire\Admin\Reports\Index::class)->name('reports.index');
     Route::get('/admin/reports/student/{student}', \App\Livewire\Admin\Reports\StudentReport::class)->name('reports.student');
     Route::get('/admin/reports/class/{classroom}', \App\Livewire\Admin\Reports\ClassReport::class)->name('reports.class');
+
     // Finance statistics
     Route::get('/admin/finance', \App\Livewire\Admin\Finance\Index::class)->name('admin.finance.index');
     Route::get('/admin/finance/payment/{user}', \App\Livewire\Admin\Finance\ShowPayment::class)->name('admin.finance.payment.show');
+
+    // Evaluation Management routes
+    Route::get('/admin/evaluation-management', \App\Livewire\Admin\EvaluationManagement::class)->name('evaluation-management');
 });
 
 // Teacher routes
@@ -125,8 +129,7 @@ Route::middleware(['auth', 'role:teacher'])->name('teacher.')->group(function ()
     Route::get('/teacher/quizzes/create', \App\Livewire\Teacher\Quizzes\Create::class)->name('quizzes.create');
     Route::get('/teacher/quizzes/{quiz}', \App\Livewire\Teacher\Quizzes\Show::class)->name('quizzes.show');
     Route::get('/teacher/quizzes/{quiz}/edit', \App\Livewire\Teacher\Quizzes\Edit::class)->name('quizzes.edit');
-    // Route kết quả quiz nếu có
-    // Route::get('/teacher/quizzes/{quiz}/results', ...)->name('quizzes.results');
+    Route::get('/teacher/quizzes/{quiz}/results', \App\Livewire\Teacher\Quizzes\Results::class)->name('quizzes.results');
     // Assignments routes
     Route::get('/teacher/assignments', \App\Livewire\Teacher\Assignments\Index::class)->name('assignments.index');
     Route::get('/teacher/assignments/create', \App\Livewire\Teacher\Assignments\Create::class)->name('assignments.create');
@@ -154,8 +157,15 @@ Route::middleware(['auth', 'role:teacher'])->name('teacher.')->group(function ()
 
     // Schedules routes
     Route::get('/teacher/schedules', \App\Livewire\Teacher\Schedules\Index::class)->name('schedules.index');
+  
     // Chat routes
     Route::get('/teacher/chat', \App\Livewire\Teacher\Chat\Index::class)->name('chat.index');
+
+    // Báo cáo - Reports cho giáo viên
+    Route::get('/teacher/reports', \App\Livewire\Teacher\Reports\Index::class)->name('reports.index');
+
+    // Báo cáo đánh giá sinh viên
+    Route::get('/teacher/evaluations', \App\Livewire\Teacher\EvaluationReport::class)->name('evaluations.report');
 });
 
 // Student routes

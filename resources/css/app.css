@@ -1,17 +1,27 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+:root {
+    --fs-1: 2.5rem;
+    --fs-2: 2rem;
+    --fs-3: 1.75rem;
+    --fs-4: 1.5rem;
+    --fs-5: 1.25rem;
+    --fs-6: 1rem;
+}
 
-@layer components {
-    .avatar-sm {
-        @apply w-8 h-8 rounded-full flex items-center justify-center bg-gray-200;
-    }
-
-    .avatar-md {
-        @apply w-12 h-12 rounded-full flex items-center justify-center bg-gray-200;
-    }
-
-    .avatar-lg {
-        @apply w-16 h-16 rounded-full flex items-center justify-center bg-gray-200;
-    }
+.fs-1 {
+    font-size: var(--fs-1);
+}
+.fs-2 {
+    font-size: var(--fs-2);
+}
+.fs-3 {
+    font-size: var(--fs-3);
+}
+.fs-4 {
+    font-size: var(--fs-4);
+}
+.fs-5 {
+    font-size: var(--fs-5);
+}
+.fs-6 {
+    font-size: var(--fs-6);
 }
