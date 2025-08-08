@@ -13,6 +13,9 @@
             <p class="text-muted mb-0">{{ $classroom->name }}</p>
         </div>
 
+        <!-- Cảnh báo trùng lịch -->
+        <livewire:admin.classrooms.schedule-conflict-alert :classroom="$classroom" />
+
         <div class="row">
             <!-- Thông tin lớp học -->
             <div class="col-lg-4">
