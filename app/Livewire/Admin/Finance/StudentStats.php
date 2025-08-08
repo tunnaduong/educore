@@ -43,12 +43,28 @@ class StudentStats extends Component
         $students = $query->with('enrolledClassrooms')->get();
         $this->students = $students->map(function ($student) {
             $classrooms = $student->enrolledClassrooms->map(function ($class) use ($student) {
+                // Tính tổng số tiền đã thanh toán (bao gồm cả paid và partial)
                 $totalPaid = Payment::where('user_id', $student->id)
                     ->where('class_id', $class->id)
-                    ->where('status', 'paid')
+                    ->whereIn('status', ['paid', 'partial'])
                     ->sum('amount');
-                $required = 5000000; // Giả sử học phí chuẩn là 5 triệu
-                $status = $totalPaid >= $required ? 'paid' : ($totalPaid > 0 ? 'partial' : 'unpaid');
+                
+                // Tính tổng số tiền cần đóng (tất cả payments của học viên trong lớp)
+                $totalRequired = Payment::where('user_id', $student->id)
+                    ->where('class_id', $class->id)
+                    ->sum('amount');
+                
+                // Xác định trạng thái dựa trên tỷ lệ đã đóng
+                if ($totalRequired == 0) {
+                    $status = 'unpaid'; // Chưa có payment nào
+                } elseif ($totalPaid >= $totalRequired) {
+                    $status = 'paid'; // Đã đóng đủ
+                } elseif ($totalPaid > 0) {
+                    $status = 'partial'; // Đã đóng một phần
+                } else {
+                    $status = 'unpaid'; // Chưa đóng gì
+                }
+                
                 return [
                     'class_id' => $class->id,
                     'class_name' => $class->name,
