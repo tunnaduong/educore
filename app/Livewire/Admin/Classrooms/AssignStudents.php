@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Classrooms;
 
 use App\Models\Classroom;
 use App\Models\User;
+use App\Helpers\ScheduleConflictHelper;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -16,6 +17,8 @@ class AssignStudents extends Component
     public $search = '';
     public $selectedStudents = [];
     public $showModal = false;
+    public $scheduleConflicts = [];
+    public $showConflictModal = false;
 
     protected $queryString = ['search'];
 
@@ -71,6 +74,24 @@ class AssignStudents extends Component
 
     public function assignStudents()
     {
+        // Kiểm tra trùng lịch trước khi gán học sinh
+        $conflictCheck = ScheduleConflictHelper::checkMultipleStudentsScheduleConflict(
+            $this->selectedStudents, 
+            $this->classroom
+        );
+        
+        if ($conflictCheck['hasConflict']) {
+            $this->scheduleConflicts = $conflictCheck['conflicts'];
+            $this->showConflictModal = true;
+            return;
+        }
+        
+        // Nếu không có trùng lịch, tiến hành gán học sinh
+        $this->performAssignment();
+    }
+    
+    public function performAssignment()
+    {
         // Xóa tất cả học viên hiện tại khỏi lớp
         $this->classroom->students()->detach();
 
@@ -84,7 +105,21 @@ class AssignStudents extends Component
         }
 
         $this->showModal = false;
+        $this->showConflictModal = false;
         session()->flash('message', 'Đã cập nhật danh sách học viên thành công!');
+    }
+    
+    public function forceAssignStudents()
+    {
+        // Gán học sinh bất chấp trùng lịch
+        $this->performAssignment();
+        session()->flash('warning', 'Đã gán học sinh bất chấp trùng lịch. Vui lòng kiểm tra lại lịch học!');
+    }
+    
+    public function closeConflictModal()
+    {
+        $this->showConflictModal = false;
+        $this->scheduleConflicts = [];
     }
 
     public function getAvailableStudentsQuery()
