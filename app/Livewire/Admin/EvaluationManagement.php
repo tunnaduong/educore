@@ -10,16 +10,26 @@ use App\Models\Classroom;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class EvaluationManagement extends Component
 {
     use WithPagination, WithFileUploads;
 
     public $classroomId = '';
+    public $roundId = '';
     public $selectedEvaluation = null;
     public $showQuestionModal = false;
     public $editingQuestion = null;
     public $activeTab = 'evaluations';
+
+    // Giới hạn câu hỏi hiển thị giống student
+    protected array $categoryLimits = [
+        'teacher' => 5,
+        'course'  => 4,
+        'personal'=> 1,
+    ];
+
     public $questionForm = [
         'category' => '',
         'question' => '',
@@ -38,7 +48,7 @@ class EvaluationManagement extends Component
         'is_active' => true
     ];
 
-    protected $queryString = ['classroomId', 'activeTab'];
+    protected $queryString = ['classroomId', 'roundId', 'activeTab'];
 
     protected $rules = [
         'questionForm.category' => 'required|in:teacher,course,personal',
@@ -65,6 +75,7 @@ class EvaluationManagement extends Component
         'roundForm.description.max' => 'Mô tả không được quá 500 ký tự.',
         'roundForm.start_date.required' => 'Ngày bắt đầu không được bỏ trống.',
         'roundForm.start_date.date' => 'Ngày bắt đầu không hợp lệ.',
+        'roundForm.start_date.after_or_equal' => 'Ngày bắt đầu không được trước ngày hôm nay.',
         'roundForm.end_date.required' => 'Ngày kết thúc không được bỏ trống.',
         'roundForm.end_date.date' => 'Ngày kết thúc không hợp lệ.',
         'roundForm.end_date.after' => 'Ngày kết thúc phải sau ngày bắt đầu.',
@@ -73,20 +84,24 @@ class EvaluationManagement extends Component
     public function updatedClassroomId()
     {
         $this->resetPage();
-
-        // Debug: Log giá trị filter
         Log::info('Classroom filter changed to: ' . ($this->classroomId ?: 'null'));
+    }
+
+    public function updatedRoundId()
+    {
+        $this->resetPage();
+        Log::info('Round filter changed to: ' . ($this->roundId ?: 'null'));
     }
 
     public function resetFilter()
     {
         $this->classroomId = '';
+        $this->roundId = '';
         $this->resetPage();
     }
 
     public function updatedActiveTab()
     {
-        // Reset page when switching tabs
         $this->resetPage();
     }
 
@@ -139,14 +154,58 @@ class EvaluationManagement extends Component
         ];
     }
 
+    private function validateQuestionLimits(array $form, ?int $excludeId = null): bool
+    {
+        $category = $form['category'];
+        $isActive = (bool)($form['is_active'] ?? false);
+        $order = (int)($form['order'] ?? 0);
+
+        if (!array_key_exists($category, $this->categoryLimits)) {
+            session()->flash('error', 'Danh mục câu hỏi không hợp lệ.');
+            return false;
+        }
+
+        // Giới hạn số câu hỏi đang hoạt động theo danh mục
+        if ($isActive) {
+            $activeCount = EvaluationQuestion::where('category', $category)
+                ->where('is_active', true)
+                ->when($excludeId, fn($q) => $q->where('id', '!=', $excludeId))
+                ->count();
+            if ($activeCount >= $this->categoryLimits[$category]) {
+                session()->flash('error', 'Đã đạt giới hạn câu hỏi hoạt động cho danh mục này.');
+                return false;
+            }
+
+            // Không trùng thứ tự trong các câu hỏi đang hoạt động của cùng danh mục
+            $dupOrder = EvaluationQuestion::where('category', $category)
+                ->where('is_active', true)
+                ->where('order', $order)
+                ->when($excludeId, fn($q) => $q->where('id', '!=', $excludeId))
+                ->exists();
+            if ($dupOrder) {
+                session()->flash('error', 'Thứ tự hiển thị đã tồn tại ở danh mục này.');
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public function saveQuestion()
     {
         $this->validate();
 
+        // Kiểm tra giới hạn & thứ tự để đồng bộ với phần student
         if ($this->editingQuestion) {
+            if (!$this->validateQuestionLimits($this->questionForm, $this->editingQuestion->id)) {
+                return;
+            }
             $this->editingQuestion->update($this->questionForm);
             session()->flash('success', 'Câu hỏi đã được cập nhật thành công!');
         } else {
+            if (!$this->validateQuestionLimits($this->questionForm, null)) {
+                return;
+            }
             EvaluationQuestion::create($this->questionForm);
             session()->flash('success', 'Câu hỏi đã được thêm thành công!');
         }
@@ -167,7 +226,20 @@ class EvaluationManagement extends Component
     {
         $question = EvaluationQuestion::find($questionId);
         if ($question) {
-            $question->update(['is_active' => !$question->is_active]);
+            $targetStatus = !$question->is_active;
+            if ($targetStatus) {
+                // Bật hoạt động: kiểm tra giới hạn & trùng thứ tự
+                $form = [
+                    'category' => $question->category,
+                    'order' => $question->order,
+                    'is_active' => true,
+                ];
+                if (!$this->validateQuestionLimits($form, $questionId)) {
+                    return;
+                }
+            }
+
+            $question->update(['is_active' => $targetStatus]);
             session()->flash('success', 'Trạng thái câu hỏi đã được cập nhật!');
         }
     }
@@ -217,13 +289,35 @@ class EvaluationManagement extends Component
 
     public function saveRound()
     {
+        // Kiểm tra nhanh để hiển thị thông báo lỗi rõ ràng (trước khi validate chuẩn)
+        if (!empty($this->roundForm['start_date'])) {
+            $start = Carbon::parse($this->roundForm['start_date'])->startOfDay();
+            if ($start->lt(Carbon::today())) {
+                session()->flash('error', 'Không thể tạo đợt ở quá khứ. Ngày bắt đầu phải từ hôm nay trở đi.');
+                return;
+            }
+        }
+
+        // Validate cơ bản + cứng ràng buộc ngày bắt đầu >= hôm nay
         $this->validate([
             'roundForm.name' => 'required|min:3',
             'roundForm.description' => 'nullable|max:500',
-            'roundForm.start_date' => 'required|date',
-            'roundForm.end_date' => 'required|date|after:start_date',
+            'roundForm.start_date' => 'required|date|after_or_equal:today',
+            'roundForm.end_date' => 'required|date|after:roundForm.start_date',
             'roundForm.is_active' => 'boolean'
         ], $this->messages);
+
+        $startDate = Carbon::parse($this->roundForm['start_date'])->toDateString();
+
+        // Chỉ chặn trùng lặp NGÀY BẮT ĐẦU với đợt khác (kể cả cùng ngày)
+        $duplicateStartQuery = EvaluationRound::whereDate('start_date', $startDate);
+        if ($this->editingRound) {
+            $duplicateStartQuery->where('id', '!=', $this->editingRound->id);
+        }
+        if ($duplicateStartQuery->exists()) {
+            session()->flash('error', 'Ngày bắt đầu này đã tồn tại ở một đợt đánh giá khác. Vui lòng chọn ngày bắt đầu khác.');
+            return;
+        }
 
         if ($this->editingRound) {
             $this->editingRound->update($this->roundForm);
@@ -277,12 +371,25 @@ class EvaluationManagement extends Component
                 $q->where('classrooms.id', $this->classroomId);
             });
         }
-        $evaluations = $query->orderBy('created_at', 'desc')->paginate(10);
-        $classrooms = Classroom::all();
-        $questions = EvaluationQuestion::ordered()->get();
-        $evaluationRounds = EvaluationRound::orderBy('created_at', 'desc')->get();
+        if ($this->roundId) {
+            $query->where('evaluation_round_id', $this->roundId);
+        }
+        $evaluations = $query->orderByDesc('evaluation_round_id')->orderBy('created_at', 'desc')->paginate(10, ['*'], 'page');
 
-        // Tính điểm trung bình
+        $classrooms = Classroom::all();
+        $questions = EvaluationQuestion::ordered()->paginate(10, ['*'], 'questionsPage');
+        $evaluationRounds = EvaluationRound::orderBy('start_date', 'desc')->paginate(10, ['*'], 'roundsPage');
+
+        // Map thứ tự hiển thị theo student: chỉ tính trên câu hỏi ACTIVE, theo từng category
+        $displayOrderMap = [];
+        $activeOrdered = EvaluationQuestion::where('is_active', true)->ordered()->get()->groupBy('category');
+        foreach ($activeOrdered as $category => $items) {
+            foreach ($items as $index => $item) {
+                $displayOrderMap[$item->id] = $index + 1; // 1-based order theo student
+            }
+        }
+
+        // Tính điểm trung bình (theo trang hiện tại)
         $avgTeacher = $evaluations->getCollection()->avg(function ($evaluation) {
             return $evaluation->getTeacherAverageRating();
         });
@@ -296,6 +403,7 @@ class EvaluationManagement extends Component
             'classrooms' => $classrooms,
             'questions' => $questions,
             'evaluationRounds' => $evaluationRounds,
+            'displayOrderMap' => $displayOrderMap,
             'avgTeacher' => $avgTeacher ?: 0,
             'avgCourse' => $avgCourse ?: 0,
             'avgPersonal' => $avgPersonal ?: 0,

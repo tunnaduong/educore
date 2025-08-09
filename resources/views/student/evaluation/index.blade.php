@@ -63,15 +63,31 @@
                     </div>
                 @endif
 
-                @if ($isSubmitted)
+                @php
+                    // Tính xem còn đợt chưa đánh giá không
+                    $student = Auth::user()->student;
+                    $currentRounds = \App\Models\EvaluationRound::current()->get();
+                    $remainingCountView = 0;
+                    if ($student) {
+                        foreach ($currentRounds as $r) {
+                            $evaluated = \App\Models\Evaluation::where('student_id', $student->id)
+                                ->where('evaluation_round_id', $r->id)
+                                ->whereNotNull('submitted_at')
+                                ->exists();
+                            if (!$evaluated) { $remainingCountView++; }
+                        }
+                    }
+                @endphp
+
+                @if ($isSubmitted && $remainingCountView === 0)
                     <div class="alert alert-success">
                         <i class="bi bi-check2-circle me-2"></i>
-                <strong>Cảm ơn bạn!</strong> Bạn đã hoàn thành đánh giá cho đợt này.
-                <div class="mt-3">
-                    <button type="button" class="btn btn-success" onclick="location.reload()">
-                        <i class="bi bi-arrow-right me-2"></i>Tiếp tục đánh giá đợt tiếp theo
-                    </button>
-                </div>
+                        <strong>Cảm ơn bạn!</strong> Bạn đã hoàn thành đánh giá cho tất cả đợt hiện tại.
+                        <div class="mt-3">
+                            <button type="button" class="btn btn-success" onclick="location.reload()">
+                                <i class="bi bi-arrow-right me-2"></i>Tiếp tục sử dụng hệ thống
+                            </button>
+                        </div>
                     </div>
                 @else
                     <form wire:submit.prevent="saveEvaluation">
@@ -256,14 +272,13 @@
             padding: 2px;
         }
 
-        .star-label:hover,
-        .star-label:hover ~ .star-label {
+        /* Chỉ highlight icon đang hover, không ảnh hưởng các icon bên phải (tránh hiệu ứng ngược) */
+        .star-label:hover {
             color: #ffc107;
         }
 
-        .star-input:checked ~ .star-label {
-            color: #ffc107;
-        }
+        /* Bỏ hiệu ứng checked theo sibling ~ để không bị tô ngược; trạng thái chọn do JS + class .selected xử lý */
+        /* .star-input:checked ~ .star-label { color: #ffc107; } */
 
         .star-label i {
             transition: transform 0.1s ease;
@@ -299,7 +314,7 @@
             color: #ffc107;
         }
 
-        /* Star fill khi được chọn */
+        /* Star fill khi được chọn (do JS thêm class .selected) */
         .star-label.selected i {
             color: #ffc107 !important;
         }
@@ -314,92 +329,80 @@
         </style>
 
         <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Xử lý star rating
+        function applySelectedFromChecked(container) {
+            const labels = container.querySelectorAll('.star-label');
+            const checked = container.querySelector('input:checked');
+            if (!labels.length) return;
+            const selectedRating = checked ? parseInt(checked.value) : 0;
+            labels.forEach((label, idx) => {
+                if (idx < selectedRating) {
+                    label.classList.add('selected');
+                    label.querySelector('i').className = 'bi bi-star-fill';
+                } else {
+                    label.classList.remove('selected');
+                    label.querySelector('i').className = 'bi bi-star';
+                }
+            });
+        }
+
+        function initStarRatings() {
             document.querySelectorAll('.star-rating').forEach(function(container) {
+                if (container.dataset.initialized === '1') return;
+                container.dataset.initialized = '1';
+
                 const labels = container.querySelectorAll('.star-label');
                 const inputs = container.querySelectorAll('.star-input');
 
-                labels.forEach(function(label, index) {
+                // Lắng nghe thay đổi trực tiếp trên radio (hỗ trợ Livewire re-render)
+                inputs.forEach(function(input){
+                    input.addEventListener('change', function() {
+                        applySelectedFromChecked(container);
+                    });
+                });
+
+                labels.forEach(function(label) {
                     const rating = parseInt(label.getAttribute('data-rating'));
 
-                    // Click event
-                    label.addEventListener('click', function() {
-                        // Reset tất cả stars trong container này
-                        labels.forEach(l => {
-                            l.classList.remove('selected');
-                            l.querySelector('i').className = 'bi bi-star';
-                        });
-
-                        // Fill stars từ trái sang phải (index 0 đến rating-1)
-                        for (let i = 0; i < rating; i++) {
-                            labels[i].classList.add('selected');
-                            labels[i].querySelector('i').className = 'bi bi-star-fill';
+                    // Click: chọn sao và cập nhật Livewire (wire:model)
+                    label.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        if (inputs[rating - 1]) {
+                            inputs[rating - 1].checked = true;
+                            inputs[rating - 1].dispatchEvent(new Event('change', { bubbles: true }));
+                            inputs[rating - 1].dispatchEvent(new Event('input', { bubbles: true }));
                         }
+                        // Hiển thị fill sao
+                        applySelectedFromChecked(container);
                     });
 
-                    // Hover events
+                    // Hover preview
                     label.addEventListener('mouseenter', function() {
-                        // Reset tất cả stars
-                        labels.forEach(l => {
-                            l.querySelector('i').className = 'bi bi-star';
-                        });
-
-                        // Fill stars từ trái sang phải (index 0 đến rating-1)
+                        labels.forEach(l => { l.querySelector('i').className = 'bi bi-star'; });
                         for (let i = 0; i < rating; i++) {
                             labels[i].querySelector('i').className = 'bi bi-star-fill';
                         }
                     });
                 });
 
-                // Mouse leave event cho container
+                // Mouse leave: giữ trạng thái đã chọn
                 container.addEventListener('mouseleave', function() {
-                    const selectedInput = container.querySelector('input:checked');
-                    if (selectedInput) {
-                        const selectedRating = parseInt(selectedInput.value);
-                        labels.forEach((label, index) => {
-                            const rating = parseInt(label.getAttribute('data-rating'));
-                            // Fill từ trái sang phải (index 0 đến rating-1)
-                            if (index < selectedRating) {
-                                label.classList.add('selected');
-                                label.querySelector('i').className = 'bi bi-star-fill';
-                            } else {
-                                label.classList.remove('selected');
-                                label.querySelector('i').className = 'bi bi-star';
-                            }
-                        });
-                    } else {
-                        labels.forEach(label => {
-                            label.classList.remove('selected');
-                            label.querySelector('i').className = 'bi bi-star';
-                        });
-                    }
+                    applySelectedFromChecked(container);
                 });
+
+                // Áp dụng ban đầu theo radio đang checked
+                applySelectedFromChecked(container);
             });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initStarRatings();
         });
 
-        // Xử lý khi Livewire cập nhật
         document.addEventListener('livewire:load', function () {
-            Livewire.hook('message.processed', (message, component) => {
-                // Re-apply star rating logic sau khi Livewire cập nhật
+            Livewire.hook('message.processed', () => {
+                initStarRatings();
                 document.querySelectorAll('.star-rating').forEach(function(container) {
-                    const selectedInput = container.querySelector('input:checked');
-                    if (selectedInput) {
-                        const selectedRating = parseInt(selectedInput.value);
-                        const labels = container.querySelectorAll('.star-label');
-
-                        labels.forEach((label, index) => {
-                            const rating = parseInt(label.getAttribute('data-rating'));
-                            // Fill từ trái sang phải (index 0 đến rating-1)
-                            if (index < selectedRating) {
-                                label.classList.add('selected');
-                                label.querySelector('i').className = 'bi bi-star-fill';
-                            } else {
-                                label.classList.remove('selected');
-                                label.querySelector('i').className = 'bi bi-star';
-                            }
-                        });
-                    }
+                    applySelectedFromChecked(container);
                 });
             });
         });

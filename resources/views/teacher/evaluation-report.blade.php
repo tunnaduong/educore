@@ -32,6 +32,15 @@
                             @endforeach
                         </select>
                     </div>
+                    <div class="col-md-4">
+                        <label for="roundId" class="form-label">Lọc theo đợt đánh giá</label>
+                        <select wire:model="roundId" id="roundId" class="form-control">
+                            <option value="">Tất cả đợt</option>
+                            @foreach ($rounds as $r)
+                                <option value="{{ $r->id }}">{{ $r->name }} ({{ $r->start_date->format('d/m') }} - {{ $r->end_date->format('d/m') }})</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="col-md-2">
                         <button type="submit" class="btn btn-primary w-100"><i class="bi bi-search"></i> Lọc</button>
                     </div>

@@ -1,11 +1,23 @@
 @php
-$student = Auth::user()->student;
-$hasEvaluation = $student ? $student->evaluations()->whereNotNull('submitted_at')->exists() : false;
+    $student = Auth::user()->student;
+    $needEvaluation = false;
+
+    if ($student) {
+        $currentRounds = \App\Models\EvaluationRound::current()->get();
+        if ($currentRounds->count() > 0) {
+            $evaluatedRounds = \App\Models\Evaluation::where('student_id', $student->id)
+                ->whereIn('evaluation_round_id', $currentRounds->pluck('id'))
+                ->whereNotNull('submitted_at')
+                ->count();
+
+            $needEvaluation = $evaluatedRounds < $currentRounds->count();
+        }
+    }
 @endphp
 
-@if (!$hasEvaluation && $student)
+@if ($student && $needEvaluation)
 <!-- Modal đánh giá bắt buộc - không thể đóng -->
-<div class="modal fade show d-block" id="requiredEvaluationModal" tabindex="-1" style="background-color: rgba(0,0,0,0.8); overflow-y: auto;">
+<div class="modal fade show d-block" id="requiredEvaluationModal" tabindex="-1" style="background-color: rgba(0,0,0,0.8); overflow-y: auto; z-index: 1050;">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-warning text-dark">

@@ -12,6 +12,22 @@
             </div>
         </div>
 
+        <!-- Alerts on top -->
+        @if (session()->has('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle me-2"></i>
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
+        @if (session()->has('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
+
         <!-- Tabs -->
         <ul class="nav nav-tabs mb-4" id="evaluationTabs" role="tablist">
             <li class="nav-item" role="presentation">
@@ -74,6 +90,23 @@
                                         @endforeach
                                     </select>
                                     @if($classroomId)
+                                        <button class="btn btn-outline-secondary btn-sm" wire:click="resetFilter"
+                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Xóa bộ lọc">
+                                            <i class="bi bi-x-lg"></i>
+                                        </button>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="roundFilter" class="form-label">Lọc theo đợt đánh giá:</label>
+                                <div class="d-flex gap-2">
+                                    <select wire:model.live="roundId" class="form-control" id="roundFilter">
+                                        <option value="">Tất cả đợt</option>
+                                        @foreach ($evaluationRounds as $round)
+                                            <option value="{{ $round->id }}">{{ $round->name }} ({{ $round->start_date->format('d/m') }} - {{ $round->end_date->format('d/m') }})</option>
+                                        @endforeach
+                                    </select>
+                                    @if($roundId)
                                         <button class="btn btn-outline-secondary btn-sm" wire:click="resetFilter"
                                                 data-bs-toggle="tooltip" data-bs-placement="top" title="Xóa bộ lọc">
                                             <i class="bi bi-x-lg"></i>
@@ -159,6 +192,7 @@
                                         <tr>
                                             <th>Học viên</th>
                                             <th>Lớp</th>
+                                            <th>Đợt</th>
                                             <th>Điểm TB</th>
                                             <th>Trạng thái</th>
                                             <th>Ngày gửi</th>
@@ -191,6 +225,9 @@
                                                     @else
                                                         <span class="text-muted">Chưa phân lớp</span>
                                                     @endif
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-secondary">{{ $evaluation->evaluationRound->name ?? 'N/A' }}</span>
                                                 </td>
                                                 <td>
                                                     <div class="d-flex align-items-center">
@@ -246,7 +283,7 @@
                                 </table>
                             </div>
                             <div class="d-flex justify-content-center mt-3">
-                                {{ $evaluations->links() }}
+                                {{ $evaluations->links('vendor.pagination.bootstrap-4') }}
                             </div>
                         @else
                             <div class="text-center py-4">
@@ -287,7 +324,13 @@
                                     <tbody>
                                         @foreach ($questions as $question)
                                             <tr>
-                                                <td>{{ $question->order }}</td>
+                                                <td>
+                                                    @if($question->is_active && isset($displayOrderMap[$question->id]))
+                                                        {{ $displayOrderMap[$question->id] }}
+                                                    @else
+                                                        —
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     @switch($question->category)
                                                         @case('teacher')
@@ -338,6 +381,9 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                            </div>
+                            <div class="d-flex justify-content-center mt-3">
+                                {{ $questions->links('vendor.pagination.bootstrap-4') }}
                             </div>
                         @else
                             <div class="text-center py-4">
@@ -441,6 +487,9 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                            </div>
+                            <div class="d-flex justify-content-center mt-3">
+                                {{ $evaluationRounds->links('vendor.pagination.bootstrap-4') }}
                             </div>
                         @else
                             <div class="text-center py-4">
@@ -616,8 +665,14 @@
                                 <i class="bi bi-x-lg"></i>
                             </button>
                         </div>
-                        <form wire:submit.prevent="saveRound">
+                        <form wire:submit.prevent="saveRound" novalidate>
                             <div class="modal-body">
+                                @if (session()->has('error'))
+                                    <div class="alert alert-danger d-flex align-items-center" role="alert">
+                                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                        <div>{{ session('error') }}</div>
+                                    </div>
+                                @endif
                                 <div class="mb-3">
                                     <label for="round_name" class="form-label">Tên đợt đánh giá <span
                                             class="text-danger">*</span></label>
@@ -680,27 +735,7 @@
                 </div>
             </div>
         @endif
-</div>
-
-    @if (session()->has('success'))
-        <div class="position-fixed top-0 end-0 p-3" style="z-index: 1060;">
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle me-2"></i>
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        </div>
-    @endif
-
-    @if (session()->has('error'))
-        <div class="position-fixed top-0 end-0 p-3" style="z-index: 1060;">
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-triangle me-2"></i>
-                {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        </div>
-    @endif
+    </div>
 
     <script>
         // Kích hoạt tooltip cho tất cả các button có data-bs-toggle="tooltip"
@@ -709,6 +744,14 @@
             var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
                 return new bootstrap.Tooltip(tooltipTriggerEl);
             });
+
+            // Auto dismiss alerts sau 4 giây
+            setTimeout(function() {
+                document.querySelectorAll('.alert.fade.show').forEach(function(el){
+                    var alert = new bootstrap.Alert(el);
+                    alert.close();
+                });
+            }, 4000);
         });
 
         // Kích hoạt tooltip cho các element được tạo động bởi Livewire
@@ -720,6 +763,14 @@
                         new bootstrap.Tooltip(tooltipTriggerEl);
                     }
                 });
+
+                // Auto dismiss alerts sau mỗi lần cập nhật Livewire
+                setTimeout(function() {
+                    document.querySelectorAll('.alert.fade.show').forEach(function(el){
+                        var alert = new bootstrap.Alert(el);
+                        alert.close();
+                    });
+                }, 4000);
             });
         });
     </script>

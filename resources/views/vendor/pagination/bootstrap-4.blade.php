@@ -1,5 +1,5 @@
 @if ($paginator->hasPages())
-    <nav class="d-flex justify-items-center justify-content-between">
+    <nav class="d-flex justify-items-center justify-content-between flex-column" role="navigation" aria-label="Pagination Navigation">
         <div class="d-flex justify-content-between flex-fill d-sm-none">
             <ul class="pagination">
                 {{-- Previous Page Link --}}
@@ -9,14 +9,16 @@
                     </li>
                 @else
                     <li class="page-item">
-                        <a class="page-link" href="{{ $paginator->previousPageUrl() }}" rel="prev" wire:navigate>@lang('pagination.previous')</a>
+                        <a class="page-link" href="{{ $paginator->previousPageUrl() }}" rel="prev"
+                           wire:click.prevent="previousPage('{{ $paginator->getPageName() }}')">@lang('pagination.previous')</a>
                     </li>
                 @endif
 
                 {{-- Next Page Link --}}
                 @if ($paginator->hasMorePages())
                     <li class="page-item">
-                        <a class="page-link" href="{{ $paginator->nextPageUrl() }}" rel="next" wire:navigate>@lang('pagination.next')</a>
+                        <a class="page-link" href="{{ $paginator->nextPageUrl() }}" rel="next"
+                           wire:click.prevent="nextPage('{{ $paginator->getPageName() }}')">@lang('pagination.next')</a>
                     </li>
                 @else
                     <li class="page-item disabled" aria-disabled="true">
@@ -26,19 +28,8 @@
             </ul>
         </div>
 
-        <div class="d-none flex-sm-fill d-sm-flex align-items-sm-center justify-content-sm-between">
-            <div>
-                <p class="small text-muted">
-                    {!! __('Showing') !!}
-                    <span class="font-weight-bold">{{ $paginator->firstItem() }}</span>
-                    {!! __('to') !!}
-                    <span class="font-weight-bold">{{ $paginator->lastItem() }}</span>
-                    {!! __('of') !!}
-                    <span class="font-weight-bold">{{ $paginator->total() }}</span>
-                    {!! __('results') !!}
-                </p>
-            </div>
-
+        <div class="d-none flex-sm-fill d-sm-flex align-items-sm-center justify-content-sm-between w-100">
+            <div></div>
             <div>
                 <ul class="pagination">
                     {{-- Previous Page Link --}}
@@ -48,7 +39,8 @@
                         </li>
                     @else
                         <li class="page-item">
-                            <a class="page-link" href="{{ $paginator->previousPageUrl() }}" rel="prev" aria-label="@lang('pagination.previous')" wire:navigate>&lsaquo;</a>
+                            <a class="page-link" href="{{ $paginator->previousPageUrl() }}" rel="prev" aria-label="@lang('pagination.previous')"
+                               wire:click.prevent="previousPage('{{ $paginator->getPageName() }}')">&lsaquo;</a>
                         </li>
                     @endif
 
@@ -65,7 +57,8 @@
                                 @if ($page == $paginator->currentPage())
                                     <li class="page-item active" aria-current="page"><span class="page-link">{{ $page }}</span></li>
                                 @else
-                                    <li class="page-item"><a class="page-link" href="{{ $url }}" wire:navigate>{{ $page }}</a></li>
+                                    <li class="page-item"><a class="page-link" href="{{ $url }}"
+                                        wire:click.prevent="gotoPage({{ $page }}, '{{ $paginator->getPageName() }}')">{{ $page }}</a></li>
                                 @endif
                             @endforeach
                         @endif
@@ -74,7 +67,8 @@
                     {{-- Next Page Link --}}
                     @if ($paginator->hasMorePages())
                         <li class="page-item">
-                            <a class="page-link" href="{{ $paginator->nextPageUrl() }}" rel="next" aria-label="@lang('pagination.next')" wire:navigate>&rsaquo;</a>
+                            <a class="page-link" href="{{ $paginator->nextPageUrl() }}" rel="next" aria-label="@lang('pagination.next')"
+                               wire:click.prevent="nextPage('{{ $paginator->getPageName() }}')">&rsaquo;</a>
                         </li>
                     @else
                         <li class="page-item disabled" aria-disabled="true" aria-label="@lang('pagination.next')">
@@ -84,5 +78,13 @@
                 </ul>
             </div>
         </div>
+
+        <div class="w-100 mt-2 text-center">
+            <p class="small text-muted mb-0">
+                Đang hiển thị <span class="font-weight-bold">{{ $paginator->firstItem() }}</span>
+                tới <span class="font-weight-bold">{{ $paginator->lastItem() }}</span>
+                trong <span class="font-weight-bold">{{ $paginator->total() }}</span> kết quả
+            </p>
+        </div>
     </nav>
-@endif 
+@endif
