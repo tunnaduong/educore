@@ -133,7 +133,7 @@
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('teacher.evaluations.report') }}" class="nav-link {{ $active === 'evaluations-report' ? 'active' : '' }}" wire:navigate>
-                            <i class="nav-icon bi bi-bar-chart"></i>
+                            <i class="nav-icon fas fa-star"></i>
                             <p>Báo cáo đánh giá</p>
                         </a>
                     </li>
