@@ -62,10 +62,12 @@
                     </h6>
                     <div style="color: white;">
                         <div class="mb-2">
-                            <strong style="color: white;">Điểm TB đánh giá giáo viên:</strong> Trung bình cộng các câu hỏi nhóm 1 (1-5 điểm/câu).
+                            <strong style="color: white;">Điểm TB đánh giá giáo viên:</strong> Trung bình cộng các câu
+                            hỏi nhóm 1 (1-5 điểm/câu).
                         </div>
                         <div class="mb-2">
-                            <strong style="color: white;">Điểm TB đánh giá khóa học:</strong> Trung bình cộng các câu hỏi nhóm 2 (1-5 điểm/câu).
+                            <strong style="color: white;">Điểm TB đánh giá khóa học:</strong> Trung bình cộng các câu
+                            hỏi nhóm 2 (1-5 điểm/câu).
                         </div>
                         <div class="mb-2">
                             <strong style="color: white;">Điểm hài lòng cá nhân:</strong> Điểm câu hỏi số 10 (1-5 điểm).
@@ -89,9 +91,9 @@
                                             <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
                                         @endforeach
                                     </select>
-                                    @if($classroomId)
+                                    @if ($classroomId)
                                         <button class="btn btn-outline-secondary btn-sm" wire:click="resetFilter"
-                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Xóa bộ lọc">
+                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Xóa bộ lọc">
                                             <i class="bi bi-x-lg"></i>
                                         </button>
                                     @endif
@@ -103,12 +105,14 @@
                                     <select wire:model.live="roundId" class="form-control" id="roundFilter">
                                         <option value="">Tất cả đợt</option>
                                         @foreach ($evaluationRounds as $round)
-                                            <option value="{{ $round->id }}">{{ $round->name }} ({{ $round->start_date->format('d/m') }} - {{ $round->end_date->format('d/m') }})</option>
+                                            <option value="{{ $round->id }}">{{ $round->name }}
+                                                ({{ $round->start_date->format('d/m') }} -
+                                                {{ $round->end_date->format('d/m') }})</option>
                                         @endforeach
                                     </select>
-                                    @if($roundId)
+                                    @if ($roundId)
                                         <button class="btn btn-outline-secondary btn-sm" wire:click="resetFilter"
-                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Xóa bộ lọc">
+                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Xóa bộ lọc">
                                             <i class="bi bi-x-lg"></i>
                                         </button>
                                     @endif
@@ -133,7 +137,8 @@
                                     </div>
                                 </div>
                                 <div class="progress mt-2" style="height: 6px;">
-                                    <div class="progress-bar" style="width: {{ ($avgTeacher / 5) * 100 }}%; background-color: #000000; opacity: 0.3;">
+                                    <div class="progress-bar"
+                                        style="width: {{ ($avgTeacher / 5) * 100 }}%; background-color: #000000; opacity: 0.3;">
                                     </div>
                                 </div>
                             </div>
@@ -152,7 +157,8 @@
                                     </div>
                                 </div>
                                 <div class="progress mt-2" style="height: 6px;">
-                                    <div class="progress-bar" style="width: {{ ($avgCourse / 5) * 100 }}%; background-color: #000000; opacity: 0.3;">
+                                    <div class="progress-bar"
+                                        style="width: {{ ($avgCourse / 5) * 100 }}%; background-color: #000000; opacity: 0.3;">
                                     </div>
                                 </div>
                             </div>
@@ -171,7 +177,8 @@
                                     </div>
                                 </div>
                                 <div class="progress mt-2" style="height: 6px;">
-                                    <div class="progress-bar" style="width: {{ ($avgPersonal / 5) * 100 }}%; background-color: #000000; opacity: 0.3;">
+                                    <div class="progress-bar"
+                                        style="width: {{ ($avgPersonal / 5) * 100 }}%; background-color: #000000; opacity: 0.3;">
                                     </div>
                                 </div>
                             </div>
@@ -209,7 +216,7 @@
                                                             <span
                                                                 class="text-white fw-bold">{{ substr($evaluation->student->user->name ?? 'N/A', 0, 1) }}</span>
                                                         </div>
-<div>
+                                                        <div>
                                                             <div class="fw-bold">
                                                                 {{ $evaluation->student->user->name ?? 'N/A' }}</div>
                                                             <small
@@ -218,16 +225,18 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    @if($evaluation->student->user->enrolledClassrooms->count() > 0)
-                                                        @foreach($evaluation->student->user->enrolledClassrooms as $classroom)
-                                                            <span class="badge bg-info me-1">{{ $classroom->name }}</span>
+                                                    @if ($evaluation->student->user->enrolledClassrooms->count() > 0)
+                                                        @foreach ($evaluation->student->user->enrolledClassrooms as $classroom)
+                                                            <span
+                                                                class="badge bg-info me-1">{{ $classroom->name }}</span>
                                                         @endforeach
                                                     @else
                                                         <span class="text-muted">Chưa phân lớp</span>
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <span class="badge bg-secondary">{{ $evaluation->evaluationRound->name ?? 'N/A' }}</span>
+                                                    <span
+                                                        class="badge bg-secondary">{{ $evaluation->evaluationRound->name ?? 'N/A' }}</span>
                                                 </td>
                                                 <td>
                                                     <div class="d-flex align-items-center">
@@ -266,13 +275,15 @@
                                                     <div class="btn-group btn-group-sm">
                                                         <button class="btn btn-outline-primary"
                                                             wire:click="showEvaluationDetail({{ $evaluation->id }})"
-                                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Xem chi tiết">
+                                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                                            title="Xem chi tiết">
                                                             <i class="bi bi-eye"></i>
                                                         </button>
                                                         <button class="btn btn-outline-danger"
                                                             wire:click="deleteEvaluation({{ $evaluation->id }})"
                                                             onclick="return confirm('Bạn có chắc chắn muốn xóa đánh giá này?')"
-                                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Xóa đánh giá">
+                                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                                            title="Xóa đánh giá">
                                                             <i class="bi bi-trash"></i>
                                                         </button>
                                                     </div>
@@ -305,7 +316,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-end mb-3">
                             <button class="btn btn-primary" wire:click="showAddQuestionModal"
-                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Thêm câu hỏi mới">
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Thêm câu hỏi mới">
                                 <i class="bi bi-plus-circle me-2"></i>Thêm câu hỏi
                             </button>
                         </div>
@@ -325,7 +336,7 @@
                                         @foreach ($questions as $question)
                                             <tr>
                                                 <td>
-                                                    @if($question->is_active && isset($displayOrderMap[$question->id]))
+                                                    @if ($question->is_active && isset($displayOrderMap[$question->id]))
                                                         {{ $displayOrderMap[$question->id] }}
                                                     @else
                                                         —
@@ -358,7 +369,8 @@
                                                     <div class="btn-group btn-group-sm">
                                                         <button class="btn btn-outline-primary"
                                                             wire:click="showEditQuestionModal({{ $question->id }})"
-                                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Sửa câu hỏi">
+                                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                                            title="Sửa câu hỏi">
                                                             <i class="bi bi-pencil"></i>
                                                         </button>
                                                         <button
@@ -372,7 +384,8 @@
                                                         <button class="btn btn-outline-danger"
                                                             wire:click="deleteQuestion({{ $question->id }})"
                                                             onclick="return confirm('Bạn có chắc chắn muốn xóa câu hỏi này?')"
-                                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Xóa câu hỏi">
+                                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                                            title="Xóa câu hỏi">
                                                             <i class="bi bi-trash"></i>
                                                         </button>
                                                     </div>
@@ -408,8 +421,8 @@
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-end mb-3">
-                            <button class="btn btn-primary" wire:click="showAddRoundModal"
-                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Thêm đợt đánh giá mới">
+                            <button class="btn btn-primary" wire:click="showAddRoundModal" data-bs-toggle="tooltip"
+                                data-bs-placement="top" title="Thêm đợt đánh giá mới">
                                 <i class="bi bi-plus-circle me-2"></i>Thêm đợt đánh giá
                             </button>
                         </div>
@@ -435,50 +448,59 @@
                                                     <div class="fw-bold">{{ $round->name }}</div>
                                                 </td>
                                                 <td>
-                                                    @if($round->description)
-                                                        <span class="text-muted">{{ Str::limit($round->description, 50) }}</span>
+                                                    @if ($round->description)
+                                                        <span
+                                                            class="text-muted">{{ Str::limit($round->description, 50) }}</span>
                                                     @else
                                                         <span class="text-muted">Không có mô tả</span>
                                                     @endif
                                                 </td>
                                                 <td>
                                                     <div class="small">
-                                                        <div><strong>Từ:</strong> {{ $round->start_date->format('d/m/Y') }}</div>
-                                                        <div><strong>Đến:</strong> {{ $round->end_date->format('d/m/Y') }}</div>
+                                                        <div><strong>Từ:</strong>
+                                                            {{ $round->start_date->format('d/m/Y') }}</div>
+                                                        <div><strong>Đến:</strong>
+                                                            {{ $round->end_date->format('d/m/Y') }}</div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     @php
-                                                        $statusColor = match($round->status) {
+                                                        $statusColor = match ($round->status) {
                                                             'active' => 'success',
                                                             'upcoming' => 'info',
                                                             'ended' => 'secondary',
                                                             'inactive' => 'danger',
-                                                            default => 'secondary'
+                                                            default => 'secondary',
                                                         };
                                                     @endphp
-                                                    <span class="badge bg-{{ $statusColor }}">{{ $round->status_text }}</span>
+                                                    <span
+                                                        class="badge bg-{{ $statusColor }}">{{ $round->status_text }}</span>
                                                 </td>
                                                 <td>
-                                                    <span class="badge bg-primary">{{ $round->evaluations->count() }}</span>
+                                                    <span
+                                                        class="badge bg-primary">{{ $round->evaluations->count() }}</span>
                                                 </td>
                                                 <td>
                                                     <div class="btn-group btn-group-sm">
                                                         <button class="btn btn-outline-primary"
-                                                                wire:click="showEditRoundModal({{ $round->id }})"
-                                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Sửa đợt đánh giá">
+                                                            wire:click="showEditRoundModal({{ $round->id }})"
+                                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                                            title="Sửa đợt đánh giá">
                                                             <i class="bi bi-pencil"></i>
                                                         </button>
-                                                        <button class="btn btn-outline-{{ $round->is_active ? 'warning' : 'success' }}"
-                                                                wire:click="toggleRoundStatus({{ $round->id }})"
-                                                                data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                title="{{ $round->is_active ? 'Tạm dừng' : 'Kích hoạt' }}">
-                                                            <i class="bi bi-{{ $round->is_active ? 'pause' : 'play' }}"></i>
+                                                        <button
+                                                            class="btn btn-outline-{{ $round->is_active ? 'warning' : 'success' }}"
+                                                            wire:click="toggleRoundStatus({{ $round->id }})"
+                                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                                            title="{{ $round->is_active ? 'Tạm dừng' : 'Kích hoạt' }}">
+                                                            <i
+                                                                class="bi bi-{{ $round->is_active ? 'pause' : 'play' }}"></i>
                                                         </button>
                                                         <button class="btn btn-outline-danger"
-                                                                wire:click="deleteRound({{ $round->id }})"
-                                                                onclick="return confirm('Bạn có chắc chắn muốn xóa đợt đánh giá này?')"
-                                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Xóa đợt đánh giá">
+                                                            wire:click="deleteRound({{ $round->id }})"
+                                                            onclick="return confirm('Bạn có chắc chắn muốn xóa đợt đánh giá này?')"
+                                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                                            title="Xóa đợt đánh giá">
                                                             <i class="bi bi-trash"></i>
                                                         </button>
                                                     </div>
@@ -676,8 +698,8 @@
                                 <div class="mb-3">
                                     <label for="round_name" class="form-label">Tên đợt đánh giá <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" wire:model="roundForm.name" class="form-control" id="round_name"
-                                        placeholder="Nhập tên đợt đánh giá...">
+                                    <input type="text" wire:model="roundForm.name" class="form-control"
+                                        id="round_name" placeholder="Nhập tên đợt đánh giá...">
                                     @error('roundForm.name')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -695,7 +717,8 @@
                                         <div class="mb-3">
                                             <label for="start_date" class="form-label">Ngày bắt đầu <span
                                                     class="text-danger">*</span></label>
-                                            <input type="date" wire:model="roundForm.start_date" class="form-control" id="start_date">
+                                            <input type="date" wire:model="roundForm.start_date"
+                                                class="form-control" id="start_date">
                                             @error('roundForm.start_date')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
@@ -705,7 +728,8 @@
                                         <div class="mb-3">
                                             <label for="end_date" class="form-label">Ngày kết thúc <span
                                                     class="text-danger">*</span></label>
-                                            <input type="date" wire:model="roundForm.end_date" class="form-control" id="end_date">
+                                            <input type="date" wire:model="roundForm.end_date"
+                                                class="form-control" id="end_date">
                                             @error('roundForm.end_date')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
@@ -714,7 +738,8 @@
                                 </div>
                                 <div class="mb-3">
                                     <div class="form-check">
-                                        <input wire:model="roundForm.is_active" class="form-check-input" type="checkbox" id="round_is_active">
+                                        <input wire:model="roundForm.is_active" class="form-check-input"
+                                            type="checkbox" id="round_is_active">
                                         <label class="form-check-label" for="round_is_active">
                                             Đợt đánh giá hoạt động
                                         </label>
@@ -737,41 +762,27 @@
         @endif
     </div>
 
-    <script>
-        // Kích hoạt tooltip cho tất cả các button có data-bs-toggle="tooltip"
-        document.addEventListener('DOMContentLoaded', function() {
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl);
-            });
+    @if (session()->has('success'))
+        <div class="position-fixed top-0 end-0 p-3" style="z-index: 1060;">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle me-2"></i>
+                {{ session('success') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    @endif
 
-            // Auto dismiss alerts sau 4 giây
-            setTimeout(function() {
-                document.querySelectorAll('.alert.fade.show').forEach(function(el){
-                    var alert = new bootstrap.Alert(el);
-                    alert.close();
-                });
-            }, 4000);
-        });
-
-        // Kích hoạt tooltip cho các element được tạo động bởi Livewire
-        document.addEventListener('livewire:load', function () {
-            Livewire.hook('message.processed', (message, component) => {
-                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-                tooltipTriggerList.forEach(function (tooltipTriggerEl) {
-                    if (!tooltipTriggerEl._tooltip) {
-                        new bootstrap.Tooltip(tooltipTriggerEl);
-                    }
-                });
-
-                // Auto dismiss alerts sau mỗi lần cập nhật Livewire
-                setTimeout(function() {
-                    document.querySelectorAll('.alert.fade.show').forEach(function(el){
-                        var alert = new bootstrap.Alert(el);
-                        alert.close();
-                    });
-                }, 4000);
-            });
-        });
-    </script>
+    @if (session()->has('error'))
+        <div class="position-fixed top-0 end-0 p-3" style="z-index: 1060;">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                {{ session('error') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    @endif
 </x-layouts.dash-admin>
