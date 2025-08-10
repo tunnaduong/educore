@@ -102,7 +102,7 @@
             <div class="col-6 col-md-3 text-center">
                 <a href="{{ route('teacher.evaluations.report') }}" wire:navigate class="text-decoration-none text-dark">
                     <div class="mb-2">
-                        <i class="bi bi-bar-chart" style="font-size:2.5rem; color:#28a745;"></i>
+                        <i class="fas fa-star" style="font-size:2.5rem; color:#e91e63;"></i>
                     </div>
                     <div>Báo cáo đánh giá</div>
                 </a>

@@ -18,6 +18,12 @@ class Student extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function getClassroomAttribute()
+    {
+        // Lấy lớp học đầu tiên của học viên
+        return $this->user->enrolledClassrooms->first();
+    }
+
     public function attendances(): HasMany
     {
         return $this->hasMany(Attendance::class, 'student_id');

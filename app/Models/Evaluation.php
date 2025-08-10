@@ -12,6 +12,7 @@ class Evaluation extends Model
 
     protected $fillable = [
         'student_id',
+        'evaluation_round_id',
         'teacher_ratings',
         'course_ratings',
         'personal_satisfaction',
@@ -31,6 +32,14 @@ class Evaluation extends Model
     public function student(): BelongsTo
     {
         return $this->belongsTo(Student::class);
+    }
+
+    /**
+     * Đợt đánh giá
+     */
+    public function evaluationRound(): BelongsTo
+    {
+        return $this->belongsTo(EvaluationRound::class);
     }
 
     /**

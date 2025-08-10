@@ -3,7 +3,7 @@
         <!-- Header -->
         <div class="mb-4">
             <div class="d-flex justify-content-between align-items-center">
-                <div>
+<div>
                     <h4 class="mb-0 text-primary fs-4">
                         <i class="bi bi-bar-chart-line mr-2"></i>Báo cáo đánh giá chất lượng học viên
                     </h4>
@@ -29,6 +29,15 @@
                             <option value="">Tất cả lớp</option>
                             @foreach ($classrooms as $class)
                                 <option value="{{ $class->id }}">{{ $class->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="roundId" class="form-label">Lọc theo đợt đánh giá</label>
+                        <select wire:model="roundId" id="roundId" class="form-control">
+                            <option value="">Tất cả đợt</option>
+                            @foreach ($rounds as $r)
+                                <option value="{{ $r->id }}">{{ $r->name }} ({{ $r->start_date->format('d/m') }} - {{ $r->end_date->format('d/m') }})</option>
                             @endforeach
                         </select>
                     </div>
@@ -221,7 +230,7 @@
                 </div>
             </div>
         @endif
-    </div>
+</div>
 
     @if (session()->has('success'))
         <div class="position-fixed top-0 end-0 p-3" style="z-index: 1060;">
