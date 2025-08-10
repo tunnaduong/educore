@@ -1,6 +1,6 @@
 <x-layouts.dash-student active="schedules">
     @include('components.language')
-    <div class="row">
+    <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
             <div class="d-flex justify-content-between align-items-center">
