@@ -1,6 +1,6 @@
 <x-layouts.dash-admin active="classrooms" title="@lang('general.manage_classrooms')">
     @include('components.language')
-    
+
     <!-- Flash Messages -->
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -11,7 +11,7 @@
             </button>
         </div>
     @endif
-    
+
     @if (session('error'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <i class="fas fa-exclamation-circle mr-2"></i>
@@ -21,7 +21,7 @@
             </button>
         </div>
     @endif
-    
+
     <div class="row">
         <div class="col-12">
             <!-- Header -->
@@ -63,6 +63,7 @@
                         <div class="col-md-3">
                             <select wire:model.live="filterStatus" class="form-control">
                                 <option value="">@lang('general.all_status')</option>
+                                <option value="draft">@lang('general.draft')</option>
                                 <option value="active">@lang('general.active')</option>
                                 <option value="inactive">@lang('general.inactive')</option>
                                 <option value="completed">@lang('general.completed')</option>
@@ -122,13 +123,15 @@
                                         <td class="text-center">
                                             @php
                                                 $statusClass = match($classroom->status) {
+                                                    'draft' => 'light',
                                                     'active' => 'success',
                                                     'inactive' => 'secondary',
                                                     'completed' => 'warning',
                                                     default => 'secondary'
                                                 };
-                                                
+
                                                 $statusText = match($classroom->status) {
+                                                    'draft' => __('general.draft'),
                                                     'active' => __('general.active'),
                                                     'inactive' => __('general.inactive'),
                                                     'completed' => __('general.completed'),
@@ -164,16 +167,23 @@
                                                     class="btn btn-sm btn-outline-primary" title="@lang('general.edit')">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                
+
                                                 @if ($classroom->status === 'active')
-                                                    <button type="button" class="btn btn-sm btn-outline-warning" 
+                                                    <button type="button" class="btn btn-sm btn-outline-warning"
                                                         title="@lang('general.cannot_delete_active_classroom')" disabled>
                                                         <i class="fas fa-lock"></i>
+                                                    </button>
+                                                @elseif ($classroom->status === 'draft' && $classroom->students_count == 0)
+                                                    <button type="button" data-toggle="modal"
+                                                        data-target="#deleteModal{{ $classroom->id }}"
+                                                        class="btn btn-sm btn-outline-danger"
+                                                        title="@lang('general.delete_draft_classroom')">
+                                                        <i class="fas fa-trash"></i>
                                                     </button>
                                                 @elseif ($classroom->students_count > 0)
                                                     <button type="button" data-toggle="modal"
                                                         data-target="#deleteModal{{ $classroom->id }}"
-                                                        class="btn btn-sm btn-outline-warning" 
+                                                        class="btn btn-sm btn-outline-warning"
                                                         title="@lang('general.hide_classroom_with_students')">
                                                         <i class="fas fa-eye-slash"></i>
                                                     </button>
@@ -195,7 +205,9 @@
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="deleteModalLabel{{ $classroom->id }}">
-                                                        @if ($classroom->students_count > 0)
+                                                        @if ($classroom->status === 'draft' && $classroom->students_count == 0)
+                                                            @lang('general.confirm_delete_draft_classroom')
+                                                        @elseif ($classroom->students_count > 0)
                                                             @lang('general.confirm_hide_classroom')
                                                         @else
                                                             @lang('general.confirm_delete_classroom')
@@ -207,7 +219,9 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    @if ($classroom->students_count > 0)
+                                                    @if ($classroom->status === 'draft' && $classroom->students_count == 0)
+                                                        @lang('general.delete_draft_classroom_message', ['name' => $classroom->name])
+                                                    @elseif ($classroom->students_count > 0)
                                                         @lang('general.hide_classroom_message', ['name' => $classroom->name])
                                                     @else
                                                         @lang('general.delete_classroom_message', ['name' => $classroom->name])
@@ -216,11 +230,13 @@
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
                                                         data-dismiss="modal">@lang('general.cancel')</button>
-                                                    <button type="button" class="btn btn-{{ $classroom->students_count > 0 ? 'warning' : 'danger' }}" 
+                                                    <button type="button" class="btn btn-{{ ($classroom->status === 'draft' && $classroom->students_count == 0) || $classroom->students_count == 0 ? 'danger' : 'warning' }}"
                                                         id="confirmDelete{{ $classroom->id }}"
                                                         wire:click="delete({{ $classroom->id }})"
                                                         onclick="closeModal({{ $classroom->id }})">
-                                                        @if ($classroom->students_count > 0)
+                                                        @if ($classroom->status === 'draft' && $classroom->students_count == 0)
+                                                            @lang('general.delete')
+                                                        @elseif ($classroom->students_count > 0)
                                                             @lang('general.hide')
                                                         @else
                                                             @lang('general.delete')
@@ -259,7 +275,7 @@
                 $('#deleteModal' + classroomId).modal('hide');
             }, 100);
         }
-        
+
         // Lắng nghe sự kiện refresh từ Livewire
         document.addEventListener('livewire:initialized', () => {
             Livewire.on('refresh', () => {
