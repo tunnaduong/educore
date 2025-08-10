@@ -215,7 +215,9 @@
                         <h5 class="modal-title">
                             <i class="bi bi-eye mr-2"></i>Chi tiết bài nộp
                         </h5>
-                        <button type="button" class="btn-close" wire:click="closeModal"></button>
+                        <button type="button" class="close" wire:click="closeModal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
@@ -344,7 +346,9 @@
         <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050;">
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         </div>
     @endif
@@ -353,7 +357,9 @@
         <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050;">
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         </div>
     @endif
