@@ -138,8 +138,9 @@
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="deleteModalLabel{{ $quiz->id }}">
                                                         Xác nhận xóa bài kiểm tra</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
                                                 </div>
                                                 <div class="modal-body">
                                                     Bạn có chắc chắn muốn xóa bài kiểm tra "{{ $quiz->title }}"? Hành
@@ -147,10 +148,10 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Hủy</button>
+                                                        data-dismiss="modal">Hủy</button>
                                                     <button type="button" class="btn btn-danger"
                                                         wire:click="deleteQuiz({{ $quiz->id }})"
-                                                        data-bs-dismiss="modal">Xóa</button>
+                                                        data-dismiss="modal">Xóa</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -182,14 +183,18 @@
             <div class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3"
                 role="alert">
                 <i class="bi bi-check-circle mr-2"></i>{{ session('message') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         @endif
 
         @if (session()->has('error'))
             <div class="alert alert-danger alert-dismissible fade show position-fixed top-0 end-0 m-3" role="alert">
                 <i class="bi bi-exclamation-triangle mr-2"></i>{{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         @endif
     </div>
