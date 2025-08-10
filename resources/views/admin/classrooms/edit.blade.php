@@ -298,6 +298,37 @@
                                     @enderror
                                 </div>
                             </div>
+                            
+                            <!-- Cảnh báo trùng lịch real-time -->
+                            @if($realTimeValidation && !empty($teacherConflicts))
+                                <div class="mb-3">
+                                    <div class="alert alert-warning border-warning">
+                                        <div class="d-flex align-items-start">
+                                            <i class="bi bi-exclamation-triangle-fill text-warning me-2 mt-1"></i>
+                                            <div>
+                                                <strong>Cảnh báo trùng lịch!</strong>
+                                                <div class="small mt-1">
+                                                    Phát hiện trùng lịch với các lớp hiện có. Vui lòng kiểm tra và điều chỉnh lịch học.
+                                                </div>
+                                                <div class="mt-2">
+                                                    @foreach($teacherConflicts as $teacherId => $conflictData)
+                                                        <div class="small text-danger mb-1">
+                                                            <strong>{{ $conflictData['teacher']->name }}:</strong>
+                                                            @foreach($conflictData['conflicts'] as $conflict)
+                                                                {{ $conflict['message'] }}
+                                                                @if($conflict['overlapTime'])
+                                                                    (Trùng: {{ $conflict['overlapTime'] }})
+                                                                @endif
+                                                            @endforeach
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                            
                             <div class="mb-3">
                                 <label for="notes" class="form-label">Mô tả</label>
                                 <textarea wire:model="notes" class="form-control @error('notes') is-invalid @enderror" id="notes" rows="3"
@@ -328,4 +359,77 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Cảnh báo trùng lịch giáo viên -->
+    @if($showConflictModal)
+    <div class="modal fade show" style="display: block;" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        Cảnh báo trùng lịch giáo viên!
+                    </h5>
+                    <button type="button" class="btn-close" wire:click="closeConflictModal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-warning">
+                        <strong>Phát hiện trùng lịch dạy!</strong> Một số giáo viên được chọn có lịch dạy trùng với các lớp khác.
+                    </div>
+                    
+                    <div class="conflicts-list" style="max-height: 400px; overflow-y: auto;">
+                        @foreach($teacherConflicts as $teacherId => $conflictData)
+                            <div class="card border-warning mb-3">
+                                <div class="card-header bg-warning bg-opacity-10">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-person-circle text-warning me-2"></i>
+                                        <strong>{{ $conflictData['teacher']->name }}</strong>
+                                        <span class="badge bg-warning text-dark ms-auto">Giáo viên</span>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <h6 class="text-danger mb-2">Các lớp bị trùng lịch:</h6>
+                                    @foreach($conflictData['conflicts'] as $conflict)
+                                        <div class="alert alert-danger py-2 mb-2">
+                                            <div class="d-flex align-items-start">
+                                                <i class="bi bi-calendar-x text-danger me-2 mt-1"></i>
+                                                <div>
+                                                    <strong>{{ $conflict['classroom']->name }}</strong>
+                                                    <div class="small text-muted mt-1">
+                                                        <i class="bi bi-clock me-1"></i>
+                                                        {{ $conflict['message'] }}
+                                                    </div>
+                                                    @if($conflict['overlapTime'])
+                                                        <div class="small text-danger mt-1">
+                                                            <i class="bi bi-exclamation-circle me-1"></i>
+                                                            Thời gian trùng: {{ $conflict['overlapTime'] }}
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle me-2"></i>
+                        <strong>Lưu ý:</strong> Bạn có thể chọn cập nhật lớp bất chấp trùng lịch, nhưng điều này có thể gây ra vấn đề trong việc sắp xếp lịch dạy của giáo viên.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" wire:click="closeConflictModal">
+                        <i class="bi bi-x-circle me-2"></i>Hủy bỏ
+                    </button>
+                    <button type="button" class="btn btn-warning" wire:click="forceUpdate">
+                        <i class="bi bi-exclamation-triangle me-2"></i>Cập nhật bất chấp trùng lịch
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+    @endif
 </x-layouts.dash-admin>
