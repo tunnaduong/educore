@@ -8,6 +8,8 @@ use App\Models\Classroom;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class Index extends Component
 {
@@ -47,7 +49,7 @@ class Index extends Component
     public function selectClass($classId)
     {
         $this->selectedClass = Classroom::with('users')->find($classId);
-        \Log::info('[Chat Debug] selectClass: Chọn lớp', [
+        Log::info('[Chat Debug] selectClass: Chọn lớp', [
             'class_id' => $classId,
             'selectedClass' => $this->selectedClass ? $this->selectedClass->toArray() : null,
             'current_user_id' => auth()->id(),
@@ -103,8 +105,8 @@ class Index extends Component
         $message = Message::create($messageData);
 
         // Dispatch event để broadcast tin nhắn
-        \Log::info('Dispatching MessageSent event', ['message_id' => $message->id]);
-        \App\Events\MessageSent::dispatch($message);
+        // \Log::info('Dispatching MessageSent event', ['message_id' => $message->id]);
+        // \App\Events\MessageSent::dispatch($message);
 
         $this->messageText = '';
         $this->attachment = null;
@@ -245,6 +247,18 @@ class Index extends Component
     public function dispatchCloseAddMemberModal()
     {
         $this->dispatch('closeAddMemberModal');
+    }
+
+    public function downloadAttachment($messageId)
+    {
+        $message = Message::find($messageId);
+        if ($message && $message->attachment) {
+            $path = Storage::disk('public')->path($message->attachment);
+            if (file_exists($path)) {
+                return response()->download($path);
+            }
+        }
+        return back()->with('error', 'File không tồn tại');
     }
 
     public function render()
