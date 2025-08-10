@@ -47,14 +47,18 @@
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <i class="bi bi-check-circle-fill mr-2"></i>{{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         @endif
 
         @if (session('error'))
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <i class="bi bi-exclamation-triangle-fill mr-2"></i>{{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         @endif
 
@@ -116,8 +120,9 @@
                                 </tr>
 
                                 <!-- Delete Confirmation Modal -->
-                                <div class="modal fade" id="deleteModal{{ $user->id }}" tabindex="-1" role="dialog"
-                                    aria-labelledby="deleteModalLabel{{ $user->id }}" aria-hidden="true">
+                                <div class="modal fade" id="deleteModal{{ $user->id }}" tabindex="-1"
+                                    role="dialog" aria-labelledby="deleteModalLabel{{ $user->id }}"
+                                    aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -125,7 +130,8 @@
                                                     <i class="bi bi-exclamation-triangle text-danger mr-2"></i>
                                                     Xác nhận xóa người dùng
                                                 </h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
@@ -134,20 +140,22 @@
                                                     <i class="bi bi-person-x text-danger" style="font-size: 3rem;"></i>
                                                 </div>
                                                 <p class="text-center">
-                                                    Bạn có chắc chắn muốn xóa người dùng <strong>"{{ $user->name }}"</strong>?
+                                                    Bạn có chắc chắn muốn xóa người dùng
+                                                    <strong>"{{ $user->name }}"</strong>?
                                                 </p>
                                                 <div class="alert alert-warning">
                                                     <i class="bi bi-exclamation-triangle mr-2"></i>
-                                                    <strong>Cảnh báo:</strong> Hành động này không thể hoàn tác và sẽ xóa tất cả dữ liệu liên quan.
+                                                    <strong>Cảnh báo:</strong> Hành động này không thể hoàn tác và sẽ
+                                                    xóa tất cả dữ liệu liên quan.
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">
                                                     <i class="bi bi-x-circle mr-1"></i>Hủy
                                                 </button>
-                                                <button type="button" class="btn btn-danger" 
-                                                    wire:click="delete({{ $user->id }})"
-                                                    data-dismiss="modal">
+                                                <button type="button" class="btn btn-danger"
+                                                    wire:click="delete({{ $user->id }})" data-dismiss="modal">
                                                     <i class="bi bi-trash mr-1"></i>Xóa người dùng
                                                 </button>
                                             </div>
