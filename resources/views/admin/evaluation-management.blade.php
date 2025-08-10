@@ -12,6 +12,22 @@
             </div>
         </div>
 
+        <!-- Alerts on top -->
+        @if (session()->has('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle me-2"></i>
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
+        @if (session()->has('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
+
         <!-- Tabs -->
         <ul class="nav nav-tabs mb-4" id="evaluationTabs" role="tablist">
             <li class="nav-item" role="presentation">
@@ -27,6 +43,12 @@
                     <i class="bi bi-question-circle me-2"></i>Quản lý câu hỏi
                 </button>
             </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link {{ $activeTab === 'rounds' ? 'active' : '' }}"
+                    wire:click="$set('activeTab', 'rounds')" type="button" role="tab" style="cursor: pointer;">
+                    <i class="bi bi-calendar-event me-2"></i>Quản lý đợt đánh giá
+                </button>
+            </li>
         </ul>
 
         <!-- Tab Content -->
@@ -34,13 +56,24 @@
             <!-- Tab 1: Danh sách đánh giá -->
             <div class="{{ $activeTab === 'evaluations' ? 'd-block' : 'd-none' }}" id="evaluations" role="tabpanel">
                 <!-- Hướng dẫn tính điểm -->
-                <div class="alert alert-info mb-4">
-                    <h6 class="alert-heading"><i class="bi bi-info-circle me-2"></i>Hướng dẫn tính điểm:</h6>
-                    <ul class="mb-0">
-                        <li><strong>1-2 điểm:</strong> Không hài lòng</li>
-                        <li><strong>3 điểm:</strong> Bình thường</li>
-                        <li><strong>4-5 điểm:</strong> Hài lòng</li>
-                    </ul>
+                <div class="alert mb-4" style="background-color: #17a2b8; color: white; border: none;">
+                    <h6 class="alert-heading fw-bold" style="color: white;">
+                        <i class="bi bi-info-circle me-2"></i>Hướng dẫn tính điểm:
+                    </h6>
+                    <div style="color: white;">
+                        <div class="mb-2">
+                            <strong style="color: white;">Điểm TB đánh giá giáo viên:</strong> Trung bình cộng các câu hỏi nhóm 1 (1-5 điểm/câu).
+                        </div>
+                        <div class="mb-2">
+                            <strong style="color: white;">Điểm TB đánh giá khóa học:</strong> Trung bình cộng các câu hỏi nhóm 2 (1-5 điểm/câu).
+                        </div>
+                        <div class="mb-2">
+                            <strong style="color: white;">Điểm hài lòng cá nhân:</strong> Điểm câu hỏi số 10 (1-5 điểm).
+                        </div>
+                        <div style="color: #f0f0f0; font-size: 0.9em;">
+                            Điểm càng cao mức độ hài lòng càng lớn.
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Bộ lọc -->
@@ -49,12 +82,37 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <label for="classroomFilter" class="form-label">Lọc theo lớp:</label>
-                                <select wire:model.live="classroomId" class="form-control" id="classroomFilter">
-                                    <option value="">Tất cả lớp</option>
-                                    @foreach ($classrooms as $classroom)
-                                        <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
-                                    @endforeach
-                                </select>
+                                <div class="d-flex gap-2">
+                                    <select wire:model.live="classroomId" class="form-control" id="classroomFilter">
+                                        <option value="">Tất cả lớp</option>
+                                        @foreach ($classrooms as $classroom)
+                                            <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @if($classroomId)
+                                        <button class="btn btn-outline-secondary btn-sm" wire:click="resetFilter"
+                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Xóa bộ lọc">
+                                            <i class="bi bi-x-lg"></i>
+                                        </button>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="roundFilter" class="form-label">Lọc theo đợt đánh giá:</label>
+                                <div class="d-flex gap-2">
+                                    <select wire:model.live="roundId" class="form-control" id="roundFilter">
+                                        <option value="">Tất cả đợt</option>
+                                        @foreach ($evaluationRounds as $round)
+                                            <option value="{{ $round->id }}">{{ $round->name }} ({{ $round->start_date->format('d/m') }} - {{ $round->end_date->format('d/m') }})</option>
+                                        @endforeach
+                                    </select>
+                                    @if($roundId)
+                                        <button class="btn btn-outline-secondary btn-sm" wire:click="resetFilter"
+                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Xóa bộ lọc">
+                                            <i class="bi bi-x-lg"></i>
+                                        </button>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -75,7 +133,7 @@
                                     </div>
                                 </div>
                                 <div class="progress mt-2" style="height: 6px;">
-                                    <div class="progress-bar bg-light" style="width: {{ ($avgTeacher / 5) * 100 }}%">
+                                    <div class="progress-bar" style="width: {{ ($avgTeacher / 5) * 100 }}%; background-color: #000000; opacity: 0.3;">
                                     </div>
                                 </div>
                             </div>
@@ -94,7 +152,7 @@
                                     </div>
                                 </div>
                                 <div class="progress mt-2" style="height: 6px;">
-                                    <div class="progress-bar bg-light" style="width: {{ ($avgCourse / 5) * 100 }}%">
+                                    <div class="progress-bar" style="width: {{ ($avgCourse / 5) * 100 }}%; background-color: #000000; opacity: 0.3;">
                                     </div>
                                 </div>
                             </div>
@@ -113,7 +171,7 @@
                                     </div>
                                 </div>
                                 <div class="progress mt-2" style="height: 6px;">
-                                    <div class="progress-bar bg-light" style="width: {{ ($avgPersonal / 5) * 100 }}%">
+                                    <div class="progress-bar" style="width: {{ ($avgPersonal / 5) * 100 }}%; background-color: #000000; opacity: 0.3;">
                                     </div>
                                 </div>
                             </div>
@@ -134,6 +192,7 @@
                                         <tr>
                                             <th>Học viên</th>
                                             <th>Lớp</th>
+                                            <th>Đợt</th>
                                             <th>Điểm TB</th>
                                             <th>Trạng thái</th>
                                             <th>Ngày gửi</th>
@@ -150,7 +209,7 @@
                                                             <span
                                                                 class="text-white fw-bold">{{ substr($evaluation->student->user->name ?? 'N/A', 0, 1) }}</span>
                                                         </div>
-                                                        <div>
+<div>
                                                             <div class="fw-bold">
                                                                 {{ $evaluation->student->user->name ?? 'N/A' }}</div>
                                                             <small
@@ -158,11 +217,22 @@
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>{{ $evaluation->student->classroom->name ?? 'N/A' }}</td>
+                                                <td>
+                                                    @if($evaluation->student->user->enrolledClassrooms->count() > 0)
+                                                        @foreach($evaluation->student->user->enrolledClassrooms as $classroom)
+                                                            <span class="badge bg-info me-1">{{ $classroom->name }}</span>
+                                                        @endforeach
+                                                    @else
+                                                        <span class="text-muted">Chưa phân lớp</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-secondary">{{ $evaluation->evaluationRound->name ?? 'N/A' }}</span>
+                                                </td>
                                                 <td>
                                                     <div class="d-flex align-items-center">
                                                         <span
-                                                            class="fw-bold me-2">{{ number_format($evaluation->getOverallRating(), 1) }}/5.0</span>
+                                                            class="fw-bold mr-2">{{ number_format($evaluation->getOverallRating(), 1) }}/5.0</span>
                                                         @php
                                                             $rating = $evaluation->getOverallRating();
                                                             $color =
@@ -193,10 +263,19 @@
                                                 <td>{{ $evaluation->submitted_at ? $evaluation->submitted_at->format('d/m/Y H:i') : 'N/A' }}
                                                 </td>
                                                 <td>
-                                                    <button class="btn btn-sm btn-outline-primary"
-                                                        wire:click="showEvaluationDetail({{ $evaluation->id }})">
-                                                        <i class="bi bi-eye me-1"></i>Xem chi tiết
-                                                    </button>
+                                                    <div class="btn-group btn-group-sm">
+                                                        <button class="btn btn-outline-primary"
+                                                            wire:click="showEvaluationDetail({{ $evaluation->id }})"
+                                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Xem chi tiết">
+                                                            <i class="bi bi-eye"></i>
+                                                        </button>
+                                                        <button class="btn btn-outline-danger"
+                                                            wire:click="deleteEvaluation({{ $evaluation->id }})"
+                                                            onclick="return confirm('Bạn có chắc chắn muốn xóa đánh giá này?')"
+                                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Xóa đánh giá">
+                                                            <i class="bi bi-trash"></i>
+                                                        </button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -204,7 +283,7 @@
                                 </table>
                             </div>
                             <div class="d-flex justify-content-center mt-3">
-                                {{ $evaluations->links() }}
+                                {{ $evaluations->links('vendor.pagination.bootstrap-4') }}
                             </div>
                         @else
                             <div class="text-center py-4">
@@ -225,7 +304,8 @@
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-end mb-3">
-                            <button class="btn btn-primary" wire:click="showAddQuestionModal">
+                            <button class="btn btn-primary" wire:click="showAddQuestionModal"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Thêm câu hỏi mới">
                                 <i class="bi bi-plus-circle me-2"></i>Thêm câu hỏi
                             </button>
                         </div>
@@ -244,7 +324,13 @@
                                     <tbody>
                                         @foreach ($questions as $question)
                                             <tr>
-                                                <td>{{ $question->order }}</td>
+                                                <td>
+                                                    @if($question->is_active && isset($displayOrderMap[$question->id]))
+                                                        {{ $displayOrderMap[$question->id] }}
+                                                    @else
+                                                        —
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     @switch($question->category)
                                                         @case('teacher')
@@ -271,18 +357,22 @@
                                                 <td>
                                                     <div class="btn-group btn-group-sm">
                                                         <button class="btn btn-outline-primary"
-                                                            wire:click="showEditQuestionModal({{ $question->id }})">
+                                                            wire:click="showEditQuestionModal({{ $question->id }})"
+                                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Sửa câu hỏi">
                                                             <i class="bi bi-pencil"></i>
                                                         </button>
                                                         <button
                                                             class="btn btn-outline-{{ $question->is_active ? 'warning' : 'success' }}"
-                                                            wire:click="toggleQuestionStatus({{ $question->id }})">
+                                                            wire:click="toggleQuestionStatus({{ $question->id }})"
+                                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                                            title="{{ $question->is_active ? 'Tạm dừng' : 'Kích hoạt' }}">
                                                             <i
                                                                 class="bi bi-{{ $question->is_active ? 'pause' : 'play' }}"></i>
                                                         </button>
                                                         <button class="btn btn-outline-danger"
                                                             wire:click="deleteQuestion({{ $question->id }})"
-                                                            onclick="return confirm('Bạn có chắc chắn muốn xóa câu hỏi này?')">
+                                                            onclick="return confirm('Bạn có chắc chắn muốn xóa câu hỏi này?')"
+                                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Xóa câu hỏi">
                                                             <i class="bi bi-trash"></i>
                                                         </button>
                                                     </div>
@@ -292,6 +382,9 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <div class="d-flex justify-content-center mt-3">
+                                {{ $questions->links('vendor.pagination.bootstrap-4') }}
+                            </div>
                         @else
                             <div class="text-center py-4">
                                 <i class="bi bi-question-circle fs-1 text-muted mb-3"></i>
@@ -300,6 +393,111 @@
                                     học tập.</p>
                                 <button class="btn btn-primary" wire:click="showAddQuestionModal">
                                     <i class="bi bi-plus-circle me-2"></i>Thêm câu hỏi đầu tiên
+                                </button>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Quản lý đợt đánh giá -->
+            <div class="{{ $activeTab === 'rounds' ? 'd-block' : 'd-none' }}" id="rounds" role="tabpanel">
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="mb-0">Quản lý đợt đánh giá</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-end mb-3">
+                            <button class="btn btn-primary" wire:click="showAddRoundModal"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Thêm đợt đánh giá mới">
+                                <i class="bi bi-plus-circle me-2"></i>Thêm đợt đánh giá
+                            </button>
+                        </div>
+                        @if ($evaluationRounds->count() > 0)
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Tên đợt đánh giá</th>
+                                            <th>Mô tả</th>
+                                            <th>Thời gian</th>
+                                            <th>Trạng thái</th>
+                                            <th>Số đánh giá</th>
+                                            <th>Thao tác</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($evaluationRounds as $round)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>
+                                                    <div class="fw-bold">{{ $round->name }}</div>
+                                                </td>
+                                                <td>
+                                                    @if($round->description)
+                                                        <span class="text-muted">{{ Str::limit($round->description, 50) }}</span>
+                                                    @else
+                                                        <span class="text-muted">Không có mô tả</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <div class="small">
+                                                        <div><strong>Từ:</strong> {{ $round->start_date->format('d/m/Y') }}</div>
+                                                        <div><strong>Đến:</strong> {{ $round->end_date->format('d/m/Y') }}</div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    @php
+                                                        $statusColor = match($round->status) {
+                                                            'active' => 'success',
+                                                            'upcoming' => 'info',
+                                                            'ended' => 'secondary',
+                                                            'inactive' => 'danger',
+                                                            default => 'secondary'
+                                                        };
+                                                    @endphp
+                                                    <span class="badge bg-{{ $statusColor }}">{{ $round->status_text }}</span>
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-primary">{{ $round->evaluations->count() }}</span>
+                                                </td>
+                                                <td>
+                                                    <div class="btn-group btn-group-sm">
+                                                        <button class="btn btn-outline-primary"
+                                                                wire:click="showEditRoundModal({{ $round->id }})"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Sửa đợt đánh giá">
+                                                            <i class="bi bi-pencil"></i>
+                                                        </button>
+                                                        <button class="btn btn-outline-{{ $round->is_active ? 'warning' : 'success' }}"
+                                                                wire:click="toggleRoundStatus({{ $round->id }})"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                title="{{ $round->is_active ? 'Tạm dừng' : 'Kích hoạt' }}">
+                                                            <i class="bi bi-{{ $round->is_active ? 'pause' : 'play' }}"></i>
+                                                        </button>
+                                                        <button class="btn btn-outline-danger"
+                                                                wire:click="deleteRound({{ $round->id }})"
+                                                                onclick="return confirm('Bạn có chắc chắn muốn xóa đợt đánh giá này?')"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Xóa đợt đánh giá">
+                                                            <i class="bi bi-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="d-flex justify-content-center mt-3">
+                                {{ $evaluationRounds->links('vendor.pagination.bootstrap-4') }}
+                            </div>
+                        @else
+                            <div class="text-center py-4">
+                                <i class="bi bi-calendar-x fs-1 text-muted mb-3"></i>
+                                <h5 class="text-muted">Chưa có đợt đánh giá nào</h5>
+                                <p class="text-muted">Hãy tạo đợt đánh giá để học viên có thể thực hiện đánh giá.</p>
+                                <button class="btn btn-primary" wire:click="showAddRoundModal">
+                                    <i class="bi bi-plus-circle me-2"></i>Tạo đợt đánh giá đầu tiên
                                 </button>
                             </div>
                         @endif
@@ -451,25 +649,129 @@
                 </div>
             </div>
         @endif
+
+        <!-- Modal thêm/sửa đợt đánh giá -->
+        @if ($showRoundModal)
+            <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5); z-index: 1050;"
+                tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                <i class="bi bi-calendar-event me-2"></i>
+                                {{ $editingRound ? 'Sửa đợt đánh giá' : 'Thêm đợt đánh giá mới' }}
+                            </h5>
+                            <button type="button" class="btn-close" wire:click="closeRoundModal">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                        </div>
+                        <form wire:submit.prevent="saveRound" novalidate>
+                            <div class="modal-body">
+                                @if (session()->has('error'))
+                                    <div class="alert alert-danger d-flex align-items-center" role="alert">
+                                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                        <div>{{ session('error') }}</div>
+                                    </div>
+                                @endif
+                                <div class="mb-3">
+                                    <label for="round_name" class="form-label">Tên đợt đánh giá <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" wire:model="roundForm.name" class="form-control" id="round_name"
+                                        placeholder="Nhập tên đợt đánh giá...">
+                                    @error('roundForm.name')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label for="round_description" class="form-label">Mô tả</label>
+                                    <textarea wire:model="roundForm.description" class="form-control" id="round_description" rows="3"
+                                        placeholder="Nhập mô tả đợt đánh giá..."></textarea>
+                                    @error('roundForm.description')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="start_date" class="form-label">Ngày bắt đầu <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="date" wire:model="roundForm.start_date" class="form-control" id="start_date">
+                                            @error('roundForm.start_date')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="end_date" class="form-label">Ngày kết thúc <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="date" wire:model="roundForm.end_date" class="form-control" id="end_date">
+                                            @error('roundForm.end_date')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input wire:model="roundForm.is_active" class="form-check-input" type="checkbox" id="round_is_active">
+                                        <label class="form-check-label" for="round_is_active">
+                                            Đợt đánh giá hoạt động
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" wire:click="closeRoundModal">
+                                    Hủy
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-check-circle me-2"></i>
+                                    {{ $editingRound ? 'Cập nhật' : 'Thêm mới' }}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        @endif
     </div>
 
-    @if (session()->has('success'))
-        <div class="position-fixed top-0 end-0 p-3" style="z-index: 1060;">
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle me-2"></i>
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        </div>
-    @endif
+    <script>
+        // Kích hoạt tooltip cho tất cả các button có data-bs-toggle="tooltip"
+        document.addEventListener('DOMContentLoaded', function() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
 
-    @if (session()->has('error'))
-        <div class="position-fixed top-0 end-0 p-3" style="z-index: 1060;">
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-triangle me-2"></i>
-                {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        </div>
-    @endif
+            // Auto dismiss alerts sau 4 giây
+            setTimeout(function() {
+                document.querySelectorAll('.alert.fade.show').forEach(function(el){
+                    var alert = new bootstrap.Alert(el);
+                    alert.close();
+                });
+            }, 4000);
+        });
+
+        // Kích hoạt tooltip cho các element được tạo động bởi Livewire
+        document.addEventListener('livewire:load', function () {
+            Livewire.hook('message.processed', (message, component) => {
+                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+                    if (!tooltipTriggerEl._tooltip) {
+                        new bootstrap.Tooltip(tooltipTriggerEl);
+                    }
+                });
+
+                // Auto dismiss alerts sau mỗi lần cập nhật Livewire
+                setTimeout(function() {
+                    document.querySelectorAll('.alert.fade.show').forEach(function(el){
+                        var alert = new bootstrap.Alert(el);
+                        alert.close();
+                    });
+                }, 4000);
+            });
+        });
+    </script>
 </x-layouts.dash-admin>
