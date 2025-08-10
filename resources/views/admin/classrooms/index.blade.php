@@ -1,5 +1,27 @@
 <x-layouts.dash-admin active="classrooms" title="@lang('general.manage_classrooms')">
     @include('components.language')
+    
+    <!-- Flash Messages -->
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle mr-2"></i>
+            {{ session('success') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+    
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle mr-2"></i>
+            {{ session('error') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+    
     <div class="row">
         <div class="col-12">
             <!-- Header -->
@@ -43,6 +65,7 @@
                                 <option value="">@lang('general.all_status')</option>
                                 <option value="active">@lang('general.active')</option>
                                 <option value="inactive">@lang('general.inactive')</option>
+                                <option value="completed">@lang('general.completed')</option>
                             </select>
                         </div>
                     </div>
@@ -78,7 +101,9 @@
                                                 </div>
                                                 <div>
                                                     <div class="font-weight-bold">{{ $classroom->name }}</div>
-                                                    <small class="text-muted">{{ $classroom->notes }}</small>
+                                                    @if(isset($classroom->notes) && $classroom->notes)
+                                                        <small class="text-muted">{{ $classroom->notes }}</small>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </td>
@@ -95,9 +120,23 @@
                                             <span class="badge badge-info">{{ $classroom->students_count }}</span>
                                         </td>
                                         <td class="text-center">
-                                            <span
-                                                class="badge badge-{{ $classroom->status == 'active' ? 'success' : 'secondary' }}">
-                                                {{ $classroom->status == 'active' ? __('general.active') : __('general.inactive') }}
+                                            @php
+                                                $statusClass = match($classroom->status) {
+                                                    'active' => 'success',
+                                                    'inactive' => 'secondary',
+                                                    'completed' => 'warning',
+                                                    default => 'secondary'
+                                                };
+                                                
+                                                $statusText = match($classroom->status) {
+                                                    'active' => __('general.active'),
+                                                    'inactive' => __('general.inactive'),
+                                                    'completed' => __('general.completed'),
+                                                    default => __('general.inactive')
+                                                };
+                                            @endphp
+                                            <span class="badge badge-{{ $statusClass }}">
+                                                {{ $statusText }}
                                             </span>
                                         </td>
                                         <td class="text-center">
@@ -125,11 +164,26 @@
                                                     class="btn btn-sm btn-outline-primary" title="@lang('general.edit')">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <button type="button" data-toggle="modal"
-                                                    data-target="#deleteModal{{ $classroom->id }}"
-                                                    class="btn btn-sm btn-outline-danger" title="@lang('general.delete')">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
+                                                
+                                                @if ($classroom->status === 'active')
+                                                    <button type="button" class="btn btn-sm btn-outline-warning" 
+                                                        title="@lang('general.cannot_delete_active_classroom')" disabled>
+                                                        <i class="fas fa-lock"></i>
+                                                    </button>
+                                                @elseif ($classroom->students_count > 0)
+                                                    <button type="button" data-toggle="modal"
+                                                        data-target="#deleteModal{{ $classroom->id }}"
+                                                        class="btn btn-sm btn-outline-warning" 
+                                                        title="@lang('general.hide_classroom_with_students')">
+                                                        <i class="fas fa-eye-slash"></i>
+                                                    </button>
+                                                @else
+                                                    <button type="button" data-toggle="modal"
+                                                        data-target="#deleteModal{{ $classroom->id }}"
+                                                        class="btn btn-sm btn-outline-danger" title="@lang('general.delete')">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>
@@ -141,7 +195,11 @@
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="deleteModalLabel{{ $classroom->id }}">
-                                                        @lang('general.confirm_delete_classroom')
+                                                        @if ($classroom->students_count > 0)
+                                                            @lang('general.confirm_hide_classroom')
+                                                        @else
+                                                            @lang('general.confirm_delete_classroom')
+                                                        @endif
                                                     </h5>
                                                     <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
@@ -149,14 +207,25 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    @lang('general.delete_classroom_message', ['name' => $classroom->name])
+                                                    @if ($classroom->students_count > 0)
+                                                        @lang('general.hide_classroom_message', ['name' => $classroom->name])
+                                                    @else
+                                                        @lang('general.delete_classroom_message', ['name' => $classroom->name])
+                                                    @endif
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
                                                         data-dismiss="modal">@lang('general.cancel')</button>
-                                                    <button type="button" class="btn btn-danger" id="confirmDelete"
+                                                    <button type="button" class="btn btn-{{ $classroom->students_count > 0 ? 'warning' : 'danger' }}" 
+                                                        id="confirmDelete{{ $classroom->id }}"
                                                         wire:click="delete({{ $classroom->id }})"
-                                                        data-dismiss="modal">@lang('general.delete')</button>
+                                                        onclick="closeModal({{ $classroom->id }})">
+                                                        @if ($classroom->students_count > 0)
+                                                            @lang('general.hide')
+                                                        @else
+                                                            @lang('general.delete')
+                                                        @endif
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -182,4 +251,20 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <script>
+        function closeModal(classroomId) {
+            setTimeout(function() {
+                $('#deleteModal' + classroomId).modal('hide');
+            }, 100);
+        }
+        
+        // Lắng nghe sự kiện refresh từ Livewire
+        document.addEventListener('livewire:initialized', () => {
+            Livewire.on('refresh', () => {
+                window.location.reload();
+            });
+        });
+    </script>
 </x-layouts.dash-admin>

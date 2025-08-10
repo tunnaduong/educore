@@ -97,4 +97,10 @@ return [
     'delete_classroom_message' => 'Bạn có chắc chắn muốn xóa lớp học ":name"? Hành động này không thể hoàn tác.',
     'cancel' => 'Hủy',
     'showing_results' => 'Hiển thị :from - :to trên tổng số :total lớp học',
+    'completed' => 'Đã hoàn thành',
+    'cannot_delete_active_classroom' => 'Không thể xóa lớp đang hoạt động',
+    'hide_classroom_with_students' => 'Ẩn lớp học có học viên',
+    'confirm_hide_classroom' => 'Xác nhận ẩn lớp học',
+    'hide_classroom_message' => 'Lớp học ":name" sẽ được ẩn khỏi danh sách nhưng dữ liệu vẫn được giữ lại.',
+    'hide' => 'Ẩn',
 ];
