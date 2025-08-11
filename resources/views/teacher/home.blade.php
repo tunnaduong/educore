@@ -100,9 +100,10 @@
             </div>
             <!-- Báo cáo đánh giá SV -->
             <div class="col-6 col-md-3 text-center">
-                <a href="{{ route('teacher.evaluations.report') }}" wire:navigate class="text-decoration-none text-dark">
+                <a href="{{ route('teacher.evaluations.report') }}" wire:navigate
+                    class="text-decoration-none text-dark">
                     <div class="mb-2">
-                        <i class="fas fa-star" style="font-size:2.5rem; color:#e91e63;"></i>
+                        <i class="bi bi-star-fill" style="font-size:2.5rem; color:#e91e63;"></i>
                     </div>
                     <div>Báo cáo đánh giá</div>
                 </a>

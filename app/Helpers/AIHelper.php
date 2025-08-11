@@ -88,7 +88,39 @@ class AIHelper
     }
 
     /**
-     * Kiểm tra và sửa lỗi quiz
+     * Kiểm tra và sửa lỗi quiz đã được lưu trong database
+     */
+    public function validateSavedQuizWithAI($quiz)
+    {
+        try {
+            if (empty($quiz->questions)) {
+                return null;
+            }
+
+            $result = $this->geminiService->validateAndFixQuiz($quiz->questions);
+
+            if ($result && !empty($result['fixed_questions'])) {
+                // Cập nhật quiz với câu hỏi đã sửa và lưu vào database
+                $quiz->questions = $result['fixed_questions'];
+                $quiz->ai_validation_errors = json_encode($result['errors_found'] ?? []);
+                $quiz->ai_suggestions = json_encode($result['suggestions'] ?? []);
+                $quiz->ai_validated_at = now();
+                $quiz->save();
+
+                return $result;
+            }
+        } catch (\Exception $e) {
+            Log::error('AI saved quiz validation error', [
+                'quiz_id' => $quiz->id ?? 'unknown',
+                'error' => $e->getMessage()
+            ]);
+        }
+
+        return null;
+    }
+
+    /**
+     * Kiểm tra và sửa lỗi quiz (cho temporary objects)
      */
     public function validateQuizWithAI($quiz)
     {
@@ -100,18 +132,21 @@ class AIHelper
             $result = $this->geminiService->validateAndFixQuiz($quiz->questions);
 
             if ($result && !empty($result['fixed_questions'])) {
-                // Cập nhật quiz với câu hỏi đã sửa
+                // Chỉ cập nhật questions trong object, không save
                 $quiz->questions = $result['fixed_questions'];
-                $quiz->ai_validation_errors = json_encode($result['errors_found'] ?? []);
-                $quiz->ai_suggestions = json_encode($result['suggestions'] ?? []);
-                $quiz->ai_validated_at = now();
-                $quiz->save();
+
+                // Thêm thông tin validation vào result
+                $result['validation_info'] = [
+                    'errors_found' => $result['errors_found'] ?? [],
+                    'suggestions' => $result['suggestions'] ?? [],
+                    'validated_at' => now()->toDateTimeString()
+                ];
 
                 return $result;
             }
         } catch (\Exception $e) {
             Log::error('AI quiz validation error', [
-                'quiz_id' => $quiz->id,
+                'quiz_type' => get_class($quiz),
                 'error' => $e->getMessage()
             ]);
         }
