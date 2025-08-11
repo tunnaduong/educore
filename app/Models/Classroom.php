@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Classroom extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -80,5 +81,26 @@ class Classroom extends Model
                 $q->where('id', '>', $lastReadId);
             })
             ->count();
+    }
+
+    // Thêm các relationship counts để kiểm tra điều kiện xóa
+    public function getStudentsCountAttribute()
+    {
+        return $this->students()->count();
+    }
+
+    public function getAssignmentsCountAttribute()
+    {
+        return $this->assignments()->count();
+    }
+
+    public function getLessonsCountAttribute()
+    {
+        return $this->lessons()->count();
+    }
+
+    public function getAttendancesCountAttribute()
+    {
+        return $this->attendances()->count();
     }
 }

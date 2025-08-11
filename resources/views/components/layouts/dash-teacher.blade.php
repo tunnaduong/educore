@@ -49,7 +49,9 @@
     </nav>
 
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
-        <a href="/" class="brand-link text-center" wire:navigate>
+        <a href="/" class="brand-link d-flex align-items-center" wire:navigate>
+            <img src="{{ asset('educore-logo.png') }}" alt="EduCore Logo" class="brand-image mr-2"
+                style="max-height: 33px;">
             <span class="brand-text font-weight-light">@lang('general.app_name')</span>
         </a>
         <div class="sidebar">
@@ -126,13 +128,15 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('teacher.reports.index') }}" class="nav-link {{ $active === 'reports' ? 'active' : '' }}" wire:navigate>
+                        <a href="{{ route('teacher.reports.index') }}"
+                            class="nav-link {{ $active === 'reports' ? 'active' : '' }}" wire:navigate>
                             <i class="nav-icon bi bi-bar-chart"></i>
                             <p>@lang('general.class_reports')</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('teacher.evaluations.report') }}" class="nav-link {{ $active === 'evaluations-report' ? 'active' : '' }}" wire:navigate>
+                        <a href="{{ route('teacher.evaluations.report') }}"
+                            class="nav-link {{ $active === 'evaluations-report' ? 'active' : '' }}" wire:navigate>
                             <i class="nav-icon fas fa-star"></i>
                             <p>Báo cáo đánh giá</p>
                         </a>

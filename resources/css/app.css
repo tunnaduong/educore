@@ -86,3 +86,23 @@
     padding: 1.05rem 1rem;
     z-index: 2;
 }
+
+/* Fix AdminLTE card-header ::after pseudo-element conflict with justify-content-between */
+.card-header.d-flex.justify-content-between::after {
+    display: none !important;
+}
+
+/* Alternative solution: Override AdminLTE card-header styling */
+.card-header.d-flex {
+    display: flex !important;
+}
+
+.card-header.d-flex.justify-content-between {
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+/* Ensure card-header children don't interfere with flexbox */
+.card-header.d-flex > * {
+    flex-shrink: 0;
+}
