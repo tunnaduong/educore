@@ -34,19 +34,19 @@
                 <button class="nav-link {{ $activeTab === 'evaluations' ? 'active' : '' }}"
                     wire:click="$set('activeTab', 'evaluations')" type="button" role="tab"
                     style="cursor: pointer;">
-                    <i class="bi bi-list-check me-2"></i>Danh sách đánh giá
+                    <i class="bi bi-list-check me-2"></i> Danh sách đánh giá
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link {{ $activeTab === 'questions' ? 'active' : '' }}"
                     wire:click="$set('activeTab', 'questions')" type="button" role="tab" style="cursor: pointer;">
-                    <i class="bi bi-question-circle me-2"></i>Quản lý câu hỏi
+                    <i class="bi bi-question-circle me-2"></i> Quản lý câu hỏi
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link {{ $activeTab === 'rounds' ? 'active' : '' }}"
                     wire:click="$set('activeTab', 'rounds')" type="button" role="tab" style="cursor: pointer;">
-                    <i class="bi bi-calendar-event me-2"></i>Quản lý đợt đánh giá
+                    <i class="bi bi-calendar-event me-2"></i> Quản lý đợt đánh giá
                 </button>
             </li>
         </ul>
@@ -107,7 +107,8 @@
                                         @foreach ($evaluationRounds as $round)
                                             <option value="{{ $round->id }}">{{ $round->name }}
                                                 ({{ $round->start_date->format('d/m') }} -
-                                                {{ $round->end_date->format('d/m') }})</option>
+                                                {{ $round->end_date->format('d/m') }})
+                                            </option>
                                         @endforeach
                                     </select>
                                     @if ($roundId)
@@ -210,7 +211,7 @@
                                         @foreach ($evaluations as $evaluation)
                                             <tr>
                                                 <td>
-                                                    <div class="d-flex align-items-center">
+                                                    <div class="d-flex align-items-center gap-2">
                                                         <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-2"
                                                             style="width: 40px; height: 40px;">
                                                             <span

@@ -8,7 +8,7 @@
                     <h4 class="mb-0 text-primary fs-4">
                         <i class="bi bi-pencil mr-2"></i>Làm bài tập: {{ $assignment->title }}
                     </h4>
-                    <p class="text-muted mb-0">{{ $assignment->classroom->name }} -
+                    <p class="text-muted mb-0">{{ $assignment->classroom?->name ?? 'N/A' }} -
                         @if ($assignment->classroom->teachers->count())
                             {{ $assignment->classroom->teachers->pluck('name')->join(', ') }}
                         @else
