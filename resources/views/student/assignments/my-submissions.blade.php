@@ -128,7 +128,7 @@
                                         </td>
                                         <td>
                                             <span
-                                                class="badge bg-info">{{ $submission->assignment->classroom->name }}</span>
+                                                class="badge bg-info">{{ $submission->assignment?->classroom?->name ?? 'N/A' }}</span>
                                         </td>
                                         <td>
                                             <span class="badge bg-secondary">

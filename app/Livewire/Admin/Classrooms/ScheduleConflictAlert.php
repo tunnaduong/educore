@@ -39,7 +39,6 @@ class ScheduleConflictAlert extends Component
             $this->conflicts = $allConflicts;
             $this->showConflicts = !empty($allConflicts);
         } catch (\Exception $e) {
-            \Log::error('ScheduleConflictAlert checkConflicts error: ' . $e->getMessage());
             $this->conflicts = [];
             $this->showConflicts = false;
         }
@@ -52,6 +51,6 @@ class ScheduleConflictAlert extends Component
 
     public function render()
     {
-        return view('livewire.admin.classrooms.schedule-conflict-alert');
+        return view('admin.classrooms.schedule-conflict-alert');
     }
 }
