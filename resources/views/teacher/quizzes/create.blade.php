@@ -22,6 +22,28 @@
                         </h6>
                     </div>
                     <div class="card-body">
+                        <style>
+                            /* Loading Button Styles */
+                            .loading-overlay {
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                right: 0;
+                                bottom: 0;
+                                background: rgba(255, 193, 7, 0.9);
+                                border-radius: 0.375rem;
+                                z-index: 10;
+                            }
+
+                            .loading-text {
+                                color: white;
+                                font-weight: 500;
+                            }
+                        </style>
+
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="text-center">
@@ -48,8 +70,19 @@
                                     <i class="fas fa-check-circle fa-3x text-warning mb-3"></i>
                                     <h6>Kiểm tra Lỗi Quiz</h6>
                                     <p class="text-muted small">Tự động kiểm tra và sửa lỗi quiz tiếng Trung</p>
-                                    <button type="button" class="btn btn-warning" wire:click="validateQuizWithAI">
-                                        <i class="fas fa-check-circle mr-1"></i>Kiểm tra AI
+                                    <button type="button" class="btn btn-warning position-relative"
+                                        wire:click="validateQuizWithAI" wire:loading.attr="disabled"
+                                        wire:loading.class="disabled">
+                                        <div wire:loading.remove>
+                                            <i class="fas fa-check-circle mr-1"></i>Kiểm tra AI
+                                        </div>
+                                        <div wire:loading class="loading-overlay">
+                                            <div class="spinner-border spinner-border-sm text-light me-2"
+                                                role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                            <span class="loading-text">Đang kiểm tra...</span>
+                                        </div>
                                     </button>
                                 </div>
                             </div>
@@ -58,6 +91,28 @@
                 </div>
             </div>
         </div>
+
+        <!-- Thông báo -->
+        @if (session()->has('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
+
+        @if (session()->has('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
+
+        @if (session()->has('info'))
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                {{ session('info') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
 
         <form wire:submit="save">
             <div class="row">
@@ -115,13 +170,11 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Thời gian làm bài (phút)</label>
-                                <input type="number" 
-                                    class="form-control @error('time_limit') is-invalid @enderror" 
-                                    wire:model="time_limit" 
-                                    min="1" 
-                                    max="480" 
+                                <input type="number" class="form-control @error('time_limit') is-invalid @enderror"
+                                    wire:model="time_limit" min="1" max="480"
                                     placeholder="Nhập thời gian làm bài (ví dụ: 30)">
-                                <small class="form-text text-muted">Để trống nếu không giới hạn thời gian. Tối đa 8 giờ (480 phút)</small>
+                                <small class="form-text text-muted">Để trống nếu không giới hạn thời gian. Tối đa 8 giờ
+                                    (480 phút)</small>
                                 @error('time_limit')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -155,7 +208,8 @@
                                     <div class="mb-3">
                                         <label class="form-label">Loại câu hỏi <span
                                                 class="text-danger">*</span></label>
-                                        <select class="form-control @error('currentQuestion.type') is-invalid @enderror"
+                                        <select
+                                            class="form-control @error('currentQuestion.type') is-invalid @enderror"
                                             wire:model="currentQuestion.type">
                                             <option value="multiple_choice">Trắc nghiệm</option>
                                             <option value="fill_blank">Điền từ</option>

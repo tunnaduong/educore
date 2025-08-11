@@ -150,6 +150,51 @@ class Create extends Component
         ];
     }
 
+    public function validateQuizWithAI()
+    {
+        if (empty($this->questions)) {
+            session()->flash('error', 'Không có câu hỏi để kiểm tra.');
+            return;
+        }
+
+        try {
+            $aiHelper = new \App\Helpers\AIHelper();
+
+            if (!$aiHelper->isAIAvailable()) {
+                session()->flash('error', 'AI service không khả dụng. Vui lòng kiểm tra cấu hình API.');
+                return;
+            }
+
+            $tempQuiz = (object) [
+                'questions' => $this->questions
+            ];
+
+            $result = $aiHelper->validateQuizWithAI($tempQuiz);
+
+            if ($result && !empty($result['fixed_questions'])) {
+                $this->questions = $result['fixed_questions'];
+
+                // Hiển thị thông tin validation
+                $errorCount = count($result['validation_info']['errors_found'] ?? []);
+                $suggestionCount = count($result['validation_info']['suggestions'] ?? []);
+
+                if ($errorCount > 0) {
+                    session()->flash('success', "Đã kiểm tra và sửa {$errorCount} lỗi trong quiz tiếng Trung!");
+                } else {
+                    session()->flash('success', 'Đã kiểm tra quiz tiếng Trung - không có lỗi cần sửa!');
+                }
+
+                if ($suggestionCount > 0) {
+                    session()->flash('info', "AI đã đưa ra {$suggestionCount} gợi ý cải thiện cho quiz.");
+                }
+            } else {
+                session()->flash('info', 'Quiz không có lỗi cần sửa.');
+            }
+        } catch (\Exception $e) {
+            session()->flash('error', 'Có lỗi xảy ra khi kiểm tra quiz: ' . $e->getMessage());
+        }
+    }
+
     public function save()
     {
         $this->validate();
@@ -159,7 +204,7 @@ class Create extends Component
             'description' => $this->description,
             'class_id' => $this->class_id,
             'deadline' => $this->deadline ? now()->parse($this->deadline) : null,
-            'time_limit' => $this->time_limit ? (int)$this->time_limit : null,
+            'time_limit' => $this->time_limit ? (int) $this->time_limit : null,
             'questions' => $this->questions,
         ]);
 

@@ -137,8 +137,15 @@
                     <li class="nav-item">
                         <a href="{{ route('teacher.evaluations.report') }}"
                             class="nav-link {{ $active === 'evaluations-report' ? 'active' : '' }}" wire:navigate>
-                            <i class="nav-icon fas fa-star"></i>
+                            <i class="nav-icon bi bi-star"></i>
                             <p>Báo cáo đánh giá</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('teacher.ai.index') }}"
+                            class="nav-link {{ $active === 'ai' ? 'active' : '' }}" wire:navigate>
+                            <i class="nav-icon bi bi-robot"></i>
+                            <p>@lang('general.ai_assistant')</p>
                         </a>
                     </li>
                 </ul>
