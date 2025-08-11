@@ -9,6 +9,7 @@ use App\Models\Student;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Storage;
 
 class Index extends Component
 {
@@ -50,7 +51,7 @@ class Index extends Component
         $this->messageType = 'class';
         $this->activeTab = 'classes';
         $this->resetPage();
-        
+
         // Đánh dấu đã đọc
         $lastMsg = Message::where('class_id', $classId)->latest('id')->first();
         if ($lastMsg) {
@@ -98,8 +99,8 @@ class Index extends Component
         $message = Message::create($messageData);
 
         // Dispatch event để broadcast tin nhắn
-        \Illuminate\Support\Facades\Log::info('Dispatching MessageSent event', ['message_id' => $message->id]);
-        \App\Events\MessageSent::dispatch($message);
+        // \Illuminate\Support\Facades\Log::info('Dispatching MessageSent event', ['message_id' => $message->id]);
+        // \App\Events\MessageSent::dispatch($message);
 
         $this->messageText = '';
         $this->attachment = null;
@@ -165,7 +166,7 @@ class Index extends Component
         foreach ($classes as $class) {
             $class->unread_messages_count = $class->unreadMessagesCountForUser(auth()->id());
         }
-        
+
         return $classes;
     }
 
@@ -193,6 +194,18 @@ class Index extends Component
                 $this->dispatch('messageReceived');
             }
         }
+    }
+
+    public function downloadAttachment($messageId)
+    {
+        $message = Message::find($messageId);
+        if ($message && $message->attachment) {
+            $path = Storage::disk('public')->path($message->attachment);
+            if (file_exists($path)) {
+                return response()->download($path);
+            }
+        }
+        return back()->with('error', 'File không tồn tại');
     }
 
     public function render()

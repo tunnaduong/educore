@@ -10,6 +10,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class MessageSent implements ShouldBroadcastNow
 {
@@ -32,7 +33,7 @@ class MessageSent implements ShouldBroadcastNow
      */
     public function broadcastOn(): array
     {
-        \Log::info('Broadcasting message', [
+        Log::info('Broadcasting message', [
             'message_id' => $this->message->id,
             'class_id' => $this->message->class_id,
             'sender_id' => $this->message->sender_id,
