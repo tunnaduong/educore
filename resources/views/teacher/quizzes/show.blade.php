@@ -43,6 +43,16 @@
                             <div class="fw-medium">{{ $quiz->classroom->name ?? 'N/A' }}</div>
                         </div>
                         <div class="mb-3">
+                            <label class="form-label text-muted small">Thời gian làm bài</label>
+                            <div class="fw-medium">
+                                @if ($quiz->time_limit)
+                                    <span class="badge bg-warning text-dark">{{ $quiz->time_limit }} phút</span>
+                                @else
+                                    <span class="text-muted">Không giới hạn</span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="mb-3">
                             <label class="form-label text-muted small">Hạn nộp</label>
                             <div class="fw-medium">
                                 @if ($quiz->deadline)
