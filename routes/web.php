@@ -168,6 +168,11 @@ Route::middleware(['auth', 'role:teacher'])->name('teacher.')->group(function ()
 
     // Báo cáo đánh giá sinh viên
     Route::get('/teacher/evaluations', \App\Livewire\Teacher\EvaluationReport::class)->name('evaluations.report');
+
+    // AI routes
+    Route::get('/teacher/ai/grading/{submissionId}', \App\Livewire\Teacher\AI\AIGrading::class)->name('ai.grading');
+    Route::get('/teacher/ai/quiz-generator', \App\Livewire\Teacher\AI\AIQuizGenerator::class)->name('ai.quiz-generator');
+    Route::get('/teacher/ai/question-bank-generator', \App\Livewire\Teacher\AI\QuestionBankGenerator::class)->name('ai.question-bank-generator');
 });
 
 // Student routes

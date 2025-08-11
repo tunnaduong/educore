@@ -184,10 +184,18 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <button wire:click="viewSubmission({{ $submission->id }})"
-                                                        class="btn btn-sm btn-outline-primary">
-                                                        <i class="bi bi-eye mr-1"></i>Xem
-                                                    </button>
+                                                    <div class="btn-group" role="group">
+                                                        <button wire:click="viewSubmission({{ $submission->id }})"
+                                                            class="btn btn-sm btn-outline-primary">
+                                                            <i class="bi bi-eye mr-1"></i>Xem
+                                                        </button>
+                                                        @if ($submission->submission_type === 'essay' || $submission->submission_type === 'text')
+                                                            <a href="{{ route('teacher.ai.grading', $submission->id) }}"
+                                                                class="btn btn-sm btn-outline-success">
+                                                                <i class="fas fa-robot mr-1"></i>AI
+                                                            </a>
+                                                        @endif
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach
