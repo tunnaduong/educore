@@ -105,10 +105,10 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <span class="badge bg-info">{{ $assignment->classroom->name }}</span>
+                                            <span class="badge bg-info">{{ $assignment->classroom?->name ?? 'N/A' }}</span>
                                         </td>
                                         <td>
-                                            @if ($assignment->classroom->teachers->count())
+                                            @if ($assignment->classroom?->teachers?->count())
                                                 @foreach ($assignment->classroom->teachers as $teacher)
                                                     <span class="badge bg-secondary">{{ $teacher->name }}</span>
                                                 @endforeach

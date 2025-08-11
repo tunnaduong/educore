@@ -39,7 +39,7 @@ class ScheduleConflictReport extends Component
     {
         $classroom = Classroom::find($classroomId);
         $student = User::find($studentId);
-        
+
         if ($classroom && $student) {
             $conflict = ScheduleConflictHelper::checkStudentScheduleConflict($student, $classroom);
             $this->selectedConflict = [
@@ -70,11 +70,11 @@ class ScheduleConflictReport extends Component
 
         foreach ($classrooms as $classroom) {
             $students = $classroom->students;
-            
+
             if ($this->filterStudent) {
                 $students = $students->filter(function ($student) {
                     return str_contains(strtolower($student->name), strtolower($this->filterStudent)) ||
-                           str_contains(strtolower($student->email), strtolower($this->filterStudent));
+                        str_contains(strtolower($student->email), strtolower($this->filterStudent));
                 });
             }
 
@@ -94,7 +94,7 @@ class ScheduleConflictReport extends Component
         if ($this->search) {
             $allConflicts = collect($allConflicts)->filter(function ($conflict) {
                 return str_contains(strtolower($conflict['classroom']->name), strtolower($this->search)) ||
-                       str_contains(strtolower($conflict['student']->name), strtolower($this->search));
+                    str_contains(strtolower($conflict['student']->name), strtolower($this->search));
             })->toArray();
         }
 
@@ -115,7 +115,7 @@ class ScheduleConflictReport extends Component
 
     public function render()
     {
-        return view('livewire.admin.reports.schedule-conflict-report', [
+        return view('admin.reports.schedule-conflict-report', [
             'conflicts' => $this->conflicts,
             'classrooms' => $this->classrooms,
             'students' => $this->students,

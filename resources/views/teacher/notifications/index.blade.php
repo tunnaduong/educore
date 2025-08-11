@@ -110,7 +110,7 @@
                                         <td>
                                             @if ($notification->classroom)
                                                 <span
-                                                    class="badge bg-secondary">{{ $notification->classroom->name }}</span>
+                                                    class="badge bg-secondary">{{ $notification->classroom?->name ?? 'N/A' }}</span>
                                             @else
                                                 <span class="text-muted">-</span>
                                             @endif

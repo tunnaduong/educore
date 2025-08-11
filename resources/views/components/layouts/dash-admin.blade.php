@@ -58,7 +58,9 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="/" class="brand-link text-center" wire:navigate>
+        <a href="/" class="brand-link d-flex align-items-center" wire:navigate>
+            <img src="{{ asset('educore-logo.png') }}" alt="EduCore Logo" class="brand-image mr-2"
+                style="max-height: 33px;">
             <span class="brand-text font-weight-light">@lang('general.app_name')</span>
         </a>
 
@@ -145,7 +147,7 @@
                             <p>Thống kê thu chi</p>
                         </a>
                     </li>
-                    <li class="nav-item">                    
+                    <li class="nav-item">
                         <a href="{{ route('evaluation-management') }}"
                             class="nav-link {{ $active === 'evaluation-management' ? 'active' : '' }}" wire:navigate>
                             <i class="nav-icon fas fa-star"></i>
