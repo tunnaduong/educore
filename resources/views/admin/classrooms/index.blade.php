@@ -70,6 +70,24 @@
                             </select>
                         </div>
                     </div>
+                    <div class="row mt-2">
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" wire:model.live="showTrashed" id="showTrashed">
+                                <label class="form-check-label" for="showTrashed">
+                                    Hiện lớp đã ẩn
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" wire:model.live="hideCompleted" id="hideCompleted">
+                                <label class="form-check-label" for="hideCompleted">
+                                    Ẩn lớp đã hoàn thành
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -168,31 +186,44 @@
                                                     <i class="fas fa-edit"></i>
                                                 </a>
 
-                                                @if ($classroom->status === 'active')
-                                                    <button type="button" class="btn btn-sm btn-outline-warning"
-                                                        title="@lang('general.cannot_delete_active_classroom')" disabled>
-                                                        <i class="fas fa-lock"></i>
-                                                    </button>
-                                                @elseif ($classroom->status === 'draft' && $classroom->students_count == 0)
-                                                    <button type="button" data-toggle="modal"
-                                                        data-target="#deleteModal{{ $classroom->id }}"
-                                                        class="btn btn-sm btn-outline-danger"
-                                                        title="@lang('general.delete_draft_classroom')">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                @elseif ($classroom->students_count > 0)
-                                                    <button type="button" data-toggle="modal"
-                                                        data-target="#deleteModal{{ $classroom->id }}"
-                                                        class="btn btn-sm btn-outline-warning"
-                                                        title="@lang('general.hide_classroom_with_students')">
-                                                        <i class="fas fa-eye-slash"></i>
+                                                @if ($showTrashed && !is_null($classroom->deleted_at))
+                                                    <button type="button" class="btn btn-sm btn-outline-success" wire:click="restore({{ $classroom->id }})" title="Khôi phục lớp học">
+                                                        <i class="fas fa-undo"></i>
                                                     </button>
                                                 @else
-                                                    <button type="button" data-toggle="modal"
-                                                        data-target="#deleteModal{{ $classroom->id }}"
-                                                        class="btn btn-sm btn-outline-danger" title="@lang('general.delete')">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
+                                                    @if ($classroom->status === 'active')
+                                                        <button type="button" class="btn btn-sm btn-outline-warning"
+                                                            title="@lang('general.cannot_delete_active_classroom')" disabled>
+                                                            <i class="fas fa-lock"></i>
+                                                        </button>
+                                                    @elseif ($classroom->students_count > 0)
+                                                        <button type="button" data-toggle="modal"
+                                                            data-target="#deleteModal{{ $classroom->id }}"
+                                                            class="btn btn-sm btn-outline-warning"
+                                                            title="@lang('general.hide_classroom_with_students')">
+                                                            <i class="fas fa-eye-slash"></i>
+                                                        </button>
+                                                    @elseif ($classroom->status === 'draft' && $classroom->students_count == 0)
+                                                        <button type="button" data-toggle="modal"
+                                                            data-target="#deleteModal{{ $classroom->id }}"
+                                                            class="btn btn-sm btn-outline-danger"
+                                                            title="@lang('general.delete_draft_classroom')">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    @elseif ($classroom->status === 'completed')
+                                                        <button type="button" data-toggle="modal"
+                                                            data-target="#deleteModal{{ $classroom->id }}"
+                                                            class="btn btn-sm btn-outline-warning"
+                                                            title="Ẩn lớp đã hoàn thành">
+                                                            <i class="fas fa-eye-slash"></i>
+                                                        </button>
+                                                    @else
+                                                        <button type="button" data-toggle="modal"
+                                                            data-target="#deleteModal{{ $classroom->id }}"
+                                                            class="btn btn-sm btn-outline-danger" title="@lang('general.delete')">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    @endif
                                                 @endif
                                             </div>
                                         </td>
