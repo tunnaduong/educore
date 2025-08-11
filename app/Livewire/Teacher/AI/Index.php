@@ -24,7 +24,11 @@ class Index extends Component
         $this->recentSubmissions = AssignmentSubmission::whereHas('assignment', function ($query) use ($teacherClassroomIds) {
             $query->whereIn('class_id', $teacherClassroomIds);
         })
-            ->where('status', 'submitted')
+            ->whereNotNull('submitted_at')
+            ->where(function($query) {
+                $query->whereNull('score')
+                      ->whereNull('ai_score');
+            })
             ->with(['assignment', 'student'])
             ->latest()
             ->take(5)
