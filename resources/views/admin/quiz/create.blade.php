@@ -58,9 +58,23 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Hạn nộp</label>
-                                <input type="datetimr-local"
+                                <input type="datetime-local"
                                     class="form-control @error('deadline') is-invalid @enderror" wire:model="deadline">
                                 @error('deadline')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Thời gian làm bài (phút)</label>
+                                <input type="number" 
+                                    class="form-control @error('time_limit') is-invalid @enderror" 
+                                    wire:model="time_limit" 
+                                    min="1" 
+                                    max="480" 
+                                    placeholder="Nhập thời gian làm bài (ví dụ: 30)">
+                                <small class="form-text text-muted">Để trống nếu không giới hạn thời gian. Tối đa 8 giờ (480 phút)</small>
+                                @error('time_limit')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>

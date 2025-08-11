@@ -173,7 +173,12 @@
                                     @if ($quiz->time_limit)
                                         <small class="text-info">
                                             <i class="bi bi-clock-history mr-1"></i>
-                                            Thời gian làm bài: {{ $quiz->time_limit }} phút
+                                            Thời gian làm bài: <strong>{{ $quiz->time_limit }} phút</strong>
+                                        </small>
+                                    @else
+                                        <small class="text-success">
+                                            <i class="bi bi-infinity mr-1"></i>
+                                            Không giới hạn thời gian
                                         </small>
                                     @endif
                                 </div>
@@ -397,20 +402,14 @@
                     return 'Nếu bạn tải lại hoặc rời khỏi trang, bài kiểm tra sẽ bị nộp tự động và bạn không thể tiếp tục làm tiếp!';
                 };
 
-                // Function để format thời gian
+                // Function để format thời gian - chỉ hiển thị phút:giây
                 function formatTime(seconds) {
-                    const hours = Math.floor(seconds / 3600);
-                    const minutes = Math.floor((seconds % 3600) / 60);
+                    const minutes = Math.floor(seconds / 60);
                     const secs = seconds % 60;
-
-                    if (hours > 0) {
-                        return (hours < 10 ? '0' : '') + hours + ':' +
-                               (minutes < 10 ? '0' : '') + minutes + ':' +
-                               (secs < 10 ? '0' : '') + secs;
-                    } else {
-                        return (minutes < 10 ? '0' : '') + minutes + ':' +
-                               (secs < 10 ? '0' : '') + secs;
-                    }
+                    
+                    // Luôn hiển thị định dạng MM:SS
+                    return (minutes < 10 ? '0' : '') + minutes + ':' +
+                           (secs < 10 ? '0' : '') + secs;
                 }
 
                 // Function để cập nhật class CSS cho timer
@@ -491,8 +490,8 @@
                 setInterval(function() {
                     if (timeRemaining > 0) {
                         @this.call('calculateTimeRemaining');
-                        // Cập nhật biến local
-                        timeRemaining = {{ $timeRemaining }};
+                        // Cập nhật biến local - đảm bảo chỉ lấy số nguyên
+                        timeRemaining = Math.floor({{ $timeRemaining }});
                     }
                 }, 30000);
 
