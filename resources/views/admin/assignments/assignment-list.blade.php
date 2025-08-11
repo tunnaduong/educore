@@ -128,7 +128,7 @@
                                                 @endif
                                             </div>
                                         </td>
-                                        <td>{{ $assignment->classroom->name }}</td>
+                                        <td>{{ $assignment->classroom?->name ?? 'N/A' }}</td>
                                         <td>
                                             <div>{{ $assignment->deadline->format('d/m/Y H:i') }}</div>
                                             <small

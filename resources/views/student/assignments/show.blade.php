@@ -8,7 +8,7 @@
                     <h4 class="mb-0 text-primary fs-4">
                         <i class="bi bi-journal-text mr-2"></i>{{ $assignment->title }}
                     </h4>
-                    <p class="text-muted mb-0">{{ $assignment->classroom->name }} -
+                    <p class="text-muted mb-0">{{ $assignment->classroom?->name ?? 'N/A' }} -
                         @if ($assignment->classroom->teachers->count())
                             {{ $assignment->classroom->teachers->pluck('name')->join(', ') }}
                         @else
@@ -99,7 +99,7 @@
                                     <li class="mb-2">
                                         <i class="bi bi-people mr-2"></i>
                                         <strong>Lớp học:</strong><br>
-                                        {{ $assignment->classroom->name }}
+                                        {{ $assignment->classroom?->name ?? 'N/A' }}
                                     </li>
                                     <li class="mb-2">
                                         <i class="bi bi-person mr-2"></i>
