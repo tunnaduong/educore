@@ -16,6 +16,8 @@ class Index extends Component
     public $search = '';
     public $filterTeacher = '';
     public $filterStatus = '';
+    public $showTrashed = false;
+    public $hideCompleted = false;
 
     protected $queryString = ['search', 'filterTeacher', 'filterStatus'];
 
@@ -109,6 +111,47 @@ class Index extends Component
         }
     }
 
+    public function restore($classroomId)
+    {
+        try {
+            $classroom = Classroom::withTrashed()->findOrFail($classroomId);
+            if ($classroom->trashed()) {
+                $classroom->restore();
+                session()->flash('success', 'Khôi phục lớp học thành công!');
+                $this->dispatch('refresh');
+            } else {
+                session()->flash('error', 'Lớp học này không bị ẩn.');
+            }
+        } catch (\Exception $e) {
+            session()->flash('error', 'Không thể khôi phục lớp học. Vui lòng thử lại sau.');
+            Log::error('Restore Classroom Error: ' . $e->getMessage(), [
+                'classroom_id' => $classroomId,
+                'user_id' => Auth::id(),
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function forceDelete($classroomId)
+    {
+        try {
+            $classroom = Classroom::withTrashed()->findOrFail($classroomId);
+            if ($classroom->trashed()) {
+                $classroom->forceDelete();
+                session()->flash('success', 'Xóa vĩnh viễn lớp học thành công!');
+            } else {
+                session()->flash('error', 'Lớp học này chưa bị ẩn, không thể xóa vĩnh viễn.');
+            }
+        } catch (\Exception $e) {
+            session()->flash('error', 'Không thể xóa vĩnh viễn lớp học. Vui lòng thử lại sau.');
+            Log::error('Force Delete Classroom Error: ' . $e->getMessage(), [
+                'classroom_id' => $classroomId,
+                'user_id' => Auth::id(),
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
     public function closeModal($classroomId)
     {
         $this->dispatch('close-modal', id: $classroomId);
@@ -116,8 +159,15 @@ class Index extends Component
 
     public function render()
     {
-        $classrooms = Classroom::query()
-            ->with('teachers')
+        $query = Classroom::query()->with('teachers');
+
+        if ($this->showTrashed) {
+            $query = $query->withTrashed();
+        } else {
+            $query = $query->whereNull('deleted_at');
+        }
+
+        $query = $query
             ->when($this->search, function ($query) {
                 $query->where(function ($query) {
                     $query->where('name', 'like', '%' . $this->search . '%')
@@ -133,9 +183,13 @@ class Index extends Component
             })
             ->when($this->filterStatus, function ($query) {
                 $query->where('status', $this->filterStatus);
-            })
-            ->latest()
-            ->paginate(10);
+            });
+
+        if ($this->hideCompleted) {
+            $query = $query->where('status', '!=', 'completed');
+        }
+
+        $classrooms = $query->latest()->paginate(10);
 
         $teachers = User::where('role', 'teacher')
             ->orderBy('name')
