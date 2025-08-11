@@ -66,6 +66,7 @@
                                     <th>Tiêu đề</th>
                                     <th>Lớp học</th>
                                     <th>Số câu hỏi</th>
+                                    <th>Thời gian làm bài</th>
                                     <th>Hạn nộp</th>
                                     <th>Trạng thái</th>
                                     <th>Ngày tạo</th>
@@ -87,6 +88,14 @@
                                         </td>
                                         <td>
                                             <span class="badge bg-secondary">{{ $quiz->getQuestionCount() }}</span>
+                                        </td>
+                                        <td>
+                                            @if ($quiz->time_limit)
+                                                <span class="badge bg-warning text-dark">{{ $quiz->time_limit }}
+                                                    phút</span>
+                                            @else
+                                                <span class="text-muted">Không giới hạn</span>
+                                            @endif
                                         </td>
                                         <td>
                                             @if ($quiz->deadline)
@@ -138,7 +147,8 @@
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="deleteModalLabel{{ $quiz->id }}">
                                                         Xác nhận xóa bài kiểm tra</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
