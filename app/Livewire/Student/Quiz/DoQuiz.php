@@ -31,6 +31,11 @@ class DoQuiz extends Component
         $this->quizId = $quiz->id;
         $this->loadQuiz();
         $this->startQuiz();
+
+        // Đảm bảo timeRemaining luôn là số nguyên sau khi khởi tạo
+        if ($this->timeRemaining !== null) {
+            $this->timeRemaining = (int)$this->timeRemaining;
+        }
     }
 
     public function loadQuiz()
@@ -86,6 +91,10 @@ class DoQuiz extends Component
             $this->startedAt = $existingResult->started_at;
             $this->answers = $existingResult->answers ?? [];
             $this->calculateTimeRemaining();
+            // Đảm bảo timeRemaining luôn là số nguyên
+            if ($this->timeRemaining !== null) {
+                $this->timeRemaining = (int)$this->timeRemaining;
+            }
             return;
         }
 
@@ -114,6 +123,10 @@ class DoQuiz extends Component
         $this->answers = [];
         $this->isFinished = false;
         $this->calculateTimeRemaining();
+        // Đảm bảo timeRemaining luôn là số nguyên
+        if ($this->timeRemaining !== null) {
+            $this->timeRemaining = (int)$this->timeRemaining;
+        }
     }
 
     public function nextQuestion()
@@ -225,10 +238,10 @@ class DoQuiz extends Component
             ? $this->startedAt
             : \Carbon\Carbon::parse($this->startedAt);
 
-        $timeLimitInSeconds = $this->quiz->time_limit * 60; // Convert minutes to seconds
-        $elapsedTime = $startedAt ? $startedAt->diffInSeconds(now(), false) : 0;
+        $timeLimitInSeconds = (int)($this->quiz->time_limit * 60); // Convert minutes to seconds
+        $elapsedTime = $startedAt ? (int)$startedAt->diffInSeconds(now(), false) : 0;
 
-        $this->timeRemaining = max(0, $timeLimitInSeconds - $elapsedTime);
+        $this->timeRemaining = (int)max(0, $timeLimitInSeconds - $elapsedTime);
 
         // Nếu hết thời gian thì tự động nộp bài
         if ($this->timeRemaining <= 0) {
@@ -239,7 +252,9 @@ class DoQuiz extends Component
     public function updateTimer()
     {
         if ($this->timeRemaining && $this->timeRemaining > 0) {
-            $this->timeRemaining--;
+                    // Đảm bảo timeRemaining luôn là số nguyên trước khi trừ
+        $this->timeRemaining = (int)$this->timeRemaining;
+        $this->timeRemaining = (int)($this->timeRemaining - 1);
 
             if ($this->timeRemaining <= 0) {
                 $this->submitQuiz();
@@ -248,7 +263,7 @@ class DoQuiz extends Component
     }
 
     /**
-     * Format thời gian còn lại thành chuỗi đẹp
+     * Format thời gian còn lại thành chuỗi đẹp - chỉ hiển thị phút:giây
      */
     public function getFormattedTimeRemaining()
     {
@@ -256,15 +271,15 @@ class DoQuiz extends Component
             return null;
         }
 
-        $hours = floor($this->timeRemaining / 3600);
-        $minutes = floor(($this->timeRemaining % 3600) / 60);
-        $seconds = $this->timeRemaining % 60;
+        // Đảm bảo timeRemaining luôn là số nguyên
+        $timeRemaining = (int)$this->timeRemaining;
+        $minutes = floor($timeRemaining / 60);
+        $minutes = (int)$minutes;
+        $seconds = $timeRemaining % 60;
+        $seconds = (int)$seconds;
 
-        if ($hours > 0) {
-            return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
-        } else {
-            return sprintf('%02d:%02d', $minutes, $seconds);
-        }
+        // Luôn hiển thị định dạng MM:SS
+        return sprintf('%02d:%02d', $minutes, $seconds);
     }
 
     /**
@@ -276,9 +291,12 @@ class DoQuiz extends Component
             return 'bg-secondary text-white';
         }
 
-        if ($this->timeRemaining <= 300) { // 5 phút cuối
+        // Đảm bảo timeRemaining luôn là số nguyên
+        $timeRemaining = (int)$this->timeRemaining;
+
+        if ($timeRemaining <= 300) { // 5 phút cuối
             return 'bg-danger text-white animate__animated animate__pulse';
-        } elseif ($this->timeRemaining <= 600) { // 10 phút cuối
+        } elseif ($timeRemaining <= 600) { // 10 phút cuối
             return 'bg-warning text-dark animate__animated animate__pulse';
         } else {
             return 'bg-info text-white';
@@ -294,7 +312,9 @@ class DoQuiz extends Component
             return false;
         }
 
-        return $this->timeRemaining <= 300; // Cảnh báo khi còn 5 phút
+        // Đảm bảo timeRemaining luôn là số nguyên
+        $timeRemaining = (int)$this->timeRemaining;
+        return $timeRemaining <= 300; // Cảnh báo khi còn 5 phút
     }
 
     /**
@@ -306,7 +326,9 @@ class DoQuiz extends Component
             return false;
         }
 
-        return $this->timeRemaining <= 60; // Cảnh báo khẩn cấp khi còn 1 phút
+        // Đảm bảo timeRemaining luôn là số nguyên
+        $timeRemaining = (int)$this->timeRemaining;
+        return $timeRemaining <= 60; // Cảnh báo khẩn cấp khi còn 1 phút
     }
 
     /**
@@ -316,6 +338,10 @@ class DoQuiz extends Component
     {
         if (!$this->isFinished) {
             $this->calculateTimeRemaining();
+            // Đảm bảo timeRemaining luôn là số nguyên
+            if ($this->timeRemaining !== null) {
+                $this->timeRemaining = (int)$this->timeRemaining;
+            }
         }
     }
 
@@ -334,8 +360,11 @@ class DoQuiz extends Component
             ];
         }
 
+        // Đảm bảo timeRemaining luôn là số nguyên
+        $timeRemaining = (int)$this->timeRemaining;
+
         return [
-            'time_remaining' => $this->timeRemaining,
+            'time_remaining' => $timeRemaining,
             'formatted_time' => $this->getFormattedTimeRemaining(),
             'timer_class' => $this->getTimerClass(),
             'show_warning' => $this->shouldShowWarning(),
