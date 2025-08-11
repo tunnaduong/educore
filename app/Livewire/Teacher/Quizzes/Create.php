@@ -12,6 +12,7 @@ class Create extends Component
     public $description = '';
     public $class_id = '';
     public $deadline = '';
+    public $time_limit = '';
     public $questions = [];
     public $currentQuestion = [
         'question' => '',
@@ -27,6 +28,7 @@ class Create extends Component
         'description' => 'nullable|max:1000',
         'class_id' => 'required|exists:classrooms,id',
         'deadline' => 'nullable|date|after:now',
+        'time_limit' => 'nullable|integer|min:1|max:480',
         'questions' => 'required|array|min:1',
         'questions.*.question' => 'required|min:3',
         'questions.*.type' => 'required|in:multiple_choice,fill_blank,drag_drop,essay',
@@ -157,6 +159,7 @@ class Create extends Component
             'description' => $this->description,
             'class_id' => $this->class_id,
             'deadline' => $this->deadline ? now()->parse($this->deadline) : null,
+            'time_limit' => $this->time_limit ? (int)$this->time_limit : null,
             'questions' => $this->questions,
         ]);
 
