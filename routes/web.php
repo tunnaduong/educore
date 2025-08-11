@@ -94,6 +94,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     // Chat routes
     Route::get('/admin/chat', \App\Livewire\Admin\Chat\Index::class)->name('chat.index');
+    Route::get('/admin/chat/download/{messageId}', [\App\Livewire\Admin\Chat\Index::class, 'downloadAttachment'])->name('chat.download');
 
     // Lesson routes
     Route::get('/admin/lessons', \App\Livewire\Admin\Lessons\Index::class)->name('lessons.index');
@@ -162,6 +163,8 @@ Route::middleware(['auth', 'role:teacher'])->name('teacher.')->group(function ()
 
     // Chat routes
     Route::get('/teacher/chat', \App\Livewire\Teacher\Chat\Index::class)->name('chat.index');
+    Route::get('/teacher/chat/download/{messageId}', [\App\Livewire\Teacher\Chat\Index::class, 'downloadAttachment'])->name('chat.download');
+    Route::get('/teacher/chat/test', \App\Livewire\Teacher\Chat\Test::class)->name('chat.test');
 
     // Báo cáo - Reports cho giáo viên
     Route::get('/teacher/reports', \App\Livewire\Teacher\Reports\Index::class)->name('reports.index');
@@ -190,6 +193,7 @@ Route::middleware(['auth', 'verified', 'role:student'])->name('student.')->prefi
     // Lịch học
     Route::get('/schedules', \App\Livewire\Student\Schedules\Index::class)->name('schedules');
     Route::get('/chat', App\Livewire\Student\Chat\Index::class)->name('chat.index');
+    Route::get('/chat/download/{messageId}', [App\Livewire\Student\Chat\Index::class, 'downloadAttachment'])->name('chat.download');
 
     // Đánh giá chất lượng học
     Route::get('/evaluation', \App\Livewire\Student\Evaluation\Index::class)->name('evaluation');

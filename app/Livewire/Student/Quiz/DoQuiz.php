@@ -31,6 +31,11 @@ class DoQuiz extends Component
         $this->quizId = $quiz->id;
         $this->loadQuiz();
         $this->startQuiz();
+
+        // Đảm bảo timeRemaining luôn là số nguyên sau khi khởi tạo
+        if ($this->timeRemaining !== null) {
+            $this->timeRemaining = (int)$this->timeRemaining;
+        }
     }
 
     public function loadQuiz()
@@ -85,6 +90,11 @@ class DoQuiz extends Component
             $this->isFinished = false;
             $this->startedAt = $existingResult->started_at;
             $this->answers = $existingResult->answers ?? [];
+            $this->calculateTimeRemaining();
+            // Đảm bảo timeRemaining luôn là số nguyên
+            if ($this->timeRemaining !== null) {
+                $this->timeRemaining = (int)$this->timeRemaining;
+            }
             return;
         }
 
@@ -112,6 +122,11 @@ class DoQuiz extends Component
         $this->startedAt = $this->result->started_at;
         $this->answers = [];
         $this->isFinished = false;
+        $this->calculateTimeRemaining();
+        // Đảm bảo timeRemaining luôn là số nguyên
+        if ($this->timeRemaining !== null) {
+            $this->timeRemaining = (int)$this->timeRemaining;
+        }
     }
 
     public function nextQuestion()
@@ -132,6 +147,15 @@ class DoQuiz extends Component
     {
         if ($index >= 0 && $index < count($this->questions)) {
             $this->currentQuestionIndex = $index;
+        }
+    }
+
+    public function saveAnswer()
+    {
+        if ($this->result && !$this->isFinished) {
+            $this->result->update([
+                'answers' => $this->answers,
+            ]);
         }
     }
 
@@ -203,15 +227,149 @@ class DoQuiz extends Component
         ]);
     }
 
+    public function calculateTimeRemaining()
+    {
+        if (!$this->quiz->time_limit || $this->isFinished) {
+            $this->timeRemaining = null;
+            return;
+        }
+
+        $startedAt = $this->startedAt instanceof \Carbon\Carbon
+            ? $this->startedAt
+            : \Carbon\Carbon::parse($this->startedAt);
+
+        $timeLimitInSeconds = (int)($this->quiz->time_limit * 60); // Convert minutes to seconds
+        $elapsedTime = $startedAt ? (int)$startedAt->diffInSeconds(now(), false) : 0;
+
+        $this->timeRemaining = (int)max(0, $timeLimitInSeconds - $elapsedTime);
+
+        // Nếu hết thời gian thì tự động nộp bài
+        if ($this->timeRemaining <= 0) {
+            $this->submitQuiz();
+        }
+    }
+
     public function updateTimer()
     {
         if ($this->timeRemaining && $this->timeRemaining > 0) {
-            $this->timeRemaining--;
+                    // Đảm bảo timeRemaining luôn là số nguyên trước khi trừ
+        $this->timeRemaining = (int)$this->timeRemaining;
+        $this->timeRemaining = (int)($this->timeRemaining - 1);
 
             if ($this->timeRemaining <= 0) {
                 $this->submitQuiz();
             }
         }
+    }
+
+    /**
+     * Format thời gian còn lại thành chuỗi đẹp - chỉ hiển thị phút:giây
+     */
+    public function getFormattedTimeRemaining()
+    {
+        if (!$this->timeRemaining || $this->timeRemaining <= 0) {
+            return null;
+        }
+
+        // Đảm bảo timeRemaining luôn là số nguyên
+        $timeRemaining = (int)$this->timeRemaining;
+        $minutes = floor($timeRemaining / 60);
+        $minutes = (int)$minutes;
+        $seconds = $timeRemaining % 60;
+        $seconds = (int)$seconds;
+
+        // Luôn hiển thị định dạng MM:SS
+        return sprintf('%02d:%02d', $minutes, $seconds);
+    }
+
+    /**
+     * Lấy class CSS cho timer dựa trên thời gian còn lại
+     */
+    public function getTimerClass()
+    {
+        if (!$this->timeRemaining || $this->timeRemaining <= 0) {
+            return 'bg-secondary text-white';
+        }
+
+        // Đảm bảo timeRemaining luôn là số nguyên
+        $timeRemaining = (int)$this->timeRemaining;
+
+        if ($timeRemaining <= 300) { // 5 phút cuối
+            return 'bg-danger text-white animate__animated animate__pulse';
+        } elseif ($timeRemaining <= 600) { // 10 phút cuối
+            return 'bg-warning text-dark animate__animated animate__pulse';
+        } else {
+            return 'bg-info text-white';
+        }
+    }
+
+    /**
+     * Kiểm tra xem có cần cảnh báo không
+     */
+    public function shouldShowWarning()
+    {
+        if (!$this->timeRemaining || $this->timeRemaining <= 0) {
+            return false;
+        }
+
+        // Đảm bảo timeRemaining luôn là số nguyên
+        $timeRemaining = (int)$this->timeRemaining;
+        return $timeRemaining <= 300; // Cảnh báo khi còn 5 phút
+    }
+
+    /**
+     * Kiểm tra xem có cần cảnh báo khẩn cấp không
+     */
+    public function shouldShowUrgentWarning()
+    {
+        if (!$this->timeRemaining || $this->timeRemaining <= 0) {
+            return false;
+        }
+
+        // Đảm bảo timeRemaining luôn là số nguyên
+        $timeRemaining = (int)$this->timeRemaining;
+        return $timeRemaining <= 60; // Cảnh báo khẩn cấp khi còn 1 phút
+    }
+
+    /**
+     * Cập nhật timer real-time
+     */
+    public function refreshTimer()
+    {
+        if (!$this->isFinished) {
+            $this->calculateTimeRemaining();
+            // Đảm bảo timeRemaining luôn là số nguyên
+            if ($this->timeRemaining !== null) {
+                $this->timeRemaining = (int)$this->timeRemaining;
+            }
+        }
+    }
+
+    /**
+     * Lấy thông tin timer để hiển thị
+     */
+    public function getTimerInfo()
+    {
+        if (!$this->timeRemaining || $this->timeRemaining <= 0) {
+            return [
+                'time_remaining' => null,
+                'formatted_time' => null,
+                'timer_class' => 'bg-secondary text-white',
+                'show_warning' => false,
+                'show_urgent_warning' => false
+            ];
+        }
+
+        // Đảm bảo timeRemaining luôn là số nguyên
+        $timeRemaining = (int)$this->timeRemaining;
+
+        return [
+            'time_remaining' => $timeRemaining,
+            'formatted_time' => $this->getFormattedTimeRemaining(),
+            'timer_class' => $this->getTimerClass(),
+            'show_warning' => $this->shouldShowWarning(),
+            'show_urgent_warning' => $this->shouldShowUrgentWarning()
+        ];
     }
 
     public function render()
