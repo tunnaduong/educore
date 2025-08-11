@@ -64,6 +64,7 @@
                                     <th>Tiêu đề</th>
                                     <th>Lớp học</th>
                                     <th>Số câu hỏi</th>
+                                    <th>Thời gian làm bài</th>
                                     <th>Hạn nộp</th>
                                     <th>Trạng thái</th>
                                     <th>Trạng thái làm bài</th>
@@ -88,6 +89,13 @@
                                         </td>
                                         <td>
                                             <span class="badge bg-secondary">{{ $quiz->getQuestionCount() }}</span>
+                                        </td>
+                                        <td>
+                                            @if ($quiz->time_limit)
+                                                <span class="badge bg-warning text-dark">{{ $quiz->time_limit }} phút</span>
+                                            @else
+                                                <span class="text-muted">Không giới hạn</span>
+                                            @endif
                                         </td>
                                         <td>
                                             @if ($quiz->deadline)
