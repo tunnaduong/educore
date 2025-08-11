@@ -51,16 +51,24 @@
                                         <tr>
                                             <td>{{ $submission->student->name }}</td>
                                             <td>{{ $submission->assignment->title }}</td>
-                                            <td>{{ $submission->created_at->format('d/m/Y H:i') }}</td>
+                                            <td>{{ $submission->submitted_at ? $submission->submitted_at->format('d/m/Y H:i') : $submission->created_at->format('d/m/Y H:i') }}</td>
                                             <td>
-                                                <span class="badge badge-warning">Chưa chấm</span>
+                                                @if($submission->score || $submission->ai_score)
+                                                    <span class="badge badge-success">Đã chấm</span>
+                                                @else
+                                                    <span class="badge badge-warning">Chưa chấm</span>
+                                                @endif
                                             </td>
                                             <td>
-                                                <a href="{{ route('teacher.ai.grading', $submission->id) }}" 
-                                                   class="btn btn-sm btn-primary">
-                                                    <i class="bi bi-robot"></i>
-                                                    Chấm điểm bằng AI
-                                                </a>
+                                                @if(!$submission->score && !$submission->ai_score)
+                                                    <a href="{{ route('teacher.ai.grading', $submission->id) }}" 
+                                                       class="btn btn-sm btn-primary">
+                                                        <i class="bi bi-robot"></i>
+                                                        Chấm điểm bằng AI
+                                                    </a>
+                                                @else
+                                                    <span class="text-muted">Đã chấm</span>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
