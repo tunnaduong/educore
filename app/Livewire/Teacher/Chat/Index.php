@@ -5,10 +5,12 @@ namespace App\Livewire\Teacher\Chat;
 use App\Models\Message;
 use App\Models\User;
 use App\Models\Classroom;
-use App\Models\Student;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class Index extends Component
 {
@@ -16,69 +18,86 @@ class Index extends Component
 
     public $selectedUser = null;
     public $selectedClass = null;
-    public $selectedStudent = null;
     public $messageText = '';
     public $attachment = null;
     public $searchTerm = '';
-    public $messageType = 'user'; // 'user', 'class', 'student'
+    public $messageType = 'class'; // 'user' or 'class'
     public $unreadCount = 0;
-    public $activeTab = 'students'; // 'students', 'classes', 'users'
+    public $memberSearch = '';
+    public $allUsers;
+    public $activeTab = 'classes'; // 'users' hoặc 'classes'
     public $isDragging = false;
+    public $typingUsers = [];
+    public $isTyping = false;
+    public $typingTimeout = null;
 
     protected $listeners = [
         'messageReceived' => 'refreshMessages',
-        'fileDropped' => 'handleFileDrop'
+        'fileDropped' => 'handleFileDrop',
+        'echo:chat-class-*,message.sent' => 'handleNewMessage',
+        'echo-private:chat-user-*,message.sent' => 'handleNewMessage',
+        'userTyping' => 'handleUserTyping',
+        'userStoppedTyping' => 'handleUserStoppedTyping'
     ];
 
     public function mount()
     {
-        $this->unreadCount = Message::unread(auth()->id())->count();
-    }
-
-    public function selectStudent($studentId)
-    {
-        $this->selectedStudent = Student::with('user')->find($studentId);
-        if ($this->selectedStudent) {
-            $this->selectedUser = $this->selectedStudent->user;
+        $userId = Auth::id();
+        if ($userId) {
+            $this->unreadCount = Message::unread($userId)->count();
         }
-        $this->selectedClass = null;
-        $this->messageType = 'student';
-        $this->activeTab = 'students';
-        $this->resetPage();
+        $this->allUsers = User::where('role', '!=', 'admin')->get();
     }
 
     public function selectUser($userId)
     {
         $this->selectedUser = User::find($userId);
-        $this->selectedStudent = null;
         $this->selectedClass = null;
         $this->messageType = 'user';
         $this->activeTab = 'users';
         $this->resetPage();
+        
+        // Đánh dấu đã đọc tin nhắn 1-1
+        $currentUserId = Auth::id();
+        if ($currentUserId && $this->selectedUser) {
+            Message::where('sender_id', $userId)
+                ->where('receiver_id', $currentUserId)
+                ->whereNull('read_at')
+                ->update(['read_at' => now()]);
+        }
     }
 
     public function selectClass($classId)
     {
         $this->selectedClass = Classroom::with('users')->find($classId);
+        $currentUserId = Auth::id();
+        
+        Log::info('[Chat Debug] selectClass: Chọn lớp', [
+            'class_id' => $classId,
+            'selectedClass' => $this->selectedClass ? $this->selectedClass->toArray() : null,
+            'current_user_id' => $currentUserId,
+        ]);
+        
         $this->selectedUser = null;
-        $this->selectedStudent = null;
         $this->messageType = 'class';
         $this->activeTab = 'classes';
         $this->resetPage();
-
-        // Đánh dấu đã đọc
-        $lastMsg = Message::where('class_id', $classId)->latest('id')->first();
-        if ($lastMsg) {
-            \App\Models\ClassroomMessageRead::updateOrCreate(
-                [
-                    'user_id' => auth()->id(),
-                    'class_id' => $classId,
-                ],
-                [
-                    'last_read_message_id' => $lastMsg->id,
-                    'last_read_at' => now(),
-                ]
-            );
+        
+        // Đánh dấu đã đọc tin nhắn nhóm
+        if ($currentUserId) {
+            $lastMsg = Message::where('class_id', $classId)->latest('id')->first();
+            if ($lastMsg) {
+                \App\Models\ClassroomMessageRead::updateOrCreate(
+                    [
+                        'user_id' => $currentUserId,
+                        'class_id' => $classId,
+                    ],
+                    [
+                        'last_read_message_id' => $lastMsg->id,
+                        'last_read_at' => now(),
+                    ]
+                );
+            }
         }
     }
 
@@ -94,15 +113,18 @@ class Index extends Component
             'attachment' => 'nullable|file|max:10240', // 10MB max
         ]);
 
+        $currentUserId = Auth::id();
+        if (!$currentUserId) {
+            return;
+        }
+
         $messageData = [
-            'sender_id' => auth()->id(),
+            'sender_id' => $currentUserId,
             'message' => $this->messageText,
         ];
 
         if ($this->messageType === 'user' && $this->selectedUser) {
             $messageData['receiver_id'] = $this->selectedUser->id;
-        } elseif ($this->messageType === 'student' && $this->selectedStudent) {
-            $messageData['receiver_id'] = $this->selectedStudent->user_id;
         } elseif ($this->messageType === 'class' && $this->selectedClass) {
             $messageData['class_id'] = $this->selectedClass->id;
         }
@@ -115,12 +137,15 @@ class Index extends Component
         $message = Message::create($messageData);
 
         // Dispatch event để broadcast tin nhắn
-        \Illuminate\Support\Facades\Log::info('Dispatching MessageSent event', ['message_id' => $message->id]);
+        Log::info('Dispatching MessageSent event', ['message_id' => $message->id]);
         \App\Events\MessageSent::dispatch($message);
 
         $this->messageText = '';
         $this->attachment = null;
         $this->dispatch('messageSent');
+        
+        // Dừng typing indicator
+        $this->stopTyping();
     }
 
     public function handleFileDrop($fileData)
@@ -131,14 +156,91 @@ class Index extends Component
         }
     }
 
+    public function startTyping()
+    {
+        if (!$this->isTyping) {
+            $this->isTyping = true;
+            $currentUser = Auth::user();
+            $currentUserId = Auth::id();
+            
+            if (!$currentUser || !$currentUserId) {
+                return;
+            }
+            
+            if ($this->messageType === 'user' && $this->selectedUser) {
+                $this->dispatch('userTyping', [
+                    'userId' => $currentUserId,
+                    'userName' => $currentUser->name,
+                    'receiverId' => $this->selectedUser->id
+                ]);
+            } elseif ($this->messageType === 'class' && $this->selectedClass) {
+                $this->dispatch('userTyping', [
+                    'userId' => $currentUserId,
+                    'userName' => $currentUser->name,
+                    'classId' => $this->selectedClass->id
+                ]);
+            }
+        }
+    }
+
+    public function stopTyping()
+    {
+        if ($this->isTyping) {
+            $this->isTyping = false;
+            $currentUserId = Auth::id();
+            
+            if (!$currentUserId) {
+                return;
+            }
+            
+            if ($this->messageType === 'user' && $this->selectedUser) {
+                $this->dispatch('userStoppedTyping', [
+                    'userId' => $currentUserId,
+                    'receiverId' => $this->selectedUser->id
+                ]);
+            } elseif ($this->messageType === 'class' && $this->selectedClass) {
+                $this->dispatch('userStoppedTyping', [
+                    'userId' => $currentUserId,
+                    'classId' => $this->selectedClass->id
+                ]);
+            }
+        }
+    }
+
+    public function handleUserTyping($event)
+    {
+        $userId = $event['userId'] ?? null;
+        $userName = $event['userName'] ?? null;
+        $currentUserId = Auth::id();
+        
+        if ($userId && $currentUserId && $userId != $currentUserId) {
+            $this->typingUsers[$userId] = $userName;
+        }
+    }
+
+    public function handleUserStoppedTyping($event)
+    {
+        $userId = $event['userId'] ?? null;
+        $currentUserId = Auth::id();
+        
+        if ($userId && $currentUserId && $userId != $currentUserId) {
+            unset($this->typingUsers[$userId]);
+        }
+    }
+
     public function getMessagesProperty()
     {
+        $currentUserId = Auth::id();
+        if (!$currentUserId) {
+            return collect();
+        }
+
         if ($this->selectedUser) {
-            return Message::where(function ($query) {
-                $query->where('sender_id', auth()->id())
+            return Message::where(function ($query) use ($currentUserId) {
+                $query->where('sender_id', $currentUserId)
                     ->where('receiver_id', $this->selectedUser->id)
                     ->orWhere('sender_id', $this->selectedUser->id)
-                    ->where('receiver_id', auth()->id());
+                    ->where('receiver_id', $currentUserId);
             })->with(['sender', 'receiver'])->orderBy('created_at', 'desc')->paginate(20);
         }
 
@@ -152,37 +254,15 @@ class Index extends Component
         return collect();
     }
 
-    public function getStudentsProperty()
-    {
-        $query = Student::with('user')->whereHas('classrooms', function ($q) {
-            $q->whereHas('users', function ($userQuery) {
-                $userQuery->where('users.id', auth()->id());
-            });
-        });
-
-        if ($this->searchTerm) {
-            $query->whereHas('user', function ($q) {
-                $q->where('name', 'like', '%' . $this->searchTerm . '%')
-                    ->orWhere('email', 'like', '%' . $this->searchTerm . '%');
-            });
-        }
-
-        $students = $query->orderBy('id')->get();
-
-        foreach ($students as $student) {
-            $student->unread_messages_count = Message::where('sender_id', $student->user_id)
-                ->where('receiver_id', auth()->id())
-                ->where('read_at', null)
-                ->count();
-        }
-
-        return $students;
-    }
-
     public function getUsersProperty()
     {
-        $query = User::where('id', '!=', auth()->id())
-            ->whereIn('role', ['admin', 'teacher']);
+        $currentUserId = Auth::id();
+        if (!$currentUserId) {
+            return collect();
+        }
+
+        $query = User::where('id', '!=', $currentUserId)
+            ->whereIn('role', ['student', 'teacher']);
 
         if ($this->searchTerm) {
             $query->where(function ($q) {
@@ -196,8 +276,14 @@ class Index extends Component
 
     public function getClassesProperty()
     {
-        $query = Classroom::whereHas('users', function ($q) {
-            $q->where('users.id', auth()->id());
+        $currentUserId = Auth::id();
+        if (!$currentUserId) {
+            return collect();
+        }
+
+        // Giáo viên chỉ thấy lớp mà họ được gán
+        $query = Classroom::whereHas('users', function ($q) use ($currentUserId) {
+            $q->where('users.id', $currentUserId);
         });
 
         if ($this->searchTerm) {
@@ -207,26 +293,31 @@ class Index extends Component
         $classes = $query->orderBy('name')->get();
 
         foreach ($classes as $class) {
-            $class->unread_messages_count = $class->unreadMessagesCountForUser(auth()->id());
+            $class->unread_messages_count = $class->unreadMessagesCountForUser($currentUserId);
         }
-
         return $classes;
     }
 
     public function refreshMessages()
     {
-        $this->unreadCount = Message::unread(auth()->id())->count();
+        $currentUserId = Auth::id();
+        if ($currentUserId) {
+            $this->unreadCount = Message::unread($currentUserId)->count();
+        }
     }
 
     public function handleNewMessage($event)
     {
+        // Kiểm tra xem tin nhắn có thuộc về cuộc trò chuyện hiện tại không
         $message = $event['message'] ?? null;
-        if ($message) {
+        $currentUserId = Auth::id();
+        
+        if ($message && $currentUserId) {
             $isRelevant = false;
 
-            if ($this->selectedUser && $message['receiver_id'] == $this->selectedUser->id && $message['sender_id'] == auth()->id()) {
+            if ($this->selectedUser && $message['receiver_id'] == $this->selectedUser->id && $message['sender_id'] == $currentUserId) {
                 $isRelevant = true;
-            } elseif ($this->selectedUser && $message['sender_id'] == $this->selectedUser->id && $message['receiver_id'] == auth()->id()) {
+            } elseif ($this->selectedUser && $message['sender_id'] == $this->selectedUser->id && $message['receiver_id'] == $currentUserId) {
                 $isRelevant = true;
             } elseif ($this->selectedClass && $message['class_id'] == $this->selectedClass->id) {
                 $isRelevant = true;
@@ -239,11 +330,38 @@ class Index extends Component
         }
     }
 
+    public function downloadAttachment($messageId)
+    {
+        $message = Message::find($messageId);
+        if ($message && $message->attachment) {
+            $path = Storage::disk('public')->path($message->attachment);
+            if (file_exists($path)) {
+                return response()->download($path);
+            }
+        }
+        return back()->with('error', 'File không tồn tại');
+    }
+
     public function render()
     {
+        $currentUserId = Auth::id();
+        
+        if ($this->selectedClass && $currentUserId) {
+            Log::info('[Chat Debug] render: Thành viên hiện tại của lớp', [
+                'class_id' => $this->selectedClass->id,
+                'user_ids' => $this->selectedClass->users->pluck('id')->toArray(),
+            ]);
+            Log::info('[Chat Debug] render: allUsers', [
+                'user_ids' => $this->allUsers ? $this->allUsers->pluck('id')->toArray() : null,
+            ]);
+            $canAdd = $this->allUsers->whereNotIn('id', $this->selectedClass->users->pluck('id'));
+            Log::info('[Chat Debug] render: user có thể thêm', [
+                'user_ids' => $canAdd->pluck('id')->toArray(),
+            ]);
+        }
+        
         return view('teacher.chat.index', [
             'messages' => $this->messages,
-            'students' => $this->students,
             'users' => $this->users,
             'classes' => $this->classes,
         ]);
