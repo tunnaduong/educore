@@ -268,12 +268,14 @@
                                                         class="text-muted">{{ $attendance->date->format('D') }}</small>
                                                 </td>
                                                 <td>
-                                                    <div class="fw-medium">{{ $attendance->classroom?->name ?? 'N/A' }}</div>
+                                                    <div class="fw-medium">
+                                                        {{ $attendance->classroom?->name ?? 'N/A' }}</div>
                                                     <small
                                                         class="text-muted">{{ $attendance->classroom?->level ?? 'N/A' }}</small>
                                                 </td>
                                                 <td>
-                                                    <div class="fw-medium">{{ $attendance->student?->user?->name ?? 'N/A' }}
+                                                    <div class="fw-medium">
+                                                        {{ $attendance->student?->user?->name ?? 'N/A' }}
                                                     </div>
                                                     <small
                                                         class="text-muted">{{ $attendance->student?->user?->email ?? 'N/A' }}</small>
