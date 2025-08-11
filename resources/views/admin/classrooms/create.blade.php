@@ -166,6 +166,23 @@
             </h4>
         </div>
 
+        <!-- Flash Messages -->
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle me-2"></i>
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
         <!-- Form Card Centered with Illustration -->
         <div class="card shadow-sm p-0">
             <div class="row g-0 align-items-stretch">
@@ -244,7 +261,9 @@
                                         class="text-danger">*</span></label>
                                 <select wire:model="status" class="form-control @error('status') is-invalid @enderror"
                                     id="status">
+                                    <option value="draft">Nháp</option>
                                     <option value="active">Đang hoạt động</option>
+                                    <option value="inactive">Không hoạt động</option>
                                     <option value="completed">Đã kết thúc</option>
                                 </select>
                                 @error('status')

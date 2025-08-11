@@ -8,6 +8,7 @@ use Livewire\Component;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\ScheduleConflictHelper;
+use Illuminate\Support\Facades\Log;
 
 class Create extends Component
 {
@@ -32,7 +33,7 @@ class Create extends Component
         'notes' => 'nullable|max:1000',
         'teacher_ids' => 'required|array|min:1',
         'teacher_ids.*' => 'exists:users,id',
-        'status' => 'required|in:active,completed',
+        'status' => 'required|in:draft,active,inactive,completed',
     ];
 
     protected $messages = [
@@ -59,10 +60,12 @@ class Create extends Component
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
-        
+
         // Kiểm tra trùng lịch real-time khi thay đổi lịch học hoặc giáo viên
-        if (in_array($propertyName, ['days', 'startTime', 'endTime', 'teacher_ids']) && 
-            !empty($this->days) && !empty($this->startTime) && !empty($this->endTime) && !empty($this->teacher_ids)) {
+        if (
+            in_array($propertyName, ['days', 'startTime', 'endTime', 'teacher_ids']) &&
+            !empty($this->days) && !empty($this->startTime) && !empty($this->endTime) && !empty($this->teacher_ids)
+        ) {
             $this->checkRealTimeConflicts();
         }
     }
@@ -81,7 +84,7 @@ class Create extends Component
         ]);
 
         $conflictCheck = ScheduleConflictHelper::checkMultipleTeachersScheduleConflict(
-            $this->teacher_ids, 
+            $this->teacher_ids,
             $tempClassroom
         );
 
@@ -96,29 +99,38 @@ class Create extends Component
 
     public function save()
     {
-        $this->validate();
+        try {
+            $this->validate();
 
-        // Kiểm tra trùng lịch giáo viên trước khi tạo lớp
-        $tempClassroom = new Classroom([
-            'schedule' => [
-                'days' => $this->days,
-                'time' => $this->startTime . ' - ' . $this->endTime,
-            ]
-        ]);
+            // Kiểm tra trùng lịch giáo viên trước khi tạo lớp
+            $tempClassroom = new Classroom([
+                'schedule' => [
+                    'days' => $this->days,
+                    'time' => $this->startTime . ' - ' . $this->endTime,
+                ]
+            ]);
 
-        $conflictCheck = ScheduleConflictHelper::checkMultipleTeachersScheduleConflict(
-            $this->teacher_ids, 
-            $tempClassroom
-        );
+            $conflictCheck = ScheduleConflictHelper::checkMultipleTeachersScheduleConflict(
+                $this->teacher_ids,
+                $tempClassroom
+            );
 
-        if ($conflictCheck['hasConflict']) {
-            $this->teacherConflicts = $conflictCheck['conflicts'];
-            $this->showConflictModal = true;
-            return;
+            if ($conflictCheck['hasConflict']) {
+                $this->teacherConflicts = $conflictCheck['conflicts'];
+                $this->showConflictModal = true;
+                return;
+            }
+
+            // Nếu không có trùng lịch, tiến hành tạo lớp
+            $this->performCreate();
+
+        } catch (\Exception $e) {
+            session()->flash('error', 'Không thể tạo lớp học. Vui lòng thử lại sau. Lỗi: ' . $e->getMessage());
+            Log::error('Create Classroom Error: ' . $e->getMessage(), [
+                'user_id' => Auth::id(),
+                'data' => $this->only(['name', 'level', 'status'])
+            ]);
         }
-
-        // Nếu không có trùng lịch, tiến hành tạo lớp
-        $this->performCreate();
     }
 
     public function performCreate()
@@ -139,7 +151,7 @@ class Create extends Component
             $classroom->users()->attach($tid, ['role' => 'teacher']);
         }
 
-        session()->flash('success', 'Lớp học đã được tạo thành công.');
+        session()->flash('success', 'Lớp học đã được tạo thành công!');
         return $this->redirect(route('classrooms.index'), navigate: true);
     }
 
