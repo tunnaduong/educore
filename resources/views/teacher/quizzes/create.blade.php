@@ -12,6 +12,53 @@
             <p class="text-muted mb-0">Thêm bài kiểm tra mới vào hệ thống</p>
         </div>
 
+        <!-- AI Tools -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h6 class="mb-0">
+                            <i class="fas fa-robot mr-2"></i>Công cụ AI Tiếng Trung
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="text-center">
+                                    <i class="fas fa-magic fa-3x text-primary mb-3"></i>
+                                    <h6>Tạo Quiz Tiếng Trung bằng AI</h6>
+                                    <p class="text-muted small">Tự động tạo quiz tiếng Trung từ nội dung bài học</p>
+                                    <a href="{{ route('teacher.ai.quiz-generator') }}" class="btn btn-primary">
+                                        <i class="fas fa-robot mr-1"></i>Tạo Quiz AI
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="text-center">
+                                    <i class="fas fa-database fa-3x text-success mb-3"></i>
+                                    <h6>Ngân hàng Câu hỏi Tiếng Trung</h6>
+                                    <p class="text-muted small">Tạo ngân hàng câu hỏi tiếng Trung với tối đa 100 câu</p>
+                                    <a href="{{ route('teacher.ai.question-bank-generator') }}" class="btn btn-success">
+                                        <i class="fas fa-database mr-1"></i>Tạo Ngân hàng
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="text-center">
+                                    <i class="fas fa-check-circle fa-3x text-warning mb-3"></i>
+                                    <h6>Kiểm tra Lỗi Quiz</h6>
+                                    <p class="text-muted small">Tự động kiểm tra và sửa lỗi quiz tiếng Trung</p>
+                                    <button type="button" class="btn btn-warning" wire:click="validateQuizWithAI">
+                                        <i class="fas fa-check-circle mr-1"></i>Kiểm tra AI
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <form wire:submit="save">
             <div class="row">
                 <!-- Thông tin cơ bản -->

@@ -16,12 +16,27 @@ class Quiz extends Model
         'deadline',
         'assigned_date',
         'time_limit',
+        // AI validation fields
+        'ai_validation_errors',
+        'ai_suggestions',
+        'ai_validated_at',
+        // AI generation fields
+        'ai_generated',
+        'ai_generation_source',
+        'ai_generation_params',
+        'ai_generated_at',
     ];
 
     protected $casts = [
         'questions' => 'array',
         'deadline' => 'datetime',
         'assigned_date' => 'datetime',
+        'ai_validated_at' => 'datetime',
+        'ai_generated_at' => 'datetime',
+        'ai_generated' => 'boolean',
+        'ai_validation_errors' => 'array',
+        'ai_suggestions' => 'array',
+        'ai_generation_params' => 'array',
     ];
 
     /**
@@ -66,5 +81,37 @@ class Quiz extends Model
             $maxScore += $question['score'] ?? 1;
         }
         return $maxScore;
+    }
+
+    /**
+     * Kiểm tra xem quiz đã được AI validate chưa
+     */
+    public function hasAIValidation(): bool
+    {
+        return !is_null($this->ai_validated_at);
+    }
+
+    /**
+     * Kiểm tra xem quiz có được AI tạo không
+     */
+    public function isAIGenerated(): bool
+    {
+        return $this->ai_generated;
+    }
+
+    /**
+     * Lấy thông tin lỗi validation của AI
+     */
+    public function getAIValidationErrors(): array
+    {
+        return $this->ai_validation_errors ?? [];
+    }
+
+    /**
+     * Lấy gợi ý cải thiện từ AI
+     */
+    public function getAISuggestions(): array
+    {
+        return $this->ai_suggestions ?? [];
     }
 }
