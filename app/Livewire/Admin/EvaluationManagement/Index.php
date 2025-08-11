@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Admin;
+namespace App\Livewire\Admin\EvaluationManagement;
 
 use Livewire\Component;
 use App\Models\Evaluation;
@@ -12,7 +12,7 @@ use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
-class EvaluationManagement extends Component
+class Index extends Component
 {
     use WithPagination, WithFileUploads;
 
@@ -27,7 +27,7 @@ class EvaluationManagement extends Component
     protected array $categoryLimits = [
         'teacher' => 5,
         'course'  => 4,
-        'personal'=> 1,
+        'personal' => 1,
     ];
 
     public $questionForm = [
@@ -398,7 +398,7 @@ class EvaluationManagement extends Component
         });
         $avgPersonal = $evaluations->getCollection()->avg('personal_satisfaction');
 
-        return view('admin.evaluation-management', [
+        return view('admin.evaluation-management.index', [
             'evaluations' => $evaluations,
             'classrooms' => $classrooms,
             'questions' => $questions,
