@@ -183,7 +183,7 @@
                                 <td>
                                     @if ($expense->classroom)
                                         <span class="badge bg-light text-dark border">
-                                            <i class="bi bi-building-fill mr-1"></i>{{ $expense->classroom->name }}
+                                            <i class="bi bi-building-fill mr-1"></i>{{ $expense->classroom?->name ?? 'N/A' }}
                                         </span>
                                     @else
                                         <span class="text-muted">-</span>

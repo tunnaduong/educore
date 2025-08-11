@@ -6,6 +6,8 @@ use App\Models\Classroom;
 use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class Index extends Component
 {
@@ -37,19 +39,84 @@ class Index extends Component
     public function delete($classroomId)
     {
         try {
-            $classroom = Classroom::findOrFail($classroomId);
-            $classroom->delete();
+            $classroom = Classroom::with(['teachers'])->findOrFail($classroomId);
+
+            // Kiểm tra xem lớp có đang hoạt động không
+            if ($classroom->status === 'active') {
+                session()->flash('error', 'Không thể xóa lớp học đang hoạt động. Vui lòng chuyển trạng thái sang không hoạt động trước.');
+                return;
+            }
+
+            // Lớp ở trạng thái 'draft' có thể xóa hoàn toàn nếu không có dữ liệu
+            if ($classroom->status === 'draft') {
+                // Kiểm tra xem lớp có sinh viên không
+                if ($classroom->students_count > 0) {
+                    session()->flash('error', 'Không thể xóa lớp học có sinh viên. Lớp sẽ được ẩn khỏi danh sách.');
+                    $classroom->delete(); // Soft delete
+                    $this->dispatch('refresh');
+                    return;
+                }
+
+                // Kiểm tra xem lớp có bài tập, bài học hoặc điểm danh không
+                if ($classroom->assignments_count > 0 || $classroom->lessons_count > 0 || $classroom->attendances_count > 0) {
+                    session()->flash('error', 'Không thể xóa lớp học có dữ liệu. Lớp sẽ được ẩn khỏi danh sách.');
+                    $classroom->delete(); // Soft delete
+                    $this->dispatch('refresh');
+                    return;
+                }
+
+                // Nếu lớp draft không có dữ liệu gì, có thể xóa hoàn toàn
+                $classroom->forceDelete();
+                session()->flash('success', 'Xóa lớp học nháp thành công!');
+                $this->dispatch('refresh');
+                return;
+            }
+
+            // Kiểm tra xem lớp có sinh viên không
+            if ($classroom->students_count > 0) {
+                session()->flash('error', 'Không thể xóa lớp học có sinh viên. Lớp sẽ được ẩn khỏi danh sách.');
+                $classroom->delete(); // Soft delete
+                $this->dispatch('refresh');
+                return;
+            }
+
+            // Kiểm tra xem lớp có bài tập, bài học hoặc điểm danh không
+            if ($classroom->assignments_count > 0 || $classroom->lessons_count > 0 || $classroom->attendances_count > 0) {
+                session()->flash('error', 'Không thể xóa lớp học có dữ liệu. Lớp sẽ được ẩn khỏi danh sách.');
+                $classroom->delete(); // Soft delete
+                $this->dispatch('refresh');
+                return;
+            }
+
+            // Nếu lớp không có dữ liệu gì, có thể xóa hoàn toàn
+            $classroom->forceDelete();
             session()->flash('success', 'Xóa lớp học thành công!');
-            $this->dispatch('hide-delete-modal', id: $classroomId);
+            $this->dispatch('refresh');
+
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            session()->flash('error', 'Không tìm thấy lớp học cần xóa.');
+            Log::error('Delete Classroom - Not Found: ' . $e->getMessage(), [
+                'classroom_id' => $classroomId,
+                'user_id' => Auth::id()
+            ]);
         } catch (\Exception $e) {
             session()->flash('error', 'Không thể xóa lớp học này. Vui lòng thử lại sau.');
+            Log::error('Delete Classroom Error: ' . $e->getMessage(), [
+                'classroom_id' => $classroomId,
+                'user_id' => Auth::id(),
+                'error' => $e->getMessage()
+            ]);
         }
+    }
+
+    public function closeModal($classroomId)
+    {
+        $this->dispatch('close-modal', id: $classroomId);
     }
 
     public function render()
     {
         $classrooms = Classroom::query()
-            ->withCount('students')
             ->with('teachers')
             ->when($this->search, function ($query) {
                 $query->where(function ($query) {
