@@ -299,7 +299,7 @@
                     <div class="modal-header bg-primary text-white border-0">
                         <h5 class="modal-title">
                             <i class="fas fa-eye mr-2"></i>@lang('general.view_submission') của
-                            {{ $selectedSubmission->student->user->name }}
+                            {{ $selectedSubmission->student?->user?->name ?? 'N/A' }}
                         </h5>
                         <button type="button" class="close text-white" wire:click="closeModal">
                             <span aria-hidden="true">&times;</span>
@@ -375,7 +375,7 @@
                             <div class="card-header bg-success text-white border-0">
                                 <h6 class="mb-0">
                                     <i class="fas fa-user-check mr-2"></i>@lang('general.student_answer') của
-                                    {{ $selectedSubmission->student->user->name }}
+                                    {{ $selectedSubmission->student?->user?->name ?? 'N/A' }}
                                 </h6>
                             </div>
                             <div class="card-body">

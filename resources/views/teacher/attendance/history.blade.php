@@ -62,11 +62,11 @@
                                         <small class="text-muted">{{ $attendance->date->format('D') }}</small>
                                     </td>
                                     <td>
-                                        <div class="fw-medium">{{ $attendance->classroom->name }}</div>
+                                        <div class="fw-medium">{{ $attendance->classroom?->name ?? 'N/A' }}</div>
                                         <small class="text-muted">{{ $attendance->classroom->level }}</small>
                                     </td>
                                     <td>
-                                        <div class="fw-medium">{{ $attendance->student->user->name }}</div>
+                                        <div class="fw-medium">{{ $attendance->student?->user?->name ?? 'N/A' }}</div>
                                         <small class="text-muted">{{ $attendance->student->user->email }}</small>
                                     </td>
                                     <td class="text-center">
