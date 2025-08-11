@@ -85,6 +85,7 @@ class DoQuiz extends Component
             $this->isFinished = false;
             $this->startedAt = $existingResult->started_at;
             $this->answers = $existingResult->answers ?? [];
+            $this->calculateTimeRemaining();
             return;
         }
 
@@ -112,6 +113,7 @@ class DoQuiz extends Component
         $this->startedAt = $this->result->started_at;
         $this->answers = [];
         $this->isFinished = false;
+        $this->calculateTimeRemaining();
     }
 
     public function nextQuestion()
@@ -132,6 +134,15 @@ class DoQuiz extends Component
     {
         if ($index >= 0 && $index < count($this->questions)) {
             $this->currentQuestionIndex = $index;
+        }
+    }
+
+    public function saveAnswer()
+    {
+        if ($this->result && !$this->isFinished) {
+            $this->result->update([
+                'answers' => $this->answers,
+            ]);
         }
     }
 
@@ -203,6 +214,28 @@ class DoQuiz extends Component
         ]);
     }
 
+    public function calculateTimeRemaining()
+    {
+        if (!$this->quiz->time_limit || $this->isFinished) {
+            $this->timeRemaining = null;
+            return;
+        }
+
+        $startedAt = $this->startedAt instanceof \Carbon\Carbon
+            ? $this->startedAt
+            : \Carbon\Carbon::parse($this->startedAt);
+
+        $timeLimitInSeconds = $this->quiz->time_limit * 60; // Convert minutes to seconds
+        $elapsedTime = $startedAt ? $startedAt->diffInSeconds(now(), false) : 0;
+
+        $this->timeRemaining = max(0, $timeLimitInSeconds - $elapsedTime);
+
+        // Nếu hết thời gian thì tự động nộp bài
+        if ($this->timeRemaining <= 0) {
+            $this->submitQuiz();
+        }
+    }
+
     public function updateTimer()
     {
         if ($this->timeRemaining && $this->timeRemaining > 0) {
@@ -212,6 +245,102 @@ class DoQuiz extends Component
                 $this->submitQuiz();
             }
         }
+    }
+
+    /**
+     * Format thời gian còn lại thành chuỗi đẹp
+     */
+    public function getFormattedTimeRemaining()
+    {
+        if (!$this->timeRemaining || $this->timeRemaining <= 0) {
+            return null;
+        }
+
+        $hours = floor($this->timeRemaining / 3600);
+        $minutes = floor(($this->timeRemaining % 3600) / 60);
+        $seconds = $this->timeRemaining % 60;
+
+        if ($hours > 0) {
+            return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+        } else {
+            return sprintf('%02d:%02d', $minutes, $seconds);
+        }
+    }
+
+    /**
+     * Lấy class CSS cho timer dựa trên thời gian còn lại
+     */
+    public function getTimerClass()
+    {
+        if (!$this->timeRemaining || $this->timeRemaining <= 0) {
+            return 'bg-secondary text-white';
+        }
+
+        if ($this->timeRemaining <= 300) { // 5 phút cuối
+            return 'bg-danger text-white animate__animated animate__pulse';
+        } elseif ($this->timeRemaining <= 600) { // 10 phút cuối
+            return 'bg-warning text-dark animate__animated animate__pulse';
+        } else {
+            return 'bg-info text-white';
+        }
+    }
+
+    /**
+     * Kiểm tra xem có cần cảnh báo không
+     */
+    public function shouldShowWarning()
+    {
+        if (!$this->timeRemaining || $this->timeRemaining <= 0) {
+            return false;
+        }
+
+        return $this->timeRemaining <= 300; // Cảnh báo khi còn 5 phút
+    }
+
+    /**
+     * Kiểm tra xem có cần cảnh báo khẩn cấp không
+     */
+    public function shouldShowUrgentWarning()
+    {
+        if (!$this->timeRemaining || $this->timeRemaining <= 0) {
+            return false;
+        }
+
+        return $this->timeRemaining <= 60; // Cảnh báo khẩn cấp khi còn 1 phút
+    }
+
+    /**
+     * Cập nhật timer real-time
+     */
+    public function refreshTimer()
+    {
+        if (!$this->isFinished) {
+            $this->calculateTimeRemaining();
+        }
+    }
+
+    /**
+     * Lấy thông tin timer để hiển thị
+     */
+    public function getTimerInfo()
+    {
+        if (!$this->timeRemaining || $this->timeRemaining <= 0) {
+            return [
+                'time_remaining' => null,
+                'formatted_time' => null,
+                'timer_class' => 'bg-secondary text-white',
+                'show_warning' => false,
+                'show_urgent_warning' => false
+            ];
+        }
+
+        return [
+            'time_remaining' => $this->timeRemaining,
+            'formatted_time' => $this->getFormattedTimeRemaining(),
+            'timer_class' => $this->getTimerClass(),
+            'show_warning' => $this->shouldShowWarning(),
+            'show_urgent_warning' => $this->shouldShowUrgentWarning()
+        ];
     }
 
     public function render()
