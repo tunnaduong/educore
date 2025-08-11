@@ -17,7 +17,7 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"></script>
     <!-- jQuery CDN -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    @vite(['resources/css/app.css'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
 
@@ -34,7 +34,6 @@
             $('.dropdown-toggle').dropdown();
         });
     </script>
-    @vite(['resources/js/app.js'])
     @stack('scripts')
 </body>
 

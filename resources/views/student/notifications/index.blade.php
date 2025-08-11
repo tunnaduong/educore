@@ -139,7 +139,7 @@
                                             @if ($notification->classroom)
                                                 <span class="badge bg-secondary">
                                                     <i
-                                                        class="bi bi-diagram-3 mr-1"></i>{{ $notification->classroom->name }}
+                                                        class="bi bi-diagram-3 mr-1"></i>{{ $notification->classroom?->name ?? 'N/A' }}
                                                 </span>
                                             @else
                                                 <span class="text-muted">-</span>
@@ -292,7 +292,7 @@
                             <div class="mt-3">
                                 <strong>Lớp học:</strong>
                                 <span class="badge bg-secondary ml-2">
-                                    <i class="bi bi-diagram-3 mr-1"></i>{{ $selectedNotification->classroom->name }}
+                                    <i class="bi bi-diagram-3 mr-1"></i>{{ $selectedNotification->classroom?->name ?? 'N/A' }}
                                 </span>
                             </div>
                         @endif

@@ -7,6 +7,7 @@ use App\Models\User;
 use Livewire\Component;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class Create extends Component
 {
@@ -17,7 +18,7 @@ class Create extends Component
     public $endTime = '';
     public $notes = '';
     public $teacher_ids = [];
-    public $status = 'active';
+    public $status = 'draft';
 
     protected $rules = [
         'name' => 'required|min:3|max:255',
@@ -28,7 +29,7 @@ class Create extends Component
         'notes' => 'nullable|max:1000',
         'teacher_ids' => 'required|array|min:1',
         'teacher_ids.*' => 'exists:users,id',
-        'status' => 'required|in:active,completed',
+        'status' => 'required|in:draft,active,inactive,completed',
     ];
 
     protected $messages = [
@@ -61,26 +62,35 @@ class Create extends Component
 
     public function save()
     {
-        $this->validate();
+        try {
+            $this->validate();
 
-        $classroom = Classroom::create([
-            'name' => $this->name,
-            'level' => $this->level,
-            'schedule' => json_encode([
-                'days' => $this->days,
-                'time' => $this->startTime . ' - ' . $this->endTime,
-            ]),
-            'notes' => $this->notes,
-            'status' => $this->status,
-        ]);
+            $classroom = Classroom::create([
+                'name' => $this->name,
+                'level' => $this->level,
+                'schedule' => json_encode([
+                    'days' => $this->days,
+                    'time' => $this->startTime . ' - ' . $this->endTime,
+                ]),
+                'notes' => $this->notes,
+                'status' => $this->status,
+            ]);
 
-        // Gán nhiều giáo viên vào class_user
-        foreach ($this->teacher_ids as $tid) {
-            $classroom->users()->attach($tid, ['role' => 'teacher']);
+            // Gán nhiều giáo viên vào class_user
+            foreach ($this->teacher_ids as $tid) {
+                $classroom->users()->attach($tid, ['role' => 'teacher']);
+            }
+
+            session()->flash('success', 'Lớp học đã được tạo thành công!');
+            return $this->redirect(route('classrooms.index'), navigate: true);
+
+        } catch (\Exception $e) {
+            session()->flash('error', 'Không thể tạo lớp học. Vui lòng thử lại sau. Lỗi: ' . $e->getMessage());
+            Log::error('Create Classroom Error: ' . $e->getMessage(), [
+                'user_id' => Auth::id(),
+                'data' => $this->only(['name', 'level', 'status'])
+            ]);
         }
-
-        session()->flash('success', 'Lớp học đã được tạo thành công.');
-        return $this->redirect(route('classrooms.index'), navigate: true);
     }
 
     public function render()
