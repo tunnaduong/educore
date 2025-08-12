@@ -155,6 +155,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('ai.index') }}" class="nav-link {{ $active === 'ai' ? 'active' : '' }}"
+                            wire:navigate>
+                            <i class="nav-icon fas fa-robot"></i>
+                            <p>@lang('general.ai_assistant')</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ route('notifications.index') }}"
                             class="nav-link {{ $active === 'notifications' ? 'active' : '' }}" wire:navigate>
                             <i class="nav-icon fas fa-bell"></i>

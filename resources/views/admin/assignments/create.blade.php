@@ -47,7 +47,7 @@
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <label for="deadline" class="form-label fw-semibold">Hạn nộp *</label>
-                            <input wire:model.defer="deadline" type="datetimr-local"
+                            <input wire:model.defer="deadline" type="datetime-local"
                                 class="form-control @error('deadline') is-invalid @enderror" id="deadline">
                             @error('deadline')
                                 <div class="invalid-feedback">{{ $message }}</div>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Teacher\AI;
+namespace App\Livewire\Admin\AI;
 
 use Livewire\Component;
 use App\Models\AssignmentSubmission;
@@ -47,7 +47,7 @@ class Index extends Component
 
     public function render()
     {
-        return view('teacher.ai.index', [
+        return view('admin.ai.index', [
             'recentSubmissions' => $this->recentSubmissions,
             'availableAssignments' => $this->availableAssignments,
             'classrooms' => $this->classrooms,

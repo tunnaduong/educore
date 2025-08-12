@@ -104,7 +104,8 @@
                 </div>
                 <!-- Quản lý đánh giá -->
                 <div class="col-6 col-md-3 text-center mb-4">
-                    <a href="{{ route('evaluation-management') }}" wire:navigate class="text-decoration-none text-dark">
+                    <a href="{{ route('evaluation-management') }}" wire:navigate
+                        class="text-decoration-none text-dark">
                         <div class="mb-2">
                             <i class="fas fa-star" style="font-size:2.5rem; color:#e91e63;"></i>
                         </div>
@@ -127,6 +128,15 @@
                             <i class="fas fa-comments" style="font-size:2.5rem; color:#17a2b8;"></i>
                         </div>
                         <div>@lang('general.chat')</div>
+                    </a>
+                </div>
+                <!-- AI -->
+                <div class="col-6 col-md-3 text-center mb-4">
+                    <a href="{{ route('ai.index') }}" wire:navigate class="text-decoration-none text-dark">
+                        <div class="mb-2">
+                            <i class="fas fa-robot" style="font-size:2.5rem; color:#0d6efd;"></i>
+                        </div>
+                        <div>@lang('general.ai_assistant')</div>
                     </a>
                 </div>
             </div>

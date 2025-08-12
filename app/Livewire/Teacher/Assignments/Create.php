@@ -24,6 +24,7 @@ class Create extends Component
         'audio' => 'Ghi âm',
         'video' => 'Quay video',
     ];
+
     public $classrooms = [];
     public $attachment;
     public $video;
@@ -32,7 +33,12 @@ class Create extends Component
     public function mount()
     {
         $user = Auth::user();
-        $this->classrooms = $user->teachingClassrooms ?? Classroom::all();
+        // Nếu là admin thì lấy tất cả lớp, nếu là giáo viên thì chỉ lấy lớp mình dạy
+        if ($user->role === 'admin') {
+            $this->classrooms = Classroom::all();
+        } else {
+            $this->classrooms = $user->teachingClassrooms;
+        }
     }
 
     public function createAssignment()

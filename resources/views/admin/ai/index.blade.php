@@ -1,4 +1,4 @@
-<x-layouts.dash-teacher active="ai">
+<x-layouts.dash-admin active="ai">
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -63,7 +63,7 @@
                                             </td>
                                             <td>
                                                 @if (!$submission->score && !$submission->ai_score)
-                                                    <a href="{{ route('teacher.ai.grading', $submission->id) }}"
+                                                    <a href="{{ route('ai.grading', $submission->id) }}"
                                                         class="btn btn-sm btn-primary">
                                                         <i class="bi bi-robot"></i>
                                                         Chấm điểm bằng AI
@@ -111,7 +111,7 @@
                                     <i class="bi bi-file-text text-primary" style="font-size: 3rem;"></i>
                                     <h5 class="mt-3">Tạo Quiz từ bài tập</h5>
                                     <p class="text-muted">Tạo quiz dựa trên nội dung bài tập hiện có</p>
-                                    <a href="{{ route('teacher.ai.quiz-generator') }}" class="btn btn-primary">
+                                    <a href="{{ route('ai.quiz-generator') }}" class="btn btn-primary">
                                         <i class="bi bi-robot"></i>
                                         Tạo Quiz từ bài tập
                                     </a>
@@ -124,7 +124,7 @@
                                     <i class="bi bi-collection text-success" style="font-size: 3rem;"></i>
                                     <h5 class="mt-3">Tạo ngân hàng câu hỏi</h5>
                                     <p class="text-muted">Tạo bộ câu hỏi đa dạng cho nhiều bài kiểm tra</p>
-                                    <a href="{{ route('teacher.ai.question-bank-generator') }}" class="btn btn-success">
+                                    <a href="{{ route('ai.question-bank-generator') }}" class="btn btn-success">
                                         <i class="bi bi-robot"></i>
                                         Tạo ngân hàng câu hỏi
                                     </a>
@@ -227,4 +227,4 @@
             </div>
         </div>
     </div>
-</x-layouts.dash-teacher>
+</x-layouts.dash-admin>
