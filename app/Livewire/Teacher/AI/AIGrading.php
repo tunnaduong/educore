@@ -13,7 +13,6 @@ class AIGrading extends Component
     public $submission;
     public $assignment;
     public $aiResult = null;
-    public $isProcessing = false;
     public $showAIFeedback = false;
 
     public function mount($submissionId)
@@ -28,11 +27,15 @@ class AIGrading extends Component
         if (!in_array($this->assignment->class_id, $userClassIds->toArray())) {
             abort(403, 'Bạn không có quyền chấm bài tập này.');
         }
+
+        // Kiểm tra loại bài nộp: không cho phép chấm bài có submission_type = 'image'
+        if ($this->submission->submission_type === 'image') {
+            abort(403, 'Không thể chấm bài tập có loại nộp là hình ảnh bằng AI.');
+        }
     }
 
     public function gradeWithAI()
     {
-        $this->isProcessing = true;
         $this->aiResult = null;
 
         try {
@@ -40,7 +43,6 @@ class AIGrading extends Component
 
             if (!$aiHelper->isAIAvailable()) {
                 session()->flash('error', 'AI service không khả dụng. Vui lòng kiểm tra cấu hình API.');
-                $this->isProcessing = false;
                 return;
             }
 
@@ -56,8 +58,6 @@ class AIGrading extends Component
         } catch (\Exception $e) {
             session()->flash('error', 'Có lỗi xảy ra: ' . $e->getMessage());
         }
-
-        $this->isProcessing = false;
     }
 
     public function applyAIScore()
@@ -74,14 +74,11 @@ class AIGrading extends Component
 
     public function correctGrammarWithAI()
     {
-        $this->isProcessing = true;
-
         try {
             $aiHelper = new AIHelper();
 
             if (!$aiHelper->isAIAvailable()) {
                 session()->flash('error', 'AI service không khả dụng. Vui lòng kiểm tra cấu hình API.');
-                $this->isProcessing = false;
                 return;
             }
 
@@ -96,20 +93,15 @@ class AIGrading extends Component
         } catch (\Exception $e) {
             session()->flash('error', 'Có lỗi xảy ra: ' . $e->getMessage());
         }
-
-        $this->isProcessing = false;
     }
 
     public function analyzeWithAI()
     {
-        $this->isProcessing = true;
-
         try {
             $aiHelper = new AIHelper();
 
             if (!$aiHelper->isAIAvailable()) {
                 session()->flash('error', 'AI service không khả dụng. Vui lòng kiểm tra cấu hình API.');
-                $this->isProcessing = false;
                 return;
             }
 
@@ -124,8 +116,6 @@ class AIGrading extends Component
         } catch (\Exception $e) {
             session()->flash('error', 'Có lỗi xảy ra: ' . $e->getMessage());
         }
-
-        $this->isProcessing = false;
     }
 
     public function render()
@@ -134,7 +124,6 @@ class AIGrading extends Component
             'submission' => $this->submission,
             'assignment' => $this->assignment,
             'aiResult' => $this->aiResult,
-            'isProcessing' => $this->isProcessing,
             'showAIFeedback' => $this->showAIFeedback,
         ]);
     }

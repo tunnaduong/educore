@@ -220,37 +220,48 @@
                                                         <strong>Lỗi đã sửa:</strong>
                                                         <ul class="list-group mt-2">
                                                             @php
-                                                    $errorsFound = $submission->ai_errors_found;
-                                                    if (is_string($errorsFound)) {
-                                                        $errorsFound = json_decode($errorsFound, true) ?: [];
-                                                    }
-                                                @endphp
-                                                @if (!empty($errorsFound))
-                                                    <div class="mb-3">
-                                                        <strong>Lỗi đã sửa:</strong>
-                                                        <ul class="list-group mt-2">
-                                                            @foreach ($errorsFound as $error)
-                                                                <li class="list-group-item">
-                                                                    <strong>{{ $error['original'] }}</strong> →
-                                                                    <span
-                                                                        class="text-success">{{ $error['corrected'] }}</span>
-                                                                    <br><small
-                                                                        class="text-muted">{{ $error['explanation'] }}</small>
-                                                                </li>
-                                                            @endforeach
-                                                        </ul>
-                                                    </div>
+                                                                $errorsFound = $submission->ai_errors_found;
+                                                                if (is_string($errorsFound)) {
+                                                                    $errorsFound =
+                                                                        json_decode($errorsFound, true) ?: [];
+                                                                }
+                                                            @endphp
+                                                            @if (!empty($errorsFound))
+                                                                <div class="mb-3">
+                                                                    <strong>Lỗi đã sửa:</strong>
+                                                                    <ul class="list-group mt-2">
+                                                                        @foreach ($errorsFound as $error)
+                                                                            <li class="list-group-item">
+                                                                                <strong>{{ $error['original'] }}</strong>
+                                                                                →
+                                                                                <span
+                                                                                    class="text-success">{{ $error['corrected'] }}</span>
+                                                                                <br><small
+                                                                                    class="text-muted">{{ $error['explanation'] }}</small>
+                                                                            </li>
+                                                                        @endforeach
+                                                                    </ul>
+                                                                </div>
+                                                            @endif
                                                 @endif
-                                            @endif
 
-                                            <div class="d-flex gap-2">
-                                                <button wire:click="correctGrammarWithAI"
-                                                    class="btn btn-outline-primary btn-sm"
-                                                    {{ $isProcessing ? 'disabled' : '' }}>
-                                                    <i class="fas fa-magic"></i>
-                                                    {{ $isProcessing ? 'Đang xử lý...' : 'Sửa lỗi ngữ pháp' }}
-                                                </button>
-                                            </div>
+                                                <div class="d-flex gap-2">
+                                                    <button wire:click="correctGrammarWithAI"
+                                                        class="btn btn-outline-primary btn-sm position-relative"
+                                                        wire:loading.attr="disabled" wire:loading.class="disabled">
+                                                        <div wire:loading.remove>
+                                                            <i class="fas fa-magic"></i>
+                                                            Sửa lỗi ngữ pháp
+                                                        </div>
+                                                        <div wire:loading class="loading-overlay">
+                                                            <div class="spinner-border spinner-border-sm text-light me-2"
+                                                                role="status">
+                                                                <span class="visually-hidden">Loading...</span>
+                                                            </div>
+                                                            <span class="loading-text">Đang xử lý...</span>
+                                                        </div>
+                                                    </button>
+                                                </div>
                                         </div>
                                     </div>
                                 </div>
@@ -281,225 +292,310 @@
                                                         <strong>Điểm chi tiết:</strong>
                                                         <div class="row">
                                                             @php
-                                                    $criteriaScores = $submission->ai_criteria_scores;
-                                                    // Xử lý trường hợp dữ liệu cũ có thể là string
-                                                    if (is_string($criteriaScores)) {
-                                                        $criteriaScores = json_decode($criteriaScores, true) ?: [];
-                                                    }
-                                                @endphp
-                                                @if (!empty($criteriaScores))
-                                                    <div class="mb-3">
-                                                        <strong>Điểm chi tiết:</strong>
-                                                        <div class="row">
-                                                            @foreach ($criteriaScores as $criteria => $score)
-                                                                <div class="col-6">
-                                                                    <small
-                                                                        class="text-muted">{{ ucfirst($criteria) }}:</small>
-                                                                    <div class="progress" style="height: 20px;">
-                                                                        <div class="progress-bar"
-                                                                            style="width: {{ ($score / 10) * 100 }}%">
-                                                                            {{ $score }}/10
+                                                                $criteriaScores = $submission->ai_criteria_scores;
+                                                                // Xử lý trường hợp dữ liệu cũ có thể là string
+                                                                if (is_string($criteriaScores)) {
+                                                                    $criteriaScores =
+                                                                        json_decode($criteriaScores, true) ?: [];
+                                                                }
+                                                            @endphp
+                                                            @if (!empty($criteriaScores))
+                                                                <div class="mb-3">
+                                                                    <strong>Điểm chi tiết:</strong>
+                                                                    <div class="row">
+                                                                        @foreach ($criteriaScores as $criteria => $score)
+                                                                            <div class="col-6">
+                                                                                <small
+                                                                                    class="text-muted">{{ ucfirst($criteria) }}:</small>
+                                                                                <div class="progress"
+                                                                                    style="height: 20px;">
+                                                                                    <div class="progress-bar"
+                                                                                        style="width: {{ ($score / 10) * 100 }}%">
+                                                                                        {{ $score }}/10
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        @endforeach
+                                                                    </div>
+                                                                </div>
+                                                            @endif
+
+                                                            @if (!empty($submission->ai_strengths))
+                                                                <div class="mb-3">
+                                                                    <strong>Điểm mạnh:</strong>
+                                                                    <ul class="list-group list-group-flush mt-2">
+                                                                        @php
+                                                                            $strengths = $submission->ai_strengths;
+                                                                            if (is_string($strengths)) {
+                                                                                $strengths =
+                                                                                    json_decode($strengths, true) ?: [];
+                                                                            }
+                                                                        @endphp
+                                                                        @if (!empty($strengths))
+                                                                            <div class="mb-3">
+                                                                                <strong>Điểm mạnh:</strong>
+                                                                                <ul
+                                                                                    class="list-group list-group-flush mt-2">
+                                                                                    @foreach ($strengths as $strength)
+                                                                                        <li
+                                                                                            class="list-group-item text-success">
+                                                                                            <i class="fas fa-check"></i>
+                                                                                            {{ $strength }}
+                                                                                        </li>
+                                                                                    @endforeach
+                                                                                </ul>
+                                                                            </div>
+                                                                        @endif
+
+                                                                        @if (!empty($submission->ai_weaknesses))
+                                                                            <div class="mb-3">
+                                                                                <strong>Điểm yếu:</strong>
+                                                                                <ul
+                                                                                    class="list-group list-group-flush mt-2">
+                                                                                    @php
+                                                                                        $weaknesses =
+                                                                                            $submission->ai_weaknesses;
+                                                                                        if (is_string($weaknesses)) {
+                                                                                            $weaknesses =
+                                                                                                json_decode(
+                                                                                                    $weaknesses,
+                                                                                                    true,
+                                                                                                ) ?:
+                                                                                                [];
+                                                                                        }
+                                                                                    @endphp
+                                                                                    @if (!empty($weaknesses))
+                                                                                        <div class="mb-3">
+                                                                                            <strong>Điểm yếu:</strong>
+                                                                                            <ul
+                                                                                                class="list-group list-group-flush mt-2">
+                                                                                                @foreach ($weaknesses as $weakness)
+                                                                                                    <li
+                                                                                                        class="list-group-item text-warning">
+                                                                                                        <i
+                                                                                                            class="fas fa-exclamation-triangle"></i>
+                                                                                                        {{ $weakness }}
+                                                                                                    </li>
+                                                                                                @endforeach
+                                                                                            </ul>
+                                                                                        </div>
+                                                                                    @endif
+                                                                                @else
+                                                                                    <div class="text-center text-muted">
+                                                                                        <i
+                                                                                            class="fas fa-robot fa-3x mb-3"></i>
+                                                                                        <p>Chưa có kết quả chấm từ AI
+                                                                                        </p>
+                                                                                        <button wire:click="gradeWithAI"
+                                                                                            class="btn btn-primary position-relative"
+                                                                                            wire:loading.attr="disabled"
+                                                                                            wire:loading.class="disabled">
+                                                                                            <div wire:loading.remove>
+                                                                                                <i
+                                                                                                    class="fas fa-magic"></i>
+                                                                                                Chấm bài bằng AI
+                                                                                            </div>
+                                                                                            <div wire:loading
+                                                                                                class="loading-overlay">
+                                                                                                <div class="spinner-border spinner-border-sm text-light me-2"
+                                                                                                    role="status">
+                                                                                                    <span
+                                                                                                        class="visually-hidden">Loading...</span>
+                                                                                                </div>
+                                                                                                <span
+                                                                                                    class="loading-text">Đang
+                                                                                                    chấm...</span>
+                                                                                            </div>
+                                                                                        </button>
+                                                                                    </div>
+                                                                        @endif
+
+                                                                        @if ($showAIFeedback && $aiResult)
+                                                                            <div class="mt-3">
+                                                                                <button wire:click="applyAIScore"
+                                                                                    class="btn btn-success">
+                                                                                    <i class="fas fa-check"></i> Áp
+                                                                                    dụng
+                                                                                    điểm từ AI
+                                                                                </button>
+                                                                            </div>
+                                                                        @endif
+                                                                </div>
+                                                        </div>
+                                                    </div>
+                                        </div>
+
+                                        <!-- Phân tích AI -->
+                                        @if ($submission->hasAIAnalysis())
+                                            <div class="row mt-4">
+                                                <div class="col-12">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <h5 class="card-title">Phân tích chi tiết từ AI</h5>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            @if (!empty($submission->ai_analysis))
+                                                                <div class="row">
+                                                                    @php
+                                                                        $analysis = $submission->ai_analysis;
+                                                                        if (is_string($analysis)) {
+                                                                            $analysis =
+                                                                                json_decode($analysis, true) ?: [];
+                                                                        }
+                                                                    @endphp
+                                                                    @if (!empty($analysis))
+                                                                        <div class="row">
+                                                                            @foreach ($analysis as $aspect => $evaluation)
+                                                                                <div class="col-md-6 mb-3">
+                                                                                    <strong>{{ ucfirst(str_replace('_', ' ', $aspect)) }}:</strong>
+                                                                                    <p class="text-muted">
+                                                                                        {{ $evaluation }}</p>
+                                                                                </div>
+                                                                            @endforeach
+                                                                        </div>
+                                                                    @endif
+
+                                                                    @if (!empty($submission->ai_improvement_suggestions))
+                                                                        <div class="mb-3">
+                                                                            <strong>Gợi ý cải thiện:</strong>
+                                                                            <ul class="list-group mt-2">
+                                                                                @php
+                                                                                    $improvementSuggestions =
+                                                                                        $submission->ai_improvement_suggestions;
+                                                                                    if (
+                                                                                        is_string(
+                                                                                            $improvementSuggestions,
+                                                                                        )
+                                                                                    ) {
+                                                                                        $improvementSuggestions =
+                                                                                            json_decode(
+                                                                                                $improvementSuggestions,
+                                                                                                true,
+                                                                                            ) ?:
+                                                                                            [];
+                                                                                    }
+                                                                                @endphp
+                                                                                @if (!empty($improvementSuggestions))
+                                                                                    <div class="mb-3">
+                                                                                        <strong>Gợi ý cải
+                                                                                            thiện:</strong>
+                                                                                        <ul class="list-group mt-2">
+                                                                                            @foreach ($improvementSuggestions as $suggestion)
+                                                                                                <li
+                                                                                                    class="list-group-item">
+                                                                                                    <div
+                                                                                                        class="d-flex justify-content-between align-items-start">
+                                                                                                        <div>
+                                                                                                            <strong>{{ ucfirst($suggestion['category']) }}:</strong>
+                                                                                                            {{ $suggestion['suggestion'] }}
+                                                                                                        </div>
+                                                                                                        <span
+                                                                                                            class="badge bg-{{ $suggestion['priority'] === 'high' ? 'danger' : ($suggestion['priority'] === 'medium' ? 'warning' : 'info') }}">
+                                                                                                            {{ ucfirst($suggestion['priority']) }}
+                                                                                                        </span>
+                                                                                                    </div>
+                                                                                                </li>
+                                                                                            @endforeach
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                @endif
+
+                                                                                @if (!empty($submission->ai_learning_resources))
+                                                                                    <div class="mb-3">
+                                                                                        <strong>Tài liệu học
+                                                                                            tập:</strong>
+                                                                                        <div class="row mt-2">
+                                                                                            @php
+                                                                                                $learningResources =
+                                                                                                    $submission->ai_learning_resources;
+                                                                                                if (
+                                                                                                    is_string(
+                                                                                                        $learningResources,
+                                                                                                    )
+                                                                                                ) {
+                                                                                                    $learningResources =
+                                                                                                        json_decode(
+                                                                                                            $learningResources,
+                                                                                                            true,
+                                                                                                        ) ?:
+                                                                                                        [];
+                                                                                                }
+                                                                                            @endphp
+                                                                                            @if (!empty($learningResources))
+                                                                                                <div class="mb-3">
+                                                                                                    <strong>Tài liệu học
+                                                                                                        tập:</strong>
+                                                                                                    <div
+                                                                                                        class="row mt-2">
+                                                                                                        @foreach ($learningResources as $resource)
+                                                                                                            <div
+                                                                                                                class="col-md-6 mb-2">
+                                                                                                                <div
+                                                                                                                    class="card">
+                                                                                                                    <div
+                                                                                                                        class="card-body">
+                                                                                                                        <h6
+                                                                                                                            class="card-title">
+                                                                                                                            {{ $resource['title'] }}
+                                                                                                                        </h6>
+                                                                                                                        <p
+                                                                                                                            class="card-text">
+                                                                                                                            {{ $resource['description'] }}
+                                                                                                                        </p>
+                                                                                                                        <a href="{{ $resource['url'] }}"
+                                                                                                                            target="_blank"
+                                                                                                                            class="btn btn-sm btn-outline-primary">
+                                                                                                                            <i
+                                                                                                                                class="fas fa-external-link-alt"></i>
+                                                                                                                            Xem
+                                                                                                                            tài
+                                                                                                                            liệu
+                                                                                                                        </a>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        @endforeach
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            @endif
+                                                                                        </div>
+                                                                                    </div>
+                                                                        </div>
+                                                                </div>
+                                                            @else
+                                                                <div class="row mt-4">
+                                                                    <div class="col-12">
+                                                                        <div class="card">
+                                                                            <div class="card-body text-center">
+                                                                                <button wire:click="analyzeWithAI"
+                                                                                    class="btn btn-outline-info position-relative"
+                                                                                    wire:loading.attr="disabled"
+                                                                                    wire:loading.class="disabled">
+                                                                                    <div wire:loading.remove>
+                                                                                        <i
+                                                                                            class="fas fa-chart-line"></i>
+                                                                                        Phân tích chi tiết bằng AI
+                                                                                    </div>
+                                                                                    <div wire:loading
+                                                                                        class="loading-overlay">
+                                                                                        <div class="spinner-border spinner-border-sm text-light me-2"
+                                                                                            role="status">
+                                                                                            <span
+                                                                                                class="visually-hidden">Loading...</span>
+                                                                                        </div>
+                                                                                        <span class="loading-text">Đang
+                                                                                            phân tích...</span>
+                                                                                    </div>
+                                                                                </button>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            @endforeach
-                                                        </div>
-                                                    </div>
-                                                @endif
-
-                                                @if (!empty($submission->ai_strengths))
-                                                    <div class="mb-3">
-                                                        <strong>Điểm mạnh:</strong>
-                                                        <ul class="list-group list-group-flush mt-2">
-                                                            @php
-                                                    $strengths = $submission->ai_strengths;
-                                                    if (is_string($strengths)) {
-                                                        $strengths = json_decode($strengths, true) ?: [];
-                                                    }
-                                                @endphp
-                                                @if (!empty($strengths))
-                                                    <div class="mb-3">
-                                                        <strong>Điểm mạnh:</strong>
-                                                        <ul class="list-group list-group-flush mt-2">
-                                                            @foreach ($strengths as $strength)
-                                                                <li class="list-group-item text-success">
-                                                                    <i class="fas fa-check"></i> {{ $strength }}
-                                                                </li>
-                                                            @endforeach
-                                                        </ul>
-                                                    </div>
-                                                @endif
-
-                                                @if (!empty($submission->ai_weaknesses))
-                                                    <div class="mb-3">
-                                                        <strong>Điểm yếu:</strong>
-                                                        <ul class="list-group list-group-flush mt-2">
-                                                            @php
-                                                    $weaknesses = $submission->ai_weaknesses;
-                                                    if (is_string($weaknesses)) {
-                                                        $weaknesses = json_decode($weaknesses, true) ?: [];
-                                                    }
-                                                @endphp
-                                                @if (!empty($weaknesses))
-                                                    <div class="mb-3">
-                                                        <strong>Điểm yếu:</strong>
-                                                        <ul class="list-group list-group-flush mt-2">
-                                                            @foreach ($weaknesses as $weakness)
-                                                                <li class="list-group-item text-warning">
-                                                                    <i class="fas fa-exclamation-triangle"></i>
-                                                                    {{ $weakness }}
-                                                                </li>
-                                                            @endforeach
-                                                        </ul>
-                                                    </div>
-                                                @endif
-                                            @else
-                                                <div class="text-center text-muted">
-                                                    <i class="fas fa-robot fa-3x mb-3"></i>
-                                                    <p>Chưa có kết quả chấm từ AI</p>
-                                                    <button wire:click="gradeWithAI" class="btn btn-primary"
-                                                        {{ $isProcessing ? 'disabled' : '' }}>
-                                                        <i class="fas fa-magic"></i>
-                                                        {{ $isProcessing ? 'Đang chấm...' : 'Chấm bài bằng AI' }}
-                                                    </button>
-                                                </div>
-                                            @endif
-
-                                            @if ($showAIFeedback && $aiResult)
-                                                <div class="mt-3">
-                                                    <button wire:click="applyAIScore" class="btn btn-success">
-                                                        <i class="fas fa-check"></i> Áp dụng điểm từ AI
-                                                    </button>
-                                                </div>
-                                            @endif
-                                        </div>
+                                                            @endif
+                                        @endif
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Phân tích AI -->
-                            @if ($submission->hasAIAnalysis())
-                                <div class="row mt-4">
-                                    <div class="col-12">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h5 class="card-title">Phân tích chi tiết từ AI</h5>
-                                            </div>
-                                            <div class="card-body">
-                                                @if (!empty($submission->ai_analysis))
-                                                    <div class="row">
-                                                        @php
-                                                    $analysis = $submission->ai_analysis;
-                                                    if (is_string($analysis)) {
-                                                        $analysis = json_decode($analysis, true) ?: [];
-                                                    }
-                                                @endphp
-                                                @if (!empty($analysis))
-                                                    <div class="row">
-                                                        @foreach ($analysis as $aspect => $evaluation)
-                                                            <div class="col-md-6 mb-3">
-                                                                <strong>{{ ucfirst(str_replace('_', ' ', $aspect)) }}:</strong>
-                                                                <p class="text-muted">{{ $evaluation }}</p>
-                                                            </div>
-                                                        @endforeach
-                                                    </div>
-                                                @endif
-
-                                                @if (!empty($submission->ai_improvement_suggestions))
-                                                    <div class="mb-3">
-                                                        <strong>Gợi ý cải thiện:</strong>
-                                                        <ul class="list-group mt-2">
-                                                            @php
-                                                    $improvementSuggestions = $submission->ai_improvement_suggestions;
-                                                    if (is_string($improvementSuggestions)) {
-                                                        $improvementSuggestions = json_decode($improvementSuggestions, true) ?: [];
-                                                    }
-                                                @endphp
-                                                @if (!empty($improvementSuggestions))
-                                                    <div class="mb-3">
-                                                        <strong>Gợi ý cải thiện:</strong>
-                                                        <ul class="list-group mt-2">
-                                                            @foreach ($improvementSuggestions as $suggestion)
-                                                                <li class="list-group-item">
-                                                                    <div
-                                                                        class="d-flex justify-content-between align-items-start">
-                                                                        <div>
-                                                                            <strong>{{ ucfirst($suggestion['category']) }}:</strong>
-                                                                            {{ $suggestion['suggestion'] }}
-                                                                        </div>
-                                                                        <span
-                                                                            class="badge bg-{{ $suggestion['priority'] === 'high' ? 'danger' : ($suggestion['priority'] === 'medium' ? 'warning' : 'info') }}">
-                                                                            {{ ucfirst($suggestion['priority']) }}
-                                                                        </span>
-                                                                    </div>
-                                                                </li>
-                                                            @endforeach
-                                                        </ul>
-                                                    </div>
-                                                @endif
-
-                                                @if (!empty($submission->ai_learning_resources))
-                                                    <div class="mb-3">
-                                                        <strong>Tài liệu học tập:</strong>
-                                                        <div class="row mt-2">
-                                                            @php
-                                                    $learningResources = $submission->ai_learning_resources;
-                                                    if (is_string($learningResources)) {
-                                                        $learningResources = json_decode($learningResources, true) ?: [];
-                                                    }
-                                                @endphp
-                                                @if (!empty($learningResources))
-                                                    <div class="mb-3">
-                                                        <strong>Tài liệu học tập:</strong>
-                                                        <div class="row mt-2">
-                                                            @foreach ($learningResources as $resource)
-                                                                <div class="col-md-6 mb-2">
-                                                                    <div class="card">
-                                                                        <div class="card-body">
-                                                                            <h6 class="card-title">
-                                                                                {{ $resource['title'] }}
-                                                                            </h6>
-                                                                            <p class="card-text">
-                                                                                {{ $resource['description'] }}
-                                                                            </p>
-                                                                            <a href="{{ $resource['url'] }}"
-                                                                                target="_blank"
-                                                                                class="btn btn-sm btn-outline-primary">
-                                                                                <i
-                                                                                    class="fas fa-external-link-alt"></i>
-                                                                                Xem tài
-                                                                                liệu
-                                                                            </a>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            @endforeach
-                                                        </div>
-                                                    </div>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @else
-                                <div class="row mt-4">
-                                    <div class="col-12">
-                                        <div class="card">
-                                            <div class="card-body text-center">
-                                                <button wire:click="analyzeWithAI" class="btn btn-outline-info"
-                                                    {{ $isProcessing ? 'disabled' : '' }}>
-                                                    <i class="fas fa-chart-line"></i>
-                                                    {{ $isProcessing ? 'Đang phân tích...' : 'Phân tích chi tiết bằng AI' }}
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-                        @endif
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
 </x-layouts.dash-admin>
