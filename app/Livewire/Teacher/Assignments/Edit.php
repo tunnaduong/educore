@@ -7,7 +7,6 @@ use App\Models\Assignment;
 use App\Models\Classroom;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Auth;
 
 class Edit extends Component
 {
@@ -46,8 +45,7 @@ class Edit extends Component
         $this->types = $this->assignment->types ?? [];
         $this->old_attachment_path = $this->assignment->attachment_path;
         $this->old_video_path = $this->assignment->video_path;
-        $user = Auth::user();
-        $this->classrooms = $user->teachingClassrooms ?? Classroom::all();
+        $this->classrooms = Classroom::all();
     }
 
     public function updateAssignment()
