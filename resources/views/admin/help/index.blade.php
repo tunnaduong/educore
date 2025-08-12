@@ -58,10 +58,11 @@
                                                         </ol>
 
                                                         <div class="text-center my-3">
-                                                            <div class="bg-light p-3 rounded">
-                                                                <i class="fas fa-image fa-3x text-muted"></i>
-                                                                <p class="text-muted mt-2">[Ảnh chụp màn hình: Form thêm học sinh mới]</p>
-                                                            </div>
+                                                            <img src="{{ asset('images/help/add-student-form.png') }}" 
+                                                                 alt="Form thêm học sinh mới" 
+                                                                 class="img-fluid rounded shadow-sm" 
+                                                                 style="max-width: 100%; height: auto;">
+                                                            <p class="text-muted mt-2">Form thêm học sinh mới</p>
                                                         </div>
 
                                                         <h6 class="text-warning mt-4">✏️ Chỉnh sửa thông tin học sinh</h6>
@@ -74,10 +75,11 @@
                                                         </ol>
 
                                                         <div class="text-center my-3">
-                                                            <div class="bg-light p-3 rounded">
-                                                                <i class="fas fa-image fa-3x text-muted"></i>
-                                                                <p class="text-muted mt-2">[Ảnh chụp màn hình: Trang chi tiết học sinh với các tab]</p>
-                                                            </div>
+                                                            <img src="{{ asset('images/help/student-detail-tabs.png') }}" 
+                                                                 alt="Trang chi tiết học sinh với các tab" 
+                                                                 class="img-fluid rounded shadow-sm" 
+                                                                 style="max-width: 100%; height: auto;">
+                                                            <p class="text-muted mt-2">Trang chi tiết học sinh với các tab</p>
                                                         </div>
 
                                                         <h6 class="text-info mt-4">📊 Xem lịch sử điểm danh</h6>
