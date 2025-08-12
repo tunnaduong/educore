@@ -50,7 +50,7 @@
                                 <tbody>
                                     @foreach ($recentSubmissions as $submission)
                                         <tr>
-                                            <td>{{ $submission->student->name }}</td>
+                                            <td>{{ $submission->student?->user?->name }}</td>
                                             <td>{{ $submission->assignment->title }}</td>
                                             <td>{{ $submission->submitted_at ? $submission->submitted_at->format('d/m/Y H:i') : $submission->created_at->format('d/m/Y H:i') }}
                                             </td>
