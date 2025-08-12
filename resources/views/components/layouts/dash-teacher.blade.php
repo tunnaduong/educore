@@ -114,6 +114,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('teacher.ai.index') }}"
+                            class="nav-link {{ $active === 'ai' ? 'active' : '' }}" wire:navigate>
+                            <i class="nav-icon bi bi-robot"></i>
+                            <p>@lang('general.ai_assistant')</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ route('teacher.notifications.index') }}"
                             class="nav-link {{ $active === 'notifications' ? 'active' : '' }}" wire:navigate>
                             <i class="nav-icon bi bi-bell"></i>
@@ -139,13 +146,6 @@
                             class="nav-link {{ $active === 'evaluations-report' ? 'active' : '' }}" wire:navigate>
                             <i class="nav-icon bi bi-star"></i>
                             <p>Báo cáo đánh giá</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('teacher.ai.index') }}"
-                            class="nav-link {{ $active === 'ai' ? 'active' : '' }}" wire:navigate>
-                            <i class="nav-icon bi bi-robot"></i>
-                            <p>@lang('general.ai_assistant')</p>
                         </a>
                     </li>
                 </ul>

@@ -126,123 +126,108 @@
             <div class="card-body">
                 <!-- Overview Tab -->
                 @if ($activeTab === 'overview')
-                    @php
-                        // Giả lập: user_id lẻ là đã đóng đủ, chẵn là chưa đủ
-                        $isEnrolled = $classroom->students->contains('id', auth()->id());
-                        $hasPaid = auth()->id() % 2 == 1;
-                    @endphp
-                    @if (!$isEnrolled)
-                        <div class="alert alert-danger mb-4">
-                            Bạn chưa đăng ký tham gia lớp học này.
-                        </div>
-                    @elseif (!$hasPaid)
-                        <div class="alert alert-warning mb-4">
-                            Vui lòng hoàn tất học phí để tiếp tục sử dụng các chức năng của khóa học.
-                        </div>
-                    @else
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h6 class="text-primary mb-3">
-                                    <i class="bi bi-info-circle mr-2"></i>
-                                    Thông tin lớp học
-                                </h6>
-                                <div class="mb-3">
-                                    <strong>Tên lớp:</strong> {{ $classroom->name }}
-                                </div>
-                                <div class="mb-3">
-                                    <strong>Mô tả:</strong> {{ $classroom->description }}
-                                </div>
-                                <div class="mb-3">
-                                    <strong>Ngày tạo:</strong> {{ $classroom->created_at->format('d/m/Y H:i') }}
-                                </div>
-                                <div class="mb-3">
-                                    <strong>Trạng thái:</strong>
-                                    <span class="badge bg-success">Hoạt động</span>
-                                </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-primary mb-3">
+                                <i class="bi bi-info-circle mr-2"></i>
+                                Thông tin lớp học
+                            </h6>
+                            <div class="mb-3">
+                                <strong>Tên lớp:</strong> {{ $classroom->name }}
                             </div>
-                            <div class="col-md-6">
-                                <h6 class="text-success mb-3">
-                                    <i class="bi bi-graph-up mr-2"></i>
-                                    Thống kê nhanh
-                                </h6>
-                                <div class="row">
-                                    <div class="col-6 mb-3">
-                                        <div class="border rounded p-3 text-center">
-                                            <h4 class="text-primary mb-1">{{ $classroom->lessons->count() }}</h4>
-                                            <small class="text-muted">Bài học</small>
-                                        </div>
-                                    </div>
-                                    <div class="col-6 mb-3">
-                                        <div class="border rounded p-3 text-center">
-                                            <h4 class="text-success mb-1">{{ $classroom->assignments->count() }}</h4>
-                                            <small class="text-muted">Bài tập</small>
-                                        </div>
-                                    </div>
-                                    <div class="col-6 mb-3">
-                                        <div class="border rounded p-3 text-center">
-                                            <h4 class="text-info mb-1">{{ $classroom->students->count() }}</h4>
-                                            <small class="text-muted">Học sinh</small>
-                                        </div>
-                                    </div>
-                                    <div class="col-6 mb-3">
-                                        <div class="border rounded p-3 text-center">
-                                            <h4 class="text-warning mb-1">{{ $classroom->attendances->count() }}</h4>
-                                            <small class="text-muted">Buổi học</small>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="mb-3">
+                                <strong>Mô tả:</strong> {{ $classroom->description }}
+                            </div>
+                            <div class="mb-3">
+                                <strong>Ngày tạo:</strong> {{ $classroom->created_at->format('d/m/Y H:i') }}
+                            </div>
+                            <div class="mb-3">
+                                <strong>Trạng thái:</strong>
+                                <span class="badge bg-success">Hoạt động</span>
                             </div>
                         </div>
-                        <!-- Recent Activities -->
-                        <div class="mt-4">
-                            <h6 class="text-info mb-3">
-                                <i class="bi bi-clock-history mr-2"></i>
-                                Hoạt động gần đây
+                        <div class="col-md-6">
+                            <h6 class="text-success mb-3">
+                                <i class="bi bi-graph-up mr-2"></i>
+                                Thống kê nhanh
                             </h6>
                             <div class="row">
-                                <div class="col-md-6">
-                                    <h6 class="text-warning mb-2">Bài học mới nhất</h6>
-                                    @forelse($classroom->lessons->take(3) as $lesson)
-                                        <div class="card mb-2">
-                                            <div class="card-body py-2">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <div>
-                                                        <h6 class="mb-1">{{ $lesson->title }}</h6>
-                                                        <small
-                                                            class="text-muted">{{ Str::limit($lesson->description, 50) }}</small>
-                                                    </div>
-                                                    <small
-                                                        class="text-muted">{{ $lesson->created_at->format('d/m/Y') }}</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @empty
-                                        <p class="text-muted">Chưa có bài học nào</p>
-                                    @endforelse
+                                <div class="col-6 mb-3">
+                                    <div class="border rounded p-3 text-center">
+                                        <h4 class="text-primary mb-1">{{ $classroom->lessons->count() }}</h4>
+                                        <small class="text-muted">Bài học</small>
+                                    </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <h6 class="text-success mb-2">Bài tập mới nhất</h6>
-                                    @forelse($classroom->assignments->take(3) as $assignment)
-                                        <div class="card mb-2">
-                                            <div class="card-body py-2">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <div>
-                                                        <h6 class="mb-1">{{ $assignment->title }}</h6>
-                                                        <small
-                                                            class="text-muted">{{ Str::limit($assignment->description, 50) }}</small>
-                                                    </div>
-                                                    <small
-                                                        class="text-muted">{{ $assignment->created_at->format('d/m/Y') }}</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @empty
-                                        <p class="text-muted">Chưa có bài tập nào</p>
-                                    @endforelse
+                                <div class="col-6 mb-3">
+                                    <div class="border rounded p-3 text-center">
+                                        <h4 class="text-success mb-1">{{ $classroom->assignments->count() }}</h4>
+                                        <small class="text-muted">Bài tập</small>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <div class="border rounded p-3 text-center">
+                                        <h4 class="text-info mb-1">{{ $classroom->students->count() }}</h4>
+                                        <small class="text-muted">Học sinh</small>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <div class="border rounded p-3 text-center">
+                                        <h4 class="text-warning mb-1">{{ $classroom->attendances->count() }}</h4>
+                                        <small class="text-muted">Buổi học</small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    @endif
+                    </div>
+                    <!-- Recent Activities -->
+                    <div class="mt-4">
+                        <h6 class="text-info mb-3">
+                            <i class="bi bi-clock-history mr-2"></i>
+                            Hoạt động gần đây
+                        </h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="text-warning mb-2">Bài học mới nhất</h6>
+                                @forelse($classroom->lessons->take(3) as $lesson)
+                                    <div class="card mb-2">
+                                        <div class="card-body py-2">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h6 class="mb-1">{{ $lesson->title }}</h6>
+                                                    <small
+                                                        class="text-muted">{{ Str::limit($lesson->description, 50) }}</small>
+                                                </div>
+                                                <small
+                                                    class="text-muted">{{ $lesson->created_at->format('d/m/Y') }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @empty
+                                    <p class="text-muted">Chưa có bài học nào</p>
+                                @endforelse
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-success mb-2">Bài tập mới nhất</h6>
+                                @forelse($classroom->assignments->take(3) as $assignment)
+                                    <div class="card mb-2">
+                                        <div class="card-body py-2">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h6 class="mb-1">{{ $assignment->title }}</h6>
+                                                    <small
+                                                        class="text-muted">{{ Str::limit($assignment->description, 50) }}</small>
+                                                </div>
+                                                <small
+                                                    class="text-muted">{{ $assignment->created_at->format('d/m/Y') }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @empty
+                                    <p class="text-muted">Chưa có bài tập nào</p>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
                 @endif
 
                 <!-- Students Tab -->

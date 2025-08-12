@@ -5,7 +5,7 @@
         <div class="mb-4">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <h4 class="mb-0 text-primary fs-4">
+                    <h4 class="mb-0 text-primary">
                         <i class="bi bi-pencil mr-2"></i>Làm bài tập: {{ $assignment->title }}
                     </h4>
                     <p class="text-muted mb-0">{{ $assignment->classroom?->name ?? 'N/A' }} -
@@ -16,8 +16,8 @@
                         @endif
                     </p>
                 </div>
-                <div class="text-end">
-                    <div class="badge bg-warning text-dark">Hạn nộp: {{ $assignment->deadline->format('d/m/Y H:i') }}
+                <div class="text-right">
+                    <div class="badge badge-warning">Hạn nộp: {{ $assignment->deadline->format('d/m/Y H:i') }}
                     </div>
                     <div class="small text-muted mt-1">{{ $this->getTimeRemaining() }}</div>
                 </div>
@@ -44,9 +44,9 @@
                         @if ($assignment->types)
                             <div class="mb-3">
                                 <h6>Loại bài tập cần làm:</h6>
-                                <div class="d-flex flex-wrap gap-2">
+                                <div class="d-flex flex-wrap">
                                     @foreach ($assignment->types as $type)
-                                        <span class="badge bg-primary">
+                                        <span class="badge badge-primary mr-2 mb-2">
                                             @switch($type)
                                                 @case('text')
                                                     Điền từ
@@ -82,6 +82,7 @@
                             <div class="card bg-light">
                                 <div class="card-body">
                                     <h6 class="card-title">Tài liệu đính kèm</h6>
+                                    <br>
                                     <a href="{{ Storage::url($assignment->attachment_path) }}" target="_blank"
                                         class="btn btn-outline-primary btn-sm">
                                         <i class="bi bi-download mr-2"></i>Tải xuống tài liệu
@@ -94,6 +95,7 @@
                             <div class="card mt-3">
                                 <div class="card-body">
                                     <h6 class="card-title">Video hướng dẫn</h6>
+                                    <br>
                                     <video controls class="w-100 rounded">
                                         <source src="{{ Storage::url($assignment->video_path) }}" type="video/mp4">
                                         Trình duyệt của bạn không hỗ trợ video.
@@ -136,14 +138,15 @@
                 <form wire:submit="submitAssignment">
                     <!-- Submission Type Selection -->
                     <div class="mb-4">
-                        <label class="form-label fw-bold">Chọn loại bài nộp:</label>
-                        <div class="row g-3">
+                        <label class="font-weight-bold">Chọn loại bài nộp:</label>
+                        <div class="row">
                             @if (in_array('text', $assignment->types))
-                                <div class="col-md-4">
-                                    <div class="form-check border rounded p-3 h-100">
-                                        <input class="form-check-input ml-0 mr-3" type="radio"
-                                            wire:model.live="submissionType" id="type_text" value="text">
-                                        <label class="form-check-label" for="type_text">
+                                <div class="col-md-4 mb-3">
+                                    <div class="border rounded p-3 h-100 position-relative">
+                                        <input class="form-check-input position-absolute" type="radio"
+                                            wire:model.live="submissionType" id="type_text" value="text"
+                                            style="top: 15px; left: 30px;">
+                                        <label class="form-check-label d-block pl-3" for="type_text">
                                             <i class="bi bi-pencil-square text-primary mr-2"></i>
                                             <strong>Điền từ</strong>
                                             <div class="small text-muted mt-1">Nhập câu trả lời ngắn</div>
@@ -153,11 +156,12 @@
                             @endif
 
                             @if (in_array('essay', $assignment->types))
-                                <div class="col-md-4">
-                                    <div class="form-check border rounded p-3 h-100">
-                                        <input class="form-check-input ml-0 mr-3" type="radio"
-                                            wire:model.live="submissionType" id="type_essay" value="essay">
-                                        <label class="form-check-label" for="type_essay">
+                                <div class="col-md-4 mb-3">
+                                    <div class="border rounded p-3 h-100 position-relative">
+                                        <input class="form-check-input position-absolute" type="radio"
+                                            wire:model.live="submissionType" id="type_essay" value="essay"
+                                            style="top: 15px; left: 30px;">
+                                        <label class="form-check-label d-block pl-3" for="type_essay">
                                             <i class="bi bi-file-text text-success mr-2"></i>
                                             <strong>Bài luận</strong>
                                             <div class="small text-muted mt-1">Viết bài luận dài</div>
@@ -167,11 +171,12 @@
                             @endif
 
                             @if (in_array('image', $assignment->types))
-                                <div class="col-md-4">
-                                    <div class="form-check border rounded p-3 h-100">
-                                        <input class="form-check-input ml-0 mr-3" type="radio"
-                                            wire:model.live="submissionType" id="type_image" value="image">
-                                        <label class="form-check-label" for="type_image">
+                                <div class="col-md-4 mb-3">
+                                    <div class="border rounded p-3 h-100 position-relative">
+                                        <input class="form-check-input position-absolute" type="radio"
+                                            wire:model.live="submissionType" id="type_image" value="image"
+                                            style="top: 15px; left: 30px;">
+                                        <label class="form-check-label d-block pl-3" for="type_image">
                                             <i class="bi bi-image text-info mr-2"></i>
                                             <strong>Upload ảnh</strong>
                                             <div class="small text-muted mt-1">Tải lên ảnh bài viết tay</div>
@@ -181,11 +186,12 @@
                             @endif
 
                             @if (in_array('audio', $assignment->types))
-                                <div class="col-md-4">
-                                    <div class="form-check border rounded p-3 h-100">
-                                        <input class="form-check-input ml-0 mr-3" type="radio"
-                                            wire:model.live="submissionType" id="type_audio" value="audio">
-                                        <label class="form-check-label" for="type_audio">
+                                <div class="col-md-4 mb-3">
+                                    <div class="border rounded p-3 h-100 position-relative">
+                                        <input class="form-check-input position-absolute" type="radio"
+                                            wire:model.live="submissionType" id="type_audio" value="audio"
+                                            style="top: 15px; left: 30px;">
+                                        <label class="form-check-label d-block pl-3" for="type_audio">
                                             <i class="bi bi-mic text-warning mr-2"></i>
                                             <strong>Ghi âm</strong>
                                             <div class="small text-muted mt-1">Thu âm luyện nói</div>
@@ -195,11 +201,12 @@
                             @endif
 
                             @if (in_array('video', $assignment->types))
-                                <div class="col-md-4">
-                                    <div class="form-check border rounded p-3 h-100">
-                                        <input class="form-check-input ml-0 mr-3" type="radio"
-                                            wire:model.live="submissionType" id="type_video" value="video">
-                                        <label class="form-check-label" for="type_video">
+                                <div class="col-md-4 mb-3">
+                                    <div class="border rounded p-3 h-100 position-relative">
+                                        <input class="form-check-input position-absolute" type="radio"
+                                            wire:model.live="submissionType" id="type_video" value="video"
+                                            style="top: 15px; left: 30px;">
+                                        <label class="form-check-label d-block pl-3" for="type_video">
                                             <i class="bi bi-camera-video text-danger mr-2"></i>
                                             <strong>Video</strong>
                                             <div class="small text-muted mt-1">Quay video luyện nói</div>
@@ -218,7 +225,7 @@
                         <div class="mb-4">
                             @switch($submissionType)
                                 @case('text')
-                                    <label for="content" class="form-label fw-bold">Nội dung bài làm:</label>
+                                    <label for="content" class="font-weight-bold">Nội dung bài làm:</label>
                                     <textarea wire:model.live="content" id="content" rows="4"
                                         class="form-control @error('content') is-invalid @enderror" placeholder="Nhập câu trả lời của bạn..."></textarea>
                                     @error('content')
@@ -227,7 +234,7 @@
                                 @break
 
                                 @case('essay')
-                                    <label for="essay" class="form-label fw-bold">Bài luận:</label>
+                                    <label for="essay" class="font-weight-bold">Bài luận:</label>
                                     <textarea wire:model.live="essay" id="essay" rows="12"
                                         class="form-control @error('essay') is-invalid @enderror" placeholder="Viết bài luận của bạn..."></textarea>
                                     <div class="form-text">Viết bài luận chi tiết theo yêu cầu của bài tập.</div>
@@ -237,7 +244,7 @@
                                 @break
 
                                 @case('image')
-                                    <label for="imageFile" class="form-label fw-bold">Upload ảnh bài viết:</label>
+                                    <label for="imageFile" class="font-weight-bold">Upload ảnh bài viết:</label>
                                     <input type="file" wire:model.live="imageFile" id="imageFile" accept="image/*"
                                         class="form-control @error('imageFile') is-invalid @enderror">
                                     <div class="form-text">Chỉ chấp nhận file ảnh (JPG, PNG, GIF, WEBP). Kích thước tối đa
@@ -254,7 +261,7 @@
                                 @break
 
                                 @case('audio')
-                                    <label for="audioFile" class="form-label fw-bold">Upload file âm thanh:</label>
+                                    <label for="audioFile" class="font-weight-bold">Upload file âm thanh:</label>
                                     <input type="file" wire:model.live="audioFile" id="audioFile" accept="audio/*"
                                         class="form-control @error('audioFile') is-invalid @enderror">
                                     <div class="form-text">Chỉ chấp nhận file âm thanh (MP3, WAV, M4A). Kích thước tối đa 10MB.
@@ -274,7 +281,7 @@
                                 @break
 
                                 @case('video')
-                                    <label for="videoFile" class="form-label fw-bold">Upload file video:</label>
+                                    <label for="videoFile" class="font-weight-bold">Upload file video:</label>
                                     <input type="file" wire:model.live="videoFile" id="videoFile" accept="video/*"
                                         class="form-control @error('videoFile') is-invalid @enderror">
                                     <div class="form-text">Chỉ chấp nhận file video (MP4, AVI, MOV). Kích thước tối đa 200MB.

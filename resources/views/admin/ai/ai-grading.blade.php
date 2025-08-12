@@ -1,4 +1,4 @@
-<x-layouts.dash-teacher active="ai">
+<x-layouts.dash-admin active="ai">
     <div class="container-fluid">
         <style>
             /* Loading Button Styles */
@@ -433,4 +433,4 @@
             </div>
         </div>
     </div>
-</x-layouts.dash-teacher>
+</x-layouts.dash-admin>
