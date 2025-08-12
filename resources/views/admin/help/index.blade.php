@@ -35,7 +35,7 @@
                                                     <div class="card-body">
                                                         <h6 class="text-primary mb-3">📋 Tổng quan quản lý học sinh</h6>
                                                         <p>Module quản lý học sinh cho phép bạn thêm, chỉnh sửa, xem thông tin chi tiết và theo dõi tiến độ học tập của từng học sinh trong hệ thống.</p>
-                                                        
+
                                                         <div class="alert alert-info">
                                                             <strong>💡 Lưu ý:</strong> Tất cả thông tin học sinh được mã hóa và bảo mật theo quy định GDPR.
                                                         </div>
@@ -56,7 +56,7 @@
                                                             </li>
                                                             <li>Click <strong>"Lưu"</strong> để hoàn tất</li>
                                                         </ol>
-                                                        
+
                                                         <div class="text-center my-3">
                                                             <div class="bg-light p-3 rounded">
                                                                 <i class="fas fa-image fa-3x text-muted"></i>
@@ -1057,57 +1057,7 @@
                                     </div>
                                 </div>
 
-                                <!-- FAQ nhanh -->
-                                <div class="card mt-3">
-                                    <div class="card-header bg-info text-white">
-                                        <h6 class="card-title mb-0">
-                                            <i class="fas fa-question"></i>
-                                            @lang('general.faq')
-                                        </h6>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="faq-item mb-3">
-                                            <strong>Q: Làm sao để reset mật khẩu?</strong><br>
-                                            <small class="text-muted">A: Liên hệ admin hoặc sử dụng chức năng "Quên mật khẩu" trên trang đăng nhập</small>
-                                        </div>
-                                        <div class="faq-item mb-3">
-                                            <strong>Q: Có thể xuất dữ liệu ra Excel không?</strong><br>
-                                            <small class="text-muted">A: Có, hầu hết các trang báo cáo đều có nút xuất Excel ở góc trên bên phải</small>
-                                        </div>
-                                        <div class="faq-item mb-3">
-                                            <strong>Q: Làm sao để backup dữ liệu?</strong><br>
-                                            <small class="text-muted">A: Hệ thống tự động backup hàng ngày, liên hệ admin để khôi phục dữ liệu</small>
-                                        </div>
-                                        <div class="faq-item mb-3">
-                                            <strong>Q: Có thể tạo nhiều lớp học cùng lúc không?</strong><br>
-                                            <small class="text-muted">A: Hiện tại chỉ có thể tạo từng lớp một, nhưng có thể copy thông tin từ lớp cũ</small>
-                                        </div>
-                                        <div class="faq-item mb-3">
-                                            <strong>Q: Làm sao để gửi thông báo cho tất cả học sinh?</strong><br>
-                                            <small class="text-muted">A: Vào menu "Thông báo" → "Tạo mới" → Chọn "Tất cả học sinh" trong phần người nhận</small>
-                                        </div>
-                                        <div class="faq-item mb-3">
-                                            <strong>Q: Có thể tạo bài kiểm tra với thời gian khác nhau cho từng học sinh không?</strong><br>
-                                            <small class="text-muted">A: Có, trong cài đặt bài kiểm tra có thể thiết lập thời gian riêng cho từng học sinh</small>
-                                        </div>
-                                        <div class="faq-item mb-3">
-                                            <strong>Q: Làm sao để xem lịch sử đăng nhập của học sinh?</strong><br>
-                                            <small class="text-muted">A: Vào trang chi tiết học sinh → Tab "Hoạt động" → Xem lịch sử đăng nhập</small>
-                                        </div>
-                                        <div class="faq-item mb-3">
-                                            <strong>Q: Có thể tạo báo cáo tùy chỉnh không?</strong><br>
-                                            <small class="text-muted">A: Hiện tại chưa có tính năng này, nhưng có thể xuất dữ liệu ra Excel để tùy chỉnh thêm</small>
-                                        </div>
-                                        <div class="faq-item mb-3">
-                                            <strong>Q: Làm sao để thay đổi ngôn ngữ hệ thống?</strong><br>
-                                            <small class="text-muted">A: Click vào biểu tượng ngôn ngữ trên header → Chọn ngôn ngữ mong muốn</small>
-                                        </div>
-                                        <div class="faq-item mb-3">
-                                            <strong>Q: Có thể tạo bài tập với deadline khác nhau cho từng học sinh không?</strong><br>
-                                            <small class="text-muted">A: Có, trong cài đặt bài tập có thể thiết lập deadline riêng cho từng học sinh</small>
-                                        </div>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>
