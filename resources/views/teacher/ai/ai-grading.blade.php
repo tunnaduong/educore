@@ -215,11 +215,17 @@
                                                     </div>
                                                 </div>
 
-                                                @if (!empty($submission->ai_errors_found))
+                                                @php
+                                                    $errorsFound = $submission->ai_errors_found;
+                                                    if (is_string($errorsFound)) {
+                                                        $errorsFound = json_decode($errorsFound, true) ?: [];
+                                                    }
+                                                @endphp
+                                                @if (!empty($errorsFound))
                                                     <div class="mb-3">
                                                         <strong>Lỗi đã sửa:</strong>
                                                         <ul class="list-group mt-2">
-                                                            @foreach ($submission->ai_errors_found as $error)
+                                                            @foreach ($errorsFound as $error)
                                                                 <li class="list-group-item">
                                                                     <strong>{{ $error['original'] }}</strong> →
                                                                     <span
@@ -266,11 +272,18 @@
                                                     </div>
                                                 </div>
 
-                                                @if (!empty($submission->ai_criteria_scores))
+                                                @php
+                                                    $criteriaScores = $submission->ai_criteria_scores;
+                                                    // Xử lý trường hợp dữ liệu cũ có thể là string
+                                                    if (is_string($criteriaScores)) {
+                                                        $criteriaScores = json_decode($criteriaScores, true) ?: [];
+                                                    }
+                                                @endphp
+                                                @if (!empty($criteriaScores))
                                                     <div class="mb-3">
                                                         <strong>Điểm chi tiết:</strong>
                                                         <div class="row">
-                                                            @foreach ($submission->ai_criteria_scores as $criteria => $score)
+                                                            @foreach ($criteriaScores as $criteria => $score)
                                                                 <div class="col-6">
                                                                     <small
                                                                         class="text-muted">{{ ucfirst($criteria) }}:</small>
@@ -286,11 +299,17 @@
                                                     </div>
                                                 @endif
 
-                                                @if (!empty($submission->ai_strengths))
+                                                @php
+                                                    $strengths = $submission->ai_strengths;
+                                                    if (is_string($strengths)) {
+                                                        $strengths = json_decode($strengths, true) ?: [];
+                                                    }
+                                                @endphp
+                                                @if (!empty($strengths))
                                                     <div class="mb-3">
                                                         <strong>Điểm mạnh:</strong>
                                                         <ul class="list-group list-group-flush mt-2">
-                                                            @foreach ($submission->ai_strengths as $strength)
+                                                            @foreach ($strengths as $strength)
                                                                 <li class="list-group-item text-success">
                                                                     <i class="fas fa-check"></i> {{ $strength }}
                                                                 </li>
@@ -299,11 +318,17 @@
                                                     </div>
                                                 @endif
 
-                                                @if (!empty($submission->ai_weaknesses))
+                                                @php
+                                                    $weaknesses = $submission->ai_weaknesses;
+                                                    if (is_string($weaknesses)) {
+                                                        $weaknesses = json_decode($weaknesses, true) ?: [];
+                                                    }
+                                                @endphp
+                                                @if (!empty($weaknesses))
                                                     <div class="mb-3">
                                                         <strong>Điểm yếu:</strong>
                                                         <ul class="list-group list-group-flush mt-2">
-                                                            @foreach ($submission->ai_weaknesses as $weakness)
+                                                            @foreach ($weaknesses as $weakness)
                                                                 <li class="list-group-item text-warning">
                                                                     <i class="fas fa-exclamation-triangle"></i>
                                                                     {{ $weakness }}
@@ -345,9 +370,15 @@
                                                 <h5 class="card-title">Phân tích chi tiết từ AI</h5>
                                             </div>
                                             <div class="card-body">
-                                                @if (!empty($submission->ai_analysis))
+                                                @php
+                                                    $analysis = $submission->ai_analysis;
+                                                    if (is_string($analysis)) {
+                                                        $analysis = json_decode($analysis, true) ?: [];
+                                                    }
+                                                @endphp
+                                                @if (!empty($analysis))
                                                     <div class="row">
-                                                        @foreach ($submission->ai_analysis as $aspect => $evaluation)
+                                                        @foreach ($analysis as $aspect => $evaluation)
                                                             <div class="col-md-6 mb-3">
                                                                 <strong>{{ ucfirst(str_replace('_', ' ', $aspect)) }}:</strong>
                                                                 <p class="text-muted">{{ $evaluation }}</p>
@@ -356,11 +387,17 @@
                                                     </div>
                                                 @endif
 
-                                                @if (!empty($submission->ai_improvement_suggestions))
+                                                @php
+                                                    $improvementSuggestions = $submission->ai_improvement_suggestions;
+                                                    if (is_string($improvementSuggestions)) {
+                                                        $improvementSuggestions = json_decode($improvementSuggestions, true) ?: [];
+                                                    }
+                                                @endphp
+                                                @if (!empty($improvementSuggestions))
                                                     <div class="mb-3">
                                                         <strong>Gợi ý cải thiện:</strong>
                                                         <ul class="list-group mt-2">
-                                                            @foreach ($submission->ai_improvement_suggestions as $suggestion)
+                                                            @foreach ($improvementSuggestions as $suggestion)
                                                                 <li class="list-group-item">
                                                                     <div
                                                                         class="d-flex justify-content-between align-items-start">
@@ -379,11 +416,17 @@
                                                     </div>
                                                 @endif
 
-                                                @if (!empty($submission->ai_learning_resources))
+                                                @php
+                                                    $learningResources = $submission->ai_learning_resources;
+                                                    if (is_string($learningResources)) {
+                                                        $learningResources = json_decode($learningResources, true) ?: [];
+                                                    }
+                                                @endphp
+                                                @if (!empty($learningResources))
                                                     <div class="mb-3">
                                                         <strong>Tài liệu học tập:</strong>
                                                         <div class="row mt-2">
-                                                            @foreach ($submission->ai_learning_resources as $resource)
+                                                            @foreach ($learningResources as $resource)
                                                                 <div class="col-md-6 mb-2">
                                                                     <div class="card">
                                                                         <div class="card-body">

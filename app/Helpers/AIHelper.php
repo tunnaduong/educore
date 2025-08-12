@@ -29,8 +29,8 @@ class AIHelper
             if ($result) {
                 // Cập nhật nội dung đã sửa vào database
                 $submission->ai_corrected_content = $result['corrected_text'] ?? null;
-                $submission->ai_errors_found = json_encode($result['errors_found'] ?? []);
-                $submission->ai_suggestions = json_encode($result['suggestions'] ?? []);
+                $submission->ai_errors_found = $result['errors_found'] ?? [];
+                $submission->ai_suggestions = $result['suggestions'] ?? [];
                 $submission->save();
 
                 return $result;
@@ -68,10 +68,10 @@ class AIHelper
                 // Cập nhật kết quả chấm AI
                 $submission->ai_score = $result['score'] ?? null;
                 $submission->ai_feedback = $result['feedback'] ?? null;
-                $submission->ai_criteria_scores = json_encode($result['criteria_scores'] ?? []);
-                $submission->ai_strengths = json_encode($result['strengths'] ?? []);
-                $submission->ai_weaknesses = json_encode($result['weaknesses'] ?? []);
-                $submission->ai_suggestions = json_encode($result['suggestions'] ?? []);
+                $submission->ai_criteria_scores = $result['criteria_scores'] ?? [];
+                $submission->ai_strengths = $result['strengths'] ?? [];
+                $submission->ai_weaknesses = $result['weaknesses'] ?? [];
+                $submission->ai_suggestions = $result['suggestions'] ?? [];
                 $submission->ai_graded_at = now();
                 $submission->save();
 
@@ -102,8 +102,8 @@ class AIHelper
             if ($result && !empty($result['fixed_questions'])) {
                 // Cập nhật quiz với câu hỏi đã sửa và lưu vào database
                 $quiz->questions = $result['fixed_questions'];
-                $quiz->ai_validation_errors = json_encode($result['errors_found'] ?? []);
-                $quiz->ai_suggestions = json_encode($result['suggestions'] ?? []);
+                $quiz->ai_validation_errors = $result['errors_found'] ?? [];
+                $quiz->ai_suggestions = $result['suggestions'] ?? [];
                 $quiz->ai_validated_at = now();
                 $quiz->save();
 
@@ -245,10 +245,10 @@ class AIHelper
 
             if ($result) {
                 // Cập nhật kết quả phân tích
-                $submission->ai_analysis = json_encode($result['analysis'] ?? []);
-                $submission->ai_score_breakdown = json_encode($result['score_breakdown'] ?? []);
-                $submission->ai_improvement_suggestions = json_encode($result['improvement_suggestions'] ?? []);
-                $submission->ai_learning_resources = json_encode($result['learning_resources'] ?? []);
+                $submission->ai_analysis = $result['analysis'] ?? [];
+                $submission->ai_score_breakdown = $result['score_breakdown'] ?? [];
+                $submission->ai_improvement_suggestions = $result['improvement_suggestions'] ?? [];
+                $submission->ai_learning_resources = $result['learning_resources'] ?? [];
                 $submission->ai_analyzed_at = now();
                 $submission->save();
 
