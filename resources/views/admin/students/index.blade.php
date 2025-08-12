@@ -15,7 +15,7 @@
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('message') }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
         @endif
@@ -168,7 +168,8 @@
                                 <!-- Delete Confirmation Modal -->
                                 <div class="modal fade" id="deleteModal{{ $student->id }}" tabindex="-1"
                                     aria-labelledby="deleteModalLabel{{ $student->id }}" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered">
+                                    <div
+                                        class="modal-dialog modal-dialog-scrollable modal-dialog modal-dialog-scrollable-centered">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="deleteModalLabel{{ $student->id }}">

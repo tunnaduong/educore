@@ -460,7 +460,7 @@
     <!-- Add Student Modal -->
     @if ($showAddStudentModal)
         <div class="modal fade show" style="display: block;" tabindex="-1">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Thêm học sinh vào lớp</h5>
@@ -481,7 +481,7 @@
     <!-- Add Lesson Modal -->
     @if ($showAddLessonModal)
         <div class="modal fade show" style="display: block;" tabindex="-1">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Thêm bài học mới</h5>
@@ -502,7 +502,7 @@
     <!-- Add Assignment Modal -->
     @if ($showAddAssignmentModal)
         <div class="modal fade show" style="display: block;" tabindex="-1">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Thêm bài tập mới</h5>
