@@ -94,10 +94,13 @@
                             <div class="d-flex align-items-center p-3 border rounded">
                                 <i class="bi bi-file-earmark-text fs-2 text-primary mr-3"></i>
                                 <div class="flex-grow-1">
-                                    <h6 class="mb-1">{{ basename($lesson->attachment) }}</h6>
+                                    <h6 class="mb-1" style="word-break: break-word;">
+                                        {{ basename($lesson->attachment) }}
+                                    </h6>
                                     <small class="text-muted">Tài liệu bài học</small>
                                 </div>
                             </div>
+
                             <div class="mt-3 d-flex gap-2">
                                 <a href="{{ asset('storage/' . $lesson->attachment) }}" target="_blank"
                                     class="btn btn-success flex-fill">
@@ -155,7 +158,7 @@
 
         .modal-content-custom {
             background-color: #fefefe;
-            margin: 5% auto;
+            margin: 2% auto;
             padding: 0;
             border: none;
             border-radius: 8px;
@@ -166,7 +169,7 @@
         }
 
         .modal-header-custom {
-            padding: 15px 20px;
+            padding: 0 20px;
             background-color: #f8f9fa;
             border-bottom: 1px solid #dee2e6;
             display: flex;
@@ -196,7 +199,7 @@
     <div id="previewModal" class="modal-custom">
         <div class="modal-content-custom">
             <div class="modal-header-custom">
-                <h5 class="modal-title">Xem trước tài liệu</h5>
+                <h6 class="modal-title">Xem trước tài liệu</h6>
                 <button type="button" class="close-custom" onclick="closePreviewModal()">&times;</button>
             </div>
             <div class="modal-body-custom">

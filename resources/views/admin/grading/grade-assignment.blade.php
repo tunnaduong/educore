@@ -294,7 +294,7 @@
     <!-- Modal xem nội dung bài nộp -->
     @if ($showModal && $selectedSubmission)
         <div class="modal fade show" style="display: block;" tabindex="-1" wire:ignore.self>
-            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-dialog modal-dialog-scrollable modal-lg">
                 <div class="modal-content border-0 shadow">
                     <div class="modal-header bg-primary text-white border-0">
                         <h5 class="modal-title">

@@ -130,7 +130,7 @@
     @if ($showDeleteModal)
         <div class="modal fade show" tabindex="-1" style="display:block; background:rgba(0,0,0,0.3);" aria-modal="true"
             role="dialog">
-            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-dialog modal-dialog-scrollable-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Xác nhận xoá bài học</h5>

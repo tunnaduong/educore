@@ -32,7 +32,7 @@ class AIGrading extends Component
         if (in_array($this->submission->submission_type, ['image', 'audio', 'video'])) {
             $typeNames = [
                 'image' => 'hình ảnh',
-                'audio' => 'âm thanh', 
+                'audio' => 'âm thanh',
                 'video' => 'video'
             ];
             $typeName = $typeNames[$this->submission->submission_type] ?? $this->submission->submission_type;

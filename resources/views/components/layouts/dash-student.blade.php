@@ -1,10 +1,12 @@
 @props(['active' => null, 'title' => __('general.dashboard')])
+
+@persist('chrome')
 <div class="wrapper">
     @include('components.evaluation')
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="bi bi-list"></i></a>
+                <a class="nav-link" data-widget="pushmenu" data-enable-remember="true" href="#" role="button"><i class="bi bi-list"></i></a>
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
@@ -57,7 +59,7 @@
         </a>
         <div class="sidebar">
             <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" role="menu">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" data-accordion="false" role="menu">
                     <li class="nav-item">
                         <a href="{{ route('dashboard') }}" class="nav-link {{ $active === 'home' ? 'active' : '' }}"
                             wire:navigate>
@@ -88,7 +90,7 @@
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('student.schedules') }}"
-                            class="nav-link {{ $active === 'schedules' ? 'active' : '' }}">
+                            class="nav-link {{ $active === 'schedules' ? 'active' : '' }}" wire:navigate>
                             <i class="nav-icon bi bi-calendar3"></i>
                             <p>@lang('general.schedules')</p>
                         </a>
@@ -98,6 +100,13 @@
                             class="nav-link {{ $active === 'reports' ? 'active' : '' }}" wire:navigate>
                             <i class="nav-icon bi bi-bar-chart"></i>
                             <p>@lang('general.reports')</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('student.evaluation.index') }}"
+                            class="nav-link {{ $active === 'evaluation' ? 'active' : '' }}" wire:navigate>
+                            <i class="nav-icon bi bi-star"></i>
+                            <p>@lang('general.evaluation')</p>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -118,6 +127,7 @@
             </nav>
         </div>
     </aside>
+@endpersist
 
     <div class="content-wrapper">
         <section class="content pt-3">
@@ -131,3 +141,36 @@
         <strong>© 2025 Trung tâm Hanxian Kim Bảng Hà Nam - Powered by EduCore</strong>
     </footer>
 </div>
+
+<script>
+function setActiveMenu() {
+    // Remove "active" from all .nav-link
+    document.querySelectorAll('.nav-sidebar .nav-link').forEach(link => {
+        link.classList.remove('active');
+    });
+    
+    // Remove "menu-open" from all .has-treeview
+    document.querySelectorAll('.nav-sidebar .has-treeview').forEach(item => {
+        item.classList.remove('menu-open');
+    });
+    
+    // Find first link whose href path matches location.pathname
+    const currentPath = window.location.pathname;
+    const activeLink = document.querySelector(`.nav-sidebar .nav-link[href*="${currentPath}"]`);
+    
+    if (activeLink) {
+        // Add "active" to that link
+        activeLink.classList.add('active');
+        
+        // If inside a treeview, add "menu-open" to its parent .has-treeview
+        const treeviewParent = activeLink.closest('.has-treeview');
+        if (treeviewParent) {
+            treeviewParent.classList.add('menu-open');
+        }
+    }
+}
+
+// Hook it on DOMContentLoaded and livewire:navigated
+document.addEventListener('DOMContentLoaded', setActiveMenu);
+document.addEventListener('livewire:navigated', setActiveMenu);
+</script>
