@@ -285,7 +285,7 @@
                                 @if ($submission->score !== null)
                                     <div class="card border-primary">
                                         <div class="card-body text-center">
-                                            <h6 class="card-title font-weight-bold">Điểm số</h6>
+                                            <h6 class="font-weight-bold">Điểm số</h6>
                                             <div class="display-4 text-primary font-weight-bold">
                                                 {{ $submission->score }}/10
                                             </div>

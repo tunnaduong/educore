@@ -135,93 +135,165 @@
                         </button>
                     </div>
                 @endif
+
+                <!-- Trạng thái nộp bài hiện tại -->
+                @php
+                    $status = $this->getSubmissionStatus();
+                @endphp
+                <div class="alert alert-info mb-4">
+                    <h6 class="alert-heading">
+                        <i class="bi bi-info-circle mr-2"></i>Trạng thái nộp bài hiện tại
+                    </h6>
+                    <div class="mb-2">
+                        <strong>Tiến độ:</strong> {{ $status['submitted_count'] }}/{{ $status['required_count'] }}
+                        loại bài tập
+                    </div>
+                    <div class="mb-2">
+                        <strong>Đã nộp:</strong>
+                        @if (count($status['submitted_types']) > 0)
+                            @foreach ($status['submitted_types'] as $type)
+                                <span class="badge bg-success me-1">{{ $this->getTypeLabel($type) }}</span>
+                            @endforeach
+                        @else
+                            <span class="text-muted">Chưa nộp loại nào</span>
+                        @endif
+                    </div>
+                    <div>
+                        <strong>Còn thiếu:</strong>
+                        @if (count($status['missing_types']) > 0)
+                            @foreach ($status['missing_types'] as $type)
+                                <span class="badge bg-warning me-1">{{ $this->getTypeLabel($type) }}</span>
+                            @endforeach
+                        @else
+                            <span class="text-success">Đã nộp đủ tất cả loại bài tập!</span>
+                        @endif
+                    </div>
+                </div>
+
                 <form wire:submit="submitAssignment">
                     <!-- Submission Type Selection -->
-                    <div class="mb-4">
-                        <label class="font-weight-bold">Chọn loại bài nộp:</label>
-                        <div class="row">
-                            @if (in_array('text', $assignment->types))
-                                <div class="col-md-4 mb-3">
-                                    <div class="border rounded p-3 h-100 position-relative">
-                                        <input class="form-check-input position-absolute" type="radio"
-                                            wire:model.live="submissionType" id="type_text" value="text"
-                                            style="top: 15px; left: 30px;">
-                                        <label class="form-check-label d-block pl-3" for="type_text">
-                                            <i class="bi bi-pencil-square text-primary mr-2"></i>
-                                            <strong>Điền từ</strong>
-                                            <div class="small text-muted mt-1">Nhập câu trả lời ngắn</div>
-                                        </label>
+                    @if (count($status['missing_types']) > 0)
+                        <div class="mb-4">
+                            <label class="font-weight-bold">Chọn loại bài nộp:</label>
+                            <div class="row">
+                                @if (in_array('text', $assignment->types))
+                                    <div class="col-md-4 mb-3">
+                                        <div
+                                            class="border rounded p-3 h-100 position-relative {{ $this->isTypeSubmitted('text') ? 'bg-light' : '' }}">
+                                            <input class="form-check-input position-absolute" type="radio"
+                                                wire:model.live="submissionType" id="type_text" value="text"
+                                                style="top: 15px; left: 30px;"
+                                                {{ $this->isTypeSubmitted('text') ? 'disabled' : '' }}>
+                                            <label class="form-check-label d-block pl-3" for="type_text">
+                                                <i class="bi bi-pencil-square text-primary mr-2"></i>
+                                                <strong>Điền từ</strong>
+                                                <div class="small text-muted mt-1">Nhập câu trả lời ngắn</div>
+                                                @if ($this->isTypeSubmitted('text'))
+                                                    <div class="small text-success mt-1">
+                                                        <i class="bi bi-check-circle"></i> Đã nộp
+                                                    </div>
+                                                @endif
+                                            </label>
+                                        </div>
                                     </div>
-                                </div>
-                            @endif
+                                @endif
 
-                            @if (in_array('essay', $assignment->types))
-                                <div class="col-md-4 mb-3">
-                                    <div class="border rounded p-3 h-100 position-relative">
-                                        <input class="form-check-input position-absolute" type="radio"
-                                            wire:model.live="submissionType" id="type_essay" value="essay"
-                                            style="top: 15px; left: 30px;">
-                                        <label class="form-check-label d-block pl-3" for="type_essay">
-                                            <i class="bi bi-file-text text-success mr-2"></i>
-                                            <strong>Bài luận</strong>
-                                            <div class="small text-muted mt-1">Viết bài luận dài</div>
-                                        </label>
+                                @if (in_array('essay', $assignment->types))
+                                    <div class="col-md-4 mb-3">
+                                        <div
+                                            class="border rounded p-3 h-100 position-relative {{ $this->isTypeSubmitted('essay') ? 'bg-light' : '' }}">
+                                            <input class="form-check-input position-absolute" type="radio"
+                                                wire:model.live="submissionType" id="type_essay" value="essay"
+                                                style="top: 15px; left: 30px;"
+                                                {{ $this->isTypeSubmitted('essay') ? 'disabled' : '' }}>
+                                            <label class="form-check-label d-block pl-3" for="type_essay">
+                                                <i class="bi bi-file-text text-success mr-2"></i>
+                                                <strong>Bài luận</strong>
+                                                <div class="small text-muted mt-1">Viết bài luận dài</div>
+                                                @if ($this->isTypeSubmitted('essay'))
+                                                    <div class="small text-success mt-1">
+                                                        <i class="bi bi-check-circle"></i> Đã nộp
+                                                    </div>
+                                                @endif
+                                            </label>
+                                        </div>
                                     </div>
-                                </div>
-                            @endif
+                                @endif
 
-                            @if (in_array('image', $assignment->types))
-                                <div class="col-md-4 mb-3">
-                                    <div class="border rounded p-3 h-100 position-relative">
-                                        <input class="form-check-input position-absolute" type="radio"
-                                            wire:model.live="submissionType" id="type_image" value="image"
-                                            style="top: 15px; left: 30px;">
-                                        <label class="form-check-label d-block pl-3" for="type_image">
-                                            <i class="bi bi-image text-info mr-2"></i>
-                                            <strong>Upload ảnh</strong>
-                                            <div class="small text-muted mt-1">Tải lên ảnh bài viết tay</div>
-                                        </label>
+                                @if (in_array('image', $assignment->types))
+                                    <div class="col-md-4 mb-3">
+                                        <div
+                                            class="border rounded p-3 h-100 position-relative {{ $this->isTypeSubmitted('image') ? 'bg-light' : '' }}">
+                                            <input class="form-check-input position-absolute" type="radio"
+                                                wire:model.live="submissionType" id="type_image" value="image"
+                                                style="top: 15px; left: 30px;"
+                                                {{ $this->isTypeSubmitted('image') ? 'disabled' : '' }}>
+                                            <label class="form-check-label d-block pl-3" for="type_image">
+                                                <i class="bi bi-image text-info mr-2"></i>
+                                                <strong>Upload ảnh</strong>
+                                                <div class="small text-muted mt-1">Tải lên ảnh bài viết tay</div>
+                                                @if ($this->isTypeSubmitted('image'))
+                                                    <div class="small text-success mt-1">
+                                                        <i class="bi bi-check-circle"></i> Đã nộp
+                                                    </div>
+                                                @endif
+                                            </label>
+                                        </div>
                                     </div>
-                                </div>
-                            @endif
+                                @endif
 
-                            @if (in_array('audio', $assignment->types))
-                                <div class="col-md-4 mb-3">
-                                    <div class="border rounded p-3 h-100 position-relative">
-                                        <input class="form-check-input position-absolute" type="radio"
-                                            wire:model.live="submissionType" id="type_audio" value="audio"
-                                            style="top: 15px; left: 30px;">
-                                        <label class="form-check-label d-block pl-3" for="type_audio">
-                                            <i class="bi bi-mic text-warning mr-2"></i>
-                                            <strong>Ghi âm</strong>
-                                            <div class="small text-muted mt-1">Thu âm luyện nói</div>
-                                        </label>
+                                @if (in_array('audio', $assignment->types))
+                                    <div class="col-md-4 mb-3">
+                                        <div
+                                            class="border rounded p-3 h-100 position-relative {{ $this->isTypeSubmitted('audio') ? 'bg-light' : '' }}">
+                                            <input class="form-check-input position-absolute" type="radio"
+                                                wire:model.live="submissionType" id="type_audio" value="audio"
+                                                style="top: 15px; left: 30px;"
+                                                {{ $this->isTypeSubmitted('audio') ? 'disabled' : '' }}>
+                                            <label class="form-check-label d-block pl-3" for="type_audio">
+                                                <i class="bi bi-mic text-warning mr-2"></i>
+                                                <strong>Ghi âm</strong>
+                                                <div class="small text-muted mt-1">Thu âm luyện nói</div>
+                                                @if ($this->isTypeSubmitted('audio'))
+                                                    <div class="small text-success mt-1">
+                                                        <i class="bi bi-check-circle"></i> Đã nộp
+                                                    </div>
+                                                @endif
+                                            </label>
+                                        </div>
                                     </div>
-                                </div>
-                            @endif
+                                @endif
 
-                            @if (in_array('video', $assignment->types))
-                                <div class="col-md-4 mb-3">
-                                    <div class="border rounded p-3 h-100 position-relative">
-                                        <input class="form-check-input position-absolute" type="radio"
-                                            wire:model.live="submissionType" id="type_video" value="video"
-                                            style="top: 15px; left: 30px;">
-                                        <label class="form-check-label d-block pl-3" for="type_video">
-                                            <i class="bi bi-camera-video text-danger mr-2"></i>
-                                            <strong>Video</strong>
-                                            <div class="small text-muted mt-1">Quay video luyện nói</div>
-                                        </label>
+                                @if (in_array('video', $assignment->types))
+                                    <div class="col-md-4 mb-3">
+                                        <div
+                                            class="border rounded p-3 h-100 position-relative {{ $this->isTypeSubmitted('video') ? 'bg-light' : '' }}">
+                                            <input class="form-check-input position-absolute" type="radio"
+                                                wire:model.live="submissionType" id="type_video" value="video"
+                                                style="top: 15px; left: 30px;"
+                                                {{ $this->isTypeSubmitted('video') ? 'disabled' : '' }}>
+                                            <label class="form-check-label d-block pl-3" for="type_video">
+                                                <i class="bi bi-camera-video text-danger mr-2"></i>
+                                                <strong>Video</strong>
+                                                <div class="small text-muted mt-1">Quay video luyện nói</div>
+                                                @if ($this->isTypeSubmitted('video'))
+                                                    <div class="small text-success mt-1">
+                                                        <i class="bi bi-check-circle"></i> Đã nộp
+                                                    </div>
+                                                @endif
+                                            </label>
+                                        </div>
                                     </div>
-                                </div>
-                            @endif
+                                @endif
+                            </div>
+                            @error('submissionType')
+                                <div class="text-danger small mt-2">{{ $message }}</div>
+                            @enderror
                         </div>
-                        @error('submissionType')
-                            <div class="text-danger small mt-2">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    @endif
 
                     <!-- Content Input Based on Type -->
-                    @if ($submissionType)
+                    @if ($submissionType && count($status['missing_types']) > 0)
                         <div class="mb-4">
                             @switch($submissionType)
                                 @case('text')
@@ -309,14 +381,24 @@
                             class="btn btn-outline-secondary" wire:navigate>
                             <i class="bi bi-arrow-left mr-2"></i>Quay lại
                         </a>
-                        <button type="submit" class="btn btn-primary" wire:loading.attr="disabled">
-                            <span wire:loading.remove>
-                                <i class="bi bi-upload mr-2"></i>Nộp bài
-                            </span>
-                            <span wire:loading>
-                                <i class="bi bi-hourglass-split mr-2"></i>Đang tải...
-                            </span>
-                        </button>
+                        @if (count($status['missing_types']) > 0)
+                            <button type="submit" class="btn btn-primary" wire:loading.attr="disabled">
+                                <span wire:loading.remove>
+                                    <i class="bi bi-upload mr-2"></i>Nộp bài
+                                </span>
+                                <span wire:loading>
+                                    <i class="bi bi-hourglass-split mr-2"></i>Đang tải...
+                                </span>
+                            </button>
+                        @else
+                            <div class="text-center">
+                                <button type="button" class="btn btn-success" disabled>
+                                    <i class="bi bi-check-circle mr-2"></i>Đã nộp đủ tất cả bài tập!
+                                </button>
+                                <div class="small text-muted mt-1">Bạn đã hoàn thành tất cả loại bài tập được yêu cầu
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </form>
             </div>

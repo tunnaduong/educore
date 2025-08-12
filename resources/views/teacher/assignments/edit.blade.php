@@ -7,12 +7,14 @@
             </a>
             <h4 class="mt-2 text-primary fs-4"><i class="bi bi-journal-text mr-2"></i>Chỉnh sửa bài tập</h4>
         </div>
+
         <!-- Form -->
         <div class="card shadow-sm">
             <div class="card-body">
                 @if (session()->has('success'))
                     <div class="alert alert-success">{{ session('success') }}</div>
                 @endif
+
                 <form wire:submit.prevent="updateAssignment">
                     <!-- Bài tập -->
                     <div class="row mb-4">
@@ -40,11 +42,12 @@
                             @enderror
                         </div>
                     </div>
+
                     <!-- Hạn nộp & điểm -->
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <label for="deadline" class="form-label fw-semibold">Hạn nộp *</label>
-                            <input wire:model.defer="deadline" type="datetimr-local"
+                            <input wire:model.defer="deadline" type="datetime-local"
                                 class="form-control @error('deadline') is-invalid @enderror" id="deadline">
                             @error('deadline')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -58,6 +61,7 @@
                                 onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 46 || event.charCode === 8 || event.charCode === 9">
                         </div>
                     </div>
+
                     <!-- Loại bài tập -->
                     <div class="mb-4">
                         <label class="form-label fw-semibold">Loại bài tập *</label>
@@ -75,6 +79,7 @@
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
+
                     <!-- File & mô tả -->
                     <div class="row mb-4">
                         <div class="col-md-6">
@@ -98,14 +103,42 @@
                             @enderror
                         </div>
                         <div class="col-md-6">
-                            <label for="description" class="form-label">Mô tả</label>
-                            <textarea wire:model.defer="description" class="form-control" id="description" rows="3"
-                                placeholder="Mô tả chi tiết về bài tập, hướng dẫn, yêu cầu..."></textarea>
+                            <label for="video" class="form-label">Video (tối đa 100MB)</label>
+                            @if ($old_video_path)
+                                <div class="small text-success mt-1">
+                                    <video width="240" height="135" controls>
+                                        <source src="{{ asset('storage/' . $old_video_path) }}" type="video/mp4">
+                                        Trình duyệt không hỗ trợ video.
+                                    </video>
+                                </div>
+                            @endif
+                            <input wire:model="video" type="file" accept="video/*"
+                                class="form-control @error('video') is-invalid @enderror" id="video">
+                            @if ($video)
+                                <div class="small text-success mt-1">Video: {{ $video->getClientOriginalName() }}</div>
+                            @endif
+                            @error('video')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
-                    <div class="d-flex justify-content-end">
+
+                    <!-- Mô tả -->
+                    <div class="mb-4">
+                        <label for="description" class="form-label">Hướng dẫn / mô tả bài tập</label>
+                        <textarea wire:model.defer="description" rows="4" class="form-control @error('description') is-invalid @enderror"
+                            id="description" placeholder="VD: Viết 10 câu sử dụng từ vựng của bài 3, ghi âm phần đọc...">{{ $description }}</textarea>
+                        @error('description')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{{ route('teacher.assignments.index') }}" wire:navigate
+                            class="btn btn-outline-secondary">Hủy</a>
                         <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-save mr-2"></i>Lưu thay đổi
+                            <i class="bi bi-send mr-1"></i> Cập nhật
                         </button>
                     </div>
                 </form>
