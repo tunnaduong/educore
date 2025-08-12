@@ -8,6 +8,6 @@ class HelpIcon extends Component
 {
     public function render()
     {
-        return view('livewire.components.help-icon');
+        return view('components.help-icon');
     }
 }
