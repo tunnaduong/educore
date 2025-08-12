@@ -147,6 +147,53 @@
     text-decoration: none;
 }
 
+/* Help page tab styling */
+.nav-tabs .nav-link {
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.nav-tabs .nav-link:hover {
+    border-color: transparent;
+    color: #007bff;
+}
+
+.nav-tabs .nav-link.active {
+    border-bottom-color: #007bff;
+    color: #007bff;
+    background-color: transparent;
+}
+
+.nav-tabs .nav-link i {
+    margin-right: 5px;
+}
+
+/* Help sidebar styling */
+#helpSidebar .list-group-item {
+    border: none;
+    border-radius: 0;
+    border-left: 3px solid transparent;
+    transition: all 0.2s ease;
+}
+
+#helpSidebar .list-group-item:hover {
+    background-color: #f8f9fa;
+    border-left-color: #007bff;
+}
+
+#helpSidebar .list-group-item.active {
+    background-color: #e3f2fd;
+    border-left-color: #007bff;
+    color: #007bff;
+}
+
+#helpSidebar .list-group-item i {
+    margin-right: 8px;
+    width: 16px;
+}
+
 /* Ensure card-header children don't interfere with flexbox */
 .card-header.d-flex > * {
     flex-shrink: 0;
