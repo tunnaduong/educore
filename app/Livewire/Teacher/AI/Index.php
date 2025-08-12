@@ -18,13 +18,14 @@ class Index extends Component
     {
         $teacher = Auth::user();
 
-        // Lấy các bài nộp gần đây có thể chấm điểm bằng AI
+        // Lấy các bài nộp gần đây có thể chấm điểm bằng AI (loại trừ bài nộp có submission_type = 'image')
         $teacherClassroomIds = $teacher->teachingClassrooms()->pluck('classrooms.id');
 
         $this->recentSubmissions = AssignmentSubmission::whereHas('assignment', function ($query) use ($teacherClassroomIds) {
             $query->whereIn('class_id', $teacherClassroomIds);
         })
             ->whereNotNull('submitted_at')
+            ->where('submission_type', '!=', 'image') // Loại trừ bài nộp có type là image
             ->where(function ($query) {
                 $query->whereNull('score')
                     ->whereNull('ai_score');

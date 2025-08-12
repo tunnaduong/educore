@@ -140,35 +140,37 @@
                 @php
                     $status = $this->getSubmissionStatus();
                 @endphp
-                <div class="alert alert-info mb-4">
-                    <h6 class="alert-heading">
-                        <i class="bi bi-info-circle mr-2"></i>Trạng thái nộp bài hiện tại
-                    </h6>
-                    <div class="mb-2">
-                        <strong>Tiến độ:</strong> {{ $status['submitted_count'] }}/{{ $status['required_count'] }}
-                        loại bài tập
+                @if ($status['required_count'] > 1)
+                    <div class="alert alert-info mb-4">
+                        <h6 class="alert-heading">
+                            <i class="bi bi-info-circle mr-2"></i>Trạng thái nộp bài hiện tại
+                        </h6>
+                        <div class="mb-2">
+                            <strong>Tiến độ:</strong> {{ $status['submitted_count'] }}/{{ $status['required_count'] }}
+                            loại bài tập
+                        </div>
+                        <div class="mb-2">
+                            <strong>Đã nộp:</strong>
+                            @if (count($status['submitted_types']) > 0)
+                                @foreach ($status['submitted_types'] as $type)
+                                    <span class="badge bg-success me-1">{{ $this->getTypeLabel($type) }}</span>
+                                @endforeach
+                            @else
+                                <span class="text-white">Chưa nộp loại nào</span>
+                            @endif
+                        </div>
+                        <div>
+                            <strong>Còn thiếu:</strong>
+                            @if (count($status['missing_types']) > 0)
+                                @foreach ($status['missing_types'] as $type)
+                                    <span class="badge bg-warning me-1">{{ $this->getTypeLabel($type) }}</span>
+                                @endforeach
+                            @else
+                                <span class="text-success">Đã nộp đủ tất cả loại bài tập!</span>
+                            @endif
+                        </div>
                     </div>
-                    <div class="mb-2">
-                        <strong>Đã nộp:</strong>
-                        @if (count($status['submitted_types']) > 0)
-                            @foreach ($status['submitted_types'] as $type)
-                                <span class="badge bg-success me-1">{{ $this->getTypeLabel($type) }}</span>
-                            @endforeach
-                        @else
-                            <span class="text-muted">Chưa nộp loại nào</span>
-                        @endif
-                    </div>
-                    <div>
-                        <strong>Còn thiếu:</strong>
-                        @if (count($status['missing_types']) > 0)
-                            @foreach ($status['missing_types'] as $type)
-                                <span class="badge bg-warning me-1">{{ $this->getTypeLabel($type) }}</span>
-                            @endforeach
-                        @else
-                            <span class="text-success">Đã nộp đủ tất cả loại bài tập!</span>
-                        @endif
-                    </div>
-                </div>
+                @endif
 
                 <form wire:submit="submitAssignment">
                     <!-- Submission Type Selection -->
@@ -336,7 +338,8 @@
                                     <label for="audioFile" class="font-weight-bold">Upload file âm thanh:</label>
                                     <input type="file" wire:model.live="audioFile" id="audioFile" accept="audio/*"
                                         class="form-control @error('audioFile') is-invalid @enderror">
-                                    <div class="form-text">Chỉ chấp nhận file âm thanh (MP3, WAV, M4A). Kích thước tối đa 10MB.
+                                    <div class="form-text">Chỉ chấp nhận file âm thanh (MP3, WAV, M4A). Kích thước tối đa
+                                        10MB.
                                     </div>
                                     @error('audioFile')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -356,7 +359,8 @@
                                     <label for="videoFile" class="font-weight-bold">Upload file video:</label>
                                     <input type="file" wire:model.live="videoFile" id="videoFile" accept="video/*"
                                         class="form-control @error('videoFile') is-invalid @enderror">
-                                    <div class="form-text">Chỉ chấp nhận file video (MP4, AVI, MOV). Kích thước tối đa 200MB.
+                                    <div class="form-text">Chỉ chấp nhận file video (MP4, AVI, MOV). Kích thước tối đa
+                                        200MB.
                                     </div>
                                     @error('videoFile')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -395,7 +399,8 @@
                                 <button type="button" class="btn btn-success" disabled>
                                     <i class="bi bi-check-circle mr-2"></i>Đã nộp đủ tất cả bài tập!
                                 </button>
-                                <div class="small text-muted mt-1">Bạn đã hoàn thành tất cả loại bài tập được yêu cầu
+                                <div class="small text-muted mt-1">Bạn đã hoàn thành tất cả loại bài tập được yêu
+                                    cầu
                                 </div>
                             </div>
                         @endif

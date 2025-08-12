@@ -229,19 +229,18 @@
                                             </div>
 
                                             <button type="submit" class="btn btn-primary w-100 position-relative"
-                                                {{ $isProcessing ? 'disabled' : '' }}>
-                                                @if ($isProcessing)
-                                                    <div class="loading-overlay">
-                                                        <div class="spinner-border spinner-border-sm text-light me-2"
-                                                            role="status">
-                                                            <span class="visually-hidden">Loading...</span>
-                                                        </div>
-                                                        <span class="loading-text">Đang tạo quiz...</span>
-                                                    </div>
-                                                @else
+                                                wire:loading.attr="disabled" wire:loading.class="disabled">
+                                                <div wire:loading.remove>
                                                     <i class="fas fa-magic me-2"></i>
                                                     Tạo Quiz Tiếng Trung bằng AI
-                                                @endif
+                                                </div>
+                                                <div wire:loading class="loading-overlay">
+                                                    <div class="spinner-border spinner-border-sm text-light me-2"
+                                                        role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </div>
+                                                    <span class="loading-text">Đang tạo quiz...</span>
+                                                </div>
                                             </button>
                                         </form>
                                     </div>
@@ -279,10 +278,19 @@
                                             <h5 class="card-title">Preview Quiz Tiếng Trung</h5>
                                             <div class="btn-group">
                                                 <button wire:click="validateQuiz"
-                                                    class="btn btn-outline-warning btn-sm"
-                                                    {{ $isProcessing ? 'disabled' : '' }}>
-                                                    <i class="fas fa-check-circle"></i>
-                                                    {{ $isProcessing ? 'Đang kiểm tra...' : 'Kiểm tra lỗi' }}
+                                                    class="btn btn-outline-warning btn-sm position-relative"
+                                                    wire:loading.attr="disabled" wire:loading.class="disabled">
+                                                    <div wire:loading.remove>
+                                                        <i class="fas fa-check-circle"></i>
+                                                        Kiểm tra lỗi
+                                                    </div>
+                                                    <div wire:loading class="loading-overlay">
+                                                        <div class="spinner-border spinner-border-sm text-light me-2"
+                                                            role="status">
+                                                            <span class="visually-hidden">Loading...</span>
+                                                        </div>
+                                                        <span class="loading-text">Đang kiểm tra...</span>
+                                                    </div>
                                                 </button>
                                                 <button wire:click="saveQuiz" class="btn btn-success btn-sm">
                                                     <i class="fas fa-save"></i> Lưu Quiz

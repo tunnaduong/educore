@@ -148,7 +148,7 @@ class GeminiService
     /**
      * Sửa lỗi ngữ pháp và phát âm
      */
-    public function correctGrammarAndPronunciation($text, $language = 'Vietnamese')
+    public function correctGrammarAndPronunciation($text, $language = 'Chinese')
     {
         $prompt = "Hãy sửa lỗi ngữ pháp và phát âm trong đoạn văn sau bằng tiếng {$language}. 
         Trả về kết quả theo format JSON:
@@ -158,10 +158,10 @@ class GeminiService
                 {
                     'original': 'từ gốc',
                     'corrected': 'từ đã sửa',
-                    'explanation': 'giải thích lỗi'
+                    'explanation': 'giải thích lỗi (viết bằng tiếng Việt)'
                 }
             ],
-            'suggestions': ['gợi ý cải thiện']
+            'suggestions': ['gợi ý cải thiện (viết bằng tiếng Việt)']
         }
 
         Văn bản cần sửa: {$text}";
@@ -252,7 +252,7 @@ class GeminiService
                     'fix': 'cách_sửa'
                 }
             ],
-            'suggestions': ['gợi_ý_cải_thiện']
+            'suggestions': ['gợi_ý_cải_thiện (viết bằng tiếng Việt)']
         }
 
         Các câu hỏi cần kiểm tra: {$questionsJson}";
