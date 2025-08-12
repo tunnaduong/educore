@@ -60,6 +60,10 @@
                                                     <span class="badge badge-secondary">File</span>
                                                 @elseif ($submission->submission_type === 'image')
                                                     <span class="badge badge-warning">Hình ảnh</span>
+                                                @elseif ($submission->submission_type === 'audio')
+                                                    <span class="badge badge-danger">Âm thanh</span>
+                                                @elseif ($submission->submission_type === 'video')
+                                                    <span class="badge badge-dark">Video</span>
                                                 @else
                                                     <span class="badge badge-light">{{ ucfirst($submission->submission_type) }}</span>
                                                 @endif

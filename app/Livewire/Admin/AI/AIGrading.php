@@ -28,6 +28,17 @@ class AIGrading extends Component
         if (!in_array($this->assignment->class_id, $userClassIds->toArray())) {
             abort(403, 'Bạn không có quyền chấm bài tập này.');
         }
+
+        // Kiểm tra loại bài nộp: không cho phép chấm bài có submission_type = image, audio, video
+        if (in_array($this->submission->submission_type, ['image', 'audio', 'video'])) {
+            $typeNames = [
+                'image' => 'hình ảnh',
+                'audio' => 'âm thanh', 
+                'video' => 'video'
+            ];
+            $typeName = $typeNames[$this->submission->submission_type] ?? $this->submission->submission_type;
+            abort(403, "Không thể chấm bài tập có loại nộp là {$typeName} bằng AI.");
+        }
     }
 
     public function gradeWithAI()

@@ -189,7 +189,7 @@
                                                             class="btn btn-sm btn-outline-primary">
                                                             <i class="bi bi-eye mr-1"></i>Xem
                                                         </button>
-                                                        @if (($submission->submission_type === 'essay' || $submission->submission_type === 'text') && $submission->submission_type !== 'image')
+                                                        @if (($submission->submission_type === 'essay' || $submission->submission_type === 'text') && !in_array($submission->submission_type, ['image', 'audio', 'video']))
                                                             <a href="{{ route('teacher.ai.grading', $submission->id) }}"
                                                                 class="btn btn-sm btn-outline-success">
                                                                 <i class="fas fa-robot mr-1"></i>AI
