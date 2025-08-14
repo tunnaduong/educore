@@ -73,8 +73,7 @@
                     <div class="row mt-2">
                         <div class="col-md-3">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" wire:model.live="showTrashed"
-                                    id="showTrashed">
+                                <input class="form-check-input" type="checkbox" wire:model.live="showTrashed" id="showTrashed">
                                 <label class="form-check-label" for="showTrashed">
                                     Hiện lớp đã ẩn
                                 </label>
@@ -82,8 +81,7 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" wire:model.live="hideCompleted"
-                                    id="hideCompleted">
+                                <input class="form-check-input" type="checkbox" wire:model.live="hideCompleted" id="hideCompleted">
                                 <label class="form-check-label" for="hideCompleted">
                                     Ẩn lớp đã hoàn thành
                                 </label>
@@ -122,7 +120,7 @@
                                                 </div>
                                                 <div>
                                                     <div class="font-weight-bold">{{ $classroom->name }}</div>
-                                                    @if (isset($classroom->notes) && $classroom->notes)
+                                                    @if(isset($classroom->notes) && $classroom->notes)
                                                         <small class="text-muted">{{ $classroom->notes }}</small>
                                                     @endif
                                                 </div>
@@ -142,20 +140,20 @@
                                         </td>
                                         <td class="text-center">
                                             @php
-                                                $statusClass = match ($classroom->status) {
+                                                $statusClass = match($classroom->status) {
                                                     'draft' => 'light',
                                                     'active' => 'success',
                                                     'inactive' => 'secondary',
                                                     'completed' => 'warning',
-                                                    default => 'secondary',
+                                                    default => 'secondary'
                                                 };
 
-                                                $statusText = match ($classroom->status) {
+                                                $statusText = match($classroom->status) {
                                                     'draft' => __('general.draft'),
                                                     'active' => __('general.active'),
                                                     'inactive' => __('general.inactive'),
                                                     'completed' => __('general.completed'),
-                                                    default => __('general.inactive'),
+                                                    default => __('general.inactive')
                                                 };
                                             @endphp
                                             <span class="badge badge-{{ $statusClass }}">
@@ -165,8 +163,7 @@
                                         <td class="text-center">
                                             <div class="btn-group">
                                                 <a href="{{ route('classrooms.show', $classroom) }}" wire:navigate
-                                                    class="btn btn-sm btn-outline-secondary"
-                                                    title="@lang('general.view_details')">
+                                                    class="btn btn-sm btn-outline-secondary" title="@lang('general.view_details')">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
                                                 <a href="{{ route('classrooms.attendance', $classroom) }}"
@@ -190,9 +187,7 @@
                                                 </a>
 
                                                 @if ($showTrashed && !is_null($classroom->deleted_at))
-                                                    <button type="button" class="btn btn-sm btn-outline-success"
-                                                        wire:click="restore({{ $classroom->id }})"
-                                                        title="Khôi phục lớp học">
+                                                    <button type="button" class="btn btn-sm btn-outline-success" wire:click="restore({{ $classroom->id }})" title="Khôi phục lớp học">
                                                         <i class="fas fa-undo"></i>
                                                     </button>
                                                 @else
@@ -225,8 +220,7 @@
                                                     @else
                                                         <button type="button" data-toggle="modal"
                                                             data-target="#deleteModal{{ $classroom->id }}"
-                                                            class="btn btn-sm btn-outline-danger"
-                                                            title="@lang('general.delete')">
+                                                            class="btn btn-sm btn-outline-danger" title="@lang('general.delete')">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     @endif
@@ -238,12 +232,10 @@
                                     <!-- Delete Confirmation Modal -->
                                     <div class="modal fade" id="deleteModal{{ $classroom->id }}" tabindex="-1"
                                         aria-labelledby="deleteModalLabel{{ $classroom->id }}" aria-hidden="true">
-                                        <div
-                                            class="modal-dialog modal-dialog-scrollable modal-dialog modal-dialog-scrollable-centered">
+                                        <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title"
-                                                        id="deleteModalLabel{{ $classroom->id }}">
+                                                    <h5 class="modal-title" id="deleteModalLabel{{ $classroom->id }}">
                                                         @if ($classroom->status === 'draft' && $classroom->students_count == 0)
                                                             @lang('general.confirm_delete_draft_classroom')
                                                         @elseif ($classroom->students_count > 0)
@@ -269,8 +261,7 @@
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
                                                         data-dismiss="modal">@lang('general.cancel')</button>
-                                                    <button type="button"
-                                                        class="btn btn-{{ ($classroom->status === 'draft' && $classroom->students_count == 0) || $classroom->students_count == 0 ? 'danger' : 'warning' }}"
+                                                    <button type="button" class="btn btn-{{ ($classroom->status === 'draft' && $classroom->students_count == 0) || $classroom->students_count == 0 ? 'danger' : 'warning' }}"
                                                         id="confirmDelete{{ $classroom->id }}"
                                                         wire:click="delete({{ $classroom->id }})"
                                                         onclick="closeModal({{ $classroom->id }})">

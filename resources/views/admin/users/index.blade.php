@@ -123,8 +123,7 @@
                                 <div class="modal fade" id="deleteModal{{ $user->id }}" tabindex="-1"
                                     role="dialog" aria-labelledby="deleteModalLabel{{ $user->id }}"
                                     aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-scrollable modal-dialog modal-dialog-scrollable-centered"
-                                        role="document">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="deleteModalLabel{{ $user->id }}">

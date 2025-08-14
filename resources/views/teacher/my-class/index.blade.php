@@ -138,7 +138,7 @@
     <!-- Classroom Details Modal -->
     @if ($showClassroomDetails && $selectedClassroom)
         <div class="modal fade show" style="display: block;" tabindex="-1">
-            <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header bg-primary text-white">
                         <h5 class="modal-title">

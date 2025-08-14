@@ -533,8 +533,7 @@
         @if ($selectedEvaluation)
             <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5); z-index: 1050;"
                 tabindex="-1">
-                <div
-                    class="modal-dialog modal-dialog-scrollable modal-lg modal-dialog modal-dialog-scrollable-centered">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title text-primary fw-bold fs-4">
@@ -606,7 +605,7 @@
         @if ($showQuestionModal)
             <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5); z-index: 1050;"
                 tabindex="-1">
-                <div class="modal-dialog modal-dialog-scrollable modal-dialog modal-dialog-scrollable-centered">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">
@@ -678,7 +677,7 @@
         @if ($showRoundModal)
             <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5); z-index: 1050;"
                 tabindex="-1">
-                <div class="modal-dialog modal-dialog-scrollable modal-dialog modal-dialog-scrollable-centered">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">

@@ -273,108 +273,107 @@
     </div>
 
     <!-- Modal Trùng Lịch -->
-    @if ($showConflictModal)
-        <div class="modal fade show" style="display: block;" tabindex="-1">
-            <div class="modal-dialog modal-dialog-scrollable modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header bg-warning text-dark">
-                        <h5 class="modal-title">
-                            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
-                            Phát hiện trùng lịch học!
-                        </h5>
-                        <button type="button" class="btn-close" wire:click="closeConflictModal"></button>
+    @if($showConflictModal)
+    <div class="modal fade show" style="display: block;" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title">
+                        <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                        Phát hiện trùng lịch học!
+                    </h5>
+                    <button type="button" class="btn-close" wire:click="closeConflictModal"></button>
+                </div>
+                <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                        <strong>Cảnh báo:</strong> Một số học sinh đã được chọn có lịch học trùng với lớp này. 
+                        Vui lòng xem xét lại trước khi tiếp tục.
                     </div>
-                    <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
-                        <div class="alert alert-warning">
-                            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
-                            <strong>Cảnh báo:</strong> Một số học sinh đã được chọn có lịch học trùng với lớp này.
-                            Vui lòng xem xét lại trước khi tiếp tục.
-                        </div>
 
-                        <div class="row">
-                            <div class="col-12">
-                                <h6 class="text-danger mb-3">
-                                    <i class="bi bi-people-fill mr-2"></i>
-                                    Danh sách học sinh trùng lịch ({{ count($scheduleConflicts) }} học sinh)
+                    <div class="row">
+                        <div class="col-12">
+                            <h6 class="text-danger mb-3">
+                                <i class="bi bi-people-fill mr-2"></i>
+                                Danh sách học sinh trùng lịch ({{ count($scheduleConflicts) }} học sinh)
+                            </h6>
+                        </div>
+                    </div>
+
+                    @foreach($scheduleConflicts as $studentId => $conflictData)
+                        <div class="card mb-3 border-warning">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0 text-danger">
+                                    <i class="bi bi-person-circle mr-2"></i>
+                                    {{ $conflictData['student']->name }}
+                                    <small class="text-muted">({{ $conflictData['student']->email }})</small>
                                 </h6>
                             </div>
-                        </div>
-
-                        @foreach ($scheduleConflicts as $studentId => $conflictData)
-                            <div class="card mb-3 border-warning">
-                                <div class="card-header bg-light">
-                                    <h6 class="mb-0 text-danger">
-                                        <i class="bi bi-person-circle mr-2"></i>
-                                        {{ $conflictData['student']->name }}
-                                        <small class="text-muted">({{ $conflictData['student']->email }})</small>
-                                    </h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <strong class="text-primary">Lớp hiện tại:</strong>
-                                            <div class="mt-2" style="max-height: 150px; overflow-y: auto;">
-                                                @foreach ($conflictData['conflicts'] as $conflict)
-                                                    <div class="border-start border-primary ps-3 mb-2">
-                                                        <div class="d-flex align-items-start">
-                                                            <i class="bi bi-calendar-event text-primary mr-2 mt-1"></i>
-                                                            <div class="flex-grow-1">
-                                                                <strong>{{ $conflict['classroom']->name }}</strong><br>
-                                                                <small class="text-muted">
-                                                                    {{ $conflict['message'] }}
-                                                                </small>
-                                                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <strong class="text-primary">Lớp hiện tại:</strong>
+                                        <div class="mt-2" style="max-height: 150px; overflow-y: auto;">
+                                            @foreach($conflictData['conflicts'] as $conflict)
+                                                <div class="border-start border-primary ps-3 mb-2">
+                                                    <div class="d-flex align-items-start">
+                                                        <i class="bi bi-calendar-event text-primary mr-2 mt-1"></i>
+                                                        <div class="flex-grow-1">
+                                                            <strong>{{ $conflict['classroom']->name }}</strong><br>
+                                                            <small class="text-muted">
+                                                                {{ $conflict['message'] }}
+                                                            </small>
                                                         </div>
                                                     </div>
-                                                @endforeach
-                                            </div>
+                                                </div>
+                                            @endforeach
                                         </div>
-                                        <div class="col-md-6">
-                                            <strong class="text-success">Lớp mới:</strong>
-                                            <div class="mt-2">
-                                                <div class="d-flex align-items-start">
-                                                    <i class="bi bi-calendar-event text-success mr-2 mt-1"></i>
-                                                    <div class="flex-grow-1">
-                                                        <strong>{{ $classroom->name }}</strong><br>
-                                                        <small class="text-muted">
-                                                            @if ($classroom->schedule)
-                                                                {{ implode(', ', $classroom->schedule['days'] ?? []) }}
-                                                                -
-                                                                {{ $classroom->schedule['time'] ?? '' }}
-                                                            @else
-                                                                Chưa có lịch học
-                                                            @endif
-                                                        </small>
-                                                    </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong class="text-success">Lớp mới:</strong>
+                                        <div class="mt-2">
+                                            <div class="d-flex align-items-start">
+                                                <i class="bi bi-calendar-event text-success mr-2 mt-1"></i>
+                                                <div class="flex-grow-1">
+                                                    <strong>{{ $classroom->name }}</strong><br>
+                                                    <small class="text-muted">
+                                                        @if($classroom->schedule)
+                                                            {{ implode(', ', $classroom->schedule['days'] ?? []) }} - 
+                                                            {{ $classroom->schedule['time'] ?? '' }}
+                                                        @else
+                                                            Chưa có lịch học
+                                                        @endif
+                                                    </small>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
+                        </div>
+                    @endforeach
 
-                        @if (count($scheduleConflicts) > 5)
-                            <div class="alert alert-info">
-                                <i class="bi bi-info-circle mr-2"></i>
-                                <strong>Lưu ý:</strong> Có {{ count($scheduleConflicts) }} học sinh trùng lịch.
-                                Bạn có thể scroll để xem tất cả chi tiết.
-                            </div>
-                        @endif
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" wire:click="closeConflictModal">
-                            <i class="bi bi-x-circle mr-2"></i>
-                            Hủy bỏ
-                        </button>
-                        <button type="button" class="btn btn-warning" wire:click="forceAssignStudents">
-                            <i class="bi bi-exclamation-triangle mr-2"></i>
-                            Gán bất chấp trùng lịch
-                        </button>
-                    </div>
+                    @if(count($scheduleConflicts) > 5)
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle mr-2"></i>
+                            <strong>Lưu ý:</strong> Có {{ count($scheduleConflicts) }} học sinh trùng lịch. 
+                            Bạn có thể scroll để xem tất cả chi tiết.
+                        </div>
+                    @endif
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" wire:click="closeConflictModal">
+                        <i class="bi bi-x-circle mr-2"></i>
+                        Hủy bỏ
+                    </button>
+                    <button type="button" class="btn btn-warning" wire:click="forceAssignStudents">
+                        <i class="bi bi-exclamation-triangle mr-2"></i>
+                        Gán bất chấp trùng lịch
+                    </button>
                 </div>
             </div>
         </div>
-        <div class="modal-backdrop fade show"></div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
     @endif
 </x-layouts.dash-admin>

@@ -89,7 +89,7 @@
                         <div class="d-flex gap-2 justify-content-end">
                             <input wire:model.live="selectedDate" type="date" class="form-control"
                                 style="max-width: 200px;">
-                            <button wire:click="saveAttendance" class="btn btn-primary"
+                            <button wire:click="saveAttendance" class="btn btn-primary" 
                                 {{ !$canTakeAttendance ? 'disabled' : '' }}>
                                 <i class="bi bi-save mr-2"></i>Lưu điểm danh
                             </button>
@@ -191,8 +191,7 @@
                                         </td>
                                         <td>
                                             @if (!$data['present'])
-                                                <button
-                                                    wire:click="openReasonModal({{ $data['student_record']->id }})"
+                                                <button wire:click="openReasonModal({{ $data['student_record']->id }})"
                                                     class="btn btn-sm btn-outline-primary"
                                                     {{ !$canTakeAttendance ? 'disabled' : '' }}>
                                                     <i class="bi bi-pencil mr-1"></i>Lý do
@@ -212,14 +211,14 @@
     <!-- Modal nhập lý do nghỉ -->
     @if ($showReasonModal)
         <div class="modal fade show" style="display: block;" tabindex="-1">
-            <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">
                             <i class="bi bi-exclamation-triangle mr-2"></i>Lý do nghỉ học
                         </h5>
-                        <button type="button" class="close" wire:click="$set('showReasonModal', false)"
-                            aria-label="Close">
+                        <button type="button" class="close"
+                            wire:click="$set('showReasonModal', false)" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>

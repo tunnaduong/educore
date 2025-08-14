@@ -124,7 +124,7 @@
         </script>
         <!-- Modal HTML -->
         <div class="modal fade" id="modalSchedule" tabindex="-1" aria-labelledby="modalScheduleLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="modalScheduleLabel">Lịch chi tiết trong ngày</h5>

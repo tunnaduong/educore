@@ -378,7 +378,7 @@
         <!-- Modal Ngân hàng Câu hỏi -->
         @if ($showQuestionBank)
             <div class="modal fade show" style="display: block;" tabindex="-1" role="dialog">
-                <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+                <div class="modal-dialog modal-xl" role="document">
                     <div class="modal-content">
                         <div class="modal-header bg-info text-white">
                             <h5 class="modal-title">
