@@ -14,9 +14,10 @@ class Home extends Component
 
     public function mount()
     {
-        $this->unreadCount = Message::unread(auth()->id())->count();
-        $this->unreadNotification = Notification::where(function ($query) {
-            $query->where('user_id', auth()->id())
+        $userId = Auth::id();
+        $this->unreadCount = Message::unread($userId)->count();
+        $this->unreadNotification = Notification::where(function ($query) use ($userId) {
+            $query->where('user_id', $userId)
                 ->orWhereNull('user_id');
         })->where('is_read', false)->count();
     }
