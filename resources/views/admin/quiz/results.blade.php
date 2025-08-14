@@ -2,8 +2,7 @@
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
-            <a href="{{ route('quizzes.show', $quiz) }}" wire:navigate
-                class="text-decoration-none text-secondary d-inline-block mb-3">
+            <a href="{{ route('quizzes.show', $quiz) }}" class="text-decoration-none text-secondary d-inline-block mb-3">
                 <i class="bi bi-arrow-left mr-2"></i>Quay lại chi tiết bài kiểm tra
             </a>
             <h4 class="mb-0 text-primary fs-4">
@@ -283,7 +282,7 @@
                 role="alert">
                 <i class="bi bi-check-circle mr-2"></i>{{ session('message') }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
         @endif

@@ -18,76 +18,110 @@ class GeminiService
     }
 
     /**
-     * Gửi request đến Gemini API
+     * Gửi request đến Gemini API với retry mechanism
      */
-    protected function makeRequest($prompt, $maxTokens = 1000)
+    protected function makeRequest($prompt, $maxTokens = 1000, $retryCount = 3)
     {
-        try {
-            Log::info('GeminiService: Making API request', [
-                'prompt_length' => strlen($prompt),
-                'max_tokens' => $maxTokens,
-                'api_key_exists' => !empty($this->apiKey),
-                'base_url' => $this->baseUrl
-            ]);
+        $attempt = 0;
 
-            $requestData = [
-                'contents' => [
-                    [
-                        'parts' => [
-                            [
-                                'text' => $prompt
-                            ]
-                        ]
-                    ]
-                ],
-                'generationConfig' => [
-                    'maxOutputTokens' => $maxTokens,
-                    'temperature' => 0.7,
-                    'topP' => 0.8,
-                    'topK' => 40
-                ]
-            ];
+        while ($attempt < $retryCount) {
+            $attempt++;
 
-            Log::info('GeminiService: Request data prepared', [
-                'request_data' => $requestData
-            ]);
-
-            $response = Http::withHeaders([
-                'Content-Type' => 'application/json',
-            ])->post($this->baseUrl . '?key=' . $this->apiKey, $requestData);
-
-            Log::info('GeminiService: API response received', [
-                'status' => $response->status(),
-                'successful' => $response->successful(),
-                'body_length' => strlen($response->body())
-            ]);
-
-            if ($response->successful()) {
-                $data = $response->json();
-                $result = $data['candidates'][0]['content']['parts'][0]['text'] ?? null;
-
-                Log::info('GeminiService: Successful response parsed', [
-                    'has_result' => !empty($result),
-                    'result_length' => strlen($result ?? ''),
-                    'result_preview' => substr($result ?? '', 0, 200)
+            try {
+                Log::info('GeminiService: Making API request', [
+                    'attempt' => $attempt,
+                    'max_attempts' => $retryCount,
+                    'prompt_length' => strlen($prompt),
+                    'max_tokens' => $maxTokens,
+                    'api_key_exists' => !empty($this->apiKey),
+                    'base_url' => $this->baseUrl
                 ]);
 
-                return $result;
+                $requestData = [
+                    'contents' => [
+                        [
+                            'parts' => [
+                                [
+                                    'text' => $prompt
+                                ]
+                            ]
+                        ]
+                    ],
+                    'generationConfig' => [
+                        'maxOutputTokens' => $maxTokens,
+                        'temperature' => 0.7,
+                        'topP' => 0.8,
+                        'topK' => 40
+                    ]
+                ];
+
+                $response = Http::timeout(60)->withHeaders([
+                    'Content-Type' => 'application/json',
+                ])->post($this->baseUrl . '?key=' . $this->apiKey, $requestData);
+
+                Log::info('GeminiService: API response received', [
+                    'attempt' => $attempt,
+                    'status' => $response->status(),
+                    'successful' => $response->successful(),
+                    'body_length' => strlen($response->body())
+                ]);
+
+                if ($response->successful()) {
+                    $data = $response->json();
+                    $result = $data['candidates'][0]['content']['parts'][0]['text'] ?? null;
+
+                    Log::info('GeminiService: Successful response parsed', [
+                        'attempt' => $attempt,
+                        'has_result' => !empty($result),
+                        'result_length' => strlen($result ?? ''),
+                        'result_preview' => substr($result ?? '', 0, 200)
+                    ]);
+
+                    return $result;
+                }
+
+                // Xử lý các lỗi có thể retry
+                $status = $response->status();
+                $shouldRetry = in_array($status, [429, 503, 502, 504]); // Rate limit, Service unavailable, Bad gateway, Gateway timeout
+
+                Log::error('GeminiService: API error response', [
+                    'attempt' => $attempt,
+                    'status' => $status,
+                    'should_retry' => $shouldRetry,
+                    'response' => $response->body()
+                ]);
+
+                // Nếu không thể retry hoặc đã hết lần thử, trả về null
+                if (!$shouldRetry || $attempt >= $retryCount) {
+                    return null;
+                }
+
+                // Chờ trước khi retry (exponential backoff)
+                $waitTime = pow(2, $attempt - 1) * 2; // 2s, 4s, 8s...
+                Log::info('GeminiService: Waiting before retry', [
+                    'wait_seconds' => $waitTime,
+                    'next_attempt' => $attempt + 1
+                ]);
+                sleep($waitTime);
+            } catch (Exception $e) {
+                Log::error('GeminiService: API exception', [
+                    'attempt' => $attempt,
+                    'message' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]);
+
+                // Nếu đã hết lần thử, trả về null
+                if ($attempt >= $retryCount) {
+                    return null;
+                }
+
+                // Chờ trước khi retry
+                $waitTime = pow(2, $attempt - 1) * 2;
+                sleep($waitTime);
             }
-
-            Log::error('GeminiService: API error response', [
-                'status' => $response->status(),
-                'response' => $response->body()
-            ]);
-
-            return null;
-        } catch (Exception $e) {
-            Log::error('GeminiService: API exception', [
-                'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-            return null;
         }
+
+        return null;
     }
 
     /**
@@ -389,7 +423,22 @@ class GeminiService
         }
 
         Log::error('GeminiService: No result from API');
-        return null;
+
+        // Trả về thông báo lỗi chi tiết thay vì null
+        return [
+            'error' => true,
+            'message' => 'Không thể tạo ngân hàng câu hỏi do API bị quá tải. Vui lòng thử lại sau vài phút.',
+            'questions' => [],
+            'statistics' => [
+                'total_questions' => 0,
+                'easy_count' => 0,
+                'medium_count' => 0,
+                'hard_count' => 0,
+                'multiple_choice_count' => 0,
+                'fill_blank_count' => 0,
+                'essay_count' => 0
+            ]
+        ];
     }
 
     /**

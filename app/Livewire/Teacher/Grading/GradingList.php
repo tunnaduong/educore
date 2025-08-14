@@ -108,7 +108,7 @@ class GradingList extends Component
 
     public function selectAssignment($assignmentId)
     {
-        return $this->redirect(route('teacher.grading.grade-assignment', ['assignment' => $assignmentId]), true);
+        return $this->redirect(route('teacher.grading.grade-assignment', ['assignment' => $assignmentId]));
     }
 
     public function render()

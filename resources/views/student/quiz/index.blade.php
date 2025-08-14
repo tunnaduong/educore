@@ -92,7 +92,8 @@
                                         </td>
                                         <td>
                                             @if ($quiz->time_limit)
-                                                <span class="badge bg-warning text-dark">{{ $quiz->time_limit }} phút</span>
+                                                <span class="badge bg-warning text-dark">{{ $quiz->time_limit }}
+                                                    phút</span>
                                             @else
                                                 <span class="text-muted">Không giới hạn</span>
                                             @endif
@@ -127,14 +128,13 @@
                                         <td>
                                             @if ($result && $result->submitted_at)
                                                 <a href="{{ route('student.quizzes.review', ['quizId' => $quiz->id]) }}"
-                                                    wire:navigate class="btn btn-sm btn-outline-info"
-                                                    title="Xem lại bài">
+                                                    class="btn btn-sm btn-outline-info" title="Xem lại bài">
                                                     <i class="bi bi-eye"></i> Xem lại
                                                 </a>
                                             @elseif ($quiz->isExpired())
                                                 <span class="text-muted">Đã hết hạn</span>
                                             @else
-                                                <a href="{{ route('student.quizzes.do', $quiz) }}" wire:navigate
+                                                <a href="{{ route('student.quizzes.do', $quiz) }}"
                                                     class="btn btn-sm btn-outline-primary" title="Làm bài">
                                                     <i class="bi bi-pencil"></i> Làm bài
                                                 </a>

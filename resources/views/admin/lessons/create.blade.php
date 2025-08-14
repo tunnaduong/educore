@@ -3,8 +3,7 @@
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
-            <a href="{{ route('lessons.index') }}" wire:navigate
-                class="text-decoration-none text-secondary d-inline-block mb-3">
+            <a href="{{ route('lessons.index') }}" class="text-decoration-none text-secondary d-inline-block mb-3">
                 <i class="bi bi-arrow-left mr-2"></i>Quay lại
             </a>
             <h4 class="mb-0 text-success fs-4">
@@ -93,7 +92,7 @@
                         </div>
                         <!-- Submit Buttons -->
                         <div class="d-flex justify-content-end gap-2">
-                            <a href="{{ route('lessons.index') }}" wire:navigate class="btn btn-light">Hủy</a>
+                            <a href="{{ route('lessons.index') }}" class="btn btn-light">Hủy</a>
                             <button type="submit" class="btn btn-success">
                                 <i class="bi bi-folder-plus mr-2"></i>Lưu bài học
                             </button>

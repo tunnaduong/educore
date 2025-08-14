@@ -2,7 +2,7 @@
     <div class="container py-4">
         <!-- Header -->
         <div class="mb-4">
-            <a href="{{ route('teacher.assignments.index') }}" wire:navigate class="text-decoration-none text-secondary">
+            <a href="{{ route('teacher.assignments.index') }}" class="text-decoration-none text-secondary">
                 <i class="bi bi-arrow-left mr-1"></i>Quay lại
             </a>
             <h4 class="mt-2 text-primary fs-4"><i class="bi bi-journal-text mr-2"></i>Tạo bài tập mới</h4>
@@ -126,8 +126,7 @@
 
                     <!-- Buttons -->
                     <div class="d-flex justify-content-end gap-2">
-                        <a href="{{ route('teacher.assignments.index') }}" wire:navigate
-                            class="btn btn-outline-secondary">Hủy</a>
+                        <a href="{{ route('teacher.assignments.index') }}" class="btn btn-outline-secondary">Hủy</a>
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-send mr-1"></i> Tạo bài tập
                         </button>

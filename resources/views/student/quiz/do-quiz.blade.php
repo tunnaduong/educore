@@ -38,8 +38,15 @@
         }
 
         @keyframes fadeInOut {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
         }
 
         .animate__pulse {
@@ -56,13 +63,13 @@
 
         #timer-container {
             transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             border: 2px solid transparent;
         }
 
         #timer-container:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
         #timer {
@@ -96,7 +103,7 @@
                         <i class="bi bi-exclamation-triangle display-4 mb-3"></i>
                         <h3 class="mb-3">403 | Không thể truy cập bài kiểm tra</h3>
                         <p class="lead">{{ $accessDenied }}</p>
-                        <a href="{{ route('student.quizzes.index') }}" wire:navigate class="btn btn-primary mt-3">
+                        <a href="{{ route('student.quizzes.index') }}" class="btn btn-primary mt-3">
                             <i class="bi bi-arrow-left mr-1"></i>Quay lại danh sách bài kiểm tra
                         </a>
                     </div>
@@ -149,7 +156,7 @@
                             </div>
 
                             <div class="mt-4">
-                                <a href="{{ route('student.quizzes.index') }}" wire:navigate class="btn btn-primary">
+                                <a href="{{ route('student.quizzes.index') }}" class="btn btn-primary">
                                     <i class="bi bi-house mr-2"></i>Về trang chủ
                                 </a>
                             </div>
@@ -184,18 +191,21 @@
                                 </div>
                                 <div class="col-md-6 text-md-end">
                                     @if ($timeRemaining)
-                                        <div class="d-inline-block px-3 py-2 rounded {{ $this->getTimerClass() }}" id="timer-container">
+                                        <div class="d-inline-block px-3 py-2 rounded {{ $this->getTimerClass() }}"
+                                            id="timer-container">
                                             <i class="bi bi-clock mr-2"></i>
                                             <span id="timer" class="fw-bold fs-5">
                                                 {{ $this->getFormattedTimeRemaining() }}
                                             </span>
-                                            @if($this->shouldShowWarning())
-                                                <span class="badge bg-warning text-dark ms-2 animate__animated animate__pulse">
+                                            @if ($this->shouldShowWarning())
+                                                <span
+                                                    class="badge bg-warning text-dark ms-2 animate__animated animate__pulse">
                                                     <i class="bi bi-exclamation-triangle"></i> Cảnh báo
                                                 </span>
                                             @endif
-                                            @if($this->shouldShowUrgentWarning())
-                                                <span class="badge bg-danger text-white ms-2 animate__animated animate__pulse">
+                                            @if ($this->shouldShowUrgentWarning())
+                                                <span
+                                                    class="badge bg-danger text-white ms-2 animate__animated animate__pulse">
                                                     <i class="bi bi-exclamation-triangle-fill"></i> Khẩn cấp
                                                 </span>
                                             @endif
@@ -406,10 +416,10 @@
                 function formatTime(seconds) {
                     const minutes = Math.floor(seconds / 60);
                     const secs = seconds % 60;
-                    
+
                     // Luôn hiển thị định dạng MM:SS
                     return (minutes < 10 ? '0' : '') + minutes + ':' +
-                           (secs < 10 ? '0' : '') + secs;
+                        (secs < 10 ? '0' : '') + secs;
                 }
 
                 // Function để cập nhật class CSS cho timer
@@ -420,9 +430,11 @@
                     timerContainer.classList.remove('timer-normal', 'timer-warning', 'timer-urgent');
 
                     if (timeRemaining <= 300) { // 5 phút cuối
-                        timerContainer.className = 'd-inline-block bg-danger text-white px-3 py-2 rounded animate__animated animate__pulse timer-urgent';
+                        timerContainer.className =
+                            'd-inline-block bg-danger text-white px-3 py-2 rounded animate__animated animate__pulse timer-urgent';
                     } else if (timeRemaining <= 600) { // 10 phút cuối
-                        timerContainer.className = 'd-inline-block bg-warning text-dark px-3 py-2 rounded animate__animated animate__pulse timer-warning';
+                        timerContainer.className =
+                            'd-inline-block bg-warning text-dark px-3 py-2 rounded animate__animated animate__pulse timer-warning';
                     } else {
                         timerContainer.className = 'd-inline-block bg-info text-white px-3 py-2 rounded timer-normal';
                     }
@@ -470,7 +482,8 @@
 
                         // Hiển thị thông báo hết thời gian
                         if (timerContainer) {
-                            timerContainer.className = 'd-inline-block bg-danger text-white px-3 py-2 rounded animate__animated animate__shakeX';
+                            timerContainer.className =
+                                'd-inline-block bg-danger text-white px-3 py-2 rounded animate__animated animate__shakeX';
                             timerElement.textContent = 'HẾT THỜI GIAN!';
                         }
 

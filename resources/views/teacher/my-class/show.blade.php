@@ -23,18 +23,17 @@
             </div>
             <div class="col-md-4 text-end">
                 <div class="d-flex justify-content-end gap-2">
-                    <a href="{{ route('teacher.attendance.take', $classroom) }}" wire:navigate
-                        class="btn btn-primary btn-sm">
+                    <a href="{{ route('teacher.attendance.take', $classroom) }}" class="btn btn-primary btn-sm">
                         <i class="bi bi-calendar-check mr-1"></i>
                         Điểm danh
                     </a>
-                    <a href="{{ route('teacher.lessons.create', ['classroom_id' => $classroom->id]) }}" wire:navigate
+                    <a href="{{ route('teacher.lessons.create', ['classroom_id' => $classroom->id]) }}"
                         class="btn btn-outline-primary btn-sm">
                         <i class="bi bi-plus-circle mr-1"></i>
                         Thêm bài học
                     </a>
                     <a href="{{ route('teacher.assignments.create', ['classroom_id' => $classroom->id]) }}"
-                        wire:navigate class="btn btn-outline-success btn-sm">
+                        class="btn btn-outline-success btn-sm">
                         <i class="bi bi-plus-circle mr-1"></i>
                         Thêm bài tập
                     </a>
@@ -304,7 +303,7 @@
                             Danh sách bài học ({{ $classroom->lessons->count() }})
                         </h6>
                         <a href="{{ route('teacher.lessons.create', ['classroom_id' => $classroom->id]) }}"
-                            wire:navigate class="btn btn-warning btn-sm">
+                            class="btn btn-warning btn-sm">
                             <i class="bi bi-plus-circle mr-1"></i>
                             Thêm bài học
                         </a>
@@ -354,7 +353,7 @@
                             Danh sách bài tập ({{ $classroom->assignments->count() }})
                         </h6>
                         <a href="{{ route('teacher.assignments.create', ['classroom_id' => $classroom->id]) }}"
-                            wire:navigate class="btn btn-success btn-sm">
+                            class="btn btn-success btn-sm">
                             <i class="bi bi-plus-circle mr-1"></i>
                             Thêm bài tập
                         </a>
@@ -404,8 +403,7 @@
                             <i class="bi bi-calendar-check mr-2"></i>
                             Lịch sử điểm danh
                         </h6>
-                        <a href="{{ route('teacher.attendance.take', $classroom) }}" wire:navigate
-                            class="btn btn-primary btn-sm">
+                        <a href="{{ route('teacher.attendance.take', $classroom) }}" class="btn btn-primary btn-sm">
                             <i class="bi bi-plus-circle mr-1"></i>
                             Điểm danh mới
                         </a>

@@ -319,7 +319,7 @@
                 <div class="card-body text-center py-5">
                     @if ($this->canSubmit())
                         <a href="{{ route('student.assignments.submit', $assignment->id) }}"
-                            class="btn btn-primary btn-lg" wire:navigate>
+                            class="btn btn-primary btn-lg">
                             <i class="bi bi-pencil mr-2"></i>Bắt đầu làm bài
                         </a>
                     @elseif($this->isOverdue())
@@ -343,7 +343,7 @@
 
         <!-- Back Button -->
         <div class="text-center mt-4 mb-4">
-            <a href="{{ route('student.assignments.overview') }}" class="btn btn-outline-secondary" wire:navigate>
+            <a href="{{ route('student.assignments.overview') }}" class="btn btn-outline-secondary">
                 <i class="bi bi-arrow-left mr-2"></i>Quay lại danh sách
             </a>
         </div>

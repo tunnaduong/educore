@@ -13,13 +13,10 @@ class Show extends Component
 
     public function mount(Lesson $lesson)
     {
-        $user = Auth::user();
-        $classrooms = $user->teachingClassrooms;
-        
-        // Fallback: nếu teacher chưa được gán vào lớp nào, hiển thị tất cả lớp học
-        if ($classrooms->isEmpty()) {
-            $classrooms = Classroom::all();
-        }
+        // Chỉ lấy các lớp học mà giáo viên hiện tại đã tham gia
+        $classrooms = Classroom::whereHas('teachers', function ($query) {
+            $query->where('users.id', Auth::id());
+        })->orderBy('name')->get();
         
         // Kiểm tra xem teacher có quyền xem bài học này không
         $this->lesson = Lesson::whereIn('classroom_id', $classrooms->pluck('id'))

@@ -4,8 +4,7 @@
         <div class="mb-4">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <a href="{{ route('teacher.grading.index') }}" wire:navigate
-                        class="text-decoration-none text-secondary">
+                    <a href="{{ route('teacher.grading.index') }}" class="text-decoration-none text-secondary">
                         <i class="bi bi-arrow-left mr-1"></i>Quay lại danh sách
                     </a>
                     <h4 class="mt-2 mb-0 text-primary fs-4">

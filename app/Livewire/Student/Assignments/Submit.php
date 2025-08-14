@@ -300,7 +300,7 @@ class Submit extends Component
 
             Log::info('Nộp bài thành công!');
             session()->flash('success', 'Nộp bài tập thành công!');
-            return $this->redirect(route('student.assignments.show', $this->assignmentId), navigate: true);
+            return $this->redirect(route('student.assignments.show', $this->assignmentId));
         } catch (\Exception $e) {
             Log::error('Có lỗi xảy ra khi nộp bài tập', ['error' => $e->getMessage()]);
             session()->flash('error', 'Có lỗi xảy ra khi nộp bài tập: ' . $e->getMessage());

@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
-            <a href="{{ route('teacher.quizzes.index') }}" wire:navigate
+            <a href="{{ route('teacher.quizzes.index') }}"
                 class="text-decoration-none text-secondary d-inline-block mb-3">
                 <i class="bi bi-arrow-left mr-2"></i>Quay lại danh sách bài kiểm tra
             </a>
@@ -288,6 +288,10 @@
                             @endif
 
                             <div class="text-end">
+                                <button type="button" class="btn btn-outline-success mr-2"
+                                    wire:click="$set('showQuestionBank', true)">
+                                    <i class="bi bi-database mr-2"></i>Chèn từ ngân hàng câu hỏi
+                                </button>
                                 <button type="button" class="btn btn-primary" wire:click="addQuestion">
                                     <i class="bi bi-plus-circle mr-2"></i>Thêm câu hỏi
                                 </button>
@@ -354,7 +358,7 @@
                 <div class="col-12">
                     <div class="card shadow-sm">
                         <div class="card-body text-end">
-                            <a href="{{ route('quizzes.index') }}" wire:navigate class="btn btn-secondary mr-2">
+                            <a href="{{ route('quizzes.index') }}" class="btn btn-secondary mr-2">
                                 <i class="bi bi-x-circle mr-2"></i>Hủy
                             </a>
                             <button type="submit" class="btn btn-primary"
@@ -367,6 +371,149 @@
             </div>
         </form>
 
+        <!-- Modal Ngân hàng Câu hỏi -->
+        @if ($showQuestionBank)
+            <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+                <div class="modal-dialog modal-dialog-scrollable modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header bg-success text-white">
+                            <h5 class="modal-title">
+                                <i class="bi bi-database mr-2"></i>Ngân hàng Câu hỏi
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white"
+                                wire:click="closeQuestionBank"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Chọn ngân hàng câu hỏi -->
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <label class="form-label">Chọn Ngân hàng Câu hỏi:</label>
+                                    <select class="form-control" wire:model.live="selectedQuestionBank">
+                                        <option value="">Chọn ngân hàng câu hỏi...</option>
+                                        @foreach ($questionBanks as $bank)
+                                            <option value="{{ $bank->id }}">{{ $bank->name }}
+                                                ({{ $bank->getQuestionCount() }} câu)
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Tìm kiếm:</label>
+                                    <input type="text" class="form-control" wire:model.live="questionBankFilter"
+                                        placeholder="Tìm câu hỏi...">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Loại câu hỏi:</label>
+                                    <select class="form-control" wire:model.live="questionTypeFilter">
+                                        <option value="">Tất cả</option>
+                                        <option value="multiple_choice">Trắc nghiệm</option>
+                                        <option value="fill_blank">Điền từ</option>
+                                        <option value="drag_drop">Kéo thả</option>
+                                        <option value="essay">Tự luận</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Danh sách câu hỏi -->
+                            @if (!empty($questionBankQuestions))
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h6>Danh sách câu hỏi ({{ count($filteredQuestions) }})</h6>
+                                            <div>
+                                                <button type="button" class="btn btn-success btn-sm"
+                                                    wire:click="addSelectedQuestions">
+                                                    <i class="bi bi-plus mr-1"></i>Thêm
+                                                    {{ count($selectedQuestions) }} câu hỏi đã chọn
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th width="50">
+                                                            <input type="checkbox" wire:click="toggleAllQuestions"
+                                                                @if (count($selectedQuestions) == count($filteredQuestions)) checked @endif>
+                                                        </th>
+                                                        <th>Nội dung câu hỏi</th>
+                                                        <th width="120">Loại</th>
+                                                        <th width="80">Điểm</th>
+                                                        <th width="100">Độ khó</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @forelse ($filteredQuestions as $index => $question)
+                                                        <tr>
+                                                            <td>
+                                                                <input type="checkbox"
+                                                                    wire:click="toggleQuestionSelection({{ $index }})"
+                                                                    @if (in_array($index, $selectedQuestions)) checked @endif>
+                                                            </td>
+                                                            <td>
+                                                                <div class="fw-medium">
+                                                                    {{ Str::limit($question['question'] ?? '', 100) }}
+                                                                </div>
+                                                                @if (isset($question['options']) && is_array($question['options']))
+                                                                    <small class="text-muted">
+                                                                        Đáp án đúng:
+                                                                        <strong>{{ $question['correct_answer'] ?? '' }}</strong>
+                                                                    </small>
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                <span class="badge bg-secondary">
+                                                                    {{ ucfirst(str_replace('_', ' ', $question['type'] ?? 'multiple_choice')) }}
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <span
+                                                                    class="badge bg-info">{{ $question['score'] ?? 1 }}
+                                                                    điểm</span>
+                                                            </td>
+                                                            <td>
+                                                                <span
+                                                                    class="badge bg-{{ ($question['difficulty'] ?? 'medium') == 'easy' ? 'success' : (($question['difficulty'] ?? 'medium') == 'medium' ? 'warning' : 'danger') }}">
+                                                                    {{ ucfirst($question['difficulty'] ?? 'medium') }}
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    @empty
+                                                        <tr>
+                                                            <td colspan="5" class="text-center text-muted">
+                                                                <i class="bi bi-inbox fa-2x mb-2"></i>
+                                                                <br>Không có câu hỏi nào trong ngân hàng này
+                                                            </td>
+                                                        </tr>
+                                                    @endforelse
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="text-center text-muted py-5">
+                                    <i class="bi bi-database fa-3x mb-3"></i>
+                                    <h5>Chưa có ngân hàng câu hỏi nào</h5>
+                                    <p>Vui lòng tạo ngân hàng câu hỏi bằng AI trước khi sử dụng tính năng này.</p>
+                                    <a href="{{ route('teacher.ai.question-bank-generator') }}"
+                                        class="btn btn-primary">
+                                        <i class="bi bi-plus mr-1"></i>Tạo Ngân hàng Câu hỏi
+                                    </a>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" wire:click="closeQuestionBank">
+                                <i class="bi bi-x mr-1"></i>Đóng
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+
         <!-- Flash Message -->
         @if (session()->has('message'))
             <div class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3"
@@ -378,4 +525,4 @@
             </div>
         @endif
     </div>
-    </x-layouts.dash-admin>
+</x-layouts.dash-teacher>

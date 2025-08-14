@@ -169,7 +169,7 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <a href="{{ route('student.lessons.show', $lesson->id) }}" wire:navigate
+                                                <a href="{{ route('student.lessons.show', $lesson->id) }}"
                                                     class="btn btn-sm btn-outline-primary">
                                                     <i class="bi bi-eye"></i> Xem chi tiết
                                                 </a>

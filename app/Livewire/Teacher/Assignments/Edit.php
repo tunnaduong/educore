@@ -7,6 +7,7 @@ use App\Models\Assignment;
 use App\Models\Classroom;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class Edit extends Component
 {
@@ -45,7 +46,11 @@ class Edit extends Component
         $this->types = $this->assignment->types ?? [];
         $this->old_attachment_path = $this->assignment->attachment_path;
         $this->old_video_path = $this->assignment->video_path;
-        $this->classrooms = Classroom::all();
+        
+        // Chỉ lấy các lớp học mà giáo viên hiện tại đã tham gia
+        $this->classrooms = Classroom::whereHas('teachers', function ($query) {
+            $query->where('users.id', Auth::id());
+        })->orderBy('name')->get();
     }
 
     public function updateAssignment()

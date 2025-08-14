@@ -5,6 +5,7 @@ namespace App\Livewire\Teacher\AI;
 use Livewire\Component;
 use App\Models\QuestionBank;
 use App\Helpers\AIHelper;
+use App\Data\SampleQuestionBanks;
 use Illuminate\Support\Facades\Auth;
 
 class QuestionBankGenerator extends Component
@@ -49,12 +50,32 @@ class QuestionBankGenerator extends Component
                 $this->maxQuestions
             );
 
-            if ($result && !empty($result['questions'])) {
-                $this->generatedBank = $result;
-                $this->showPreview = true;
-                session()->flash('success', 'Đã tạo ngân hàng câu hỏi tiếng Trung bằng AI thành công!');
+            if ($result) {
+                // Kiểm tra nếu có lỗi từ API
+                if (isset($result['error']) && $result['error']) {
+                    // Sử dụng dữ liệu mẫu khi API lỗi
+                    $sampleData = SampleQuestionBanks::getSampleByTopic($this->topic);
+                    $this->generatedBank = $sampleData;
+                    $this->showPreview = true;
+                    session()->flash('warning', 'API hiện tại bị quá tải, chúng tôi đã tạo ngân hàng câu hỏi mẫu cho bạn. Bạn có thể chỉnh sửa hoặc thử tạo lại sau.');
+                    $this->isProcessing = false;
+                    return;
+                }
+
+                // Kiểm tra nếu có câu hỏi
+                if (!empty($result['questions'])) {
+                    $this->generatedBank = $result;
+                    $this->showPreview = true;
+                    session()->flash('success', 'Đã tạo ngân hàng câu hỏi tiếng Trung bằng AI thành công!');
+                } else {
+                    session()->flash('error', 'Không thể tạo ngân hàng câu hỏi. API trả về dữ liệu không hợp lệ. Vui lòng thử lại.');
+                }
             } else {
-                session()->flash('error', 'Không thể tạo ngân hàng câu hỏi. Vui lòng kiểm tra API key và thử lại. Xem log trong storage/logs/laravel.log để biết chi tiết.');
+                // Sử dụng dữ liệu mẫu khi API không phản hồi
+                $sampleData = SampleQuestionBanks::getSampleByTopic($this->topic);
+                $this->generatedBank = $sampleData;
+                $this->showPreview = true;
+                session()->flash('warning', 'Không thể kết nối với AI, chúng tôi đã tạo ngân hàng câu hỏi mẫu cho bạn. Bạn có thể chỉnh sửa hoặc thử tạo lại khi kết nối ổn định.');
             }
         } catch (\Exception $e) {
             session()->flash('error', 'Có lỗi xảy ra: ' . $e->getMessage() . '. Vui lòng kiểm tra log trong storage/logs/laravel.log');
@@ -94,7 +115,6 @@ class QuestionBankGenerator extends Component
 
             // Reset form
             $this->reset(['name', 'description', 'topic', 'maxQuestions']);
-
         } catch (\Exception $e) {
             session()->flash('error', 'Có lỗi xảy ra khi lưu ngân hàng câu hỏi: ' . $e->getMessage());
         }

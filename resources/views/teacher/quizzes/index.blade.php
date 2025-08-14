@@ -9,7 +9,7 @@
                     </h4>
                     <p class="text-muted mb-0">Danh sách bài kiểm tra của các lớp bạn đang dạy</p>
                 </div>
-                <a href="{{ route('teacher.quizzes.create') }}" wire:navigate class="btn btn-primary">
+                <a href="{{ route('teacher.quizzes.create') }}" class="btn btn-primary">
                     <i class="bi bi-plus-circle mr-2"></i>Tạo bài kiểm tra mới
                 </a>
             </div>
@@ -118,15 +118,15 @@
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group">
-                                                <a href="{{ route('teacher.quizzes.show', $quiz) }}" wire:navigate
+                                                <a href="{{ route('teacher.quizzes.show', $quiz) }}"
                                                     class="btn btn-sm btn-outline-primary" title="Xem chi tiết">
                                                     <i class="bi bi-eye"></i>
                                                 </a>
-                                                <a href="{{ route('teacher.quizzes.edit', $quiz) }}" wire:navigate
+                                                <a href="{{ route('teacher.quizzes.edit', $quiz) }}"
                                                     class="btn btn-sm btn-outline-warning" title="Sửa">
                                                     <i class="bi bi-pencil"></i>
                                                 </a>
-                                                <a href="{{ route('teacher.quizzes.show', $quiz) }}" wire:navigate
+                                                <a href="{{ route('teacher.quizzes.show', $quiz) }}"
                                                     class="btn btn-sm btn-outline-info" title="Xem kết quả">
                                                     <i class="bi bi-graph-up"></i>
                                                 </a>
@@ -180,7 +180,7 @@
                         <i class="bi bi-journal-x fs-1 text-muted mb-3"></i>
                         <h5 class="text-muted">Không có bài kiểm tra nào</h5>
                         <p class="text-muted">Hãy tạo bài kiểm tra đầu tiên để bắt đầu.</p>
-                        <a href="{{ route('teacher.quizzes.create') }}" wire:navigate class="btn btn-primary">
+                        <a href="{{ route('teacher.quizzes.create') }}" class="btn btn-primary">
                             <i class="bi bi-plus-circle mr-2"></i>Tạo bài kiểm tra
                         </a>
                     </div>

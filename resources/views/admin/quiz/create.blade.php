@@ -2,8 +2,7 @@
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
-            <a href="{{ route('quizzes.index') }}" wire:navigate
-                class="text-decoration-none text-secondary d-inline-block mb-3">
+            <a href="{{ route('quizzes.index') }}" class="text-decoration-none text-secondary d-inline-block mb-3">
                 <i class="bi bi-arrow-left mr-2"></i>Quay lại danh sách bài kiểm tra
             </a>
             <h4 class="mb-0 text-primary fs-4">
@@ -342,7 +341,7 @@
                 <div class="col-12">
                     <div class="card shadow-sm">
                         <div class="card-body text-end">
-                            <a href="{{ route('quizzes.index') }}" wire:navigate class="btn btn-secondary mr-2">
+                            <a href="{{ route('quizzes.index') }}" class="btn btn-secondary mr-2">
                                 <i class="bi bi-x-circle mr-2"></i>Hủy
                             </a>
                             <button type="submit" class="btn btn-primary"
