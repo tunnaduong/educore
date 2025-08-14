@@ -142,7 +142,7 @@
                                     <!-- Delete Confirmation Modal -->
                                     <div class="modal fade" id="deleteModal{{ $quiz->id }}" tabindex="-1"
                                         aria-labelledby="deleteModalLabel{{ $quiz->id }}" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="deleteModalLabel{{ $quiz->id }}">

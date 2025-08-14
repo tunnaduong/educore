@@ -27,7 +27,7 @@
         <!-- Modal đánh giá bắt buộc - không thể đóng -->
         <div class="modal fade show d-block" id="requiredEvaluationModal" tabindex="-1"
             style="background-color: rgba(0,0,0,0.8); z-index: 1050; overflow-y: auto;">
-            <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-dialog modal-dialog-scrollable modal-xl modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header bg-warning text-dark">
                         <h5 class="modal-title">
