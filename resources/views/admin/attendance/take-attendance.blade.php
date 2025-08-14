@@ -3,8 +3,7 @@
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
-            <a href="{{ route('classrooms.index') }}" wire:navigate
-                class="text-decoration-none text-secondary d-inline-block mb-3">
+            <a href="{{ route('classrooms.index') }}" class="text-decoration-none text-secondary d-inline-block mb-3">
                 <i class="bi bi-arrow-left mr-2"></i>Quay lại lớp học
             </a>
             <h4 class="mb-0 text-primary fs-4">
@@ -90,7 +89,7 @@
                         <div class="d-flex gap-2 justify-content-end">
                             <input wire:model.live="selectedDate" type="date" class="form-control"
                                 style="max-width: 200px;">
-                            <button wire:click="saveAttendance" class="btn btn-primary" 
+                            <button wire:click="saveAttendance" class="btn btn-primary"
                                 {{ !$canTakeAttendance ? 'disabled' : '' }}>
                                 <i class="bi bi-save mr-2"></i>Lưu điểm danh
                             </button>
@@ -192,7 +191,8 @@
                                         </td>
                                         <td>
                                             @if (!$data['present'])
-                                                <button wire:click="openReasonModal({{ $data['student_record']->id }})"
+                                                <button
+                                                    wire:click="openReasonModal({{ $data['student_record']->id }})"
                                                     class="btn btn-sm btn-outline-primary"
                                                     {{ !$canTakeAttendance ? 'disabled' : '' }}>
                                                     <i class="bi bi-pencil mr-1"></i>Lý do
@@ -218,8 +218,8 @@
                         <h5 class="modal-title">
                             <i class="bi bi-exclamation-triangle mr-2"></i>Lý do nghỉ học
                         </h5>
-                        <button type="button" class="close"
-                            wire:click="$set('showReasonModal', false)" aria-label="Close">
+                        <button type="button" class="close" wire:click="$set('showReasonModal', false)"
+                            aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>

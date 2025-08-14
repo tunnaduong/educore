@@ -37,7 +37,10 @@ class Create extends Component
         if ($user->role === 'admin') {
             $this->classrooms = Classroom::all();
         } else {
-            $this->classrooms = $user->teachingClassrooms;
+            // Chỉ lấy các lớp học mà giáo viên hiện tại đã tham gia
+            $this->classrooms = Classroom::whereHas('teachers', function ($query) {
+                $query->where('users.id', Auth::id());
+            })->orderBy('name')->get();
         }
     }
 
@@ -91,6 +94,8 @@ class Create extends Component
 
     public function render()
     {
-        return view('teacher.assignments.create');
+        return view('teacher.assignments.create', [
+            'classrooms' => $this->classrooms
+        ]);
     }
 }

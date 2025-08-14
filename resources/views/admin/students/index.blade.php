@@ -6,7 +6,7 @@
             <h4 class="mb-0 text-primary fs-4">
                 <i class="bi bi-people-fill mr-2"></i>Quản lý học viên
             </h4>
-            <a href="{{ route('students.create') ?? '#' }}" wire:navigate class="btn btn-primary">
+            <a href="{{ route('students.create') ?? '#' }}" class="btn btn-primary">
                 <i class="bi bi-plus-circle mr-2"></i>Thêm học viên
             </a>
         </div>
@@ -148,11 +148,11 @@
                                     </td>
                                     <td class="text-end">
                                         <div class="d-flex justify-content-end gap-1">
-                                            <a href="{{ route('students.show', $student) }}" wire:navigate
+                                            <a href="{{ route('students.show', $student) }}"
                                                 class="btn btn-sm btn-outline-info" title="Xem chi tiết">
                                                 <i class="bi bi-eye"></i>
                                             </a>
-                                            <a href="{{ route('students.edit', $student) }}" wire:navigate
+                                            <a href="{{ route('students.edit', $student) }}"
                                                 class="btn btn-sm btn-outline-primary" title="Chỉnh sửa">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>

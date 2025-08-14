@@ -10,10 +10,10 @@
                     <p class="text-muted mb-0">{{ $quiz->title }} - {{ $quiz->classroom->name ?? 'N/A' }}</p>
                 </div>
                 <div class="btn-group">
-                    <a href="{{ route('teacher.quizzes.show', $quiz) }}" wire:navigate class="btn btn-outline-primary">
+                    <a href="{{ route('teacher.quizzes.show', $quiz) }}" class="btn btn-outline-primary">
                         <i class="bi bi-eye me-2"></i>Xem chi tiết
                     </a>
-                    <a href="{{ route('teacher.quizzes.index') }}" wire:navigate class="btn btn-outline-secondary">
+                    <a href="{{ route('teacher.quizzes.index') }}" class="btn btn-outline-secondary">
                         <i class="bi bi-arrow-left me-2"></i>Quay lại
                     </a>
                 </div>
@@ -211,7 +211,7 @@
             <div class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3" role="alert">
                 <i class="bi bi-check-circle me-2"></i>{{ session('message') }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
         @endif
@@ -220,7 +220,7 @@
             <div class="alert alert-danger alert-dismissible fade show position-fixed top-0 end-0 m-3" role="alert">
                 <i class="bi bi-exclamation-triangle me-2"></i>{{ session('error') }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
         @endif

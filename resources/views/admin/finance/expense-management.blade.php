@@ -9,7 +9,7 @@
                 <p class="text-muted mb-0">Theo dõi và quản lý các khoản chi của trung tâm</p>
             </div>
             <div class="d-flex gap-2">
-                <a href="{{ route('admin.finance.index') }}" class="btn btn-outline-secondary btn-lg" wire:navigate>
+                <a href="{{ route('admin.finance.index') }}" class="btn btn-outline-secondary btn-lg">
                     <i class="bi bi-arrow-left mr-2"></i>Quay lại thống kê
                 </a>
                 <button class="btn btn-danger btn-lg shadow-sm" wire:click="openCreateModal">

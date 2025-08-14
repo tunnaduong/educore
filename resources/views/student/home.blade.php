@@ -11,7 +11,7 @@
                 </a>
             </div>
             <div class="col-6 col-md-3 text-center">
-                <a href="{{ route('student.lessons.index') }}" wire:navigate class="text-decoration-none text-dark">
+                <a href="{{ route('student.lessons.index') }}" class="text-decoration-none text-dark">
                     <div class="mb-2">
                         <i class="bi bi-book" style="font-size:2.5rem; color:#0d6efd;"></i>
                     </div>
@@ -19,8 +19,7 @@
                 </a>
             </div>
             <div class="col-6 col-md-3 text-center">
-                <a href="{{ route('student.assignments.overview') }}" wire:navigate
-                    class="text-decoration-none text-dark">
+                <a href="{{ route('student.assignments.overview') }}" class="text-decoration-none text-dark">
                     <div class="mb-2">
                         <i class="bi bi-journal-text" style="font-size:2.5rem; color:#fd7e14;"></i>
                     </div>
@@ -28,7 +27,7 @@
                 </a>
             </div>
             <div class="col-6 col-md-3 text-center">
-                <a href="{{ route('student.quizzes.index') }}" wire:navigate class="text-decoration-none text-dark">
+                <a href="{{ route('student.quizzes.index') }}" class="text-decoration-none text-dark">
                     <div class="mb-2">
                         <i class="bi bi-clipboard-check-fill" style="font-size:2.5rem; color:#6f42c1;"></i>
                     </div>
@@ -36,7 +35,7 @@
                 </a>
             </div>
             <div class="col-6 col-md-3 text-center">
-                <a href="{{ route('student.reports.index') }}" wire:navigate class="text-decoration-none text-dark">
+                <a href="{{ route('student.reports.index') }}" class="text-decoration-none text-dark">
                     <div class="mb-2">
                         <i class="bi bi-bar-chart-fill" style="font-size:2.5rem; color:#20c997;"></i>
                     </div>
@@ -44,8 +43,7 @@
                 </a>
             </div>
             <div class="col-6 col-md-3 text-center">
-                <a href="{{ route('student.notifications.index') }}" wire:navigate
-                    class="text-decoration-none text-dark">
+                <a href="{{ route('student.notifications.index') }}" class="text-decoration-none text-dark">
                     <div class="position-relative d-inline-block">
                         <i class="bi bi-bell-fill" style="font-size:2.5rem; color:#fd5e53;"></i>
                         @if ($unreadNotification > 0)
@@ -58,7 +56,7 @@
                 </a>
             </div>
             <div class="col-6 col-md-3 text-center">
-                <a href="{{ route('student.chat.index') }}" wire:navigate class="text-decoration-none text-dark">
+                <a href="{{ route('student.chat.index') }}" class="text-decoration-none text-dark">
                     <div class="mb-2 position-relative d-inline-block">
                         <i class="bi bi-chat-dots-fill" style="font-size:2.5rem; color:#3372a2;"></i>
                         @if ($unreadCount > 0)

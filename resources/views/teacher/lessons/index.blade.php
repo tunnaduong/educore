@@ -11,7 +11,7 @@
                     <p class="text-muted mb-0">Quản lý, lưu trữ và tra cứu các bài học, tài liệu, video, slide...</p>
                 </div>
                 <div>
-                    <a href="{{ route('teacher.lessons.create') }}" wire:navigate class="btn btn-success"><i
+                    <a href="{{ route('teacher.lessons.create') }}" class="btn btn-success"><i
                             class="bi bi-plus-circle mr-1"></i> Thêm bài học</a>
                 </div>
             </div>
@@ -98,9 +98,9 @@
                                             <small>{{ $lesson->created_at?->format('d/m/Y') }}</small>
                                         </td>
                                         <td>
-                                            <a href="{{ route('teacher.lessons.show', $lesson->id) }}" wire:navigate
+                                            <a href="{{ route('teacher.lessons.show', $lesson->id) }}"
                                                 class="btn btn-sm btn-outline-primary"><i class="bi bi-eye"></i></a>
-                                            <a href="{{ route('teacher.lessons.edit', $lesson->id) }}" wire:navigate
+                                            <a href="{{ route('teacher.lessons.edit', $lesson->id) }}"
                                                 class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil"></i></a>
                                             <button type="button" class="btn btn-sm btn-outline-danger"
                                                 wire:click="confirmDelete({{ $lesson->id }}, '{{ addslashes($lesson->title) }}')"><i

@@ -92,7 +92,7 @@ class Edit extends Component
         }
 
         session()->flash('message', 'Đã cập nhật thông tin học viên thành công!');
-        return $this->redirect(route('students.index'), navigate: true);
+        return $this->redirect(route('students.index'));
     }
 
     public function render()

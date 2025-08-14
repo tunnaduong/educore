@@ -11,10 +11,10 @@
                     <p class="text-muted mb-0">Xem thông tin chi tiết bài học và tài nguyên</p>
                 </div>
                 <div>
-                    <a href="{{ route('teacher.lessons.edit', $lesson->id) }}" wire:navigate class="btn btn-warning mr-2">
+                    <a href="{{ route('teacher.lessons.edit', $lesson->id) }}" class="btn btn-warning mr-2">
                         <i class="bi bi-pencil mr-1"></i>Chỉnh sửa
                     </a>
-                    <a href="{{ route('teacher.lessons.index') }}" wire:navigate class="btn btn-outline-secondary">
+                    <a href="{{ route('teacher.lessons.index') }}" class="btn btn-outline-secondary">
                         <i class="bi bi-arrow-left mr-1"></i>Quay lại
                     </a>
                 </div>

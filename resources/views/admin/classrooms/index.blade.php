@@ -29,7 +29,7 @@
                 <h4 class="mb-0">
                     <i class="fas fa-graduation-cap mr-2"></i>@lang('general.manage_classrooms')
                 </h4>
-                <a href="{{ route('classrooms.create') ?? '#' }}" wire:navigate class="btn btn-primary">
+                <a href="{{ route('classrooms.create') ?? '#' }}" class="btn btn-primary">
                     <i class="fas fa-plus mr-2"></i>@lang('general.add_classroom')
                 </a>
             </div>
@@ -164,27 +164,25 @@
                                         </td>
                                         <td class="text-center">
                                             <div class="btn-group">
-                                                <a href="{{ route('classrooms.show', $classroom) }}" wire:navigate
+                                                <a href="{{ route('classrooms.show', $classroom) }}"
                                                     class="btn btn-sm btn-outline-secondary"
                                                     title="@lang('general.view_details')">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
                                                 <a href="{{ route('classrooms.attendance', $classroom) }}"
-                                                    wire:navigate class="btn btn-sm btn-outline-info"
-                                                    title="@lang('general.take_attendance')">
+                                                    class="btn btn-sm btn-outline-info" title="@lang('general.take_attendance')">
                                                     <i class="fas fa-calendar-check"></i>
                                                 </a>
                                                 <a href="{{ route('classrooms.attendance-history', $classroom) }}"
-                                                    wire:navigate class="btn btn-sm btn-outline-secondary"
+                                                    class="btn btn-sm btn-outline-secondary"
                                                     title="@lang('general.attendance_history')">
                                                     <i class="fas fa-calendar-week"></i>
                                                 </a>
                                                 <a href="{{ route('classrooms.assign-students', $classroom) }}"
-                                                    wire:navigate class="btn btn-sm btn-outline-success"
-                                                    title="@lang('general.assign_students')">
+                                                    class="btn btn-sm btn-outline-success" title="@lang('general.assign_students')">
                                                     <i class="fas fa-user-plus"></i>
                                                 </a>
-                                                <a href="{{ route('classrooms.edit', $classroom) }}" wire:navigate
+                                                <a href="{{ route('classrooms.edit', $classroom) }}"
                                                     class="btn btn-sm btn-outline-primary" title="@lang('general.edit')">
                                                     <i class="fas fa-edit"></i>
                                                 </a>

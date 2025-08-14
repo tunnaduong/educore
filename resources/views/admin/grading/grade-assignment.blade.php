@@ -6,7 +6,7 @@
             <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb bg-white shadow-sm rounded">
                     <li class="breadcrumb-item">
-                        <a href="{{ route('grading.list') }}" wire:navigate class="text-decoration-none">
+                        <a href="{{ route('grading.list') }}" class="text-decoration-none">
                             <i class="fas fa-arrow-left mr-1"></i>@lang('general.back_to_list')
                         </a>
                     </li>

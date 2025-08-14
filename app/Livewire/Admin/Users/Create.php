@@ -64,7 +64,7 @@ class Create extends Component
         ]);
 
         session()->flash('success', 'Tạo người dùng thành công!');
-        return $this->redirect(route('users.index'), navigate: true);
+        return $this->redirect(route('users.index'));
     }
 
     public function render()

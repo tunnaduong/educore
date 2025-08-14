@@ -382,7 +382,7 @@
                     <!-- Submit Buttons -->
                     <div class="d-flex justify-content-between align-items-center">
                         <a href="{{ route('student.assignments.show', $assignment->id) }}"
-                            class="btn btn-outline-secondary" wire:navigate>
+                            class="btn btn-outline-secondary">
                             <i class="bi bi-arrow-left mr-2"></i>Quay lại
                         </a>
                         @if (count($status['missing_types']) > 0)

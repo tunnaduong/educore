@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
-            <a href="{{ route('teacher.assignments.index') }}" wire:navigate
+            <a href="{{ route('teacher.assignments.index') }}"
                 class="text-decoration-none text-secondary d-inline-block mb-3">
                 <i class="bi bi-arrow-left mr-2"></i>Quay lại danh sách bài tập
             </a>

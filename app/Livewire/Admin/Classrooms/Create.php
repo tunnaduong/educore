@@ -82,8 +82,7 @@ class Create extends Component
             }
 
             session()->flash('success', 'Lớp học đã được tạo thành công!');
-            return $this->redirect(route('classrooms.index'), navigate: true);
-
+            return $this->redirect(route('classrooms.index'));
         } catch (\Exception $e) {
             session()->flash('error', 'Không thể tạo lớp học. Vui lòng thử lại sau. Lỗi: ' . $e->getMessage());
             Log::error('Create Classroom Error: ' . $e->getMessage(), [

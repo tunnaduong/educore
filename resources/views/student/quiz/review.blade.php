@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
-            <a href="{{ route('student.quizzes.index') }}" wire:navigate
+            <a href="{{ route('student.quizzes.index') }}"
                 class="text-decoration-none text-secondary d-inline-block mb-3">
                 <i class="bi bi-arrow-left mr-2"></i>Quay lại danh sách bài kiểm tra
             </a>
