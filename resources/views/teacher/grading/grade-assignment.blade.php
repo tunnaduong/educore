@@ -189,9 +189,7 @@
                                                             class="btn btn-sm btn-outline-primary">
                                                             <i class="bi bi-eye mr-1"></i>Xem
                                                         </button>
-                                                        @if (
-                                                            ($submission->submission_type === 'essay' || $submission->submission_type === 'text') &&
-                                                                !in_array($submission->submission_type, ['image', 'audio', 'video']))
+                                                        @if (($submission->submission_type === 'essay' || $submission->submission_type === 'text') && !in_array($submission->submission_type, ['image', 'audio', 'video']))
                                                             <a href="{{ route('teacher.ai.grading', $submission->id) }}"
                                                                 class="btn btn-sm btn-outline-success">
                                                                 <i class="fas fa-robot mr-1"></i>AI
@@ -219,7 +217,7 @@
     <!-- Modal xem chi tiết bài nộp -->
     @if ($showModal && $selectedSubmission)
         <div class="modal fade show" style="display: block;" tabindex="-1">
-            <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">

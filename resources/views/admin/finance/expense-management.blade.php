@@ -74,7 +74,7 @@
             <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
                 <i class="bi bi-check-circle-fill mr-2"></i>{{ session('success') }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                  <span aria-hidden="true">&times;</span>
                 </button>
             </div>
         @endif
@@ -183,8 +183,7 @@
                                 <td>
                                     @if ($expense->classroom)
                                         <span class="badge bg-light text-dark border">
-                                            <i
-                                                class="bi bi-building-fill mr-1"></i>{{ $expense->classroom?->name ?? 'N/A' }}
+                                            <i class="bi bi-building-fill mr-1"></i>{{ $expense->classroom?->name ?? 'N/A' }}
                                         </span>
                                     @else
                                         <span class="text-muted">-</span>
@@ -233,7 +232,7 @@
         <!-- Create/Edit Modal -->
         @if ($showCreateModal)
             <div class="modal fade show d-block" tabindex="-1" style="background:rgba(0,0,0,0.5);">
-                <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header bg-danger text-white">
                             <h5 class="modal-title">
