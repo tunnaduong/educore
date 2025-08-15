@@ -6,10 +6,11 @@
 @endphp
 
 @if ($videoInfo && $videoInfo['type'] !== 'unknown')
-    <div class="ratio ratio-16x9 rounded overflow-hidden {{ $class }}">
+    <div class="w-100 rounded overflow-hidden {{ $class }}" style="height: auto; min-height: 400px;">
         <iframe src="{{ $videoInfo['embed_url'] }}" title="{{ $title }}" frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
+            allowfullscreen
+            style="width: 100%; height: 100%; min-height: 400px;">
         </iframe>
     </div>
 
