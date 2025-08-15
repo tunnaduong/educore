@@ -47,14 +47,15 @@
                         <div class="mb-3">
                             <strong class="text-muted">Video bài học:</strong><br>
                             @if ($isYoutube && $youtubeId)
-                                <div class="ratio ratio-16x9 rounded overflow-hidden mb-2">
-                                    <iframe src="https://www.youtube.com/embed/{{ $youtubeId }}" frameborder="0"
-                                        allowfullscreen></iframe>
+                                <div class="w-100 rounded overflow-hidden mb-2" style="height: auto; min-height: 400px;">
+                                    <iframe src="https://www.youtube.com/embed/{{ $youtubeId }}" 
+                                        frameborder="0" allowfullscreen
+                                        style="width: 100%; height: 100%; min-height: 400px;"></iframe>
                                 </div>
                             @elseif ($isDrive && $driveId)
-                                <div class="ratio ratio-16x9 rounded overflow-hidden mb-2">
+                                <div class="w-100 rounded overflow-hidden mb-2" style="height: auto; min-height: 400px;">
                                     <iframe src="https://drive.google.com/file/d/{{ $driveId }}/preview"
-                                        width="640" height="480" allow="autoplay"></iframe>
+                                        style="width: 100%; height: 100%; min-height: 400px;" allow="autoplay"></iframe>
                                 </div>
                             @else
                                 <a href="{{ $lesson->video }}" target="_blank" class="btn btn-outline-primary"><i
