@@ -22,7 +22,7 @@
                         <input type="text" class="form-control" wire:model.live="search"
                             placeholder="Tìm theo tên hoặc mô tả...">
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label class="form-label">Lớp học</label>
                         <select class="form-control" wire:model.live="filterClass">
                             <option value="">Tất cả lớp</option>
@@ -31,16 +31,26 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-3">
-                        <label class="form-label">Trạng thái</label>
+                    <div class="col-md-2">
+                        <label class="form-label">Tình trạng</label>
                         <select class="form-control" wire:model.live="filterStatus">
                             <option value="">Tất cả</option>
                             <option value="active">Còn hạn</option>
                             <option value="expired">Hết hạn</option>
                         </select>
                     </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Trạng thái</label>
+                        <select class="form-control" wire:model.live="filterSubmissionStatus">
+                            <option value="">Tất cả</option>
+                            <option value="not_started">Chưa làm</option>
+                            <option value="in_progress">Đã làm (chưa nộp)</option>
+                            <option value="submitted">Đã nộp</option>
+                            <option value="completed">Đã hoàn thành</option>
+                        </select>
+                    </div>
                     <div class="col-md-2 d-flex align-items-end">
-                        <button class="btn btn-outline-secondary w-100" wire:click="$set('search', '')">
+                        <button class="btn btn-outline-secondary w-100" wire:click="resetFilters">
                             <i class="bi bi-arrow-clockwise mr-2"></i>Reset
                         </button>
                     </div>
@@ -61,13 +71,13 @@
                         <table class="table table-hover align-middle">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Tiêu đề</th>
+                                    <th style="min-width: 200px;">Tiêu đề</th>
                                     <th>Lớp học</th>
                                     <th>Số câu hỏi</th>
                                     <th>Thời gian làm bài</th>
                                     <th>Hạn nộp</th>
+                                    <th>Tình trạng</th>
                                     <th>Trạng thái</th>
-                                    <th>Trạng thái làm bài</th>
                                     <th>Thao tác</th>
                                 </tr>
                             </thead>
@@ -153,7 +163,7 @@
                                     @if ($currentPage > 1)
                                         <li class="page-item">
                                             <a class="page-link"
-                                                href="?page={{ $currentPage - 1 }}{{ $search ? '&search=' . $search : '' }}{{ $filterClass ? '&filterClass=' . $filterClass : '' }}{{ $filterStatus ? '&filterStatus=' . $filterStatus : '' }}">
+                                                href="?page={{ $currentPage - 1 }}{{ $search ? '&search=' . $search : '' }}{{ $filterClass ? '&filterClass=' . $filterClass : '' }}{{ $filterStatus ? '&filterStatus=' . $filterStatus : '' }}{{ $filterSubmissionStatus ? '&filterSubmissionStatus=' . $filterSubmissionStatus : '' }}">
                                                 <i class="bi bi-chevron-left"></i>
                                             </a>
                                         </li>
@@ -168,7 +178,7 @@
                                     @for ($i = $startPage; $i <= $endPage; $i++)
                                         <li class="page-item {{ $i == $currentPage ? 'active' : '' }}">
                                             <a class="page-link"
-                                                href="?page={{ $i }}{{ $search ? '&search=' . $search : '' }}{{ $filterClass ? '&filterClass=' . $filterClass : '' }}{{ $filterStatus ? '&filterStatus=' . $filterStatus : '' }}">
+                                                href="?page={{ $i }}{{ $search ? '&search=' . $search : '' }}{{ $filterClass ? '&filterClass=' . $filterClass : '' }}{{ $filterStatus ? '&filterStatus=' . $filterStatus : '' }}{{ $filterSubmissionStatus ? '&filterSubmissionStatus=' . $filterSubmissionStatus : '' }}">
                                                 {{ $i }}
                                             </a>
                                         </li>
@@ -177,7 +187,7 @@
                                     @if ($currentPage < $totalPages)
                                         <li class="page-item">
                                             <a class="page-link"
-                                                href="?page={{ $currentPage + 1 }}{{ $search ? '&search=' . $search : '' }}{{ $filterClass ? '&filterClass=' . $filterClass : '' }}{{ $filterStatus ? '&filterStatus=' . $filterStatus : '' }}">
+                                                href="?page={{ $currentPage + 1 }}{{ $search ? '&search=' . $search : '' }}{{ $filterClass ? '&filterClass=' . $filterClass : '' }}{{ $filterStatus ? '&filterStatus=' . $filterStatus : '' }}{{ $filterSubmissionStatus ? '&filterSubmissionStatus=' . $filterSubmissionStatus : '' }}">
                                                 <i class="bi bi-chevron-right"></i>
                                             </a>
                                         </li>
@@ -191,7 +201,7 @@
                         <i class="bi bi-journal-x fs-1 text-muted mb-3"></i>
                         <h5 class="text-muted">Không có bài kiểm tra nào</h5>
                         <p class="text-muted">
-                            @if ($search || $filterClass || $filterStatus)
+                            @if ($search || $filterClass || $filterStatus || $filterSubmissionStatus)
                                 Không tìm thấy bài kiểm tra nào phù hợp với bộ lọc hiện tại.
                             @else
                                 Bạn chưa có bài kiểm tra nào cần làm.
@@ -202,4 +212,6 @@
             </div>
         </div>
     </div>
+    @push('styles')
+    @endpush
 </x-layouts.dash-student>

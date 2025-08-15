@@ -47,15 +47,18 @@
                         <div class="mb-3">
                             <strong class="text-muted">Video bài học:</strong><br>
                             @if ($isYoutube && $youtubeId)
-                                <div class="w-100 rounded overflow-hidden mb-2" style="height: auto; min-height: 400px;">
-                                    <iframe src="https://www.youtube.com/embed/{{ $youtubeId }}" 
-                                        frameborder="0" allowfullscreen
-                                        style="width: 100%; height: 100%; min-height: 400px;"></iframe>
+                                <div class="ratio ratio-16x9 rounded overflow-hidden mb-2"
+                                    style="position: relative;padding-bottom: 56.25%;">
+                                    <iframe src="https://www.youtube.com/embed/{{ $youtubeId }}" frameborder="0"
+                                        allowfullscreen
+                                        style="position: absolute;top: 0;left: 0; width: 100%;height: 100%;"></iframe>
                                 </div>
                             @elseif ($isDrive && $driveId)
-                                <div class="w-100 rounded overflow-hidden mb-2" style="height: auto; min-height: 400px;">
+                                <div class="ratio ratio-16x9 rounded overflow-hidden mb-2"
+                                    style="position: relative;padding-bottom: 56.25%;">
                                     <iframe src="https://drive.google.com/file/d/{{ $driveId }}/preview"
-                                        style="width: 100%; height: 100%; min-height: 400px;" allow="autoplay"></iframe>
+                                        style="position: absolute;top: 0;left: 0; width: 100%;height: 100%;"
+                                        allow="autoplay"></iframe>
                                 </div>
                             @else
                                 <a href="{{ $lesson->video }}" target="_blank" class="btn btn-outline-primary"><i
@@ -71,7 +74,8 @@
                                 class="btn btn-outline-success mb-2">
                                 <i class="bi bi-download"></i> Tải tài liệu
                             </a>
-                            <button class="btn btn-outline-primary mb-2 ms-2" type="button" onclick="openPreviewModal()">
+                            <button class="btn btn-outline-primary mb-2 ms-2" type="button"
+                                onclick="openPreviewModal()">
                                 <i class="bi bi-eye"></i> Xem trước tài liệu
                             </button>
                             @php
@@ -108,8 +112,9 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.5);
+            background-color: rgba(0, 0, 0, 0.5);
         }
+
         .modal-content-custom {
             background-color: #fefefe;
             margin: 5% auto;
@@ -121,6 +126,7 @@
             max-height: 90vh;
             overflow: hidden;
         }
+
         .modal-header-custom {
             padding: 15px 20px;
             background-color: #f8f9fa;
@@ -129,11 +135,13 @@
             justify-content: space-between;
             align-items: center;
         }
+
         .modal-body-custom {
             padding: 0;
             max-height: calc(90vh - 80px);
             overflow: auto;
         }
+
         .close-custom {
             color: #aaa;
             font-size: 28px;
@@ -142,6 +150,7 @@
             border: none;
             background: none;
         }
+
         .close-custom:hover {
             color: #000;
         }
@@ -155,13 +164,17 @@
             <div class="modal-body-custom">
                 @if ($lesson->attachment)
                     @if (in_array($ext, ['pdf']))
-                        <iframe src="{{ $fileUrl }}" width="100%" height="600px" style="border:1px solid #ccc;"></iframe>
+                        <iframe src="{{ $fileUrl }}" width="100%" height="600px"
+                            style="border:1px solid #ccc;"></iframe>
                     @elseif (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp']))
-                        <img src="{{ $fileUrl }}" alt="Tài liệu hình ảnh" class="img-fluid border rounded d-block mx-auto" style="max-height:600px;">
+                        <img src="{{ $fileUrl }}" alt="Tài liệu hình ảnh"
+                            class="img-fluid border rounded d-block mx-auto" style="max-height:600px;">
                     @elseif (in_array($ext, ['doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx']))
-                        <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={{ urlencode($fileUrl) }}" width="100%" height="600px" frameborder="0"></iframe>
+                        <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={{ urlencode($fileUrl) }}"
+                            width="100%" height="600px" frameborder="0"></iframe>
                     @else
-                        <div class="alert alert-info m-3">Không hỗ trợ xem trước loại tệp này. Vui lòng tải về để xem chi tiết.</div>
+                        <div class="alert alert-info m-3">Không hỗ trợ xem trước loại tệp này. Vui lòng tải về để xem
+                            chi tiết.</div>
                     @endif
                 @endif
             </div>
@@ -171,6 +184,7 @@
         function openPreviewModal() {
             document.getElementById('previewModal').style.display = 'block';
         }
+
         function closePreviewModal() {
             document.getElementById('previewModal').style.display = 'none';
         }

@@ -207,7 +207,7 @@
                                             <i class="bi bi-pencil"></i>
                                         </button>
                                         <button wire:click="deleteExpense({{ $expense->id }})"
-                                            onclick="return confirm('Bạn có chắc muốn xóa khoản chi này?')"
+                                            wire:confirm="Bạn có chắc muốn xóa khoản chi này?"
                                             class="btn btn-outline-danger">
                                             <i class="bi bi-trash"></i>
                                         </button>

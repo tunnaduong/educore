@@ -163,7 +163,7 @@
                                                 @endif
                                                 <button wire:click="delete({{ $notification->id }})"
                                                     class="btn btn-sm btn-outline-danger" title="Xóa"
-                                                    onclick="return confirm('Bạn có chắc chắn muốn xóa thông báo này?')">
+                                                    wire:confirm="Bạn có chắc chắn muốn xóa thông báo này?">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </div>

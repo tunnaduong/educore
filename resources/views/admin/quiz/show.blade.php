@@ -20,8 +20,7 @@
                         <i class="bi bi-graph-up mr-2"></i>Kết quả
                     </a>
                     <button type="button" class="btn btn-danger"
-                        onclick="confirm('Bạn có chắc chắn muốn xóa bài kiểm tra này?') || event.stopImmediatePropagation()"
-                        wire:click="deleteQuiz">
+                        wire:confirm="Bạn có chắc chắn muốn xóa bài kiểm tra này?" wire:click="deleteQuiz">
                         <i class="bi bi-trash mr-2"></i>Xóa
                     </button>
                 </div>
