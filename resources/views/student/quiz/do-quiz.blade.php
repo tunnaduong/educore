@@ -376,7 +376,7 @@
 
                                     @if ($currentQuestionIndex === count($questions) - 1)
                                         <button class="btn btn-success" wire:click="submitQuiz"
-                                            onclick="return confirmSubmit()">
+                                            wire:confirm="Bạn có chắc chắn muốn nộp bài?">
                                             <i class="bi bi-check-circle mr-2"></i>Nộp bài
                                         </button>
                                     @else
@@ -507,26 +507,6 @@
                         timeRemaining = Math.floor({{ $timeRemaining }});
                     }
                 }, 30000);
-
-                // Function xác nhận nộp bài
-                function confirmSubmit() {
-                    const answeredCount = {{ count(array_filter($answers)) }};
-                    const totalQuestions = {{ count($questions) }};
-                    const unansweredCount = totalQuestions - answeredCount;
-
-                    let message = 'Bạn có chắc chắn muốn nộp bài?\n\n';
-                    message += `- Tổng số câu hỏi: ${totalQuestions}\n`;
-                    message += `- Đã trả lời: ${answeredCount}\n`;
-                    message += `- Chưa trả lời: ${unansweredCount}\n\n`;
-
-                    if (unansweredCount > 0) {
-                        message += '⚠️ Có ' + unansweredCount + ' câu chưa trả lời. Bạn có muốn tiếp tục?';
-                    } else {
-                        message += '✅ Tất cả câu hỏi đã được trả lời!';
-                    }
-
-                    return confirm(message);
-                }
             </script>
         @endif
     @endif

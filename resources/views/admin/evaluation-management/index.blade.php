@@ -282,7 +282,7 @@
                                                         </button>
                                                         <button class="btn btn-outline-danger"
                                                             wire:click="deleteEvaluation({{ $evaluation->id }})"
-                                                            onclick="return confirm('Bạn có chắc chắn muốn xóa đánh giá này?')"
+                                                            wire:confirm="Bạn có chắc chắn muốn xóa đánh giá này?"
                                                             data-bs-toggle="tooltip" data-bs-placement="top"
                                                             title="Xóa đánh giá">
                                                             <i class="bi bi-trash"></i>
@@ -384,7 +384,7 @@
                                                         </button>
                                                         <button class="btn btn-outline-danger"
                                                             wire:click="deleteQuestion({{ $question->id }})"
-                                                            onclick="return confirm('Bạn có chắc chắn muốn xóa câu hỏi này?')"
+                                                            wire:confirm="Bạn có chắc chắn muốn xóa câu hỏi này?"
                                                             data-bs-toggle="tooltip" data-bs-placement="top"
                                                             title="Xóa câu hỏi">
                                                             <i class="bi bi-trash"></i>
@@ -499,7 +499,7 @@
                                                         </button>
                                                         <button class="btn btn-outline-danger"
                                                             wire:click="deleteRound({{ $round->id }})"
-                                                            onclick="return confirm('Bạn có chắc chắn muốn xóa đợt đánh giá này?')"
+                                                            wire:confirm="Bạn có chắc chắn muốn xóa đợt đánh giá này?"
                                                             data-bs-toggle="tooltip" data-bs-placement="top"
                                                             title="Xóa đợt đánh giá">
                                                             <i class="bi bi-trash"></i>
