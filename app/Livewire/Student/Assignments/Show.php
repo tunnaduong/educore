@@ -23,7 +23,7 @@ class Show extends Component
     public function loadAssignment()
     {
         $student = Auth::user()->student;
-        
+
         if (!$student) {
             abort(403, 'Bạn không có quyền truy cập');
         }
@@ -31,13 +31,13 @@ class Show extends Component
         $this->assignment = Assignment::whereHas('classroom.students', function ($q) use ($student) {
             $q->where('users.id', $student->user_id);
         })
-        ->with([
-            'classroom.teachers',
-            'submissions' => function ($q) use ($student) {
-                $q->where('student_id', $student->id);
-            }
-        ])
-        ->findOrFail($this->assignmentId);
+            ->with([
+                'classroom.teachers',
+                'submissions' => function ($q) use ($student) {
+                    $q->where('student_id', $student->id);
+                }
+            ])
+            ->findOrFail($this->assignmentId);
 
         // Lấy tất cả submissions của học viên cho assignment này (collection)
         $this->submissions = collect($this->assignment->submissions);
@@ -67,7 +67,7 @@ class Show extends Component
     public function redoSubmission()
     {
         // Không xóa submission cũ, chỉ chuyển hướng sang trang nộp bài
-        return $this->redirect(route('student.assignments.submit', $this->assignment->id), true);
+        return $this->redirect(route('student.assignments.submit', $this->assignment->id));
     }
 
     public function getStatusBadge()

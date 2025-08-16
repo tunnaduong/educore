@@ -19,7 +19,7 @@ class Create extends Component
         'title' => 'required',
         'description' => 'nullable',
         'video' => 'nullable|string',
-        'attachment' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx,txt',
+        'attachment' => 'required|file|mimes:pdf,doc,docx,ppt,pptx,txt',
         'classroom_id' => 'required|exists:classrooms,id',
     ];
 

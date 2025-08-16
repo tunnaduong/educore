@@ -6,7 +6,7 @@
             <h4 class="mb-0 text-primary fs-4">
                 <i class="bi bi-people-fill mr-2"></i>Quản lý người dùng
             </h4>
-            <a href="{{ route('users.create') ?? '#' }}" wire:navigate class="btn btn-primary">
+            <a href="{{ route('users.create') ?? '#' }}" class="btn btn-primary">
                 <i class="bi bi-plus-circle mr-2"></i>Thêm người dùng
             </a>
         </div>
@@ -106,7 +106,7 @@
                                     </td>
                                     <td>
                                         <div class="d-flex justify-content-end gap-2">
-                                            <a wire:navigate href="{{ route('users.edit', $user->id) ?? '#' }}"
+                                            <a href="{{ route('users.edit', $user->id) ?? '#' }}"
                                                 class="btn btn-sm btn-outline-primary" title="Sửa">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
@@ -123,7 +123,8 @@
                                 <div class="modal fade" id="deleteModal{{ $user->id }}" tabindex="-1"
                                     role="dialog" aria-labelledby="deleteModalLabel{{ $user->id }}"
                                     aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
+                                        role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="deleteModalLabel{{ $user->id }}">
