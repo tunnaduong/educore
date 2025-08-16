@@ -19,18 +19,18 @@ class Review extends Component
         if (!$quizId) {
             abort(404, 'Không tìm thấy bài kiểm tra.');
         }
-        
+
         $this->quizId = $quizId;
-        
+
         $user = Auth::user();
-        
+
         // Kiểm tra xem user có student profile không
         if (!$user->studentProfile) {
             abort(403, 'Bạn không có quyền truy cập trang này.');
         }
 
         $this->quiz = Quiz::with(['classroom'])->findOrFail($this->quizId);
-        
+
         // Lấy kết quả quiz của user
         $this->result = QuizResult::with(['student'])->where('quiz_id', $this->quizId)
             ->where('student_id', $user->studentProfile->id)
@@ -50,9 +50,14 @@ class Review extends Component
         }
         $question = $this->quiz->questions[$questionIndex];
         $answer = $this->result->answers[$questionIndex] ?? null;
-        
+
         if (empty($answer)) {
             return 'unanswered';
+        }
+
+        // Kiểm tra xem câu hỏi có đáp án đúng không
+        if (!isset($question['correct_answer'])) {
+            return 'pending'; // Cần chấm thủ công
         }
 
         if ($question['type'] === 'multiple_choice') {
@@ -71,7 +76,7 @@ class Review extends Component
             return 'Không xác định';
         }
         $status = $this->getQuestionStatus($questionIndex);
-        
+
         switch ($status) {
             case 'correct':
                 return 'Đúng';
@@ -79,6 +84,8 @@ class Review extends Component
                 return 'Sai';
             case 'unanswered':
                 return 'Chưa trả lời';
+            case 'pending':
+                return 'Chờ chấm';
             default:
                 return 'Không xác định';
         }
@@ -90,7 +97,7 @@ class Review extends Component
             return 'warning';
         }
         $status = $this->getQuestionStatus($questionIndex);
-        
+
         switch ($status) {
             case 'correct':
                 return 'success';
@@ -98,6 +105,8 @@ class Review extends Component
                 return 'danger';
             case 'unanswered':
                 return 'secondary';
+            case 'pending':
+                return 'warning';
             default:
                 return 'warning';
         }

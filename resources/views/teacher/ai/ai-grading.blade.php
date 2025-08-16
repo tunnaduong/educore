@@ -204,7 +204,7 @@
         </style>
 
         <!-- AI Loading Modal -->
-        <div wire:loading wire:target="gradeWithAI,correctGrammarWithAI,analyzeWithAI" class="ai-loading-modal">
+        <div wire:loading class="ai-loading-modal">
             <div class="ai-loading-content">
                 <div class="ai-loading-animation">
                     <div class="ai-brain">
@@ -247,7 +247,7 @@
                         <h4 class="card-title">
                             <i class="fas fa-robot text-primary"></i>
                             Chấm bài Tiếng Trung bằng AI
-                        </h4>
+                        </h4><br>
                         <p class="text-muted">Sử dụng AI để sửa lỗi ngữ pháp, chấm điểm và phân tích bài nộp</p>
                     </div>
                     <div class="card-body">

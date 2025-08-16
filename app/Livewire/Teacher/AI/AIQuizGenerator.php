@@ -8,6 +8,7 @@ use App\Models\Quiz;
 use App\Models\Classroom;
 use App\Helpers\AIHelper;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AIQuizGenerator extends Component
 {
@@ -19,6 +20,7 @@ class AIQuizGenerator extends Component
     public $generatedQuiz = null;
     public $isProcessing = false;
     public $showPreview = false;
+    public $classes = [];
 
     public function mount()
     {
@@ -44,14 +46,45 @@ class AIQuizGenerator extends Component
             $lesson = Lesson::findOrFail($this->selectedLesson);
             $aiHelper = new AIHelper();
 
+            // Debug: Kiểm tra nội dung bài học
+            Log::info('Lesson content debug', [
+                'lesson_id' => $lesson->id,
+                'lesson_title' => $lesson->title,
+                'content' => $lesson->content,
+                'content_length' => strlen($lesson->content ?? ''),
+                'content_empty' => empty($lesson->content),
+                'description' => $lesson->description,
+                'description_length' => strlen($lesson->description ?? ''),
+                'video' => $lesson->video,
+                'attachment' => $lesson->attachment,
+                'all_fields' => $lesson->toArray()
+            ]);
+
+            // Sử dụng description nếu content trống
+            $lessonContent = $lesson->content;
+            if (empty($lessonContent) && !empty($lesson->description)) {
+                $lessonContent = $lesson->description;
+                Log::info('Using description as content', ['description_length' => strlen($lessonContent)]);
+            }
+
+            if (empty($lessonContent)) {
+                session()->flash('error', 'Bài học không có nội dung. Vui lòng thêm nội dung hoặc mô tả vào bài học trước khi tạo quiz. (Debug: content_length = ' . strlen($lesson->content ?? '') . ', description_length = ' . strlen($lesson->description ?? '') . ')');
+                $this->isProcessing = false;
+                return;
+            }
+
             if (!$aiHelper->isAIAvailable()) {
                 session()->flash('error', 'AI service không khả dụng. Vui lòng kiểm tra cấu hình API.');
                 $this->isProcessing = false;
                 return;
             }
 
+            // Tạo lesson object với content đã được xử lý
+            $lessonWithContent = clone $lesson;
+            $lessonWithContent->content = $lessonContent;
+
             $result = $aiHelper->generateQuizFromLesson(
-                $lesson,
+                $lessonWithContent,
                 $this->questionCount,
                 $this->difficulty
             );
@@ -61,7 +94,18 @@ class AIQuizGenerator extends Component
                 $this->showPreview = true;
                 session()->flash('success', 'Đã tạo quiz tiếng Trung bằng AI thành công!');
             } else {
-                session()->flash('error', 'Không thể tạo quiz. Vui lòng thử lại.');
+                // Debug: Log chi tiết lỗi
+                Log::error('AI Quiz Generation failed', [
+                    'lesson_id' => $lesson->id,
+                    'lesson_title' => $lesson->title,
+                    'lesson_content_length' => strlen($lesson->content ?? ''),
+                    'question_count' => $this->questionCount,
+                    'difficulty' => $this->difficulty,
+                    'result' => $result,
+                    'has_questions' => !empty($result['questions'] ?? [])
+                ]);
+
+                session()->flash('error', 'Không thể tạo quiz. Vui lòng kiểm tra log để biết chi tiết lỗi.');
             }
         } catch (\Exception $e) {
             session()->flash('error', 'Có lỗi xảy ra: ' . $e->getMessage());
@@ -166,7 +210,7 @@ class AIQuizGenerator extends Component
     {
         $lessons = collect();
         if ($this->selectedClass) {
-            $lessons = Lesson::where('class_id', $this->selectedClass)->get();
+            $lessons = Lesson::where('classroom_id', $this->selectedClass)->get();
         }
 
         return view('teacher.ai.ai-quiz-generator', [
