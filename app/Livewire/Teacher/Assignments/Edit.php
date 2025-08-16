@@ -46,8 +46,11 @@ class Edit extends Component
         $this->types = $this->assignment->types ?? [];
         $this->old_attachment_path = $this->assignment->attachment_path;
         $this->old_video_path = $this->assignment->video_path;
-        $user = Auth::user();
-        $this->classrooms = $user->teachingClassrooms ?? Classroom::all();
+        
+        // Chỉ lấy các lớp học mà giáo viên hiện tại đã tham gia
+        $this->classrooms = Classroom::whereHas('teachers', function ($query) {
+            $query->where('users.id', Auth::id());
+        })->orderBy('name')->get();
     }
 
     public function updateAssignment()

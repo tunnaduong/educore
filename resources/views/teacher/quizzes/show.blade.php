@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
-            <a href="{{ route('teacher.quizzes.index') }}" wire:navigate
+            <a href="{{ route('teacher.quizzes.index') }}"
                 class="text-decoration-none text-secondary d-inline-block mb-3">
                 <i class="bi bi-arrow-left mr-2"></i>Quay lại danh sách bài kiểm tra
             </a>
@@ -14,10 +14,10 @@
                     <p class="text-muted mb-0">{{ $quiz->title }}</p>
                 </div>
                 <div class="btn-group">
-                    <a href="{{ route('teacher.quizzes.edit', $quiz) }}" wire:navigate class="btn btn-warning">
+                    <a href="{{ route('teacher.quizzes.edit', $quiz) }}" class="btn btn-warning">
                         <i class="bi bi-pencil mr-2"></i>Sửa
                     </a>
-                    <a href="{{ route('teacher.quizzes.results', $quiz) }}" wire:navigate class="btn btn-info">
+                    <a href="{{ route('teacher.quizzes.results', $quiz) }}" class="btn btn-info">
                         <i class="bi bi-graph-up mr-2"></i>Kết quả
                     </a>
                 </div>
@@ -111,7 +111,8 @@
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" disabled
                                                     {{ $question['correct_answer'] === chr(65 + $optionIndex) ? 'checked' : '' }}>
-                                                <label class="form-check-label {{ $question['correct_answer'] === chr(65 + $optionIndex) ? 'fw-bold text-success' : '' }}">
+                                                <label
+                                                    class="form-check-label {{ $question['correct_answer'] === chr(65 + $optionIndex) ? 'fw-bold text-success' : '' }}">
                                                     {{ $option }}
                                                     @if ($question['correct_answer'] === chr(65 + $optionIndex))
                                                         <i class="bi bi-check-circle-fill text-success ml-1"></i>
@@ -136,11 +137,10 @@
 
         <!-- Flash Message -->
         @if (session()->has('message'))
-            <div class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3"
-                role="alert">
+            <div class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3" role="alert">
                 <i class="bi bi-check-circle mr-2"></i>{{ session('message') }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
         @endif

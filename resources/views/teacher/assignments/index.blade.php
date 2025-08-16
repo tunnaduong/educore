@@ -9,7 +9,7 @@
                 <p class="text-muted mb-0">Quản lý và theo dõi tình hình giao - nộp bài tập</p>
             </div>
             <div class="d-flex gap-2">
-                <a href="{{ route('teacher.assignments.create') }}" wire:navigate class="btn btn-outline-primary">
+                <a href="{{ route('teacher.assignments.create') }}" class="btn btn-outline-primary">
                     <i class="bi bi-plus-circle mr-2"></i>Giao bài tập mới
                 </a>
             </div>
@@ -191,11 +191,11 @@
                                                 <td>{{ $assignment->created_at->format('d/m/Y H:i') }}</td>
                                                 <td>
                                                     <a href="{{ route('teacher.assignments.show', $assignment->id) }}"
-                                                        wire:navigate class="btn btn-sm btn-outline-primary">
+                                                        class="btn btn-sm btn-outline-primary">
                                                         <i class="bi bi-eye"></i>
                                                     </a>
                                                     <a href="{{ route('teacher.assignments.edit', $assignment->id) }}"
-                                                        wire:navigate class="btn btn-sm btn-outline-warning">
+                                                        class="btn btn-sm btn-outline-warning">
                                                         <i class="bi bi-pencil-square"></i>
                                                     </a>
                                                     <button type="button" data-bs-toggle="modal"
@@ -211,7 +211,8 @@
                                                 tabindex="-1"
                                                 aria-labelledby="deleteAssignmentModalLabel{{ $assignment->id }}"
                                                 aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered">
+                                                <div
+                                                    class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title"

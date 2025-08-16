@@ -94,8 +94,7 @@
                                         <td>
                                             <div class="fw-medium">
                                                 <a href="{{ route('student.assignments.show', $assignment->id) }}"
-                                                    class="text-decoration-none text-dark hover:text-primary"
-                                                    wire:navigate>
+                                                    class="text-decoration-none text-dark hover:text-primary">
                                                     {{ $assignment->title }}
                                                 </a>
                                             </div>
@@ -105,7 +104,8 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <span class="badge bg-info">{{ $assignment->classroom?->name ?? 'N/A' }}</span>
+                                            <span
+                                                class="badge bg-info">{{ $assignment->classroom?->name ?? 'N/A' }}</span>
                                         </td>
                                         <td>
                                             @if ($assignment->classroom?->teachers?->count())
@@ -173,14 +173,12 @@
                                         <td>
                                             @if ($this->canSubmit($assignment))
                                                 <a href="{{ route('student.assignments.submit', $assignment->id) }}"
-                                                    class="btn btn-sm btn-outline-primary" title="Làm bài"
-                                                    wire:navigate>
+                                                    class="btn btn-sm btn-outline-primary" title="Làm bài">
                                                     <i class="bi bi-pencil"></i> Làm bài
                                                 </a>
                                             @elseif($this->isCompleted($assignment))
                                                 <a href="{{ route('student.assignments.show', $assignment->id) }}"
-                                                    class="btn btn-sm btn-outline-success" title="Xem bài nộp"
-                                                    wire:navigate>
+                                                    class="btn btn-sm btn-outline-success" title="Xem bài nộp">
                                                     <i class="bi bi-eye"></i> Xem bài nộp
                                                 </a>
                                             @else

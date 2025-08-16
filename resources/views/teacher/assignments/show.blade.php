@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
-            <a href="{{ route('teacher.assignments.index') }}" wire:navigate
+            <a href="{{ route('teacher.assignments.index') }}"
                 class="text-decoration-none text-secondary d-inline-block mb-3">
                 <i class="bi bi-arrow-left mr-2"></i>Quay lại danh sách bài tập
             </a>
@@ -41,6 +41,20 @@
                         <div class="mb-3">
                             <label class="form-label text-muted small">Mô tả</label>
                             <div class="fw-medium">{!! nl2br(e($assignment->description)) !!}</div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Loại bài tập yêu cầu</label>
+                            <div class="fw-medium">
+                                @if ($assignment->types && count($assignment->types) > 0)
+                                    <div class="d-flex flex-wrap gap-1">
+                                        @foreach ($assignment->types as $type)
+                                            <span class="badge bg-primary">{{ $this->getTypeLabel($type) }}</span>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    -
+                                @endif
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label text-muted small">File đính kèm</label>
@@ -89,75 +103,24 @@
                                             <th>Học viên</th>
                                             <th>Email</th>
                                             <th>Trạng thái nộp</th>
-                                            <th>Thời gian nộp</th>
-                                            <th>File</th>
-                                            <th>Video</th>
-                                            <th>Chấm điểm</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($students as $student)
+                                            @php
+                                                $status = $this->getSubmissionStatus($student);
+                                            @endphp
                                             <tr>
                                                 <td>{{ $student->name }}</td>
                                                 <td>{{ $student->email }}</td>
                                                 <td>
-                                                    @if ($student->submission)
-                                                        <span class="badge bg-success">Đã nộp</span>
-                                                    @else
-                                                        <span class="badge bg-secondary">Chưa nộp</span>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if ($student->submission)
-                                                        {{ $student->submission->submitted_at ? $student->submission->submitted_at->format('d/m/Y H:i') : '-' }}
-                                                    @else
-                                                        -
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if ($student->submission && $student->submission->attachment_path)
-                                                        <a href="{{ asset('storage/' . $student->submission->attachment_path) }}"
-                                                            target="_blank" class="btn btn-sm btn-outline-success">
-                                                            <i class="bi bi-file-earmark-arrow-down"></i>
-                                                        </a>
-                                                    @else
-                                                        -
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if ($student->submission && $student->submission->video_path)
-                                                        <video width="120" height="68" controls>
-                                                            <source
-                                                                src="{{ asset('storage/' . $student->submission->video_path) }}"
-                                                                type="video/mp4">
-                                                            Trình duyệt không hỗ trợ video.
-                                                        </video>
-                                                    @else
-                                                        -
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if ($student->submission)
-                                                        <form
-                                                            wire:submit.prevent="gradeSubmission({{ $student->submission->id }})"
-                                                            class="d-flex align-items-center gap-2">
-                                                            <input type="number"
-                                                                wire:model.defer="grades.{{ $student->submission->id }}"
-                                                                class="form-control form-control-sm"
-                                                                style="width: 70px;" min="0"
-                                                                max="10" step="0.1"
-                                                                oninput="if(this.value > 10) this.value = 10; if(this.value < 0) this.value = 0;"
-                                                                onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 46 || event.charCode === 8 || event.charCode === 9">
-                                                            <button type="submit"
-                                                                class="btn btn-sm btn-primary">Lưu</button>
-                                                        </form>
-                                                        @if ($student->submission->grade !== null)
-                                                            <span
-                                                                class="badge bg-info mt-1">{{ $student->submission->grade }}
-                                                                điểm</span>
-                                                        @endif
-                                                    @else
-                                                        -
+                                                    <span
+                                                        class="badge {{ $status['class'] }}">{{ $status['label'] }}</span>
+                                                    @if ($status['status'] !== 'not_submitted')
+                                                        <div class="small text-muted mt-1">
+                                                            {{ $status['submitted_count'] }}/{{ $status['required_count'] }}
+                                                            loại
+                                                        </div>
                                                     @endif
                                                 </td>
                                             </tr>

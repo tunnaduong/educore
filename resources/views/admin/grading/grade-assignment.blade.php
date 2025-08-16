@@ -6,7 +6,7 @@
             <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb bg-white shadow-sm rounded">
                     <li class="breadcrumb-item">
-                        <a href="{{ route('grading.list') }}" wire:navigate class="text-decoration-none">
+                        <a href="{{ route('grading.list') }}" class="text-decoration-none">
                             <i class="fas fa-arrow-left mr-1"></i>@lang('general.back_to_list')
                         </a>
                     </li>
@@ -294,7 +294,7 @@
     <!-- Modal xem nội dung bài nộp -->
     @if ($showModal && $selectedSubmission)
         <div class="modal fade show" style="display: block;" tabindex="-1" wire:ignore.self>
-            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-dialog modal-dialog-scrollable modal-lg modal-dialog-scrollable">
                 <div class="modal-content border-0 shadow">
                     <div class="modal-header bg-primary text-white border-0">
                         <h5 class="modal-title">

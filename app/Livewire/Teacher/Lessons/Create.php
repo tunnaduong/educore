@@ -7,6 +7,7 @@ use App\Models\Lesson;
 use App\Models\Classroom;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use Livewire\WithFileUploads;
 
 class Create extends Component
@@ -38,19 +39,10 @@ class Create extends Component
 
     public function mount()
     {
-        $user = Auth::user();
-        $this->classrooms = $user->teachingClassrooms;
-        
-        // Debug: Log thông tin
-        \Log::info('Teacher ID: ' . $user->id);
-        \Log::info('Teacher Role: ' . $user->role);
-        \Log::info('Teaching Classrooms Count: ' . $this->classrooms->count());
-        
-        // Fallback: nếu teacher chưa được gán vào lớp nào, hiển thị tất cả lớp học
-        if ($this->classrooms->isEmpty()) {
-            $this->classrooms = Classroom::all();
-            \Log::info('Fallback: Using all classrooms. Count: ' . $this->classrooms->count());
-        }
+        // Chỉ lấy các lớp học mà giáo viên hiện tại đã tham gia
+        $this->classrooms = Classroom::whereHas('teachers', function ($query) {
+            $query->where('users.id', Auth::id());
+        })->orderBy('name')->get();
     }
 
     public function save()
@@ -77,14 +69,14 @@ class Create extends Component
             $lesson->video = $this->video;
 
             if ($this->attachment) {
-                \Log::info('Uploading file: ' . $this->attachment->getClientOriginalName());
-                \Log::info('File size: ' . $this->attachment->getSize());
-                \Log::info('File mime: ' . $this->attachment->getMimeType());
-                
+                Log::info('Uploading file: ' . $this->attachment->getClientOriginalName());
+                Log::info('File size: ' . $this->attachment->getSize());
+                Log::info('File mime: ' . $this->attachment->getMimeType());
+
                 $path = $this->attachment->store('lessons/attachments', 'public');
                 $lesson->attachment = $path;
-                
-                \Log::info('File stored at: ' . $path);
+
+                Log::info('File stored at: ' . $path);
             }
 
             $lesson->save();
@@ -92,9 +84,8 @@ class Create extends Component
             session()->flash('success', 'Đã tạo bài học thành công!');
             $this->dispatch('lessonCreated');
             return redirect()->route('teacher.lessons.index');
-            
         } catch (\Exception $e) {
-            \Log::error('Error creating lesson: ' . $e->getMessage());
+            Log::error('Error creating lesson: ' . $e->getMessage());
             session()->flash('error', 'Có lỗi xảy ra khi tạo bài học: ' . $e->getMessage());
         }
     }
@@ -102,15 +93,17 @@ class Create extends Component
     public function updatedAttachment()
     {
         if ($this->attachment) {
-            \Log::info('File selected: ' . $this->attachment->getClientOriginalName());
-            \Log::info('File size: ' . $this->attachment->getSize());
-            \Log::info('File mime: ' . $this->attachment->getMimeType());
-            \Log::info('File extension: ' . $this->attachment->getClientOriginalExtension());
+            Log::info('File selected: ' . $this->attachment->getClientOriginalName());
+            Log::info('File size: ' . $this->attachment->getSize());
+            Log::info('File mime: ' . $this->attachment->getMimeType());
+            Log::info('File extension: ' . $this->attachment->getClientOriginalExtension());
         }
     }
 
     public function render()
     {
-        return view('teacher.lessons.create');
+        return view('teacher.lessons.create', [
+            'classrooms' => $this->classrooms
+        ]);
     }
-} 
+}

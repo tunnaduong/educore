@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
-            <a href="{{ route('student.quizzes.index') }}" wire:navigate
+            <a href="{{ route('student.quizzes.index') }}"
                 class="text-decoration-none text-secondary d-inline-block mb-3">
                 <i class="bi bi-arrow-left mr-2"></i>Quay lại danh sách bài kiểm tra
             </a>
@@ -206,12 +206,12 @@
                                                 {{ $answer == $option ? 'checked' : '' }}
                                                 id="option_{{ $selectedQuestion }}_{{ $optionIndex }}">
                                             <label
-                                                class="form-check-label {{ $option === $question['correct_answer'] ? 'text-success fw-bold' : ($answer == $option && $answer !== $question['correct_answer'] ? 'text-danger' : '') }}"
+                                                class="form-check-label {{ isset($question['correct_answer']) && $option === $question['correct_answer'] ? 'text-success fw-bold' : (isset($question['correct_answer']) && $answer == $option && $answer !== $question['correct_answer'] ? 'text-danger' : '') }}"
                                                 for="option_{{ $selectedQuestion }}_{{ $optionIndex }}">
                                                 {{ $option }}
-                                                @if ($option === $question['correct_answer'])
+                                                @if (isset($question['correct_answer']) && $option === $question['correct_answer'])
                                                     <i class="bi bi-check-circle-fill text-success ml-2"></i>
-                                                @elseif($answer == $option && $answer !== $question['correct_answer'])
+                                                @elseif(isset($question['correct_answer']) && $answer == $option && $answer !== $question['correct_answer'])
                                                     <i class="bi bi-x-circle-fill text-danger ml-2"></i>
                                                 @endif
                                             </label>
@@ -236,10 +236,14 @@
                                 <div class="col-md-6">
                                     <div class="alert alert-success">
                                         <strong>Đáp án đúng:</strong><br>
-                                        @if (is_array($question['correct_answer']))
-                                            {{ implode(', ', $question['correct_answer']) }}
+                                        @if (isset($question['correct_answer']))
+                                            @if (is_array($question['correct_answer']))
+                                                {{ implode(', ', $question['correct_answer']) }}
+                                            @else
+                                                {{ $question['correct_answer'] }}
+                                            @endif
                                         @else
-                                            {{ $question['correct_answer'] }}
+                                            <span class="text-muted">Cần chấm thủ công</span>
                                         @endif
                                     </div>
                                 </div>

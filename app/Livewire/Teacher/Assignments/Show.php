@@ -20,13 +20,120 @@ class Show extends Component
         $this->assignmentId = $assignment;
         $this->assignment = Assignment::with('classroom')->findOrFail($assignment);
         $this->classroom = $this->assignment->classroom;
-        $this->submissions = AssignmentSubmission::where('assignment_id', $assignment)->with(['student.user'])->get();
+        $this->submissions = AssignmentSubmission::where('assignment_id', $assignment)
+            ->whereNotNull('submitted_at')
+            ->with(['student.user'])
+            ->get();
         $this->students = $this->classroom ? $this->classroom->students : collect();
     }
 
     public function updatedGrading($value, $key)
     {
         // Không làm gì, chỉ để Livewire nhận biết thay đổi
+    }
+
+    /**
+     * Kiểm tra trạng thái nộp bài của học viên
+     */
+    public function getSubmissionStatus($student)
+    {
+        // $student là User model từ classroom->students()
+        // Cần lấy student_id từ Student model
+        $studentId = $student->student ? $student->student->id : null;
+
+        if (!$studentId) {
+            return [
+                'status' => 'not_submitted',
+                'label' => 'Chưa nộp',
+                'class' => 'bg-secondary',
+                'submitted_types' => [],
+                'required_types' => $this->assignment->types ?? [],
+                'submitted_count' => 0,
+                'required_count' => count($this->assignment->types ?? [])
+            ];
+        }
+
+        // Lấy tất cả submissions của học viên cho assignment này (chỉ những bài đã thực sự nộp)
+        $studentSubmissions = $this->submissions->where('student_id', $studentId)
+            ->whereNotNull('submitted_at');
+
+        // Nếu không có submission nào
+        if ($studentSubmissions->isEmpty()) {
+            return [
+                'status' => 'not_submitted',
+                'label' => 'Chưa nộp',
+                'class' => 'bg-secondary',
+                'submitted_types' => [],
+                'required_types' => $this->assignment->types ?? [],
+                'submitted_count' => 0,
+                'required_count' => count($this->assignment->types ?? [])
+            ];
+        }
+
+        // Lấy các loại bài đã nộp
+        $submittedTypes = $studentSubmissions->pluck('submission_type')->toArray();
+        $requiredTypes = $this->assignment->types ?? [];
+
+        // Kiểm tra xem đã nộp đủ chưa
+        $missingTypes = array_diff($requiredTypes, $submittedTypes);
+
+        if (empty($missingTypes)) {
+            // Đã nộp đủ
+            return [
+                'status' => 'completed',
+                'label' => 'Đã nộp đủ',
+                'class' => 'bg-success',
+                'submitted_types' => $submittedTypes,
+                'required_types' => $requiredTypes,
+                'submitted_count' => count($submittedTypes),
+                'required_count' => count($requiredTypes)
+            ];
+        } else {
+            // Còn thiếu
+            return [
+                'status' => 'partial',
+                'label' => 'Còn thiếu ' . count($missingTypes) . '/' . count($requiredTypes),
+                'class' => 'bg-warning',
+                'submitted_types' => $submittedTypes,
+                'required_types' => $requiredTypes,
+                'missing_types' => $missingTypes,
+                'submitted_count' => count($submittedTypes),
+                'required_count' => count($requiredTypes)
+            ];
+        }
+    }
+
+    /**
+     * Lấy label cho loại bài tập
+     */
+    public function getTypeLabel($type)
+    {
+        return match ($type) {
+            'text' => 'Điền từ',
+            'essay' => 'Tự luận',
+            'image' => 'Nộp ảnh',
+            'audio' => 'Ghi âm',
+            'video' => 'Quay video',
+            default => $type
+        };
+    }
+
+    /**
+     * Lấy submission theo loại
+     */
+    public function getSubmissionByType($student, $type)
+    {
+        // $student là User model từ classroom->students()
+        $studentId = $student->student ? $student->student->id : null;
+
+        if (!$studentId) {
+            return null;
+        }
+
+        return $this->submissions
+            ->where('student_id', $studentId)
+            ->where('submission_type', $type)
+            ->first();
     }
 
     public function saveGrade($submissionId)
@@ -77,8 +184,23 @@ class Show extends Component
             $submission->save();
             session()->flash('success', 'Đã lưu điểm và nhận xét!');
         }
-        // Làm mới submissions để cập nhật giao diện
-        $this->submissions = AssignmentSubmission::where('assignment_id', $this->assignmentId)->with(['student'])->get();
+
+        // Refresh data để cập nhật giao diện
+        $this->refreshData();
+    }
+
+    /**
+     * Refresh all data to ensure UI is up to date
+     */
+    public function refreshData()
+    {
+        $this->submissions = AssignmentSubmission::where('assignment_id', $this->assignmentId)
+            ->whereNotNull('submitted_at')
+            ->with(['student.user'])
+            ->get();
+
+        // Force Livewire to re-render the component
+        $this->render();
     }
 
     public function render()
