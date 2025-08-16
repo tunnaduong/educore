@@ -40,8 +40,11 @@ class Edit extends Component
         $data = $this->validate();
         if ($this->attachment) {
             $data['attachment'] = $this->attachment->store('lessons/attachments', 'public');
-        } else {
+        } else if ($this->oldAttachment) {
             $data['attachment'] = $this->oldAttachment;
+        } else {
+            session()->flash('error', 'Bạn phải upload file tài liệu!');
+            return;
         }
         $this->lesson->update($data);
         session()->flash('success', 'Cập nhật bài học thành công!');
