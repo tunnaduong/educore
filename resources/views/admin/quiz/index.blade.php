@@ -172,9 +172,7 @@
                     </div>
 
                     <!-- Pagination -->
-                    <div class="d-flex justify-content-center mt-4">
-                        {{ $quizzes->links('vendor.pagination.bootstrap-5') }}
-                    </div>
+                    {{ $quizzes->links('vendor.pagination.bootstrap-5') }}
                 @else
                     <div class="text-center py-5">
                         <i class="bi bi-journal-x fs-1 text-muted mb-3"></i>

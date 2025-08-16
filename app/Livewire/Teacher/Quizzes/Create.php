@@ -8,6 +8,7 @@ use App\Models\Classroom;
 use App\Models\QuestionBank;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class Create extends Component
 {
@@ -41,9 +42,6 @@ class Create extends Component
         'deadline' => 'nullable|date|after:now',
         'time_limit' => 'nullable|integer|min:1|max:480',
         'questions' => 'required|array|min:1',
-        'questions.*.question' => 'required|min:3',
-        'questions.*.type' => 'required|in:multiple_choice,fill_blank,drag_drop,essay',
-        'questions.*.score' => 'required|integer|min:1|max:10',
     ];
 
     protected $messages = [
@@ -283,22 +281,134 @@ class Create extends Component
         $this->selectedQuestions = [];
     }
 
+    public function testSave()
+    {
+        Log::info('Test save method called');
+
+        // Lấy classroom đầu tiên của teacher
+        $classroom = Classroom::whereHas('teachers', function ($query) {
+            $query->where('users.id', Auth::id());
+        })->first();
+
+        if (!$classroom) {
+            session()->flash('error', 'Không tìm thấy lớp học nào cho giáo viên này.');
+            return;
+        }
+
+        // Test tạo quiz đơn giản
+        try {
+            $quiz = Quiz::create([
+                'title' => 'Test Quiz - ' . now()->format('Y-m-d H:i:s'),
+                'description' => 'Test quiz description',
+                'class_id' => $classroom->id,
+                'questions' => [
+                    [
+                        'question' => 'Test question',
+                        'type' => 'multiple_choice',
+                        'options' => ['A', 'B', 'C', 'D'],
+                        'correct_answer' => 'A',
+                        'score' => 1
+                    ]
+                ],
+            ]);
+
+            Log::info('Test quiz created successfully', ['quiz_id' => $quiz->id]);
+            session()->flash('message', 'Test quiz created successfully with ID: ' . $quiz->id);
+        } catch (\Exception $e) {
+            Log::error('Test quiz creation failed', ['error' => $e->getMessage()]);
+            session()->flash('error', 'Test failed: ' . $e->getMessage());
+        }
+    }
+
     public function save()
     {
-        $this->validate();
+        try {
+            // Debug: Log dữ liệu trước khi validate
+            Log::info('Quiz Create - Data before validation:', [
+                'title' => $this->title,
+                'description' => $this->description,
+                'class_id' => $this->class_id,
+                'deadline' => $this->deadline,
+                'time_limit' => $this->time_limit,
+                'questions_count' => count($this->questions),
+                'questions' => $this->questions,
+            ]);
 
-        $quiz = Quiz::create([
-            'title' => $this->title,
-            'description' => $this->description,
-            'class_id' => $this->class_id,
-            'deadline' => $this->deadline ? now()->parse($this->deadline) : null,
-            'time_limit' => $this->time_limit ? (int) $this->time_limit : null,
-            'questions' => $this->questions,
-        ]);
+            // Kiểm tra dữ liệu cơ bản
+            if (empty($this->title)) {
+                session()->flash('error', 'Vui lòng nhập tiêu đề bài kiểm tra.');
+                return;
+            }
 
-        session()->flash('message', 'Bài kiểm tra đã được tạo thành công.');
+            if (empty($this->class_id)) {
+                session()->flash('error', 'Vui lòng chọn lớp học.');
+                return;
+            }
 
-        return redirect()->route('teacher.quizzes.show', $quiz);
+            if (empty($this->questions)) {
+                session()->flash('error', 'Vui lòng thêm ít nhất một câu hỏi.');
+                return;
+            }
+
+            // Validate câu hỏi
+            foreach ($this->questions as $index => $question) {
+                if (empty($question['question']) || strlen($question['question']) < 3) {
+                    session()->flash('error', "Câu hỏi " . ($index + 1) . " phải có ít nhất 3 ký tự.");
+                    return;
+                }
+
+                if (empty($question['type']) || !in_array($question['type'], ['multiple_choice', 'fill_blank', 'drag_drop', 'essay'])) {
+                    session()->flash('error', "Câu hỏi " . ($index + 1) . " có loại câu hỏi không hợp lệ.");
+                    return;
+                }
+
+                if (empty($question['score']) || $question['score'] < 1 || $question['score'] > 10) {
+                    session()->flash('error', "Câu hỏi " . ($index + 1) . " phải có điểm từ 1-10.");
+                    return;
+                }
+
+                // Validate câu hỏi trắc nghiệm
+                if ($question['type'] === 'multiple_choice') {
+                    if (empty($question['options']) || count($question['options']) < 2) {
+                        session()->flash('error', "Câu hỏi " . ($index + 1) . " phải có ít nhất 2 đáp án.");
+                        return;
+                    }
+
+                    $validOptions = array_filter($question['options'], function ($option) {
+                        return !empty(trim($option));
+                    });
+
+                    if (count($validOptions) < 2) {
+                        session()->flash('error', "Câu hỏi " . ($index + 1) . " phải có ít nhất 2 đáp án hợp lệ.");
+                        return;
+                    }
+
+                    if (empty($question['correct_answer'])) {
+                        session()->flash('error', "Câu hỏi " . ($index + 1) . " phải có đáp án đúng.");
+                        return;
+                    }
+                }
+            }
+
+            $quiz = Quiz::create([
+                'title' => $this->title,
+                'description' => $this->description,
+                'class_id' => $this->class_id,
+                'deadline' => $this->deadline ? now()->parse($this->deadline) : null,
+                'time_limit' => $this->time_limit ? (int) $this->time_limit : null,
+                'questions' => $this->questions,
+            ]);
+
+            Log::info('Quiz Create - Success:', ['quiz_id' => $quiz->id]);
+
+            session()->flash('message', 'Bài kiểm tra đã được tạo thành công.');
+
+            return redirect()->route('teacher.quizzes.show', $quiz);
+        } catch (\Exception $e) {
+            Log::error('Quiz Create - General error:', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            session()->flash('error', 'Có lỗi xảy ra khi tạo bài kiểm tra: ' . $e->getMessage());
+            return null;
+        }
     }
 
     public function render()
@@ -307,6 +417,13 @@ class Create extends Component
         $classrooms = Classroom::whereHas('teachers', function ($query) {
             $query->where('users.id', Auth::id());
         })->orderBy('name')->get();
+
+        // Debug: Log số lượng classrooms
+        Log::info('Classrooms found for teacher', [
+            'teacher_id' => Auth::id(),
+            'classrooms_count' => $classrooms->count(),
+            'classrooms' => $classrooms->pluck('id', 'name')->toArray()
+        ]);
 
         $questionBanks = QuestionBank::orderBy('name')->get();
 

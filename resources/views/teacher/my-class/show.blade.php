@@ -236,10 +236,6 @@
                             <i class="bi bi-people mr-2"></i>
                             Danh sách học sinh ({{ $classroom->students->count() }})
                         </h6>
-                        <button class="btn btn-primary btn-sm" wire:click="showAddStudentModal">
-                            <i class="bi bi-plus-circle mr-1"></i>
-                            Thêm học sinh
-                        </button>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-hover">
@@ -250,7 +246,6 @@
                                     <th>Email</th>
                                     <th>Ngày tham gia</th>
                                     <th>Trạng thái</th>
-                                    <th>Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -269,17 +264,15 @@
                                         <td>{{ $student->email }}</td>
                                         <td>{{ $student->pivot->created_at->format('d/m/Y') }}</td>
                                         <td>
-                                            <span class="badge bg-success">Hoạt động</span>
-                                        </td>
-                                        <td>
-                                            <div class="btn-group btn-group-sm">
-                                                <button class="btn btn-outline-primary">
-                                                    <i class="bi bi-eye"></i>
-                                                </button>
-                                                <button class="btn btn-outline-danger">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </div>
+                                            @if ($student->status === 'active')
+                                                <span class="badge bg-success">Hoạt động</span>
+                                            @elseif($student->status === 'paused')
+                                                <span class="badge bg-warning">Tạm dừng</span>
+                                            @elseif($student->status === 'dropped')
+                                                <span class="badge bg-danger">Đã rời lớp</span>
+                                            @else
+                                                <span class="badge bg-secondary">Không xác định</span>
+                                            @endif
                                         </td>
                                     </tr>
                                 @empty
@@ -454,67 +447,4 @@
             </div>
         </div>
     </div>
-
-    <!-- Add Student Modal -->
-    @if ($showAddStudentModal)
-        <div class="modal fade show" style="display: block;" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Thêm học sinh vào lớp</h5>
-                        <button type="button" class="btn-close" wire:click="closeModals"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p class="text-muted">Chức năng này sẽ được phát triển sau.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" wire:click="closeModals">Đóng</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal-backdrop fade show"></div>
-    @endif
-
-    <!-- Add Lesson Modal -->
-    @if ($showAddLessonModal)
-        <div class="modal fade show" style="display: block;" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Thêm bài học mới</h5>
-                        <button type="button" class="btn-close" wire:click="closeModals"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p class="text-muted">Chức năng này sẽ được phát triển sau.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" wire:click="closeModals">Đóng</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal-backdrop fade show"></div>
-    @endif
-
-    <!-- Add Assignment Modal -->
-    @if ($showAddAssignmentModal)
-        <div class="modal fade show" style="display: block;" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Thêm bài tập mới</h5>
-                        <button type="button" class="btn-close" wire:click="closeModals"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p class="text-muted">Chức năng này sẽ được phát triển sau.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" wire:click="closeModals">Đóng</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal-backdrop fade show"></div>
-    @endif
 </x-layouts.dash-teacher>

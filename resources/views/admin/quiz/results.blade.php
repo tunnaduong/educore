@@ -265,7 +265,11 @@
                                     <div class="col-md-6">
                                         <div class="alert alert-success mb-0">
                                             <strong>Đáp án đúng:</strong><br>
-                                            {{ $question['correct_answer'] }}
+                                            @if (isset($question['correct_answer']))
+                                                {{ $question['correct_answer'] }}
+                                            @else
+                                                <span class="text-white">Cần chấm thủ công</span>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

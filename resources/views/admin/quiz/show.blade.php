@@ -276,7 +276,7 @@
                                                 </td>
                                                 <td>
                                                     @if ($result)
-                                                        <a href="{{ route('quizzes.results', $quiz) }}?student={{ $student->id }}"
+                                                        <a href="{{ route('quizzes.results', $quiz) }}?student={{ $student->student->id }}"
                                                             class="btn btn-sm btn-outline-primary"
                                                             title="Xem chi tiết">
                                                             <i class="bi bi-eye"></i>

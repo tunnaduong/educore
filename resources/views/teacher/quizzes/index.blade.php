@@ -131,41 +131,13 @@
                                                     <i class="bi bi-graph-up"></i>
                                                 </a>
                                                 <button type="button" class="btn btn-sm btn-outline-danger"
-                                                    title="Xóa" data-bs-toggle="modal"
-                                                    data-bs-target="#deleteModal{{ $quiz->id }}">
+                                                    title="Xóa" wire:click="deleteQuiz({{ $quiz->id }})"
+                                                    wire:confirm="Bạn có chắc chắn muốn xóa bài kiểm tra '{{ $quiz->title }}'? Hành động này không thể hoàn tác.">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </div>
                                         </td>
                                     </tr>
-
-                                    <!-- Delete Confirmation Modal -->
-                                    <div class="modal fade" id="deleteModal{{ $quiz->id }}" tabindex="-1"
-                                        aria-labelledby="deleteModalLabel{{ $quiz->id }}" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="deleteModalLabel{{ $quiz->id }}">
-                                                        Xác nhận xóa bài kiểm tra</h5>
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    Bạn có chắc chắn muốn xóa bài kiểm tra "{{ $quiz->title }}"? Hành
-                                                    động này không thể hoàn tác.
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-dismiss="modal">Hủy</button>
-                                                    <button type="button" class="btn btn-danger"
-                                                        wire:click="deleteQuiz({{ $quiz->id }})"
-                                                        data-dismiss="modal">Xóa</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 @endforeach
                             </tbody>
                         </table>
@@ -190,8 +162,7 @@
 
         <!-- Flash Message -->
         @if (session()->has('message'))
-            <div class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3"
-                role="alert">
+            <div class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3" role="alert">
                 <i class="bi bi-check-circle mr-2"></i>{{ session('message') }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>

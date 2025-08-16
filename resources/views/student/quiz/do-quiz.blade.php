@@ -380,7 +380,7 @@
                                             <i class="bi bi-check-circle mr-2"></i>Nộp bài
                                         </button>
                                     @else
-                                        <button class="btn btn-primary" wire:click="nextQuestion">
+                                        <button type="button" class="btn btn-primary" wire:click="nextQuestion">
                                             Câu tiếp<i class="bi bi-arrow-right ml-2"></i>
                                         </button>
                                     @endif
@@ -401,112 +401,209 @@
         </div>
 
         <!-- JavaScript cho timer -->
+        <script>
+            // Debug: Log khi trang được load
+            console.log('Quiz page loaded');
+
+            // Debug: Kiểm tra Livewire
+            if (typeof Livewire !== 'undefined') {
+                console.log('Livewire is available');
+            } else {
+                console.log('Livewire is not available');
+            }
+
+            // Biến global để theo dõi trạng thái timer
+            window.quizTimer = window.quizTimer || {
+                initialized: false,
+                interval: null,
+                timeRemaining: null
+            };
+        </script>
+
         @if ($timeRemaining)
             <script>
-                let timeRemaining = {{ $timeRemaining }};
-                const timerElement = document.getElementById('timer');
-                const timerContainer = document.getElementById('timer-container');
+                // Chỉ khởi tạo timer một lần
+                if (!window.quizTimer.initialized) {
+                    window.quizTimer.timeRemaining = {{ $timeRemaining }};
+                    window.quizTimer.initialized = true;
 
-                // Cảnh báo khi người dùng cố gắng reload hoặc rời khỏi trang
-                window.onbeforeunload = function() {
-                    return 'Nếu bạn tải lại hoặc rời khỏi trang, bài kiểm tra sẽ bị nộp tự động và bạn không thể tiếp tục làm tiếp!';
-                };
+                    const timerElement = document.getElementById('timer');
+                    const timerContainer = document.getElementById('timer-container');
 
-                // Function để format thời gian - chỉ hiển thị phút:giây
-                function formatTime(seconds) {
-                    const minutes = Math.floor(seconds / 60);
-                    const secs = seconds % 60;
-
-                    // Luôn hiển thị định dạng MM:SS
-                    return (minutes < 10 ? '0' : '') + minutes + ':' +
-                        (secs < 10 ? '0' : '') + secs;
-                }
-
-                // Function để cập nhật class CSS cho timer
-                function updateTimerClass() {
-                    if (!timerContainer) return;
-
-                    // Xóa tất cả class cũ
-                    timerContainer.classList.remove('timer-normal', 'timer-warning', 'timer-urgent');
-
-                    if (timeRemaining <= 300) { // 5 phút cuối
-                        timerContainer.className =
-                            'd-inline-block bg-danger text-white px-3 py-2 rounded animate__animated animate__pulse timer-urgent';
-                    } else if (timeRemaining <= 600) { // 10 phút cuối
-                        timerContainer.className =
-                            'd-inline-block bg-warning text-dark px-3 py-2 rounded animate__animated animate__pulse timer-warning';
-                    } else {
-                        timerContainer.className = 'd-inline-block bg-info text-white px-3 py-2 rounded timer-normal';
-                    }
-                }
-
-                // Function để cập nhật cảnh báo
-                function updateWarnings() {
-                    // Cảnh báo khi còn 5 phút
-                    if (timeRemaining === 300) {
-                        if (Notification.permission === 'granted') {
-                            new Notification('Cảnh báo thời gian', {
-                                body: 'Chỉ còn 5 phút để hoàn thành bài kiểm tra!',
-                                icon: '/favicon.ico'
-                            });
+                    // Cảnh báo khi người dùng cố gắng reload hoặc rời khỏi trang
+                    window.onbeforeunload = function(e) {
+                        // Chỉ hiển thị cảnh báo khi chưa nộp bài và còn thời gian
+                        if (window.quizTimer.timeRemaining > 0 && !window.quizSubmitted) {
+                            e.preventDefault();
+                            e.returnValue =
+                                'Nếu bạn tải lại hoặc rời khỏi trang, bài kiểm tra sẽ bị nộp tự động và bạn không thể tiếp tục làm tiếp!';
+                            return e.returnValue;
                         }
-                        // Hiển thị alert
-                        alert('⚠️ CẢNH BÁO: Chỉ còn 5 phút để hoàn thành bài kiểm tra!');
+                    };
+
+                    // Function để format thời gian - chỉ hiển thị phút:giây
+                    function formatTime(seconds) {
+                        const minutes = Math.floor(seconds / 60);
+                        const secs = seconds % 60;
+
+                        // Luôn hiển thị định dạng MM:SS
+                        return (minutes < 10 ? '0' : '') + minutes + ':' +
+                            (secs < 10 ? '0' : '') + secs;
                     }
 
-                    // Cảnh báo khi còn 1 phút
-                    if (timeRemaining === 60) {
-                        if (Notification.permission === 'granted') {
-                            new Notification('Cảnh báo thời gian', {
-                                body: 'Chỉ còn 1 phút để hoàn thành bài kiểm tra!',
-                                icon: '/favicon.ico'
-                            });
-                        }
-                        // Hiển thị alert
-                        alert('🚨 KHẨN CẤP: Chỉ còn 1 phút để hoàn thành bài kiểm tra!');
-                    }
-                }
+                    // Function để cập nhật class CSS cho timer
+                    function updateTimerClass() {
+                        if (!timerContainer) return;
 
-                const timer = setInterval(function() {
-                    timeRemaining--;
+                        // Xóa tất cả class cũ
+                        timerContainer.classList.remove('timer-normal', 'timer-warning', 'timer-urgent');
 
-                    if (timerElement) {
-                        timerElement.textContent = formatTime(timeRemaining);
-                        updateTimerClass();
-                        updateWarnings();
-                    }
-
-                    if (timeRemaining <= 0) {
-                        clearInterval(timer);
-                        window.onbeforeunload = null; // Cho phép rời trang khi đã nộp
-
-                        // Hiển thị thông báo hết thời gian
-                        if (timerContainer) {
+                        if (window.quizTimer.timeRemaining <= 300) { // 5 phút cuối
                             timerContainer.className =
-                                'd-inline-block bg-danger text-white px-3 py-2 rounded animate__animated animate__shakeX';
-                            timerElement.textContent = 'HẾT THỜI GIAN!';
+                                'd-inline-block bg-danger text-white px-3 py-2 rounded animate__animated animate__pulse timer-urgent';
+                        } else if (window.quizTimer.timeRemaining <= 600) { // 10 phút cuối
+                            timerContainer.className =
+                                'd-inline-block bg-warning text-dark px-3 py-2 rounded animate__animated animate__pulse timer-warning';
+                        } else {
+                            timerContainer.className = 'd-inline-block bg-info text-white px-3 py-2 rounded timer-normal';
+                        }
+                    }
+
+                    // Function để cập nhật cảnh báo
+                    function updateWarnings() {
+                        // Cảnh báo khi còn 5 phút
+                        if (window.quizTimer.timeRemaining === 300) {
+                            if (Notification.permission === 'granted') {
+                                new Notification('Cảnh báo thời gian', {
+                                    body: 'Chỉ còn 5 phút để hoàn thành bài kiểm tra!',
+                                    icon: '/favicon.ico'
+                                });
+                            }
+                            // Hiển thị alert
+                            alert('⚠️ CẢNH BÁO: Chỉ còn 5 phút để hoàn thành bài kiểm tra!');
                         }
 
-                        // Tự động nộp bài sau 2 giây
-                        setTimeout(function() {
-                            @this.call('submitQuiz');
-                        }, 2000);
+                        // Cảnh báo khi còn 1 phút
+                        if (window.quizTimer.timeRemaining === 60) {
+                            if (Notification.permission === 'granted') {
+                                new Notification('Cảnh báo thời gian', {
+                                    body: 'Chỉ còn 1 phút để hoàn thành bài kiểm tra!',
+                                    icon: '/favicon.ico'
+                                });
+                            }
+                            // Hiển thị alert
+                            alert('🚨 KHẨN CẤP: Chỉ còn 1 phút để hoàn thành bài kiểm tra!');
+                        }
                     }
-                }, 1000);
 
-                // Yêu cầu quyền thông báo
-                if (Notification.permission === 'default') {
-                    Notification.requestPermission();
+                    // Khởi tạo timer
+                    window.quizTimer.interval = setInterval(function() {
+                        window.quizTimer.timeRemaining--;
+
+                        if (timerElement) {
+                            timerElement.textContent = formatTime(window.quizTimer.timeRemaining);
+                            updateTimerClass();
+                            updateWarnings();
+                        }
+
+                        if (window.quizTimer.timeRemaining <= 0) {
+                            clearInterval(window.quizTimer.interval);
+                            window.onbeforeunload = null; // Cho phép rời trang khi đã nộp
+                            window.quizSubmitted = true;
+
+                            // Hiển thị thông báo hết thời gian
+                            if (timerContainer) {
+                                timerContainer.className =
+                                    'd-inline-block bg-danger text-white px-3 py-2 rounded animate__animated animate__shakeX';
+                                timerElement.textContent = 'HẾT THỜI GIAN!';
+                            }
+
+                            // Tự động nộp bài sau 2 giây
+                            setTimeout(function() {
+                                @this.call('submitQuiz').then(function(result) {
+                                    if (result && result.submitted) {
+                                        window.quizSubmitted = true;
+                                        window.onbeforeunload = null;
+                                    }
+                                });
+                            }, 2000);
+                        }
+                    }, 1000);
+
+                    // Yêu cầu quyền thông báo
+                    if (Notification.permission === 'default') {
+                        Notification.requestPermission();
+                    }
+
+                    // Cập nhật timer mỗi 30 giây để đồng bộ với server
+                    setInterval(function() {
+                        if (window.quizTimer.timeRemaining > 0) {
+                            @this.call('calculateTimeRemaining').then(function(result) {
+                                // Cập nhật biến local từ server
+                                if (result && result.timeRemaining !== undefined) {
+                                    window.quizTimer.timeRemaining = Math.floor(result.timeRemaining);
+                                }
+                            });
+                        }
+                    }, 30000);
+                } else {
+                    // Nếu timer đã được khởi tạo, chỉ cập nhật hiển thị
+                    const timerElement = document.getElementById('timer');
+                    const timerContainer = document.getElementById('timer-container');
+
+                    if (timerElement && window.quizTimer.timeRemaining !== null) {
+                        function formatTime(seconds) {
+                            const minutes = Math.floor(seconds / 60);
+                            const secs = seconds % 60;
+                            return (minutes < 10 ? '0' : '') + minutes + ':' +
+                                (secs < 10 ? '0' : '') + secs;
+                        }
+
+                        timerElement.textContent = formatTime(window.quizTimer.timeRemaining);
+
+                        // Cập nhật class CSS
+                        if (timerContainer) {
+                            timerContainer.classList.remove('timer-normal', 'timer-warning', 'timer-urgent');
+                            if (window.quizTimer.timeRemaining <= 300) {
+                                timerContainer.className =
+                                    'd-inline-block bg-danger text-white px-3 py-2 rounded animate__animated animate__pulse timer-urgent';
+                            } else if (window.quizTimer.timeRemaining <= 600) {
+                                timerContainer.className =
+                                    'd-inline-block bg-warning text-dark px-3 py-2 rounded animate__animated animate__pulse timer-warning';
+                            } else {
+                                timerContainer.className = 'd-inline-block bg-info text-white px-3 py-2 rounded timer-normal';
+                            }
+                        }
+                    }
                 }
 
-                // Cập nhật timer mỗi 30 giây để đồng bộ với server
-                setInterval(function() {
-                    if (timeRemaining > 0) {
-                        @this.call('calculateTimeRemaining');
-                        // Cập nhật biến local - đảm bảo chỉ lấy số nguyên
-                        timeRemaining = Math.floor({{ $timeRemaining }});
+                // Thêm event listener cho nút nộp bài để đánh dấu đã nộp
+                document.addEventListener('DOMContentLoaded', function() {
+                    const submitButton = document.querySelector('button[wire\\:click="submitQuiz"]');
+                    if (submitButton) {
+                        submitButton.addEventListener('click', function() {
+                            window.quizSubmitted = true;
+                            window.onbeforeunload = null;
+                        });
                     }
-                }, 30000);
+
+                    // Thêm event listener cho các nút điều hướng để tránh confirm nộp bài
+                    const navigationButtons = document.querySelectorAll(
+                        'button[wire\\:click="nextQuestion"], button[wire\\:click="previousQuestion"], button[wire\\:click^="goToQuestion"]'
+                        );
+                    navigationButtons.forEach(function(button) {
+                        button.addEventListener('click', function() {
+                            // Tạm thời vô hiệu hóa onbeforeunload khi chuyển câu hỏi
+                            const originalOnBeforeUnload = window.onbeforeunload;
+                            window.onbeforeunload = null;
+
+                            // Khôi phục lại sau 1 giây
+                            setTimeout(function() {
+                                window.onbeforeunload = originalOnBeforeUnload;
+                            }, 1000);
+                        });
+                    });
+                });
             </script>
         @endif
     @endif
