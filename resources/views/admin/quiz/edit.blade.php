@@ -2,8 +2,7 @@
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
-            <a href="{{ route('quizzes.show', $quiz) }}" wire:navigate
-                class="text-decoration-none text-secondary d-inline-block mb-3">
+            <a href="{{ route('quizzes.show', $quiz) }}" class="text-decoration-none text-secondary d-inline-block mb-3">
                 <i class="bi bi-arrow-left mr-2"></i>Quay lại chi tiết bài kiểm tra
             </a>
             <h4 class="mb-0 text-primary fs-4">
@@ -67,13 +66,11 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Thời gian làm bài (phút)</label>
-                                <input type="number" 
-                                    class="form-control @error('time_limit') is-invalid @enderror" 
-                                    wire:model="time_limit" 
-                                    min="1" 
-                                    max="480" 
+                                <input type="number" class="form-control @error('time_limit') is-invalid @enderror"
+                                    wire:model="time_limit" min="1" max="480"
                                     placeholder="Nhập thời gian làm bài (ví dụ: 30)">
-                                <small class="form-text text-muted">Để trống nếu không giới hạn thời gian. Tối đa 8 giờ (480 phút)</small>
+                                <small class="form-text text-muted">Để trống nếu không giới hạn thời gian. Tối đa 8 giờ
+                                    (480 phút)</small>
                                 @error('time_limit')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -270,8 +267,7 @@
                 <div class="col-12">
                     <div class="card shadow-sm">
                         <div class="card-body text-end">
-                            <a href="{{ route('quizzes.show', $quiz) }}" wire:navigate
-                                class="btn btn-secondary mr-2">
+                            <a href="{{ route('quizzes.show', $quiz) }}" class="btn btn-secondary mr-2">
                                 <i class="bi bi-x-circle mr-2"></i>Hủy
                             </a>
                             <button type="submit" class="btn btn-primary"

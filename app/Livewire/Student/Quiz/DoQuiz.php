@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\QuizResult;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class DoQuiz extends Component
 {
@@ -131,8 +132,16 @@ class DoQuiz extends Component
 
     public function nextQuestion()
     {
+        Log::info('nextQuestion called', [
+            'current_index' => $this->currentQuestionIndex,
+            'total_questions' => count($this->questions)
+        ]);
+
         if ($this->currentQuestionIndex < count($this->questions) - 1) {
             $this->currentQuestionIndex++;
+            Log::info('Moved to next question', ['new_index' => $this->currentQuestionIndex]);
+        } else {
+            Log::info('Already at last question');
         }
     }
 
@@ -164,6 +173,9 @@ class DoQuiz extends Component
         $this->calculateScore();
         $this->saveResult();
         $this->isFinished = true;
+
+        // Trả về thông báo để JavaScript biết đã nộp bài
+        return ['submitted' => true];
     }
 
     public function calculateScore()
@@ -231,7 +243,7 @@ class DoQuiz extends Component
     {
         if (!$this->quiz->time_limit || $this->isFinished) {
             $this->timeRemaining = null;
-            return;
+            return ['timeRemaining' => null];
         }
 
         $startedAt = $this->startedAt instanceof \Carbon\Carbon
@@ -247,14 +259,16 @@ class DoQuiz extends Component
         if ($this->timeRemaining <= 0) {
             $this->submitQuiz();
         }
+
+        return ['timeRemaining' => $this->timeRemaining];
     }
 
     public function updateTimer()
     {
         if ($this->timeRemaining && $this->timeRemaining > 0) {
-                    // Đảm bảo timeRemaining luôn là số nguyên trước khi trừ
-        $this->timeRemaining = (int)$this->timeRemaining;
-        $this->timeRemaining = (int)($this->timeRemaining - 1);
+            // Đảm bảo timeRemaining luôn là số nguyên trước khi trừ
+            $this->timeRemaining = (int)$this->timeRemaining;
+            $this->timeRemaining = (int)($this->timeRemaining - 1);
 
             if ($this->timeRemaining <= 0) {
                 $this->submitQuiz();

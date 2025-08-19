@@ -9,7 +9,7 @@
                 <p class="text-muted mb-0">Quản lý và theo dõi điểm danh học viên</p>
             </div>
             <div class="d-flex gap-2">
-                <a href="{{ route('teacher.my-class.index') }}" wire:navigate class="btn btn-outline-primary">
+                <a href="{{ route('teacher.my-class.index') }}" class="btn btn-outline-primary">
                     <i class="bi bi-mortarboard mr-2"></i>Lớp học của tôi
                 </a>
             </div>
@@ -202,18 +202,15 @@
                                                 <td class="text-center">
                                                     <div class="btn-group" role="group">
                                                         <a href="{{ route('teacher.attendance.take', $classData['classroom']) }}"
-                                                            wire:navigate class="btn btn-sm btn-outline-primary"
-                                                            title="Điểm danh">
+                                                            class="btn btn-sm btn-outline-primary" title="Điểm danh">
                                                             <i class="bi bi-calendar-check"></i>
                                                         </a>
                                                         <a href="{{ route('teacher.attendance.classroom-history', $classData['classroom']) }}"
-                                                            wire:navigate class="btn btn-sm btn-outline-info"
-                                                            title="Lịch sử">
+                                                            class="btn btn-sm btn-outline-info" title="Lịch sử">
                                                             <i class="bi bi-calendar-week"></i>
                                                         </a>
                                                         <a href="{{ route('teacher.my-class.show', $classData['classroom']) }}"
-                                                            wire:navigate class="btn btn-sm btn-outline-secondary"
-                                                            title="Chi tiết">
+                                                            class="btn btn-sm btn-outline-secondary" title="Chi tiết">
                                                             <i class="bi bi-eye"></i>
                                                         </a>
                                                     </div>
@@ -240,7 +237,7 @@
                         <h5 class="mb-0 text-primary">
                             <i class="bi bi-clock-history mr-2"></i>Điểm danh gần đây
                         </h5>
-                        <a href="{{ route('teacher.attendance.history') }}" wire:navigate
+                        <a href="{{ route('teacher.attendance.history') }}"
                             class="btn btn-sm btn-outline-secondary float-end">
                             <i class="bi bi-calendar-week"></i> Lịch sử điểm danh
                         </a>
@@ -267,12 +264,14 @@
                                                         class="text-muted">{{ $attendance->date->format('D') }}</small>
                                                 </td>
                                                 <td>
-                                                    <div class="fw-medium">{{ $attendance->classroom?->name ?? 'N/A' }}</div>
+                                                    <div class="fw-medium">
+                                                        {{ $attendance->classroom?->name ?? 'N/A' }}</div>
                                                     <small
                                                         class="text-muted">{{ $attendance->classroom?->level ?? 'N/A' }}</small>
                                                 </td>
                                                 <td>
-                                                    <div class="fw-medium">{{ $attendance->student?->user?->name ?? 'N/A' }}
+                                                    <div class="fw-medium">
+                                                        {{ $attendance->student?->user?->name ?? 'N/A' }}
                                                     </div>
                                                     <small
                                                         class="text-muted">{{ $attendance->student?->user?->email ?? 'N/A' }}</small>
@@ -353,13 +352,12 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <a href="{{ route('teacher.my-class.index') }}" wire:navigate
-                                    class="btn btn-primary w-100">
+                                <a href="{{ route('teacher.my-class.index') }}" class="btn btn-primary w-100">
                                     <i class="bi bi-calendar-check mr-2"></i>Điểm danh theo lớp
                                 </a>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <a href="{{ route('teacher.attendance.history') }}" wire:navigate
+                                <a href="{{ route('teacher.attendance.history') }}"
                                     class="btn btn-outline-primary w-100">
                                     <i class="bi bi-calendar-week mr-2"></i>Lịch sử điểm danh
                                 </a>

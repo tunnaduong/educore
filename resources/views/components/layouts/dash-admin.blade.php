@@ -49,9 +49,6 @@
                 <livewire:components.notification-bell />
             </li>
             <li class="nav-item">
-                <livewire:components.help-icon />
-            </li>
-            <li class="nav-item">
                 <livewire:components.logout />
             </li>
         </ul>
@@ -169,13 +166,6 @@
                             class="nav-link {{ $active === 'chat' ? 'active' : '' }}" wire:navigate>
                             <i class="nav-icon fas fa-comments"></i>
                             <p>@lang('general.chat')</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('admin.help.index') }}"
-                            class="nav-link {{ $active === 'help' ? 'active' : '' }}" wire:navigate>
-                            <i class="nav-icon fas fa-lightbulb"></i>
-                            <p>@lang('general.help')</p>
                         </a>
                     </li>
                 </ul>
