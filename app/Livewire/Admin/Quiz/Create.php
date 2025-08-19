@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Quiz;
 use Livewire\Component;
 use App\Models\Quiz;
 use App\Models\Classroom;
+use App\Models\QuestionBank;
 
 class Create extends Component
 {
@@ -22,6 +23,14 @@ class Create extends Component
         'score' => 1,
         'audio' => null,
     ];
+
+    // Thêm các thuộc tính cho ngân hàng câu hỏi
+    public $showQuestionBank = false;
+    public $selectedQuestionBank = '';
+    public $questionBankQuestions = [];
+    public $selectedQuestions = [];
+    public $questionBankFilter = '';
+    public $questionTypeFilter = '';
 
     protected $rules = [
         'title' => 'required|min:3|max:255',
@@ -72,6 +81,17 @@ class Create extends Component
         'currentQuestion.correct_answer.required' => 'Vui lòng chọn đáp án đúng.',
         'currentQuestion.correct_answer.min' => 'Vui lòng chọn đáp án đúng.',
     ];
+
+    public function mount()
+    {
+        // Kiểm tra xem có dữ liệu ngân hàng câu hỏi tạm thời từ AI không
+        if (session()->has('temp_question_bank')) {
+            $tempBank = session('temp_question_bank');
+            $this->questionBankQuestions = $tempBank['questions'] ?? [];
+            $this->showQuestionBank = true;
+            session()->forget('temp_question_bank');
+        }
+    }
 
     public function addQuestion()
     {
@@ -153,6 +173,110 @@ class Create extends Component
         ];
     }
 
+    // Thêm các phương thức cho ngân hàng câu hỏi
+    public function loadQuestionBank($bankId)
+    {
+        $questionBank = QuestionBank::find($bankId);
+        if ($questionBank) {
+            $this->selectedQuestionBank = $bankId;
+            $this->questionBankQuestions = $questionBank->questions ?? [];
+            $this->showQuestionBank = true;
+            session()->flash('message', 'Đã tải ngân hàng câu hỏi: ' . $questionBank->name);
+        }
+    }
+
+    public function updatedSelectedQuestionBank()
+    {
+        if ($this->selectedQuestionBank) {
+            $this->loadQuestionBank($this->selectedQuestionBank);
+        } else {
+            $this->questionBankQuestions = [];
+        }
+    }
+
+    public function toggleQuestionSelection($questionIndex)
+    {
+        if (in_array($questionIndex, $this->selectedQuestions)) {
+            $this->selectedQuestions = array_diff($this->selectedQuestions, [$questionIndex]);
+        } else {
+            $this->selectedQuestions[] = $questionIndex;
+        }
+    }
+
+    public function toggleAllQuestions()
+    {
+        if (count($this->selectedQuestions) == count($this->questionBankQuestions)) {
+            $this->selectedQuestions = [];
+        } else {
+            $this->selectedQuestions = range(0, count($this->questionBankQuestions) - 1);
+        }
+    }
+
+    public function addSelectedQuestions()
+    {
+        if (empty($this->selectedQuestions)) {
+            session()->flash('error', 'Vui lòng chọn ít nhất một câu hỏi.');
+            return;
+        }
+
+        foreach ($this->selectedQuestions as $index) {
+            if (isset($this->questionBankQuestions[$index])) {
+                $question = $this->questionBankQuestions[$index];
+
+                // Đảm bảo câu hỏi có đầy đủ thông tin
+                $formattedQuestion = [
+                    'question' => $question['question'] ?? '',
+                    'type' => $question['type'] ?? 'multiple_choice',
+                    'options' => $question['options'] ?? ['', '', '', ''],
+                    'correct_answer' => $question['correct_answer'] ?? '',
+                    'score' => $question['score'] ?? 1,
+                    'audio' => $question['audio'] ?? null,
+                ];
+
+                $this->questions[] = $formattedQuestion;
+            }
+        }
+
+        $addedCount = count($this->selectedQuestions);
+        $this->selectedQuestions = [];
+        session()->flash('message', 'Đã thêm ' . $addedCount . ' câu hỏi từ ngân hàng câu hỏi.');
+    }
+
+    public function closeQuestionBank()
+    {
+        $this->showQuestionBank = false;
+        $this->selectedQuestionBank = '';
+        $this->questionBankQuestions = [];
+        $this->selectedQuestions = [];
+    }
+
+    public function validateQuizWithAI()
+    {
+        if (empty($this->questions)) {
+            session()->flash('error', 'Vui lòng thêm ít nhất một câu hỏi trước khi kiểm tra.');
+            return;
+        }
+
+        try {
+            $aiHelper = new \App\Helpers\AIHelper();
+
+            if (!$aiHelper->isAIAvailable()) {
+                session()->flash('error', 'AI service không khả dụng. Vui lòng kiểm tra cấu hình API key.');
+                return;
+            }
+
+            $result = $aiHelper->validateAndFixQuiz($this->questions);
+
+            if ($result && isset($result['suggestions'])) {
+                session()->flash('message', 'AI đã kiểm tra quiz và đưa ra ' . count($result['suggestions']) . ' gợi ý cải thiện.');
+            } else {
+                session()->flash('message', 'Quiz đã được kiểm tra và không có lỗi nào được phát hiện.');
+            }
+        } catch (\Exception $e) {
+            session()->flash('error', 'Có lỗi xảy ra khi kiểm tra quiz: ' . $e->getMessage());
+        }
+    }
+
     public function save()
     {
         $this->validate();
@@ -162,7 +286,7 @@ class Create extends Component
             'description' => $this->description,
             'class_id' => $this->class_id,
             'deadline' => $this->deadline ? now()->parse($this->deadline) : null,
-            'time_limit' => $this->time_limit ? (int)$this->time_limit : null,
+            'time_limit' => $this->time_limit ? (int) $this->time_limit : null,
             'questions' => $this->questions,
         ]);
 
@@ -174,9 +298,27 @@ class Create extends Component
     public function render()
     {
         $classrooms = Classroom::orderBy('name')->get();
+        $questionBanks = QuestionBank::orderBy('name')->get();
+
+        // Lọc câu hỏi từ ngân hàng câu hỏi
+        $filteredQuestions = collect($this->questionBankQuestions);
+
+        if ($this->questionBankFilter) {
+            $filteredQuestions = $filteredQuestions->filter(function ($question) {
+                return stripos($question['question'] ?? '', $this->questionBankFilter) !== false;
+            });
+        }
+
+        if ($this->questionTypeFilter) {
+            $filteredQuestions = $filteredQuestions->filter(function ($question) {
+                return ($question['type'] ?? '') === $this->questionTypeFilter;
+            });
+        }
 
         return view('admin.quiz.create', [
             'classrooms' => $classrooms,
+            'questionBanks' => $questionBanks,
+            'filteredQuestions' => $filteredQuestions,
         ]);
     }
 }

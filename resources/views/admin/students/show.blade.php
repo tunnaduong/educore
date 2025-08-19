@@ -3,8 +3,7 @@
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
-            <a href="{{ route('students.index') }}" wire:navigate
-                class="text-decoration-none text-secondary d-inline-block mb-3">
+            <a href="{{ route('students.index') }}" class="text-decoration-none text-secondary d-inline-block mb-3">
                 <i class="bi bi-arrow-left mr-2"></i>Quay lại
             </a>
             <div class="d-flex justify-content-between align-items-center">
@@ -15,7 +14,7 @@
                     <p class="text-muted mb-0">{{ $student->name }}</p>
                 </div>
                 <div class="d-flex gap-2">
-                    <a href="{{ route('students.edit', $student) }}" wire:navigate class="btn btn-primary">
+                    <a href="{{ route('students.edit', $student) }}" class="btn btn-primary">
                         <i class="bi bi-pencil-square mr-2"></i>Chỉnh sửa
                     </a>
                 </div>

@@ -119,10 +119,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     // Evaluation Management routes
     Route::get('/admin/evaluation-management', \App\Livewire\Admin\EvaluationManagement\Index::class)->name('evaluation-management');
-
-    // Help routes
-    Route::get('/admin/help', \App\Livewire\Admin\Help\Index::class)->name('admin.help.index');
-    Route::get('/admin/help/contact', \App\Livewire\Admin\Help\ContactForm::class)->name('admin.help.contact');
 });
 
 // Teacher routes

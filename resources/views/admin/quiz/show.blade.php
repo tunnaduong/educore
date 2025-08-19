@@ -2,8 +2,7 @@
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
-            <a href="{{ route('quizzes.index') }}" wire:navigate
-                class="text-decoration-none text-secondary d-inline-block mb-3">
+            <a href="{{ route('quizzes.index') }}" class="text-decoration-none text-secondary d-inline-block mb-3">
                 <i class="bi bi-arrow-left mr-2"></i>Quay lại danh sách bài kiểm tra
             </a>
             <div class="d-flex justify-content-between align-items-center">
@@ -14,15 +13,14 @@
                     <p class="text-muted mb-0">{{ $quiz->title }}</p>
                 </div>
                 <div class="btn-group">
-                    <a href="{{ route('quizzes.edit', $quiz) }}" wire:navigate class="btn btn-warning">
+                    <a href="{{ route('quizzes.edit', $quiz) }}" class="btn btn-warning">
                         <i class="bi bi-pencil mr-2"></i>Sửa
                     </a>
-                    <a href="{{ route('quizzes.results', $quiz) }}" wire:navigate class="btn btn-info">
+                    <a href="{{ route('quizzes.results', $quiz) }}" class="btn btn-info">
                         <i class="bi bi-graph-up mr-2"></i>Kết quả
                     </a>
                     <button type="button" class="btn btn-danger"
-                        onclick="confirm('Bạn có chắc chắn muốn xóa bài kiểm tra này?') || event.stopImmediatePropagation()"
-                        wire:click="deleteQuiz">
+                        wire:confirm="Bạn có chắc chắn muốn xóa bài kiểm tra này?" wire:click="deleteQuiz">
                         <i class="bi bi-trash mr-2"></i>Xóa
                     </button>
                 </div>
@@ -278,8 +276,8 @@
                                                 </td>
                                                 <td>
                                                     @if ($result)
-                                                        <a href="{{ route('quizzes.results', $quiz) }}?student={{ $student->id }}"
-                                                            wire:navigate class="btn btn-sm btn-outline-primary"
+                                                        <a href="{{ route('quizzes.results', $quiz) }}?student={{ $student->student->id }}"
+                                                            class="btn btn-sm btn-outline-primary"
                                                             title="Xem chi tiết">
                                                             <i class="bi bi-eye"></i>
                                                         </a>
@@ -310,7 +308,7 @@
                 role="alert">
                 <i class="bi bi-check-circle mr-2"></i>{{ session('message') }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
         @endif

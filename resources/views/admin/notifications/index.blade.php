@@ -116,7 +116,8 @@
                                     </td>
                                     <td>
                                         @if ($notification->classroom)
-                                            <span class="badge bg-secondary">{{ $notification->classroom?->name ?? 'N/A' }}</span>
+                                            <span
+                                                class="badge bg-secondary">{{ $notification->classroom?->name ?? 'N/A' }}</span>
                                         @else
                                             <span class="text-muted">-</span>
                                         @endif
@@ -197,7 +198,7 @@
     @if ($showCreateModal)
         <div class="modal fade show" wire:ignore.self id="createModal" tabindex="-1"
             style="display: block; background-color: rgba(0,0,0,0.5);">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-dialog-scrollable modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Tạo thông báo mới</h5>
@@ -312,7 +313,7 @@
     @if ($showEditModal)
         <div class="modal fade show" wire:ignore.self id="editModal" tabindex="-1"
             style="display: block; background-color: rgba(0,0,0,0.5);">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-dialog-scrollable modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Chỉnh sửa thông báo</h5>
