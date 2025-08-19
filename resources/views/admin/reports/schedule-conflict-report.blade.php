@@ -50,23 +50,23 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <label class="form-label">Tìm kiếm</label>
+                                        <label class="form-label">{{ __('views.search') }}</label>
                                         <input wire:model.live="search" type="text" class="form-control"
                                             placeholder="Tìm theo tên lớp hoặc học sinh...">
                                     </div>
                                     <div class="col-md-4">
-                                        <label class="form-label">Lọc theo lớp</label>
+                                        <label class="form-label">{{ __('views.filter_by_class') }}</label>
                                         <select wire:model.live="filterClassroom" class="form-select">
-                                            <option value="">Tất cả lớp</option>
+                                            <option value="">{{ __('views.all_classes') }}</option>
                                             @foreach ($classrooms as $classroom)
                                                 <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="col-md-4">
-                                        <label class="form-label">Lọc theo học sinh</label>
+                                        <label class="form-label">{{ __('views.filter_by_student') }}</label>
                                         <select wire:model.live="filterStudent" class="form-select">
-                                            <option value="">Tất cả học sinh</option>
+                                            <option value="">{{ __('views.all_students_filter') }}</option>
                                             @foreach ($students as $student)
                                                 <option value="{{ $student->id }}">{{ $student->name }}</option>
                                             @endforeach
@@ -82,8 +82,8 @@
                                 <div class="card border-warning">
                                     <div class="card-body text-center">
                                         <div class="display-6 text-warning mb-2">{{ $totalStudentConflicts }}</div>
-                                        <h6 class="text-muted">Trùng lịch học sinh</h6>
-                                        <small class="text-muted">Học sinh bị trùng lịch giữa các lớp</small>
+                                        <h6 class="text-muted">{{ __('views.student_schedule_conflicts') }}</h6>
+                                        <small class="text-muted">{{ __('views.student_conflicts_description') }}</small>
                                     </div>
                                 </div>
                             </div>
@@ -91,8 +91,8 @@
                                 <div class="card border-danger">
                                     <div class="card-body text-center">
                                         <div class="display-6 text-danger mb-2">{{ $totalTeacherConflicts }}</div>
-                                        <h6 class="text-muted">Trùng lịch giáo viên</h6>
-                                        <small class="text-muted">Giáo viên bị trùng lịch dạy</small>
+                                        <h6 class="text-muted">{{ __('views.teacher_schedule_conflicts') }}</h6>
+                                        <small class="text-muted">{{ __('views.teacher_conflicts_description') }}</small>
                                     </div>
                                 </div>
                             </div>
@@ -101,8 +101,8 @@
                         @if ($totalStudentConflicts === 0 && $totalTeacherConflicts === 0)
                             <div class="text-center py-5">
                                 <i class="bi bi-check-circle text-success" style="font-size: 4rem;"></i>
-                                <h4 class="text-success mt-3">Không có trùng lịch!</h4>
-                                <p class="text-muted">Tất cả lịch học đều được sắp xếp hợp lý.</p>
+                                <h4 class="text-success mt-3">{{ __('views.no_conflicts') }}</h4>
+                                <p class="text-muted">{{ __('views.no_conflicts_description') }}</p>
                             </div>
                         @else
                             <!-- Results -->

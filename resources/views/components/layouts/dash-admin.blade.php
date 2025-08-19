@@ -73,7 +73,7 @@
 
     <!-- Main Footer -->
     <footer class="main-footer text-center">
-        <strong>© 2025 Trung tâm Hanxian Kim Bảng Hà Nam - Powered by EduCore</strong>
+        <strong>{{ __('views.copyright') }}</strong>
     </footer>
 </div>
 <!-- ./wrapper -->

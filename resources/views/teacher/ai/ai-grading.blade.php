@@ -219,8 +219,8 @@
                     </div>
                 </div>
 
-                <h3 class="mb-3 typing-animation">AI đang xử lý...</h3>
-                <p class="mb-4">Đang phân tích và xử lý dữ liệu với trí tuệ nhân tạo</p>
+                <h3 class="mb-3 typing-animation">{{ __('views.ai_processing') }}</h3>
+                <p class="mb-4">{{ __('views.ai_processing_description') }}</p>
 
                 <div class="progress mb-3" style="height: 8px;">
                     <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%"></div>
@@ -248,7 +248,7 @@
                             <i class="fas fa-robot text-primary"></i>
                             Chấm bài Tiếng Trung bằng AI
                         </h4><br>
-                        <p class="text-muted">Sử dụng AI để sửa lỗi ngữ pháp, chấm điểm và phân tích bài nộp</p>
+                        <p class="text-muted">{{ __('views.ai_usage_description') }}</p>
                     </div>
                     <div class="card-body">
                         @if (session()->has('success'))
@@ -271,11 +271,11 @@
                                 <div class="col-md-6">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h5 class="card-title">Bài nộp của học sinh</h5>
+                                            <h5 class="card-title">{{ __('views.student_submission') }}</h5>
                                         </div>
                                         <div class="card-body">
                                             <div class="mb-3">
-                                                <strong>Nội dung:</strong>
+                                                <strong>{{ __('views.content') }}</strong>
                                                 <div class="border rounded p-3 mt-2 bg-light">
                                                     {!! nl2br(e($submission->content)) !!}
                                                 </div>
@@ -283,7 +283,7 @@
 
                                             @if ($submission->hasAICorrection())
                                                 <div class="mb-3">
-                                                    <strong>Nội dung đã sửa bởi AI:</strong>
+                                                    <strong>{{ __('views.ai_corrected_content') }}</strong>
                                                     <div class="border rounded p-3 mt-2 bg-success bg-opacity-10">
                                                         {!! nl2br(e($submission->ai_corrected_content)) !!}
                                                     </div>
@@ -297,7 +297,7 @@
                                                 @endphp
                                                 @if (!empty($errorsFound))
                                                     <div class="mb-3">
-                                                        <strong>Lỗi đã sửa:</strong>
+                                                        <strong>{{ __('views.fixed_errors') }}</strong>
                                                         <ul class="list-group mt-2">
                                                             @foreach ($errorsFound as $error)
                                                                 <li class="list-group-item">
