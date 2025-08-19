@@ -83,7 +83,7 @@
                                     @empty
                                         <div class="text-center p-4">
                                             <i class="fas fa-inbox fa-2x text-muted mb-2"></i>
-                                            <p class="text-muted">Không có lớp học nào</p>
+                                            <p class="text-muted">{{ __('views.no_classes') }}</p>
                                         </div>
                                     @endforelse
                                 </div>
@@ -115,7 +115,7 @@
                                     @empty
                                         <div class="text-center p-4">
                                             <i class="fas fa-users fa-2x text-muted mb-2"></i>
-                                            <p class="text-muted">Không có người dùng nào</p>
+                                            <p class="text-muted">{{ __('views.no_users') }}</p>
                                         </div>
                                     @endforelse
                                 </div>
@@ -147,7 +147,7 @@
                                         </div>
                                         <div>
                                             <h6 class="mb-0">{{ $selectedClass->name }}</h6>
-                                            <small class="text-muted">{{ $selectedClass->users->count() }} thành viên</small>
+                                            <small class="text-muted">{{ $selectedClass->users->count() }} {{ __('views.members') }}</small>
                                         </div>
                                     @endif
                                 </div>

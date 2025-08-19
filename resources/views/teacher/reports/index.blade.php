@@ -12,10 +12,10 @@
         <div class="card-body">
             <div class="row g-3">
                 <div class="col-md-4">
-                    <label class="form-label">Chọn lớp học</label>
+                    <label class="form-label">{{ __('views.filter_by_class') }}</label>
                     <div class="input-group">
                         <select wire:model.live="selectedClass" class="form-control">
-                            <option value="">Tất cả lớp</option>
+                            <option value="">{{ __('views.all_classes') }}</option>
                             @foreach ($classrooms as $class)
                                 <option value="{{ $class->id }}">{{ $class->name }}</option>
                             @endforeach
@@ -23,9 +23,9 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Chọn học viên</label>
+                    <label class="form-label">{{ __('views.filter_by_student') }}</label>
                     <select wire:model.live="selectedStudent" class="form-control">
-                        <option value="">Tất cả học viên</option>
+                        <option value="">{{ __('views.all_students_filter') }}</option>
                         @foreach ($students as $student)
                             <option value="{{ $student->id }}">{{ $student->user->name }}</option>
                         @endforeach
@@ -45,13 +45,13 @@
                 <table class="table table-hover mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th>Học viên</th>
-                            <th>Lớp</th>
-                            <th>Tiến độ học</th>
-                            <th>Điểm trung bình</th>
-                            <th>Tỷ lệ nộp bài</th>
-                            <th>Số buổi tham gia</th>
-                            <th>Gợi ý hỗ trợ</th>
+                            <th>{{ __('views.student') }}</th>
+                            <th>{{ __('views.class') }}</th>
+                            <th>{{ __('views.learning_progress') }}</th>
+                            <th>{{ __('views.average_score') }}</th>
+                            <th>{{ __('views.submission_rate') }}</th>
+                            <th>{{ __('views.attendance_count') }}</th>
+                            <th>{{ __('views.support_suggestions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -78,15 +78,15 @@
                                 <td>{{ $row['attendance_count'] }}</td>
                                 <td>
                                     @if ($row['need_support'])
-                                        <span class="badge bg-danger">Cần hỗ trợ</span>
+                                        <span class="badge bg-danger">{{ __('views.needs_support') }}</span>
                                     @else
-                                        <span class="badge bg-success">Ổn định</span>
+                                        <span class="badge bg-success">{{ __('views.stable') }}</span>
                                     @endif
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center py-4 text-muted">Không có dữ liệu thống kê</td>
+                                <td colspan="7" class="text-center py-4 text-muted">{{ __('views.no_data_available') }}</td>
                             </tr>
                         @endforelse
                     </tbody>

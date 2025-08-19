@@ -19,9 +19,9 @@
             x-transition:leave-start="transform opacity-100 scale-100"
             x-transition:leave-end="transform opacity-0 scale-95">
             <div class="dropdown-header d-flex justify-content-between align-items-center">
-                <h6 class="mb-0">Thông báo</h6>
+                <h6 class="mb-0">{{ __('views.notifications') }}</h6>
                 @if ($unreadCount > 0)
-                    <small class="text-muted">{{ $unreadCount }} chưa đọc</small>
+                    <small class="text-muted">{{ $unreadCount }} {{ __('views.unread') }}</small>
                 @endif
             </div>
 
@@ -62,7 +62,7 @@
                                     @if (!$notification->is_read)
                                         <button wire:click="markAsRead({{ $notification->id }})"
                                             class="btn btn-sm btn-outline-primary" style="font-size: 0.7rem;">
-                                            Đã đọc
+                                            {{ __('views.read_status') }}
                                         </button>
                                     @endif
                                 </div>
@@ -80,7 +80,7 @@
             @else
                 <div class="dropdown-item text-center p-4">
                     <i class="fas fa-bell-slash text-muted" style="font-size: 2rem;"></i>
-                    <p class="text-muted mb-0 mt-2">Không có thông báo mới</p>
+                    <p class="text-muted mb-0 mt-2">{{ __('views.no_notifications') }}</p>
                 </div>
             @endif
         </div>
