@@ -68,7 +68,7 @@ return [
         'rules' => ['required', 'file', 'max:524288'],
         'directory' => 'livewire-tmp',
         'middleware' => null,
-        'preview_mimes' => [   // Supported file types for temporary pre-signed file URLs...
+        'preview_mimes' => [
             'png',
             'gif',
             'bmp',
@@ -79,15 +79,11 @@ return [
             'avi',
             'wmv',
             'mp3',
-            'm4a',
-            'jpg',
-            'jpeg',
-            'mpga',
-            'webp',
+            'flac',
+            'ogg',
             'wma',
         ],
-        'max_upload_time' => 5, // Max duration (in minutes) before an upload is invalidated...
-        'cleanup' => true, // Should cleanup temporary uploads older than 24 hrs...
+        'max_upload_time' => 5,
     ],
 
     /*

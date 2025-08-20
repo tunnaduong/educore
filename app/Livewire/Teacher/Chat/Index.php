@@ -56,7 +56,7 @@ class Index extends Component
         $this->messageType = 'user';
         $this->activeTab = 'users';
         $this->resetPage();
-        
+
         // Đánh dấu đã đọc tin nhắn 1-1
         $currentUserId = Auth::id();
         if ($currentUserId && $this->selectedUser) {
@@ -71,18 +71,18 @@ class Index extends Component
     {
         $this->selectedClass = Classroom::with('users')->find($classId);
         $currentUserId = Auth::id();
-        
+
         Log::info('[Chat Debug] selectClass: Chọn lớp', [
             'class_id' => $classId,
             'selectedClass' => $this->selectedClass ? $this->selectedClass->toArray() : null,
             'current_user_id' => $currentUserId,
         ]);
-        
+
         $this->selectedUser = null;
         $this->messageType = 'class';
         $this->activeTab = 'classes';
         $this->resetPage();
-        
+
         // Đánh dấu đã đọc tin nhắn nhóm
         if ($currentUserId) {
             $lastMsg = Message::where('class_id', $classId)->latest('id')->first();
@@ -108,9 +108,36 @@ class Index extends Component
 
     public function sendMessage()
     {
+        // Kiểm tra file trước khi validate
+        if ($this->attachment) {
+            try {
+                // Kiểm tra file có hợp lệ không
+                if (!$this->attachment->isValid()) {
+                    $this->addError('attachment', 'File không hợp lệ hoặc bị hỏng.');
+                    return;
+                }
+
+                // Kiểm tra kích thước
+                if ($this->attachment->getSize() > 102400 * 1024) { // 100MB
+                    $this->addError('attachment', 'File quá lớn. Kích thước tối đa là 100MB.');
+                    return;
+                }
+
+                // Kiểm tra MIME type
+                $allowedMimes = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'zip', 'rar', '7z', 'mp3', 'm4a', 'wav', 'ogg', 'oga', 'flac', 'amr', 'webm', 'mp4'];
+                $fileExtension = strtolower($this->attachment->getClientOriginalExtension());
+                if (!in_array($fileExtension, $allowedMimes)) {
+                    $this->addError('attachment', 'Định dạng file không được hỗ trợ.');
+                    return;
+                }
+            } catch (\Exception $e) {
+                $this->addError('attachment', 'Không thể xử lý file: ' . $e->getMessage());
+                return;
+            }
+        }
+
         $this->validate([
             'messageText' => 'nullable|string|max:1000',
-            'attachment' => 'nullable|file|mimes:jpg,jpeg,png,gif,webp,pdf,doc,docx,xls,xlsx,ppt,pptx,txt,zip,rar,7z,mp3,m4a,wav,ogg,oga,flac,amr,webm,mp4|max:102400', // 100MB
         ]);
 
         if ((trim($this->messageText) === '' || $this->messageText === null) && !$this->attachment) {
@@ -141,10 +168,10 @@ class Index extends Component
                     'size' => $this->attachment->getSize(),
                     'mime_type' => $this->attachment->getMimeType(),
                 ]);
-                
+
                 $path = $this->attachment->store('chat-attachments', 'public');
                 $messageData['attachment'] = $path;
-                
+
                 Log::info('Attachment uploaded successfully', ['path' => $path]);
             } catch (\Exception $e) {
                 Log::error('Failed to upload attachment', [
@@ -165,7 +192,7 @@ class Index extends Component
         $this->messageText = '';
         $this->attachment = null;
         $this->dispatch('messageSent');
-        
+
         // Dừng typing indicator
         $this->stopTyping();
     }
@@ -184,11 +211,11 @@ class Index extends Component
             $this->isTyping = true;
             $currentUser = Auth::user();
             $currentUserId = Auth::id();
-            
+
             if (!$currentUser || !$currentUserId) {
                 return;
             }
-            
+
             if ($this->messageType === 'user' && $this->selectedUser) {
                 $this->dispatch('userTyping', [
                     'userId' => $currentUserId,
@@ -210,11 +237,11 @@ class Index extends Component
         if ($this->isTyping) {
             $this->isTyping = false;
             $currentUserId = Auth::id();
-            
+
             if (!$currentUserId) {
                 return;
             }
-            
+
             if ($this->messageType === 'user' && $this->selectedUser) {
                 $this->dispatch('userStoppedTyping', [
                     'userId' => $currentUserId,
@@ -234,7 +261,7 @@ class Index extends Component
         $userId = $event['userId'] ?? null;
         $userName = $event['userName'] ?? null;
         $currentUserId = Auth::id();
-        
+
         if ($userId && $currentUserId && $userId != $currentUserId) {
             $this->typingUsers[$userId] = $userName;
         }
@@ -244,7 +271,7 @@ class Index extends Component
     {
         $userId = $event['userId'] ?? null;
         $currentUserId = Auth::id();
-        
+
         if ($userId && $currentUserId && $userId != $currentUserId) {
             unset($this->typingUsers[$userId]);
         }
@@ -333,7 +360,7 @@ class Index extends Component
         // Kiểm tra xem tin nhắn có thuộc về cuộc trò chuyện hiện tại không
         $message = $event['message'] ?? null;
         $currentUserId = Auth::id();
-        
+
         if ($message && $currentUserId) {
             $isRelevant = false;
 
@@ -367,7 +394,7 @@ class Index extends Component
     public function render()
     {
         $currentUserId = Auth::id();
-        
+
         if ($this->selectedClass && $currentUserId) {
             Log::info('[Chat Debug] render: Thành viên hiện tại của lớp', [
                 'class_id' => $this->selectedClass->id,
@@ -381,7 +408,7 @@ class Index extends Component
                 'user_ids' => $canAdd->pluck('id')->toArray(),
             ]);
         }
-        
+
         return view('teacher.chat.index', [
             'messages' => $this->messages,
             'users' => $this->users,
