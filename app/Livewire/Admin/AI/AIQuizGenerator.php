@@ -2,22 +2,28 @@
 
 namespace App\Livewire\Admin\AI;
 
-use Livewire\Component;
+use App\Helpers\AIHelper;
 use App\Models\Lesson;
 use App\Models\Quiz;
-use App\Models\Classroom;
-use App\Helpers\AIHelper;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class AIQuizGenerator extends Component
 {
     public $selectedLesson = null;
+
     public $selectedClass = null;
+
     public $questionCount = 10;
+
     public $difficulty = 'medium';
+
     public $quizTitle = '';
+
     public $generatedQuiz = null;
+
     public $isProcessing = false;
+
     public $showPreview = false;
 
     public function mount()
@@ -42,11 +48,12 @@ class AIQuizGenerator extends Component
 
         try {
             $lesson = Lesson::findOrFail($this->selectedLesson);
-            $aiHelper = new AIHelper();
+            $aiHelper = new AIHelper;
 
-            if (!$aiHelper->isAIAvailable()) {
+            if (! $aiHelper->isAIAvailable()) {
                 session()->flash('error', 'AI service không khả dụng. Vui lòng kiểm tra cấu hình API.');
                 $this->isProcessing = false;
+
                 return;
             }
 
@@ -56,7 +63,7 @@ class AIQuizGenerator extends Component
                 $this->difficulty
             );
 
-            if ($result && !empty($result['questions'])) {
+            if ($result && ! empty($result['questions'])) {
                 $this->generatedQuiz = $result;
                 $this->showPreview = true;
                 session()->flash('success', 'Đã tạo quiz tiếng Trung bằng AI thành công!');
@@ -64,7 +71,7 @@ class AIQuizGenerator extends Component
                 session()->flash('error', 'Không thể tạo quiz. Vui lòng thử lại.');
             }
         } catch (\Exception $e) {
-            session()->flash('error', 'Có lỗi xảy ra: ' . $e->getMessage());
+            session()->flash('error', 'Có lỗi xảy ra: '.$e->getMessage());
         }
 
         $this->isProcessing = false;
@@ -72,8 +79,9 @@ class AIQuizGenerator extends Component
 
     public function saveQuiz()
     {
-        if (!$this->generatedQuiz) {
+        if (! $this->generatedQuiz) {
             session()->flash('error', 'Không có quiz để lưu.');
+
             return;
         }
 
@@ -81,7 +89,7 @@ class AIQuizGenerator extends Component
             $quiz = Quiz::create([
                 'class_id' => $this->selectedClass,
                 'title' => $this->quizTitle,
-                'description' => "Quiz tiếng Trung được tạo tự động từ bài học bằng AI",
+                'description' => 'Quiz tiếng Trung được tạo tự động từ bài học bằng AI',
                 'questions' => $this->generatedQuiz['questions'],
                 'deadline' => now()->addDays(7),
                 'assigned_date' => now(),
@@ -103,30 +111,32 @@ class AIQuizGenerator extends Component
             // Redirect đến trang quản lý quiz
             return redirect()->route('teacher.quizzes.index');
         } catch (\Exception $e) {
-            session()->flash('error', 'Có lỗi xảy ra khi lưu quiz: ' . $e->getMessage());
+            session()->flash('error', 'Có lỗi xảy ra khi lưu quiz: '.$e->getMessage());
         }
     }
 
     public function validateQuiz()
     {
-        if (!$this->generatedQuiz) {
+        if (! $this->generatedQuiz) {
             session()->flash('error', 'Không có quiz để kiểm tra.');
+
             return;
         }
 
         $this->isProcessing = true;
 
         try {
-            $aiHelper = new AIHelper();
+            $aiHelper = new AIHelper;
 
-            if (!$aiHelper->isAIAvailable()) {
+            if (! $aiHelper->isAIAvailable()) {
                 session()->flash('error', 'AI service không khả dụng. Vui lòng kiểm tra cấu hình API.');
                 $this->isProcessing = false;
+
                 return;
             }
 
             $result = $aiHelper->validateQuizWithAI((object) [
-                'questions' => $this->generatedQuiz['questions']
+                'questions' => $this->generatedQuiz['questions'],
             ]);
 
             if ($result) {
@@ -136,7 +146,7 @@ class AIQuizGenerator extends Component
                 session()->flash('error', 'Không thể kiểm tra quiz. Vui lòng thử lại.');
             }
         } catch (\Exception $e) {
-            session()->flash('error', 'Có lỗi xảy ra: ' . $e->getMessage());
+            session()->flash('error', 'Có lỗi xảy ra: '.$e->getMessage());
         }
 
         $this->isProcessing = false;
@@ -157,7 +167,7 @@ class AIQuizGenerator extends Component
         if ($this->selectedLesson) {
             $lesson = Lesson::find($this->selectedLesson);
             if ($lesson && empty($this->quizTitle)) {
-                $this->quizTitle = "Quiz tiếng Trung - " . $lesson->title;
+                $this->quizTitle = 'Quiz tiếng Trung - '.$lesson->title;
             }
         }
     }

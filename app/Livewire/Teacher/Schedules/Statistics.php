@@ -2,23 +2,28 @@
 
 namespace App\Livewire\Teacher\Schedules;
 
-use Livewire\Component;
-use App\Models\Lesson;
 use App\Models\Assignment;
+use App\Models\Lesson;
 use App\Models\Quiz;
-use App\Models\Classroom;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class Statistics extends Component
 {
     public $totalLessons = 0;
+
     public $totalAssignments = 0;
+
     public $totalQuizzes = 0;
+
     public $upcomingLessons = 0;
+
     public $pendingAssignments = 0;
+
     public $todayEvents = 0;
+
     public $thisWeekEvents = 0;
+
     public $thisMonthEvents = 0;
 
     public function mount()

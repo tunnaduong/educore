@@ -40,7 +40,7 @@ return [
     'leave_empty_for_no_expiry' => 'Leave empty for no expiry',
     'confirm_delete_notification' => 'Are you sure you want to delete this notification?',
     'required' => 'Required',
-    
+
     // Notifications
     'create_notification' => 'Create New Notification',
     'edit_notification' => 'Edit Notification',
@@ -55,7 +55,7 @@ return [
     'notification_actions' => 'Actions',
     'notification_expiry' => 'Expiry',
     'create_and_manage_notifications' => 'Create and manage notifications for students',
-    
+
     // Reports
     'class_report' => 'Detailed Class Report',
     'class_name' => 'Class Name',
@@ -82,7 +82,7 @@ return [
     'teacher_conflicts_description' => 'Teachers with teaching conflicts',
     'no_conflicts' => 'No conflicts!',
     'no_conflicts_description' => 'All schedules are properly arranged.',
-    
+
     // Schedules
     'teaching_schedule' => 'Teaching Schedule',
     'view_teaching_schedule' => 'View schedule of teaching sessions, assignments, and quizzes',
@@ -102,7 +102,7 @@ return [
     'events' => 'events',
     'this_month' => 'This Month',
     'total_events' => 'Total Events',
-    
+
     // Chat
     'test_user' => 'Test User:',
     'test_class' => 'Test Class:',
@@ -122,7 +122,7 @@ return [
     'echo_available' => 'Echo Available:',
     'checking' => 'Checking...',
     'members' => 'members',
-    
+
     // AI Grading
     'ai_processing' => 'AI is processing...',
     'ai_processing_description' => 'Analyzing and processing data with artificial intelligence',
@@ -141,10 +141,10 @@ return [
     'detailed_ai_analysis' => 'Detailed AI Analysis',
     'improvement_suggestions' => 'Improvement Suggestions:',
     'learning_materials' => 'Learning Materials:',
-    
+
     // Pagination
     'showing' => 'Showing',
     'to' => 'to',
     'in' => 'in',
     'results' => 'results',
-]; 
+];

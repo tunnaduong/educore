@@ -10,9 +10,7 @@
                 </div>
                 <div class="card-body">
                     <p class="text-muted">
-                        Khám phá các công cụ AI mạnh mẽ để hỗ trợ công việc giảng dạy của bạn.
-                        Từ chấm điểm tự động đến tạo bài kiểm tra, AI sẽ giúp bạn tiết kiệm thời gian và nâng cao chất
-                        lượng giảng dạy.
+                        {{ __('general.ai_intro_text') }}
                     </p>
                 </div>
             </div>
@@ -40,12 +38,12 @@
                             <table class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Học sinh</th>
-                                        <th>Bài tập</th>
-                                        <th>Loại nộp</th>
-                                        <th>Ngày nộp</th>
-                                        <th>Trạng thái</th>
-                                        <th>Thao tác</th>
+                                        <th>{{ __('general.student') }}</th>
+                                        <th>{{ __('general.assignment') }}</th>
+                                        <th>{{ __('general.submission_type') }}</th>
+                                        <th>{{ __('general.submission_date') }}</th>
+                                        <th>{{ __('general.status') }}</th>
+                                        <th>{{ __('general.actions') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -55,15 +53,15 @@
                                             <td>{{ $submission->assignment->title }}</td>
                                             <td>
                                                 @if ($submission->submission_type === 'text')
-                                                    <span class="badge badge-info">Văn bản</span>
+                                                    <span class="badge badge-info">{{ __('general.text_type') }}</span>
                                                 @elseif ($submission->submission_type === 'file')
                                                     <span class="badge badge-secondary">File</span>
                                                 @elseif ($submission->submission_type === 'image')
-                                                    <span class="badge badge-warning">Hình ảnh</span>
+                                                    <span class="badge badge-warning">{{ __('general.image_type') }}</span>
                                                 @elseif ($submission->submission_type === 'audio')
-                                                    <span class="badge badge-danger">Âm thanh</span>
+                                                    <span class="badge badge-danger">{{ __('general.audio_type') }}</span>
                                                 @elseif ($submission->submission_type === 'video')
-                                                    <span class="badge badge-dark">Video</span>
+                                                    <span class="badge badge-dark">{{ __('general.video_type') }}</span>
                                                 @else
                                                     <span class="badge badge-light">{{ ucfirst($submission->submission_type) }}</span>
                                                 @endif

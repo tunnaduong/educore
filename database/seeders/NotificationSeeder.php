@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
+use App\Models\Classroom;
 use App\Models\Notification;
 use App\Models\User;
-use App\Models\Classroom;
+use Illuminate\Database\Seeder;
 
 class NotificationSeeder extends Seeder
 {
@@ -62,8 +62,8 @@ class NotificationSeeder extends Seeder
             if ($classrooms->count() > 0) {
                 $classroom = $classrooms->first();
                 Notification::create([
-                    'title' => 'Lịch học thay đổi - ' . $classroom->name,
-                    'message' => 'Lớp ' . $classroom->name . ' sẽ học vào thứ 6 thay vì thứ 5 tuần này. Vui lòng cập nhật lịch học.',
+                    'title' => 'Lịch học thay đổi - '.$classroom->name,
+                    'message' => 'Lớp '.$classroom->name.' sẽ học vào thứ 6 thay vì thứ 5 tuần này. Vui lòng cập nhật lịch học.',
                     'type' => 'info',
                     'user_id' => null,
                     'class_id' => $classroom->id,
@@ -73,6 +73,6 @@ class NotificationSeeder extends Seeder
             }
         }
 
-        $this->command->info('Đã tạo ' . Notification::count() . ' thông báo mẫu.');
+        $this->command->info('Đã tạo '.Notification::count().' thông báo mẫu.');
     }
-} 
+}

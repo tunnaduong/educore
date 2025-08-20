@@ -2,25 +2,31 @@
 
 namespace App\Livewire\Student\Assignments;
 
-use Livewire\Component;
-use Livewire\WithFileUploads;
 use App\Models\Assignment;
 use App\Models\AssignmentSubmission;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Submit extends Component
 {
     use WithFileUploads;
 
     public Assignment $assignment;
+
     public $assignmentId;
+
     public $content = '';
+
     public $essay = '';
+
     public $imageFile;
+
     public $audioFile;
+
     public $videoFile;
+
     public $submissionType = 'text';
 
     protected function rules()
@@ -72,7 +78,7 @@ class Submit extends Component
         $this->assignmentId = $assignmentId;
         $student = Auth::user()->student;
 
-        if (!$student) {
+        if (! $student) {
             abort(403, 'Bạn không có quyền truy cập');
         }
 
@@ -82,13 +88,14 @@ class Submit extends Component
             ->with([
                 'submissions' => function ($q) use ($student) {
                     $q->where('student_id', $student->id);
-                }
+                },
             ])
             ->findOrFail($this->assignmentId);
 
         // Chỉ kiểm tra quá hạn, cho phép nộp lại nhiều lần trước hạn
         if ($this->assignment->deadline < now()) {
             session()->flash('error', 'Bài tập đã quá hạn, không thể nộp');
+
             return redirect()->route('student.assignments.show', $this->assignmentId);
         }
 
@@ -112,9 +119,9 @@ class Submit extends Component
         $this->autoSelectUnsubmittedType();
 
         // Debug: Log submission type
-        Log::info('Submission type set to: ' . $this->submissionType, [
+        Log::info('Submission type set to: '.$this->submissionType, [
             'assignment_types' => $this->assignment->types,
-            'submission_type' => $this->submissionType
+            'submission_type' => $this->submissionType,
         ]);
     }
 
@@ -124,13 +131,13 @@ class Submit extends Component
     public function getSubmissionStatus()
     {
         $student = Auth::user()->student;
-        if (!$student) {
+        if (! $student) {
             return [
                 'submitted_types' => [],
                 'required_types' => $this->assignment->types ?? [],
                 'submitted_count' => 0,
                 'required_count' => count($this->assignment->types ?? []),
-                'missing_types' => $this->assignment->types ?? []
+                'missing_types' => $this->assignment->types ?? [],
             ];
         }
 
@@ -147,7 +154,7 @@ class Submit extends Component
             'required_types' => $requiredTypes,
             'submitted_count' => count($submittedTypes),
             'required_count' => count($requiredTypes),
-            'missing_types' => $missingTypes
+            'missing_types' => $missingTypes,
         ];
     }
 
@@ -157,6 +164,7 @@ class Submit extends Component
     public function isTypeSubmitted($type)
     {
         $status = $this->getSubmissionStatus();
+
         return in_array($type, $status['submitted_types']);
     }
 
@@ -183,7 +191,7 @@ class Submit extends Component
         $status = $this->getSubmissionStatus();
         $missingTypes = $status['missing_types'];
 
-        if (!empty($missingTypes)) {
+        if (! empty($missingTypes)) {
             // Chọn loại đầu tiên chưa nộp
             $this->submissionType = $missingTypes[0];
         }
@@ -195,6 +203,7 @@ class Submit extends Component
         if ($this->isTypeSubmitted($this->submissionType)) {
             // Nếu đã nộp, tự động chọn loại khác chưa nộp
             $this->autoSelectUnsubmittedType();
+
             return;
         }
 
@@ -222,7 +231,8 @@ class Submit extends Component
             Log::info('Validate thành công');
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error('Validate thất bại', ['errors' => $e->validator->errors()->toArray()]);
-            session()->flash('error', 'Lỗi: ' . collect($e->validator->errors()->all())->join(' - '));
+            session()->flash('error', 'Lỗi: '.collect($e->validator->errors()->all())->join(' - '));
+
             return;
         } catch (\Exception $e) {
             Log::error('Validate thất bại', ['error' => $e->getMessage()]);
@@ -230,9 +240,10 @@ class Submit extends Component
         }
 
         $student = Auth::user()->student;
-        if (!$student) {
+        if (! $student) {
             Log::error('Không tìm thấy student');
             session()->flash('error', 'Bạn không có quyền truy cập');
+
             return;
         }
 
@@ -243,12 +254,14 @@ class Submit extends Component
             ->first();
         if ($existing) {
             session()->flash('error', 'Bạn đã nộp dạng này rồi!');
+
             return;
         }
 
         // Kiểm tra xem loại bài tập này có trong danh sách yêu cầu không
-        if (!in_array($this->submissionType, $this->assignment->types ?? [])) {
+        if (! in_array($this->submissionType, $this->assignment->types ?? [])) {
             session()->flash('error', 'Loại bài tập này không được yêu cầu trong bài tập!');
+
             return;
         }
 
@@ -271,8 +284,9 @@ class Submit extends Component
                     $submissionData['content'] = $this->essay;
                     break;
                 case 'image':
-                    if (!$this->imageFile) {
+                    if (! $this->imageFile) {
                         session()->flash('error', 'Bạn chưa chọn file ảnh hoặc file upload bị lỗi.');
+
                         return;
                     }
                     Log::info('Bắt đầu upload image', [
@@ -300,10 +314,11 @@ class Submit extends Component
 
             Log::info('Nộp bài thành công!');
             session()->flash('success', 'Nộp bài tập thành công!');
+
             return $this->redirect(route('student.assignments.show', $this->assignmentId));
         } catch (\Exception $e) {
             Log::error('Có lỗi xảy ra khi nộp bài tập', ['error' => $e->getMessage()]);
-            session()->flash('error', 'Có lỗi xảy ra khi nộp bài tập: ' . $e->getMessage());
+            session()->flash('error', 'Có lỗi xảy ra khi nộp bài tập: '.$e->getMessage());
         }
     }
 
@@ -315,10 +330,10 @@ class Submit extends Component
     public function getTimeRemaining()
     {
         if ($this->isOverdue()) {
-            return 'Đã quá hạn ' . $this->assignment->deadline->diffForHumans();
+            return 'Đã quá hạn '.$this->assignment->deadline->diffForHumans();
         }
 
-        return 'Còn lại ' . $this->assignment->deadline->diffForHumans(now(), ['parts' => 2]);
+        return 'Còn lại '.$this->assignment->deadline->diffForHumans(now(), ['parts' => 2]);
     }
 
     public function render()

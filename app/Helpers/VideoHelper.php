@@ -80,6 +80,7 @@ class VideoHelper
         }
 
         $parsed = self::parseVideoUrl($url);
+
         return $parsed && $parsed['type'] !== 'unknown';
     }
 
@@ -89,8 +90,8 @@ class VideoHelper
     public static function getThumbnailUrl($url)
     {
         $parsed = self::parseVideoUrl($url);
-        
-        if (!$parsed) {
+
+        if (! $parsed) {
             return null;
         }
 
@@ -114,4 +115,4 @@ class VideoHelper
         // For now, return null
         return null;
     }
-} 
+}
