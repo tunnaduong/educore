@@ -20,6 +20,15 @@
             </div>
         @endif
 
+        @if (session()->has('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+
         <!-- Search and Filter Bar -->
         <div class="card shadow-sm mb-4">
             <div class="card-body">
@@ -156,11 +165,22 @@
                                                 class="btn btn-sm btn-outline-primary" title="Chỉnh sửa">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
-                                            <button type="button" data-bs-toggle="modal"
-                                                data-bs-target="#deleteModal{{ $student->id }}"
-                                                class="btn btn-sm btn-outline-danger" title="Xóa">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
+                                            @if (!$student->studentProfile || $student->studentProfile->status !== 'active')
+                                                <button type="button"
+                                                    data-toggle="modal"
+                                                    data-target="#deleteModal{{ $student->id }}"
+                                                    class="btn btn-sm btn-outline-danger"
+                                                    title="Xóa học viên">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            @else
+                                                <button type="button"
+                                                    class="btn btn-sm btn-outline-secondary"
+                                                    title="Không thể xóa học viên đang học"
+                                                    disabled>
+                                                    <i class="bi bi-lock"></i>
+                                                </button>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
@@ -168,13 +188,15 @@
                                 <!-- Delete Confirmation Modal -->
                                 <div class="modal fade" id="deleteModal{{ $student->id }}" tabindex="-1"
                                     aria-labelledby="deleteModalLabel{{ $student->id }}" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+                                    <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="deleteModalLabel{{ $student->id }}">
                                                     Xác nhận xóa học viên</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
                                             </div>
                                             <div class="modal-body">
                                                 Bạn có chắc chắn muốn xóa học viên "{{ $student->name }}"? Hành động
@@ -182,10 +204,10 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Hủy</button>
+                                                    data-dismiss="modal">Hủy</button>
                                                 <button type="button" class="btn btn-danger"
                                                     wire:click="delete({{ $student->id }})"
-                                                    data-bs-dismiss="modal">Xóa</button>
+                                                    data-dismiss="modal">Xóa</button>
                                             </div>
                                         </div>
                                     </div>
