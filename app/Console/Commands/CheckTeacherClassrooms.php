@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use App\Models\User;
 use App\Models\Classroom;
+use App\Models\User;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
 class CheckTeacherClassrooms extends Command
@@ -44,13 +44,13 @@ class CheckTeacherClassrooms extends Command
 
         foreach ($teachers as $teacher) {
             $this->info("\n👨‍🏫 Teacher: {$teacher->name} (ID: {$teacher->id})");
-            
+
             $teachingClassrooms = $teacher->teachingClassrooms;
             $this->info("   📖 Lớp học đang dạy: {$teachingClassrooms->count()}");
 
             if ($teachingClassrooms->isEmpty()) {
-                $this->warn("   ⚠️  Teacher này chưa được gán vào lớp học nào!");
-                
+                $this->warn('   ⚠️  Teacher này chưa được gán vào lớp học nào!');
+
                 if ($this->option('fix')) {
                     // Tự động gán teacher vào lớp học đầu tiên
                     if ($classrooms->isNotEmpty()) {
@@ -78,4 +78,4 @@ class CheckTeacherClassrooms extends Command
             $this->info("\n💡 Chạy lệnh với --fix để tự động sửa lỗi");
         }
     }
-} 
+}

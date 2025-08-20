@@ -4,10 +4,9 @@ namespace Database\Seeders;
 
 use App\Models\Attendance;
 use App\Models\Classroom;
-use App\Models\Student;
-use Illuminate\Database\Seeder;
-use Faker\Factory as Faker;
 use Carbon\Carbon;
+use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class AttendanceSeeder extends Seeder
 {
@@ -66,7 +65,7 @@ class AttendanceSeeder extends Seeder
                                 'Đi công tác',
                                 'Gặp sự cố giao thông',
                                 'Có hẹn khám bệnh',
-                                null
+                                null,
                             ]);
                         }
 

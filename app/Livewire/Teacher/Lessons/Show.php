@@ -2,10 +2,10 @@
 
 namespace App\Livewire\Teacher\Lessons;
 
-use Livewire\Component;
-use App\Models\Lesson;
 use App\Models\Classroom;
+use App\Models\Lesson;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class Show extends Component
 {
@@ -17,7 +17,7 @@ class Show extends Component
         $classrooms = Classroom::whereHas('teachers', function ($query) {
             $query->where('users.id', Auth::id());
         })->orderBy('name')->get();
-        
+
         // Kiểm tra xem teacher có quyền xem bài học này không
         $this->lesson = Lesson::whereIn('classroom_id', $classrooms->pluck('id'))
             ->with('classroom')
@@ -28,4 +28,4 @@ class Show extends Component
     {
         return view('teacher.lessons.show');
     }
-} 
+}

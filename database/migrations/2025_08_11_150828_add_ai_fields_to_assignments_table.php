@@ -15,7 +15,7 @@ return new class extends Migration
             // AI grading criteria
             $table->json('grading_criteria')->nullable()->after('description');
             $table->decimal('max_score', 3, 1)->default(10.0)->after('grading_criteria');
-            
+
             // AI analysis fields
             $table->boolean('ai_analysis_enabled')->default(false)->after('max_score');
             $table->json('ai_analysis_config')->nullable()->after('ai_analysis_enabled');
@@ -32,7 +32,7 @@ return new class extends Migration
                 'grading_criteria',
                 'max_score',
                 'ai_analysis_enabled',
-                'ai_analysis_config'
+                'ai_analysis_config',
             ]);
         });
     }

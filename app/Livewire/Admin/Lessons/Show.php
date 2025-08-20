@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Admin\Lessons;
 
-use Livewire\Component;
 use App\Models\Lesson;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Component;
 
 class Show extends Component
 {
@@ -31,13 +31,14 @@ class Show extends Component
 
         $lesson->delete();
         session()->flash('success', 'Đã xoá bài học thành công!');
+
         return $this->redirect(route('lessons.index'));
     }
 
     public function render()
     {
         return view('admin.lessons.show', [
-            'lesson' => $this->lesson
+            'lesson' => $this->lesson,
         ]);
     }
 }

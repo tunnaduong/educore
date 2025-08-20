@@ -5,13 +5,15 @@ namespace App\Livewire\Admin\Dashboard;
 use App\Models\Attendance;
 use App\Models\Classroom;
 use App\Models\User;
-use Livewire\Component;
 use Carbon\Carbon;
+use Livewire\Component;
 
 class AttendanceOverview extends Component
 {
     public $selectedMonth;
+
     public $selectedYear;
+
     public $overviewStats = [];
 
     public function mount()
@@ -44,6 +46,7 @@ class AttendanceOverview extends Component
             ->map(function ($attendances) {
                 $totalDays = $attendances->count();
                 $presentDays = $attendances->where('present', true)->count();
+
                 return [
                     'student' => $attendances->first()->student->user,
                     'total_days' => $totalDays,
@@ -62,6 +65,7 @@ class AttendanceOverview extends Component
             ->map(function ($attendances) {
                 $totalDays = $attendances->count();
                 $presentDays = $attendances->where('present', true)->count();
+
                 return [
                     'classroom' => $attendances->first()->classroom,
                     'total_days' => $totalDays,

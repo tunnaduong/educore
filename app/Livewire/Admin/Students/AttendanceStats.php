@@ -2,18 +2,22 @@
 
 namespace App\Livewire\Admin\Students;
 
-use App\Models\User;
 use App\Models\Attendance;
 use App\Models\Student;
-use Livewire\Component;
+use App\Models\User;
 use Carbon\Carbon;
+use Livewire\Component;
 
 class AttendanceStats extends Component
 {
     public User $student;
+
     public $selectedMonth;
+
     public $selectedYear;
+
     public $attendanceStats = [];
+
     public $totalStats = [];
 
     public function mount($student)
@@ -29,7 +33,7 @@ class AttendanceStats extends Component
         // Lấy student record từ bảng students
         $studentRecord = Student::where('user_id', $this->student->id)->first();
 
-        if (!$studentRecord) {
+        if (! $studentRecord) {
             $this->attendanceStats = [];
             $this->totalStats = [
                 'total_days' => 0,
@@ -37,6 +41,7 @@ class AttendanceStats extends Component
                 'absent_days' => 0,
                 'attendance_rate' => 0,
             ];
+
             return;
         }
 

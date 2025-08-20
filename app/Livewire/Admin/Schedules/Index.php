@@ -3,16 +3,18 @@
 namespace App\Livewire\Admin\Schedules;
 
 use App\Models\Classroom;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Illuminate\Support\Facades\Auth;
 
 class Index extends Component
 {
     use WithPagination;
 
     public $search = '';
+
     public $filterLevel = '';
+
     public $filterTeacher = '';
 
     protected $queryString = [
@@ -41,14 +43,14 @@ class Index extends Component
         $classrooms = Classroom::query()
             ->with(['teachers', 'students'])
             ->when($this->search, function ($query) {
-                $query->where('name', 'like', '%' . $this->search . '%');
+                $query->where('name', 'like', '%'.$this->search.'%');
             })
             ->when($this->filterLevel, function ($query) {
                 $query->where('level', $this->filterLevel);
             })
             ->when($this->filterTeacher, function ($query) {
                 $query->whereHas('teachers', function ($q) {
-                    $q->where('name', 'like', '%' . $this->filterTeacher . '%');
+                    $q->where('name', 'like', '%'.$this->filterTeacher.'%');
                 });
             })
             ->orderBy('name')
@@ -56,7 +58,6 @@ class Index extends Component
 
         $levels = Classroom::distinct()->pluck('level')->filter();
         $teachers = \App\Models\User::where('role', 'teacher')->orderBy('name')->get();
-
 
         $user = Auth::user();
 
@@ -69,7 +70,7 @@ class Index extends Component
 
     public function formatSchedule($schedule)
     {
-        if (!$schedule || !is_array($schedule)) {
+        if (! $schedule || ! is_array($schedule)) {
             return 'Chưa có lịch học';
         }
 
@@ -87,14 +88,14 @@ class Index extends Component
             'Thursday' => 'Thứ 5',
             'Friday' => 'Thứ 6',
             'Saturday' => 'Thứ 7',
-            'Sunday' => 'Chủ nhật'
+            'Sunday' => 'Chủ nhật',
         ];
 
         $formattedDays = array_map(function ($day) use ($dayNames) {
             return $dayNames[$day] ?? $day;
         }, $days);
 
-        return implode(', ', $formattedDays) . ' - ' . $time;
+        return implode(', ', $formattedDays).' - '.$time;
     }
 
     public function resetFilters()

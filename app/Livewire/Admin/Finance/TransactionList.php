@@ -2,10 +2,9 @@
 
 namespace App\Livewire\Admin\Finance;
 
-use Livewire\Component;
-use Illuminate\Support\Collection;
-use App\Models\Payment;
 use App\Models\Expense;
+use App\Models\Payment;
+use Livewire\Component;
 
 class TransactionList extends Component
 {

@@ -2,10 +2,10 @@
 
 namespace App\Livewire\Teacher\Assignments;
 
-use Livewire\Component;
 use App\Models\Assignment;
 use App\Models\Classroom;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 use Livewire\WithFileUploads;
 
 class Create extends Component
@@ -13,10 +13,15 @@ class Create extends Component
     use WithFileUploads;
 
     public $title;
+
     public $description;
+
     public $class_id;
+
     public $deadline;
+
     public $types = [];
+
     public $allTypes = [
         'text' => 'Điền từ',
         'essay' => 'Tự luận',
@@ -26,8 +31,11 @@ class Create extends Component
     ];
 
     public $classrooms = [];
+
     public $attachment;
+
     public $video;
+
     public $max_score;
 
     public function mount()
@@ -96,7 +104,7 @@ class Create extends Component
     public function render()
     {
         return view('teacher.assignments.create', [
-            'classrooms' => $this->classrooms
+            'classrooms' => $this->classrooms,
         ]);
     }
 }
