@@ -214,9 +214,11 @@
                                             <div class="input-group">
                                                 <input type="text" wire:model="messageText" class="form-control"
                                                     placeholder="Nhập tin nhắn..." maxlength="1000">
-                                                <button type="button" class="btn btn-outline-secondary"
-                                                    onclick="document.getElementById('attachment').click()">
-                                                    <i class="bi bi-paperclip"></i>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('attachment').click()">
+                                                    <i class="fas fa-paperclip"></i>
+                                                </button>
+                                                <button type="button" wire:click="testUpload" class="btn btn-warning btn-sm">
+                                                    Test Upload
                                                 </button>
                                                 <button type="submit" class="btn btn-primary">
                                                     <i class="bi bi-send"></i>

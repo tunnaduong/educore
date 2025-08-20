@@ -103,8 +103,25 @@ class Index extends Component
         }
 
         if ($this->attachment) {
-            $path = $this->attachment->store('chat-attachments', 'public');
-            $messageData['attachment'] = $path;
+            try {
+                Log::info('Uploading attachment', [
+                    'original_name' => $this->attachment->getClientOriginalName(),
+                    'size' => $this->attachment->getSize(),
+                    'mime_type' => $this->attachment->getMimeType(),
+                ]);
+                
+                $path = $this->attachment->store('chat-attachments', 'public');
+                $messageData['attachment'] = $path;
+                
+                Log::info('Attachment uploaded successfully', ['path' => $path]);
+            } catch (\Exception $e) {
+                Log::error('Failed to upload attachment', [
+                    'error' => $e->getMessage(),
+                    'file' => $this->attachment->getClientOriginalName()
+                ]);
+                $this->addError('attachment', 'Không thể tải lên tệp: ' . $e->getMessage());
+                return;
+            }
         }
 
         $message = Message::create($messageData);
@@ -116,6 +133,30 @@ class Index extends Component
         $this->messageText = '';
         $this->attachment = null;
         $this->dispatch('messageSent');
+    }
+
+    public function updatedAttachment()
+    {
+        if ($this->attachment) {
+            Log::info('Attachment selected', [
+                'name' => $this->attachment->getClientOriginalName(),
+                'size' => $this->attachment->getSize(),
+                'mime' => $this->attachment->getMimeType(),
+                'temp_path' => $this->attachment->getRealPath(),
+            ]);
+        }
+    }
+
+    public function testUpload()
+    {
+        if ($this->attachment) {
+            try {
+                $path = $this->attachment->store('chat-attachments', 'public');
+                $this->dispatch('alert', ['type' => 'success', 'message' => 'File uploaded: ' . $path]);
+            } catch (\Exception $e) {
+                $this->dispatch('alert', ['type' => 'error', 'message' => 'Upload failed: ' . $e->getMessage()]);
+            }
+        }
     }
 
     public function getMessagesProperty()
