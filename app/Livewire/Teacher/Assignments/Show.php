@@ -2,17 +2,22 @@
 
 namespace App\Livewire\Teacher\Assignments;
 
-use Livewire\Component;
 use App\Models\Assignment;
 use App\Models\AssignmentSubmission;
+use Livewire\Component;
 
 class Show extends Component
 {
     public $assignment;
+
     public $classroom;
+
     public $submissions;
+
     public $students;
+
     public $assignmentId;
+
     public $grading = [];
 
     public function mount($assignment)
@@ -41,7 +46,7 @@ class Show extends Component
         // Cần lấy student_id từ Student model
         $studentId = $student->student ? $student->student->id : null;
 
-        if (!$studentId) {
+        if (! $studentId) {
             return [
                 'status' => 'not_submitted',
                 'label' => 'Chưa nộp',
@@ -49,7 +54,7 @@ class Show extends Component
                 'submitted_types' => [],
                 'required_types' => $this->assignment->types ?? [],
                 'submitted_count' => 0,
-                'required_count' => count($this->assignment->types ?? [])
+                'required_count' => count($this->assignment->types ?? []),
             ];
         }
 
@@ -66,7 +71,7 @@ class Show extends Component
                 'submitted_types' => [],
                 'required_types' => $this->assignment->types ?? [],
                 'submitted_count' => 0,
-                'required_count' => count($this->assignment->types ?? [])
+                'required_count' => count($this->assignment->types ?? []),
             ];
         }
 
@@ -86,19 +91,19 @@ class Show extends Component
                 'submitted_types' => $submittedTypes,
                 'required_types' => $requiredTypes,
                 'submitted_count' => count($submittedTypes),
-                'required_count' => count($requiredTypes)
+                'required_count' => count($requiredTypes),
             ];
         } else {
             // Còn thiếu
             return [
                 'status' => 'partial',
-                'label' => 'Còn thiếu ' . count($missingTypes) . '/' . count($requiredTypes),
+                'label' => 'Còn thiếu '.count($missingTypes).'/'.count($requiredTypes),
                 'class' => 'bg-warning',
                 'submitted_types' => $submittedTypes,
                 'required_types' => $requiredTypes,
                 'missing_types' => $missingTypes,
                 'submitted_count' => count($submittedTypes),
-                'required_count' => count($requiredTypes)
+                'required_count' => count($requiredTypes),
             ];
         }
     }
@@ -126,7 +131,7 @@ class Show extends Component
         // $student là User model từ classroom->students()
         $studentId = $student->student ? $student->student->id : null;
 
-        if (!$studentId) {
+        if (! $studentId) {
             return null;
         }
 
@@ -144,8 +149,9 @@ class Show extends Component
         // Validation cho điểm
         if ($score !== null && $score !== '') {
             // Kiểm tra xem có phải là số hợp lệ không
-            if (!is_numeric($score) || !is_finite($score)) {
+            if (! is_numeric($score) || ! is_finite($score)) {
                 session()->flash('error', 'Điểm phải là số hợp lệ!');
+
                 return;
             }
 
@@ -154,19 +160,22 @@ class Show extends Component
 
             if ($score < 0) {
                 session()->flash('error', 'Điểm không được nhỏ hơn 0!');
+
                 return;
             }
 
             if ($score > 10) {
                 session()->flash('error', 'Điểm không được vượt quá 10!');
+
                 return;
             }
 
             // Kiểm tra số thập phân (chỉ cho phép tối đa 1 chữ số thập phân)
             if (strpos((string) $score, '.') !== false) {
-                $decimalPlaces = strlen(substr(strrchr((string) $score, "."), 1));
+                $decimalPlaces = strlen(substr(strrchr((string) $score, '.'), 1));
                 if ($decimalPlaces > 1) {
                     session()->flash('error', 'Điểm chỉ được có tối đa 1 chữ số thập phân!');
+
                     return;
                 }
             }

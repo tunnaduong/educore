@@ -99,7 +99,99 @@
 
 .card-header.d-flex.justify-content-between {
     justify-content: space-between !important;
-    align-items: center !important;
+}
+
+/* Help icon styling */
+.nav-item .nav-link .fa-lightbulb {
+    transition: all 0.3s ease;
+}
+
+.nav-item .nav-link:hover .fa-lightbulb {
+    transform: scale(1.1);
+    filter: brightness(1.2);
+}
+
+.help-dropdown .dropdown-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.help-dropdown .dropdown-item:hover {
+    background-color: #e9ecef;
+}
+
+/* Help page styling */
+.contact-info .d-flex {
+    transition: all 0.2s ease;
+}
+
+.contact-info .d-flex:hover {
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.faq-item {
+    border-left: 3px solid #007bff;
+    padding-left: 10px;
+    margin-bottom: 15px;
+}
+
+.accordion .card-header button {
+    text-decoration: none;
+    color: #495057;
+}
+
+.accordion .card-header button:hover {
+    color: #007bff;
+    text-decoration: none;
+}
+
+/* Help page tab styling */
+.nav-tabs .nav-link {
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.nav-tabs .nav-link:hover {
+    border-color: transparent;
+    color: #007bff;
+}
+
+.nav-tabs .nav-link.active {
+    border-bottom-color: #007bff;
+    color: #007bff;
+    background-color: transparent;
+}
+
+.nav-tabs .nav-link i {
+    margin-right: 5px;
+}
+
+/* Help sidebar styling */
+#helpSidebar .list-group-item {
+    border: none;
+    border-radius: 0;
+    border-left: 3px solid transparent;
+    transition: all 0.2s ease;
+}
+
+#helpSidebar .list-group-item:hover {
+    background-color: #f8f9fa;
+    border-left-color: #007bff;
+}
+
+#helpSidebar .list-group-item.active {
+    background-color: #e3f2fd;
+    border-left-color: #007bff;
+    color: #007bff;
+}
+
+#helpSidebar .list-group-item i {
+    margin-right: 8px;
+    width: 16px;
 }
 
 /* Ensure card-header children don't interfere with flexbox */

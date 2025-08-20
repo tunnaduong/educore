@@ -2,19 +2,20 @@
 
 namespace App\Livewire\Admin\Quiz;
 
+use App\Models\Quiz;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Quiz;
-use App\Models\QuizResult;
-use App\Models\User;
 
 class Results extends Component
 {
     use WithPagination;
 
     public Quiz $quiz;
+
     public $selectedStudent = null;
+
     public $search = '';
+
     public $filterScore = '';
 
     protected $queryString = [
@@ -26,7 +27,7 @@ class Results extends Component
     public function mount($quiz)
     {
         $this->quiz = $quiz;
-        
+
         // Nếu có student parameter trong URL
         if (request()->has('student')) {
             $this->selectedStudent = request()->get('student');
@@ -67,8 +68,8 @@ class Results extends Component
         // Tìm kiếm theo tên học viên
         if ($this->search) {
             $query->whereHas('student', function ($q) {
-                $q->where('name', 'like', '%' . $this->search . '%')
-                  ->orWhere('email', 'like', '%' . $this->search . '%');
+                $q->where('name', 'like', '%'.$this->search.'%')
+                    ->orWhere('email', 'like', '%'.$this->search.'%');
             });
         }
 

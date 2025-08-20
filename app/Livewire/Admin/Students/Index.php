@@ -11,7 +11,9 @@ class Index extends Component
     use WithPagination;
 
     public $search = '';
+
     public $statusFilter = '';
+
     public $classroomFilter = '';
 
     protected $queryString = ['search', 'statusFilter', 'classroomFilter'];
@@ -54,9 +56,9 @@ class Index extends Component
         // Tìm kiếm
         if ($this->search) {
             $query->where(function ($q) {
-                $q->where('name', 'like', '%' . $this->search . '%')
-                    ->orWhere('email', 'like', '%' . $this->search . '%')
-                    ->orWhere('phone', 'like', '%' . $this->search . '%');
+                $q->where('name', 'like', '%'.$this->search.'%')
+                    ->orWhere('email', 'like', '%'.$this->search.'%')
+                    ->orWhere('phone', 'like', '%'.$this->search.'%');
             });
         }
 

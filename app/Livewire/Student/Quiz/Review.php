@@ -2,21 +2,24 @@
 
 namespace App\Livewire\Student\Quiz;
 
-use Livewire\Component;
 use App\Models\Quiz;
 use App\Models\QuizResult;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class Review extends Component
 {
     public Quiz $quiz;
+
     public $result = null;
+
     public $selectedQuestion = 0;
+
     public $quizId;
 
     public function mount($quizId = null)
     {
-        if (!$quizId) {
+        if (! $quizId) {
             abort(404, 'Không tìm thấy bài kiểm tra.');
         }
 
@@ -25,7 +28,7 @@ class Review extends Component
         $user = Auth::user();
 
         // Kiểm tra xem user có student profile không
-        if (!$user->studentProfile) {
+        if (! $user->studentProfile) {
             abort(403, 'Bạn không có quyền truy cập trang này.');
         }
 
@@ -45,7 +48,7 @@ class Review extends Component
 
     public function getQuestionStatus($questionIndex)
     {
-        if (!$this->result) {
+        if (! $this->result) {
             return 'unknown';
         }
         $question = $this->quiz->questions[$questionIndex];
@@ -56,7 +59,7 @@ class Review extends Component
         }
 
         // Kiểm tra xem câu hỏi có đáp án đúng không
-        if (!isset($question['correct_answer'])) {
+        if (! isset($question['correct_answer'])) {
             return 'pending'; // Cần chấm thủ công
         }
 
@@ -64,6 +67,7 @@ class Review extends Component
             return $answer === $question['correct_answer'] ? 'correct' : 'incorrect';
         } elseif ($question['type'] === 'fill_blank') {
             $correctAnswers = is_array($question['correct_answer']) ? $question['correct_answer'] : [$question['correct_answer']];
+
             return in_array(strtolower(trim($answer)), array_map('strtolower', $correctAnswers)) ? 'correct' : 'incorrect';
         }
 
@@ -72,7 +76,7 @@ class Review extends Component
 
     public function getQuestionStatusText($questionIndex)
     {
-        if (!$this->result) {
+        if (! $this->result) {
             return 'Không xác định';
         }
         $status = $this->getQuestionStatus($questionIndex);
@@ -93,7 +97,7 @@ class Review extends Component
 
     public function getQuestionStatusClass($questionIndex)
     {
-        if (!$this->result) {
+        if (! $this->result) {
             return 'warning';
         }
         $status = $this->getQuestionStatus($questionIndex);

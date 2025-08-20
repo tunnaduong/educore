@@ -1,4 +1,5 @@
 <?php
+
 return [
     'app_name' => 'EduCore',
     'dashboard' => 'Trang chủ',
@@ -107,18 +108,4 @@ return [
     'confirm_hide_classroom' => 'Xác nhận ẩn lớp học',
     'hide_classroom_message' => 'Lớp học ":name" sẽ được ẩn khỏi danh sách nhưng dữ liệu vẫn được giữ lại.',
     'hide' => 'Ẩn',
-    'ai_assistant' => 'Trợ lý AI',
-    'ai_grading' => 'Chấm điểm tự động',
-    'ai_quiz_generator' => 'Tạo Quiz bằng AI',
-    'ai_question_bank' => 'Ngân hàng câu hỏi',
-    'smart_teaching' => 'Hỗ trợ giảng dạy thông minh',
-    'auto_grading' => 'Chấm điểm tự động',
-    'quiz_creation' => 'Tạo bài kiểm tra',
-    'question_bank_creation' => 'Tạo ngân hàng câu hỏi',
-    'ai_guide' => 'Hướng dẫn sử dụng AI',
-    'recent_submissions' => 'Bài nộp gần đây',
-    'available_assignments' => 'Bài tập có thể tạo quiz',
-    'pending_grading' => 'Chờ chấm điểm',
-    'can_create_quiz' => 'Có thể tạo quiz',
-    'active_classes' => 'Lớp học đang dạy',
 ];
