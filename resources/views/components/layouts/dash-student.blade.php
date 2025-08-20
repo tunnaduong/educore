@@ -32,15 +32,27 @@
                     @endswitch
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a href="{{ route('lang.switch', 'vi') }}" class="dropdown-item"><img
-                            src="https://twemoji.maxcdn.com/v/latest/svg/1f1fb-1f1f3.svg" width="16" height="16"
-                            alt="VN"> @lang('general.vietnamese')</a>
-                    <a href="{{ route('lang.switch', 'en') }}" class="dropdown-item"><img
-                            src="https://twemoji.maxcdn.com/v/latest/svg/1f1ec-1f1e7.svg" width="16" height="16"
-                            alt="GB"> @lang('general.english')</a>
-                    <a href="{{ route('lang.switch', 'zh') }}" class="dropdown-item"><img
-                            src="https://twemoji.maxcdn.com/v/latest/svg/1f1e8-1f1f3.svg" width="16" height="16"
-                            alt="CN"> @lang('general.chinese')</a>
+                    <a href="{{ route('lang.switch', 'vi') }}" class="dropdown-item {{ app()->getLocale() == 'vi' ? 'active' : '' }}">
+                        <img src="https://twemoji.maxcdn.com/v/latest/svg/1f1fb-1f1f3.svg" width="16" height="16" alt="VN"> 
+                        @lang('general.vietnamese')
+                        @if(app()->getLocale() == 'vi')
+                            <i class="fas fa-check ml-2 text-white"></i>
+                        @endif
+                    </a>
+                    <a href="{{ route('lang.switch', 'en') }}" class="dropdown-item {{ app()->getLocale() == 'en' ? 'active' : '' }}">
+                        <img src="https://twemoji.maxcdn.com/v/latest/svg/1f1ec-1f1e7.svg" width="16" height="16" alt="GB"> 
+                        @lang('general.english')
+                        @if(app()->getLocale() == 'en')
+                            <i class="fas fa-check ml-2 text-white"></i>
+                        @endif
+                    </a>
+                    <a href="{{ route('lang.switch', 'zh') }}" class="dropdown-item {{ app()->getLocale() == 'zh' ? 'active' : '' }}">
+                        <img src="https://twemoji.maxcdn.com/v/latest/svg/1f1e8-1f1f3.svg" width="16" height="16" alt="CN"> 
+                        @lang('general.chinese')
+                        @if(app()->getLocale() == 'zh')
+                            <i class="fas fa-check ml-2 text-white"></i>
+                        @endif
+                    </a>
                 </div>
             </li>
             <li class="nav-item"><livewire:components.notification-bell /></li>
