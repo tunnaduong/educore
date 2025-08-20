@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use App\Models\Quiz;
 use App\Models\Classroom;
+use App\Models\Quiz;
+use Illuminate\Database\Seeder;
 
 class QuizTimeLimitTestSeeder extends Seeder
 {
@@ -16,8 +16,9 @@ class QuizTimeLimitTestSeeder extends Seeder
         // Lấy lớp học đầu tiên
         $classroom = Classroom::first();
 
-        if (!$classroom) {
+        if (! $classroom) {
             $this->command->error('Không có lớp học nào để tạo quiz test!');
+
             return;
         }
 
@@ -34,7 +35,7 @@ class QuizTimeLimitTestSeeder extends Seeder
                         'score' => 2,
                         'options' => ['A', 'B', 'C', 'D'],
                         'correct_answer' => 'A',
-                        'explanation' => 'Đây là đáp án đúng'
+                        'explanation' => 'Đây là đáp án đúng',
                     ],
                     [
                         'question' => 'Câu hỏi đúng sai test?',
@@ -42,8 +43,8 @@ class QuizTimeLimitTestSeeder extends Seeder
                         'score' => 1,
                         'options' => [],
                         'correct_answer' => 'true',
-                        'explanation' => 'Đây là đáp án đúng'
-                    ]
+                        'explanation' => 'Đây là đáp án đúng',
+                    ],
                 ],
                 'deadline' => now()->addDays(7),
                 'time_limit' => 30,
@@ -61,8 +62,8 @@ class QuizTimeLimitTestSeeder extends Seeder
                         'score' => 1,
                         'options' => ['1', '2', '3', '4'],
                         'correct_answer' => '1',
-                        'explanation' => 'Đây là đáp án đúng'
-                    ]
+                        'explanation' => 'Đây là đáp án đúng',
+                    ],
                 ],
                 'deadline' => now()->addDays(7),
                 'time_limit' => 10,
@@ -80,19 +81,19 @@ class QuizTimeLimitTestSeeder extends Seeder
                         'score' => 2,
                         'options' => ['A', 'B', 'C', 'D'],
                         'correct_answer' => 'A',
-                        'explanation' => 'Đây là đáp án đúng'
-                    ]
+                        'explanation' => 'Đây là đáp án đúng',
+                    ],
                 ],
                 'deadline' => now()->addDays(7),
                 'time_limit' => null,
             ]);
 
             $this->command->info('Tạo quiz test thành công!');
-            $this->command->info('Quiz có thời gian 30 phút: ID ' . $quizWithTimeLimit->id . ' - ' . $quizWithTimeLimit->title);
-            $this->command->info('Quiz có thời gian 10 phút: ID ' . $quizWithShortTime->id . ' - ' . $quizWithShortTime->title);
-            $this->command->info('Quiz không giới hạn thời gian: ID ' . $quizWithoutTimeLimit->id . ' - ' . $quizWithoutTimeLimit->title);
+            $this->command->info('Quiz có thời gian 30 phút: ID '.$quizWithTimeLimit->id.' - '.$quizWithTimeLimit->title);
+            $this->command->info('Quiz có thời gian 10 phút: ID '.$quizWithShortTime->id.' - '.$quizWithShortTime->title);
+            $this->command->info('Quiz không giới hạn thời gian: ID '.$quizWithoutTimeLimit->id.' - '.$quizWithoutTimeLimit->title);
         } catch (\Exception $e) {
-            $this->command->error('Lỗi khi tạo quiz test: ' . $e->getMessage());
+            $this->command->error('Lỗi khi tạo quiz test: '.$e->getMessage());
         }
     }
 }

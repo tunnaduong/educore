@@ -40,7 +40,7 @@ return [
     'leave_empty_for_no_expiry' => 'Để trống để không hết hạn',
     'confirm_delete_notification' => 'Bạn có chắc chắn muốn xóa thông báo này không?',
     'required' => 'Bắt buộc',
-    
+
     // Notifications
     'create_notification' => 'Tạo thông báo mới',
     'edit_notification' => 'Chỉnh sửa thông báo',
@@ -55,7 +55,7 @@ return [
     'notification_actions' => 'Thao tác',
     'notification_expiry' => 'Hết hạn',
     'create_and_manage_notifications' => 'Tạo và quản lý thông báo cho học viên',
-    
+
     // Reports
     'class_report' => 'Báo cáo chi tiết lớp học',
     'class_name' => 'Tên lớp',
@@ -82,7 +82,7 @@ return [
     'teacher_conflicts_description' => 'Giáo viên bị trùng lịch dạy',
     'no_conflicts' => 'Không có trùng lịch!',
     'no_conflicts_description' => 'Tất cả lịch học đều được sắp xếp hợp lý.',
-    
+
     // Schedules
     'teaching_schedule' => 'Lịch giảng dạy',
     'view_teaching_schedule' => 'Xem thời khóa biểu các buổi giảng dạy, bài tập, kiểm tra',
@@ -102,7 +102,7 @@ return [
     'events' => 'sự kiện',
     'this_month' => 'Tháng này',
     'total_events' => 'Tổng sự kiện',
-    
+
     // Chat
     'test_user' => 'Test User:',
     'test_class' => 'Test Class:',
@@ -122,7 +122,7 @@ return [
     'echo_available' => 'Echo Available:',
     'checking' => 'Checking...',
     'members' => 'thành viên',
-    
+
     // AI Grading
     'ai_processing' => 'AI đang xử lý...',
     'ai_processing_description' => 'Đang phân tích và xử lý dữ liệu với trí tuệ nhân tạo',
@@ -141,10 +141,10 @@ return [
     'detailed_ai_analysis' => 'Phân tích chi tiết từ AI',
     'improvement_suggestions' => 'Gợi ý cải thiện:',
     'learning_materials' => 'Tài liệu học tập:',
-    
+
     // Pagination
     'showing' => 'Đang hiển thị',
     'to' => 'tới',
     'in' => 'trong',
     'results' => 'kết quả',
-]; 
+];

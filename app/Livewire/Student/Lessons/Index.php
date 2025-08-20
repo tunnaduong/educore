@@ -2,11 +2,10 @@
 
 namespace App\Livewire\Student\Lessons;
 
-use Livewire\Component;
 use App\Models\Lesson;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Classroom;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 use Livewire\WithPagination;
 
 class Index extends Component
@@ -14,9 +13,13 @@ class Index extends Component
     use WithPagination;
 
     public $filterClass = '';
+
     public $search = '';
 
-    public function updatingFilterClass() { $this->resetPage(); }
+    public function updatingFilterClass()
+    {
+        $this->resetPage();
+    }
 
     public function render()
     {
@@ -25,13 +28,13 @@ class Index extends Component
         $classrooms = $user->enrolledClassrooms;
         $classroomIds = $classrooms->pluck('id');
         $lessons = Lesson::whereIn('classroom_id', $classroomIds)
-            ->when($this->search, function($query) {
-                $query->where(function($q) {
+            ->when($this->search, function ($query) {
+                $query->where(function ($q) {
                     $q->where('title', 'like', '%'.$this->search.'%')
-                      ->orWhere('description', 'like', '%'.$this->search.'%');
+                        ->orWhere('description', 'like', '%'.$this->search.'%');
                 });
             })
-            ->when($this->filterClass, function($query) {
+            ->when($this->filterClass, function ($query) {
                 $query->where('classroom_id', $this->filterClass);
             })
             ->orderByDesc('created_at')

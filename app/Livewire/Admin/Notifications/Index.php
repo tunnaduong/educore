@@ -2,33 +2,46 @@
 
 namespace App\Livewire\Admin\Notifications;
 
-use App\Models\Notification;
 use App\Models\Classroom;
+use App\Models\Notification;
 use App\Models\User;
 use Livewire\Component;
-use Livewire\WithPagination;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithFileUploads, WithPagination;
 
     public $search = '';
+
     public $filterType = '';
+
     public $filterStatus = '';
+
     public $showCreateModal = false;
+
     public $showEditModal = false;
+
     public $showDeleteModal = false;
+
     public $selectedNotification;
 
     // Form fields
     public $title = '';
+
     public $message = '';
+
     public $type = 'info';
+
     public $user_id = '';
+
     public $class_id = '';
+
     public $scheduled_at = '';
+
     public $expires_at = '';
+
     public $is_global = false;
 
     protected $rules = [
@@ -102,7 +115,7 @@ class Index extends Component
     {
         $notification = Notification::findOrFail($id);
         $this->selectedNotification = $notification;
-        
+
         $this->title = $notification->title;
         $this->message = $notification->message;
         $this->type = $notification->type;
@@ -111,7 +124,7 @@ class Index extends Component
         $this->scheduled_at = $notification->scheduled_at?->format('Y-m-d\TH:i');
         $this->expires_at = $notification->expires_at?->format('Y-m-d\TH:i');
         $this->is_global = false; // Reset global flag for edit
-        
+
         $this->showEditModal = true;
     }
 
@@ -170,7 +183,7 @@ class Index extends Component
                 $this->selectedNotification->delete();
             }
         }
-        
+
         $this->showDeleteModal = false;
         $this->selectedNotification = null;
         session()->flash('message', 'Thông báo đã được xóa thành công!');
@@ -186,8 +199,8 @@ class Index extends Component
     public function duplicate($id)
     {
         $notification = Notification::findOrFail($id);
-        
-        $this->title = $notification->title . ' (Bản sao)';
+
+        $this->title = $notification->title.' (Bản sao)';
         $this->message = $notification->message;
         $this->type = $notification->type;
         $this->user_id = $notification->user_id;
@@ -195,7 +208,7 @@ class Index extends Component
         $this->scheduled_at = '';
         $this->expires_at = '';
         $this->is_global = false;
-        
+
         $this->showCreateModal = true;
         session()->flash('message', 'Đã sao chép thông báo vào form tạo mới!');
     }
@@ -225,8 +238,8 @@ class Index extends Component
         $query = Notification::with(['user', 'classroom'])
             ->when($this->search, function ($query) {
                 $query->where(function ($q) {
-                    $q->where('title', 'like', '%' . $this->search . '%')
-                      ->orWhere('message', 'like', '%' . $this->search . '%');
+                    $q->where('title', 'like', '%'.$this->search.'%')
+                        ->orWhere('message', 'like', '%'.$this->search.'%');
                 });
             })
             ->when($this->filterType, function ($query) {
@@ -258,4 +271,4 @@ class Index extends Component
             'classrooms' => $this->classrooms,
         ]);
     }
-} 
+}

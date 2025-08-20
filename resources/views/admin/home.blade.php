@@ -8,7 +8,7 @@
             <div class="small-box bg-info">
                 <div class="inner">
                     <h3>{{ $unreadCount }}</h3>
-                    <p>Tin nhắn chưa đọc</p>
+                    <p>{{ __('general.unread_messages') }}</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-envelope"></i>
@@ -24,7 +24,7 @@
             <div class="small-box bg-success">
                 <div class="inner">
                     <h3>{{ $unreadNotification }}</h3>
-                    <p>Thông báo chưa đọc</p>
+                    <p>{{ __('general.unread_notifications') }}</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-bell"></i>
@@ -40,7 +40,7 @@
             <div class="small-box bg-warning">
                 <div class="inner">
                     <h3>{{ \App\Models\User::where('role', 'student')->count() }}</h3>
-                    <p>Tổng số học sinh</p>
+                    <p>{{ __('general.total_students') }}</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-users"></i>
@@ -56,7 +56,7 @@
             <div class="small-box bg-danger">
                 <div class="inner">
                     <h3>{{ \App\Models\User::where('role', 'teacher')->count() }}</h3>
-                    <p>Tổng số giáo viên</p>
+                    <p>{{ __('general.total_teachers') }}</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-chalkboard-teacher"></i>
@@ -176,7 +176,7 @@
                                 <div class="mb-2">
                                     <i class="fas fa-coins" style="font-size:2.5rem; color:#ffc107;"></i>
                                 </div>
-                                <div>Thống kê thu chi</div>
+                                <div>{{ __('general.financial_statistics') }}</div>
                             </a>
                         </div>
                         <!-- Quản lý đánh giá -->
@@ -185,7 +185,7 @@
                                 <div class="mb-2">
                                     <i class="fas fa-star" style="font-size:2.5rem; color:#e91e63;"></i>
                                 </div>
-                                <div>Quản lý đánh giá</div>
+                                <div>{{ __('general.evaluation_management') }}</div>
                             </a>
                         </div>
                         <!-- Thông báo & nhắc lịch -->

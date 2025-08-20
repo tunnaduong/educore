@@ -5,9 +5,9 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-journal-check mr-2"></i>Danh sách bài tập cần chấm
+                        <i class="bi bi-journal-check mr-2"></i>{{ __('general.assignments_to_grade') }}
                     </h4>
-                    <p class="text-muted mb-0">Quản lý và chấm điểm các bài tập của học viên</p>
+                    <p class="text-muted mb-0">{{ __('general.manage_grade_assignments') }}</p>
                 </div>
             </div>
         </div>
@@ -17,7 +17,7 @@
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <label class="form-label">Tìm kiếm</label>
+                        <label class="form-label">{{ __('general.search') }}</label>
                         <input type="text" class="form-control" wire:model.live="search"
                             placeholder="Tìm theo tên hoặc mô tả bài tập...">
                     </div>
@@ -39,7 +39,7 @@
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <label class="form-label">Sắp xếp</label>
+                        <label class="form-label">{{ __('general.sort') }}</label>
                         <select class="form-control" wire:model.live="sortBy">
                             <option value="submissions_count">Số bài nộp</option>
                             <option value="created_at">Ngày tạo</option>

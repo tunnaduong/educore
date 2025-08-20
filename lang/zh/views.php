@@ -40,7 +40,7 @@ return [
     'leave_empty_for_no_expiry' => '留空表示永不过期',
     'confirm_delete_notification' => '您确定要删除此通知吗？',
     'required' => '必填',
-    
+
     // Notifications
     'create_notification' => '创建新通知',
     'edit_notification' => '编辑通知',
@@ -55,7 +55,7 @@ return [
     'notification_actions' => '操作',
     'notification_expiry' => '过期时间',
     'create_and_manage_notifications' => '为学生创建和管理通知',
-    
+
     // Reports
     'class_report' => '详细班级报告',
     'class_name' => '班级名称',
@@ -82,7 +82,7 @@ return [
     'teacher_conflicts_description' => '教学时间冲突的教师',
     'no_conflicts' => '没有冲突！',
     'no_conflicts_description' => '所有时间安排都合理。',
-    
+
     // Schedules
     'teaching_schedule' => '教学时间表',
     'view_teaching_schedule' => '查看教学课程、作业和测验的时间表',
@@ -102,7 +102,7 @@ return [
     'events' => '事件',
     'this_month' => '本月',
     'total_events' => '总事件',
-    
+
     // Chat
     'test_user' => '测试用户：',
     'test_class' => '测试班级：',
@@ -122,7 +122,7 @@ return [
     'echo_available' => 'Echo可用：',
     'checking' => '检查中...',
     'members' => '成员',
-    
+
     // AI Grading
     'ai_processing' => 'AI正在处理...',
     'ai_processing_description' => '使用人工智能分析和处理数据',
@@ -141,10 +141,10 @@ return [
     'detailed_ai_analysis' => '详细AI分析',
     'improvement_suggestions' => '改进建议：',
     'learning_materials' => '学习材料：',
-    
+
     // Pagination
     'showing' => '显示',
     'to' => '到',
     'in' => '在',
     'results' => '结果',
-]; 
+];
