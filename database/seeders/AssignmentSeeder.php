@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Assignment;
 use App\Models\Classroom;
-use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class AssignmentSeeder extends Seeder
 {

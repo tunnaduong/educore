@@ -2,23 +2,28 @@
 
 namespace App\Livewire\Admin\Reports;
 
-use Livewire\Component;
-use App\Models\Student;
-use App\Models\Assignment;
 use App\Models\Attendance;
-use App\Models\QuizResult;
-use App\Models\Classroom;
+use App\Models\Student;
+use Livewire\Component;
 
 class StudentReport extends Component
 {
     public $student;
+
     public $class;
+
     public $progress = 0;
+
     public $avgScore = 0;
+
     public $submitRate = 0;
+
     public $attendanceCount = 0;
+
     public $notSubmittedAssignments = [];
+
     public $needSupport = false;
+
     public $classNames = [];
 
     public function mount($student)
@@ -26,13 +31,13 @@ class StudentReport extends Component
         $this->student = Student::with(['user', 'classrooms', 'assignmentSubmissions', 'quizResults'])->findOrFail($student);
         $this->classNames = $this->student->classrooms->pluck('name')->toArray();
         $assignments = \App\Models\Assignment::whereIn('class_id', $this->student->classrooms->pluck('id'))->get();
-        $submissions = $this->student->assignmentSubmissions->filter(function($sub) {
+        $submissions = $this->student->assignmentSubmissions->filter(function ($sub) {
             return $sub->assignment && in_array($sub->assignment->class_id, $this->student->classrooms->pluck('id')->toArray());
         });
         $this->attendanceCount = Attendance::where('student_id', $this->student->id)
             ->whereIn('class_id', $this->student->classrooms->pluck('id'))
             ->where('present', true)->count();
-        $quizResults = $this->student->quizResults->filter(function($qr) {
+        $quizResults = $this->student->quizResults->filter(function ($qr) {
             return $qr->quiz && in_array($qr->quiz->class_id, $this->student->classrooms->pluck('id')->toArray());
         });
         $this->avgScore = round($quizResults->avg('score') ?? 0, 2);
@@ -47,8 +52,8 @@ class StudentReport extends Component
         $totalLessons = $lessonIds->count();
         $this->progress = $totalLessons > 0 ? round($completedLessons / $totalLessons * 100) : 0;
 
-        $this->notSubmittedAssignments = $assignments->filter(function($a) use ($submissions) {
-            return !$submissions->where('assignment_id', $a->id)->count();
+        $this->notSubmittedAssignments = $assignments->filter(function ($a) use ($submissions) {
+            return ! $submissions->where('assignment_id', $a->id)->count();
         });
         $this->needSupport = $this->avgScore < 5 || $this->submitRate < 60 || $this->progress < 60;
     }

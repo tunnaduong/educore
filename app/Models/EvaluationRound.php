@@ -37,14 +37,16 @@ class EvaluationRound extends Model
     public function scopeCurrent($query)
     {
         $now = now()->toDateString();
+
         return $query->where('start_date', '<=', $now)
-                    ->where('end_date', '>=', $now)
-                    ->where('is_active', true);
+            ->where('end_date', '>=', $now)
+            ->where('is_active', true);
     }
 
     public function isCurrent(): bool
     {
         $now = now()->toDateString();
+
         return $this->is_active &&
                $this->start_date->toDateString() <= $now &&
                $this->end_date->toDateString() >= $now;
@@ -52,7 +54,7 @@ class EvaluationRound extends Model
 
     public function getStatusAttribute(): string
     {
-        if (!$this->is_active) {
+        if (! $this->is_active) {
             return 'inactive';
         }
 
@@ -63,12 +65,13 @@ class EvaluationRound extends Model
         if ($this->end_date->toDateString() < $now) {
             return 'ended';
         }
+
         return 'active';
     }
 
     public function getStatusTextAttribute(): string
     {
-        return match($this->status) {
+        return match ($this->status) {
             'active' => 'Đang diễn ra',
             'upcoming' => 'Sắp diễn ra',
             'ended' => 'Đã kết thúc',

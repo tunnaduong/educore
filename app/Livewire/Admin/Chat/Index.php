@@ -2,33 +2,43 @@
 
 namespace App\Livewire\Admin\Chat;
 
+use App\Models\Classroom;
 use App\Models\Message;
 use App\Models\User;
-use App\Models\Classroom;
-use Livewire\Component;
-use Livewire\WithPagination;
-use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Component;
+use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithFileUploads, WithPagination;
 
     public $selectedUser = null;
+
     public $selectedClass = null;
+
     public $messageText = '';
+
     public $attachment = null;
+
     public $searchTerm = '';
+
     public $messageType = 'user'; // 'user' or 'class'
+
     public $unreadCount = 0;
+
     public $memberSearch = '';
+
     public $addMemberSearch = '';
+
     public $allUsers;
+
     public $activeTab = 'users'; // 'users' hoặc 'classes'
 
     protected $listeners = [
-        'messageReceived' => 'refreshMessages'
+        'messageReceived' => 'refreshMessages',
     ];
 
     public function mount()
@@ -140,8 +150,8 @@ class Index extends Component
 
         if ($this->searchTerm) {
             $query->where(function ($q) {
-                $q->where('name', 'like', '%' . $this->searchTerm . '%')
-                    ->orWhere('email', 'like', '%' . $this->searchTerm . '%');
+                $q->where('name', 'like', '%'.$this->searchTerm.'%')
+                    ->orWhere('email', 'like', '%'.$this->searchTerm.'%');
             });
         }
 
@@ -161,7 +171,7 @@ class Index extends Component
         }
 
         if ($this->searchTerm) {
-            $query->where('name', 'like', '%' . $this->searchTerm . '%');
+            $query->where('name', 'like', '%'.$this->searchTerm.'%');
         }
 
         $classes = $query->orderBy('name')->get();
@@ -169,6 +179,7 @@ class Index extends Component
         foreach ($classes as $class) {
             $class->unread_messages_count = $class->unreadMessagesCountForUser(auth()->id());
         }
+
         return $classes;
     }
 
@@ -207,14 +218,16 @@ class Index extends Component
 
     public function addTeacher($userId)
     {
-        if (!$this->selectedClass)
+        if (! $this->selectedClass) {
             return;
+        }
         if (auth()->user()->role !== 'admin') {
             $this->dispatch('showToast', ['type' => 'error', 'message' => 'Chỉ admin mới được thêm giáo viên!']);
+
             return;
         }
         $user = User::find($userId);
-        if ($user && $user->role === 'teacher' && !$this->selectedClass->users->contains($user->id)) {
+        if ($user && $user->role === 'teacher' && ! $this->selectedClass->users->contains($user->id)) {
             $this->selectedClass->users()->attach($user->id, ['role' => 'teacher']);
             $this->selectedClass = Classroom::with('users')->find($this->selectedClass->id);
             $this->allUsers = User::all();
@@ -228,12 +241,15 @@ class Index extends Component
 
     public function removeMember($userId)
     {
-        if (!$this->selectedClass)
+        if (! $this->selectedClass) {
             return;
-        if (!in_array(auth()->user()->role, ['admin', 'teacher']))
+        }
+        if (! in_array(auth()->user()->role, ['admin', 'teacher'])) {
             return;
-        if ($userId == auth()->id())
+        }
+        if ($userId == auth()->id()) {
             return;
+        }
         $user = User::find($userId);
         if ($user && $this->selectedClass->users->contains($user->id)) {
             $this->selectedClass->users()->detach($user->id);
@@ -258,6 +274,7 @@ class Index extends Component
                 return response()->download($path);
             }
         }
+
         return back()->with('error', 'File không tồn tại');
     }
 
@@ -276,6 +293,7 @@ class Index extends Component
                 'user_ids' => $canAdd->pluck('id')->toArray(),
             ]);
         }
+
         return view('admin.chat.index', [
             'messages' => $this->messages,
             'users' => $this->users,

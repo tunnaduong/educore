@@ -2,18 +2,22 @@
 
 namespace App\Livewire\Admin\Attendance;
 
-use App\Models\Classroom;
 use App\Models\Attendance;
+use App\Models\Classroom;
 use App\Models\Student;
-use Livewire\Component;
 use Carbon\Carbon;
+use Livewire\Component;
 
 class AttendanceHistory extends Component
 {
     public Classroom $classroom;
+
     public $selectedMonth;
+
     public $selectedYear;
+
     public $attendanceHistory = [];
+
     public $monthlyStats = [];
 
     public function mount($classroom)
@@ -128,7 +132,7 @@ class AttendanceHistory extends Component
 
     public function getMonthName($month)
     {
-        return 'Tháng ' . (int) $month;
+        return 'Tháng '.(int) $month;
     }
 
     public function getDayName($date)
