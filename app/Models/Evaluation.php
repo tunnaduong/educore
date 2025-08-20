@@ -47,7 +47,7 @@ class Evaluation extends Model
      */
     public function getTeacherAverageRating(): float
     {
-        if (!$this->teacher_ratings) {
+        if (! $this->teacher_ratings) {
             return 0;
         }
 
@@ -62,7 +62,7 @@ class Evaluation extends Model
      */
     public function getCourseAverageRating(): float
     {
-        if (!$this->course_ratings) {
+        if (! $this->course_ratings) {
             return 0;
         }
 
@@ -92,7 +92,7 @@ class Evaluation extends Model
      */
     public function isSubmitted(): bool
     {
-        return !is_null($this->submitted_at);
+        return ! is_null($this->submitted_at);
     }
 
     /**

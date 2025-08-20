@@ -2,23 +2,29 @@
 
 namespace App\Livewire\Teacher\Assignments;
 
-use Livewire\Component;
 use App\Models\Assignment;
 use App\Models\Classroom;
-use Livewire\WithFileUploads;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Edit extends Component
 {
     use WithFileUploads;
 
     public $assignment;
+
     public $title;
+
     public $description;
+
     public $class_id;
+
     public $deadline;
+
     public $types = [];
+
     public $allTypes = [
         'text' => 'Điền từ',
         'essay' => 'Tự luận',
@@ -26,12 +32,19 @@ class Edit extends Component
         'audio' => 'Ghi âm',
         'video' => 'Quay video',
     ];
+
     public $classrooms = [];
+
     public $attachment;
+
     public $video;
+
     public $old_attachment_path;
+
     public $old_video_path;
+
     public $assignmentId;
+
     public $max_score;
 
     public function mount($assignment)
@@ -46,7 +59,7 @@ class Edit extends Component
         $this->types = $this->assignment->types ?? [];
         $this->old_attachment_path = $this->assignment->attachment_path;
         $this->old_video_path = $this->assignment->video_path;
-        
+
         // Chỉ lấy các lớp học mà giáo viên hiện tại đã tham gia
         $this->classrooms = Classroom::whereHas('teachers', function ($query) {
             $query->where('users.id', Auth::id());
@@ -68,13 +81,15 @@ class Edit extends Component
         $attachmentPath = $this->old_attachment_path;
         $videoPath = $this->old_video_path;
         if ($this->attachment && is_object($this->attachment) && method_exists($this->attachment, 'store')) {
-            if ($attachmentPath)
+            if ($attachmentPath) {
                 Storage::disk('public')->delete($attachmentPath);
+            }
             $attachmentPath = $this->attachment->store('assignments/attachments', 'public');
         }
         if ($this->video && is_object($this->video) && method_exists($this->video, 'store')) {
-            if ($videoPath)
+            if ($videoPath) {
                 Storage::disk('public')->delete($videoPath);
+            }
             $videoPath = $this->video->store('assignments/videos', 'public');
         }
 
@@ -90,6 +105,7 @@ class Edit extends Component
         ]);
 
         session()->flash('success', 'Cập nhật bài tập thành công!');
+
         return redirect()->route('teacher.assignments.index');
     }
 

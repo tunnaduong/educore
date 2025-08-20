@@ -2,24 +2,27 @@
 
 namespace App\Livewire\Admin\Help;
 
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 
 class ContactForm extends Component
 {
     use WithFileUploads;
 
     public $name;
+
     public $email;
+
     public $description;
+
     public $attachment;
+
     public $tickets = [];
 
     protected $rules = [
         'description' => 'required|min:10',
-        'attachment' => 'nullable|file|max:10240|mimes:jpg,jpeg,png,mp4'
+        'attachment' => 'nullable|file|max:10240|mimes:jpg,jpeg,png,mp4',
     ];
 
     protected $messages = [
@@ -27,7 +30,7 @@ class ContactForm extends Component
         'description.min' => 'Mô tả phải có ít nhất 10 ký tự',
         'attachment.file' => 'File không hợp lệ',
         'attachment.max' => 'File không được vượt quá 10MB',
-        'attachment.mimes' => 'Chỉ chấp nhận file .jpg, .png, .mp4'
+        'attachment.mimes' => 'Chỉ chấp nhận file .jpg, .png, .mp4',
     ];
 
     public function mount()
@@ -47,15 +50,15 @@ class ContactForm extends Component
                 'subject' => 'Vấn đề với tạo bài kiểm tra',
                 'status' => 'completed',
                 'created_at' => '2024-01-15 10:30:00',
-                'updated_at' => '2024-01-16 14:20:00'
+                'updated_at' => '2024-01-16 14:20:00',
             ],
             [
                 'id' => 2,
                 'subject' => 'Không thể xuất báo cáo Excel',
                 'status' => 'processing',
                 'created_at' => '2024-01-20 09:15:00',
-                'updated_at' => '2024-01-20 16:45:00'
-            ]
+                'updated_at' => '2024-01-20 16:45:00',
+            ],
         ];
     }
 
@@ -69,7 +72,7 @@ class ContactForm extends Component
             'email' => $this->email,
             'description' => $this->description,
             'user_id' => $user ? $user->id : null,
-            'status' => 'pending'
+            'status' => 'pending',
         ];
 
         // Save attachment if uploaded
@@ -102,7 +105,7 @@ class ContactForm extends Component
 
     public function getStatusBadgeClass($status)
     {
-        return match($status) {
+        return match ($status) {
             'pending' => 'badge-warning',
             'processing' => 'badge-info',
             'completed' => 'badge-success',
@@ -112,7 +115,7 @@ class ContactForm extends Component
 
     public function getStatusText($status)
     {
-        return match($status) {
+        return match ($status) {
             'pending' => 'Chờ xử lý',
             'processing' => 'Đang xử lý',
             'completed' => 'Hoàn thành',

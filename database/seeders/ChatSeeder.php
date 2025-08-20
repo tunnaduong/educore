@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Classroom;
 use App\Models\Message;
 use App\Models\User;
-use App\Models\Classroom;
 use Illuminate\Database\Seeder;
 
 class ChatSeeder extends Seeder
@@ -16,6 +16,7 @@ class ChatSeeder extends Seeder
 
         if ($users->count() < 2) {
             $this->command->info('Cần ít nhất 2 người dùng để tạo tin nhắn mẫu.');
+
             return;
         }
 
@@ -55,7 +56,7 @@ class ChatSeeder extends Seeder
                     Message::create([
                         'sender_id' => $teacher->id,
                         'class_id' => $classroom->id,
-                        'message' => "Nhớ hoàn thành bài tập trước buổi học tiếp theo nhé!",
+                        'message' => 'Nhớ hoàn thành bài tập trước buổi học tiếp theo nhé!',
                         'created_at' => now()->subHours(rand(1, 3)),
                     ]);
                 }

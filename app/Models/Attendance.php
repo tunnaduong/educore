@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Carbon\Carbon;
 
 class Attendance extends Model
 {
@@ -13,7 +13,7 @@ class Attendance extends Model
         'student_id',
         'date',
         'present',
-        'reason'
+        'reason',
     ];
 
     protected $casts = [
@@ -60,20 +60,20 @@ class Attendance extends Model
     {
         $selectedDate = Carbon::parse($date);
         $now = Carbon::now();
-        
+
         // Kiểm tra xem ngày đã chọn có phải là tương lai không
         if ($selectedDate->isFuture()) {
             return [
                 'can' => false,
-                'message' => 'Không thể điểm danh cho ngày trong tương lai.'
+                'message' => 'Không thể điểm danh cho ngày trong tương lai.',
             ];
         }
 
         // Kiểm tra xem ngày đã chọn có phải là quá khứ không
-        if ($selectedDate->isPast() && !$selectedDate->isToday()) {
+        if ($selectedDate->isPast() && ! $selectedDate->isToday()) {
             return [
                 'can' => false,
-                'message' => 'Không thể điểm danh cho ngày trong quá khứ.'
+                'message' => 'Không thể điểm danh cho ngày trong quá khứ.',
             ];
         }
 
@@ -83,14 +83,14 @@ class Attendance extends Model
             $days = $schedule['days'] ?? [];
             $time = $schedule['time'] ?? '';
 
-            if (!empty($days) && !empty($time)) {
+            if (! empty($days) && ! empty($time)) {
                 // Kiểm tra xem ngày đã chọn có phải là ngày học không
                 $dayOfWeek = $selectedDate->format('l'); // Monday, Tuesday, etc.
-                
-                if (!in_array($dayOfWeek, $days)) {
+
+                if (! in_array($dayOfWeek, $days)) {
                     return [
                         'can' => false,
-                        'message' => 'Ngày này không phải là ngày học của lớp.'
+                        'message' => 'Ngày này không phải là ngày học của lớp.',
                     ];
                 }
 
@@ -100,7 +100,7 @@ class Attendance extends Model
                     if (count($timeParts) === 2) {
                         $startTime = Carbon::parse($timeParts[0]);
                         $endTime = Carbon::parse($timeParts[1]);
-                        
+
                         // Tạo thời gian học cho ngày đã chọn
                         $classStartTime = $selectedDate->copy()->setTime($startTime->hour, $startTime->minute);
                         $classEndTime = $selectedDate->copy()->setTime($endTime->hour, $endTime->minute);
@@ -109,7 +109,7 @@ class Attendance extends Model
                         if ($now->isBefore($classStartTime)) {
                             return [
                                 'can' => false,
-                                'message' => 'Chưa đến thời gian học. Chỉ có thể điểm danh từ ' . $startTime->format('H:i') . ' đến ' . $endTime->format('H:i') . '.'
+                                'message' => 'Chưa đến thời gian học. Chỉ có thể điểm danh từ '.$startTime->format('H:i').' đến '.$endTime->format('H:i').'.',
                             ];
                         }
 
@@ -117,7 +117,7 @@ class Attendance extends Model
                         if ($now->isAfter($classEndTime)) {
                             return [
                                 'can' => false,
-                                'message' => 'Đã qua thời gian học. Không thể điểm danh lại.'
+                                'message' => 'Đã qua thời gian học. Không thể điểm danh lại.',
                             ];
                         }
                     }
@@ -127,7 +127,7 @@ class Attendance extends Model
 
         return [
             'can' => true,
-            'message' => ''
+            'message' => '',
         ];
     }
 
