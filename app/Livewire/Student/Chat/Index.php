@@ -149,8 +149,8 @@ class Index extends Component
         $message = Message::create($messageData);
 
         // Dispatch event để broadcast tin nhắn
-        // \Illuminate\Support\Facades\Log::info('Dispatching MessageSent event', ['message_id' => $message->id]);
-        // \App\Events\MessageSent::dispatch($message);
+        \Log::info('Dispatching MessageSent event', ['message_id' => $message->id]);
+        \App\Events\MessageSent::dispatch($message);
 
         $this->messageText = '';
         $this->attachment = null;

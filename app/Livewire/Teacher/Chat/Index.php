@@ -186,7 +186,7 @@ class Index extends Component
         $message = Message::create($messageData);
 
         // Dispatch event để broadcast tin nhắn
-        Log::info('Dispatching MessageSent event', ['message_id' => $message->id]);
+        \Log::info('Dispatching MessageSent event', ['message_id' => $message->id]);
         \App\Events\MessageSent::dispatch($message);
 
         $this->messageText = '';
