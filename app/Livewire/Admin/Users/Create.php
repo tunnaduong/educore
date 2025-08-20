@@ -28,7 +28,11 @@ class Create extends Component
                     return $query->whereNotNull('email');
                 }),
             ],
-            'phone' => 'required|string|min:10|unique:users',
+            'phone' => [
+                'required',
+                'regex:/^\d{10,15}$/',
+                'unique:users,phone',
+            ],
             'password' => 'required|min:6|confirmed',
             'role' => 'required|in:admin,teacher,student',
             'is_active' => 'boolean',
@@ -41,8 +45,9 @@ class Create extends Component
         'email.email' => 'Email không hợp lệ',
         'email.unique' => 'Email đã tồn tại trong hệ thống',
         'phone.required' => 'Vui lòng nhập số điện thoại',
-        'phone.min' => 'Số điện thoại phải có ít nhất :min số',
+
         'phone.unique' => 'Số điện thoại đã tồn tại trong hệ thống',
+        'phone.regex' => 'Số điện thoại chỉ gồm số và có 10-15 chữ số',
         'password.required' => 'Vui lòng nhập mật khẩu',
         'password.min' => 'Mật khẩu phải có ít nhất :min ký tự',
         'password.confirmed' => 'Xác nhận mật khẩu không khớp',
