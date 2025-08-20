@@ -33,6 +33,10 @@ class ScheduleConflictHelper
         $newTimeRange = $newSchedule['time'];
         
         foreach ($currentClassrooms as $currentClassroom) {
+            // Loại trừ chính lớp đang xét nếu vì lý do nào đó vẫn lọt qua filter truy vấn
+            if ($newClassroom->id && $currentClassroom->id == $newClassroom->id) {
+                continue;
+            }
             $currentSchedule = $currentClassroom->schedule;
             if (!$currentSchedule || !isset($currentSchedule['days']) || !isset($currentSchedule['time'])) {
                 continue;
@@ -98,6 +102,10 @@ class ScheduleConflictHelper
         $newTimeRange = $newSchedule['time'];
         
         foreach ($currentClassrooms as $currentClassroom) {
+            // Loại trừ chính lớp đang xét nếu vì lý do nào đó vẫn lọt qua filter truy vấn
+            if ($newClassroom->id && $currentClassroom->id == $newClassroom->id) {
+                continue;
+            }
             $currentSchedule = $currentClassroom->schedule;
             if (!$currentSchedule || !isset($currentSchedule['days']) || !isset($currentSchedule['time'])) {
                 continue;
@@ -150,11 +158,21 @@ class ScheduleConflictHelper
             if (!$teacher) continue;
             
             $conflict = self::checkTeacherScheduleConflict($teacher, $classroom);
-            if ($conflict['hasConflict']) {
-                $allConflicts[$teacherId] = [
-                    'teacher' => $teacher,
-                    'conflicts' => $conflict['conflicts']
-                ];
+
+            // Loại bỏ mọi xung đột trùng với chính lớp hiện tại theo id
+            if (!empty($conflict['conflicts'])) {
+                $filtered = array_values(array_filter($conflict['conflicts'], function ($item) use ($classroom) {
+                    return isset($item['classroom']) && $classroom->id
+                        ? $item['classroom']->id !== $classroom->id
+                        : true;
+                }));
+
+                if (!empty($filtered)) {
+                    $allConflicts[$teacherId] = [
+                        'teacher' => $teacher,
+                        'conflicts' => $filtered,
+                    ];
+                }
             }
         }
         

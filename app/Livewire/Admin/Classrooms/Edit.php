@@ -128,6 +128,8 @@ class Edit extends Component
                 'time' => $this->startTime . ' - ' . $this->endTime,
             ]
         ]);
+        // Gán id lớp hiện tại để helper loại trừ chính lớp này khi kiểm tra trùng lịch
+        $tempClassroom->id = $this->classroom->id;
 
         $conflictCheck = ScheduleConflictHelper::checkMultipleTeachersScheduleConflict(
             $this->teacher_ids,
@@ -155,6 +157,8 @@ class Edit extends Component
                     'time' => $this->startTime . ' - ' . $this->endTime,
                 ]
             ]);
+            // Gán id lớp hiện tại để helper loại trừ chính lớp này khi kiểm tra trùng lịch
+            $tempClassroom->id = $this->classroom->id;
 
             $conflictCheck = ScheduleConflictHelper::checkMultipleTeachersScheduleConflict(
                 $this->teacher_ids,
