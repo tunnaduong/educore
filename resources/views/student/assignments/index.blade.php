@@ -6,9 +6,9 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-journal-text mr-2"></i>Danh sách bài tập
+                        <i class="bi bi-journal-text mr-2"></i>{{ __('general.assignment_list') }}
                     </h4>
-                    <p class="text-muted mb-0">Các bài tập bạn cần hoàn thành</p>
+                    <p class="text-muted mb-0">{{ __('general.assignments_to_complete') }}</p>
                 </div>
             </div>
         </div>
@@ -18,46 +18,46 @@
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <label class="form-label">Tìm kiếm</label>
+                        <label class="form-label">{{ __('general.search') }}</label>
                         <input type="text" class="form-control" wire:model.live="search"
-                            placeholder="Tìm theo tên hoặc mô tả...">
+                            placeholder="{{ __('general.search_by_name_description') }}">
                     </div>
                     <div class="col-md-2">
-                        <label class="form-label">Trạng thái</label>
+                        <label class="form-label">{{ __('general.status') }}</label>
                         <select class="form-control" wire:model.live="filterStatus">
-                            <option value="all">Tất cả</option>
-                            <option value="upcoming">Chưa đến hạn</option>
-                            <option value="overdue">Quá hạn</option>
-                            <option value="completed">Đã hoàn thành</option>
+                            <option value="all">{{ __('general.all') }}</option>
+                            <option value="upcoming">{{ __('general.upcoming') }}</option>
+                            <option value="overdue">{{ __('general.overdue') }}</option>
+                            <option value="completed">{{ __('general.completed') }}</option>
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <label class="form-label">Lớp học</label>
+                        <label class="form-label">{{ __('general.classroom') }}</label>
                         <select class="form-control" wire:model.live="filterClassroom">
-                            <option value="">Tất cả</option>
+                            <option value="">{{ __('general.all') }}</option>
                             @foreach ($classrooms as $classroom)
                                 <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <label class="form-label">Giảng viên</label>
+                        <label class="form-label">{{ __('general.teacher') }}</label>
                         <select class="form-control" wire:model.live="filterTeacher">
-                            <option value="">Tất cả</option>
+                            <option value="">{{ __('general.all') }}</option>
                             @foreach ($teachers as $teacher)
                                 <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <label class="form-label">Loại bài tập</label>
+                        <label class="form-label">{{ __('general.assignment_type') }}</label>
                         <select class="form-control" wire:model.live="filterType">
-                            <option value="">Tất cả</option>
-                            <option value="text">Điền từ</option>
-                            <option value="essay">Tự luận</option>
-                            <option value="image">Upload ảnh</option>
-                            <option value="audio">Ghi âm</option>
-                            <option value="video">Video</option>
+                            <option value="">{{ __('general.all') }}</option>
+                            <option value="text">{{ __('general.text') }}</option>
+                            <option value="essay">{{ __('general.essay') }}</option>
+                            <option value="image">{{ __('general.image') }}</option>
+                            <option value="audio">{{ __('general.audio') }}</option>
+                            <option value="video">{{ __('general.video') }}</option>
                         </select>
                     </div>
                 </div>
@@ -70,7 +70,7 @@
         <div class="card shadow-sm">
             <div class="card-header bg-light">
                 <h6 class="mb-0">
-                    <i class="bi bi-list-ul mr-2"></i>Danh sách bài tập
+                    <i class="bi bi-list-ul mr-2"></i>{{ __('general.assignment_list') }}
                 </h6>
             </div>
             <div class="card-body">
@@ -79,13 +79,13 @@
                         <table class="table table-hover align-middle">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Tiêu đề</th>
-                                    <th>Lớp học</th>
-                                    <th>Giảng viên</th>
-                                    <th>Loại bài tập</th>
-                                    <th>Hạn nộp</th>
-                                    <th>Trạng thái</th>
-                                    <th>Thao tác</th>
+                                    <th>{{ __('general.title') }}</th>
+                                    <th>{{ __('general.classroom') }}</th>
+                                    <th>{{ __('general.teacher') }}</th>
+                                    <th>{{ __('general.assignment_type') }}</th>
+                                    <th>{{ __('general.deadline') }}</th>
+                                    <th>{{ __('general.status') }}</th>
+                                    <th>{{ __('general.actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -113,7 +113,7 @@
                                                     <span class="badge bg-secondary">{{ $teacher->name }}</span>
                                                 @endforeach
                                             @else
-                                                <span class="text-muted">Chưa có giáo viên</span>
+                                                <span class="text-muted">{{ __('general.no_teacher') }}</span>
                                             @endif
                                         </td>
                                         <td>
@@ -122,23 +122,23 @@
                                                     <span class="badge bg-primary mr-1">
                                                         @switch($type)
                                                             @case('text')
-                                                                Điền từ
+                                                                {{ __('general.text') }}
                                                             @break
 
                                                             @case('essay')
-                                                                Tự luận
+                                                                {{ __('general.essay') }}
                                                             @break
 
                                                             @case('image')
-                                                                Upload ảnh
+                                                                {{ __('general.image') }}
                                                             @break
 
                                                             @case('audio')
-                                                                Ghi âm
+                                                                {{ __('general.audio') }}
                                                             @break
 
                                                             @case('video')
-                                                                Video
+                                                                {{ __('general.video') }}
                                                             @break
 
                                                             @default
@@ -163,26 +163,26 @@
                                                         : 'upcoming');
                                             @endphp
                                             @if ($status === 'completed')
-                                                <span class="badge bg-success">Đã hoàn thành</span>
+                                                <span class="badge bg-success">{{ __('general.completed') }}</span>
                                             @elseif($status === 'overdue')
-                                                <span class="badge bg-danger">Quá hạn</span>
+                                                <span class="badge bg-danger">{{ __('general.overdue') }}</span>
                                             @else
-                                                <span class="badge bg-warning text-dark">Cần làm</span>
+                                                <span class="badge bg-warning text-dark">{{ __('general.need_to_do') }}</span>
                                             @endif
                                         </td>
                                         <td>
                                             @if ($this->canSubmit($assignment))
                                                 <a href="{{ route('student.assignments.submit', $assignment->id) }}"
-                                                    class="btn btn-sm btn-outline-primary" title="Làm bài">
-                                                    <i class="bi bi-pencil"></i> Làm bài
+                                                    class="btn btn-sm btn-outline-primary" title="{{ __('general.do_assignment') }}">
+                                                    <i class="bi bi-pencil"></i> {{ __('general.do_assignment') }}
                                                 </a>
                                             @elseif($this->isCompleted($assignment))
                                                 <a href="{{ route('student.assignments.show', $assignment->id) }}"
-                                                    class="btn btn-sm btn-outline-success" title="Xem bài nộp">
-                                                    <i class="bi bi-eye"></i> Xem bài nộp
+                                                    class="btn btn-sm btn-outline-success" title="{{ __('general.view_submission') }}">
+                                                    <i class="bi bi-eye"></i> {{ __('general.view_submission') }}
                                                 </a>
                                             @else
-                                                <span class="text-muted">Quá hạn</span>
+                                                <span class="text-muted">{{ __('general.overdue_status') }}</span>
                                             @endif
                                         </td>
                                     </tr>
@@ -197,8 +197,8 @@
                 @else
                     <div class="text-center py-5">
                         <i class="bi bi-journal-x fs-1 text-muted mb-3"></i>
-                        <h5 class="text-muted">Không có bài tập nào</h5>
-                        <p class="text-muted">Hiện tại không có bài tập nào phù hợp với bộ lọc của bạn.</p>
+                        <h5 class="text-muted">{{ __('general.no_assignments') }}</h5>
+                        <p class="text-muted">{{ __('general.no_assignments_filter') }}</p>
                     </div>
                 @endif
             </div>

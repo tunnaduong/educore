@@ -228,13 +228,13 @@
 
                 <div class="loading-steps">
                     <div class="loading-step active">
-                        <i class="fas fa-search"></i> Phân tích nội dung
+                        <i class="fas fa-search"></i> {{ __('general.analyzing_content') }}
                     </div>
                     <div class="loading-step">
-                        <i class="fas fa-cogs"></i> Xử lý AI
+                        <i class="fas fa-cogs"></i> {{ __('general.ai_processing_step') }}
                     </div>
                     <div class="loading-step">
-                        <i class="fas fa-check"></i> Hoàn thành
+                        <i class="fas fa-check"></i> {{ __('general.completing') }}
                     </div>
                 </div>
             </div>
@@ -246,9 +246,9 @@
                     <div class="card-header">
                         <h4 class="card-title">
                             <i class="fas fa-robot text-primary"></i>
-                            Chấm bài Tiếng Trung bằng AI
+                            {{ __('general.grade_chinese_with_ai') }}
                         </h4><br>
-                        <p class="text-muted">{{ __('views.ai_usage_description') }}</p>
+                        <p class="text-muted">{{ __('general.ai_usage_description') }}</p>
                     </div>
                     <div class="card-body">
                         @if (session()->has('success'))
@@ -271,11 +271,11 @@
                                 <div class="col-md-6">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h5 class="card-title">{{ __('views.student_submission') }}</h5>
+                                            <h5 class="card-title">{{ __('general.student_submission') }}</h5>
                                         </div>
                                         <div class="card-body">
                                             <div class="mb-3">
-                                                <strong>{{ __('views.content') }}</strong>
+                                                <strong>{{ __('general.content') }}</strong>
                                                 <div class="border rounded p-3 mt-2 bg-light">
                                                     {!! nl2br(e($submission->content)) !!}
                                                 </div>
@@ -283,7 +283,7 @@
 
                                             @if ($submission->hasAICorrection())
                                                 <div class="mb-3">
-                                                    <strong>{{ __('views.ai_corrected_content') }}</strong>
+                                                    <strong>{{ __('general.ai_corrected_content') }}</strong>
                                                     <div class="border rounded p-3 mt-2 bg-success bg-opacity-10">
                                                         {!! nl2br(e($submission->ai_corrected_content)) !!}
                                                     </div>
@@ -297,7 +297,7 @@
                                                 @endphp
                                                 @if (!empty($errorsFound))
                                                     <div class="mb-3">
-                                                        <strong>{{ __('views.fixed_errors') }}</strong>
+                                                        <strong>{{ __('general.fixed_errors') }}</strong>
                                                         <ul class="list-group mt-2">
                                                             @foreach ($errorsFound as $error)
                                                                 <li class="list-group-item">

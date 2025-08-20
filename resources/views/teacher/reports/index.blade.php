@@ -2,10 +2,9 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-bar-chart mr-2"></i>Báo cáo & Thống kê học tập
+                <i class="bi bi-bar-chart mr-2"></i>{{ __('general.reports_and_statistics') }}
             </h4>
-            <p class="text-muted mb-0">Tổng hợp tiến độ, điểm, tỷ lệ nộp bài, số buổi tham gia của học viên các lớp bạn
-                đang dạy</p>
+            <p class="text-muted mb-0">{{ __('general.reports_description') }}</p>
         </div>
     </div>
     <div class="card mb-4">
@@ -33,7 +32,7 @@
                 </div>
                 <div class="col-md-4 d-flex align-items-end">
                     <a href="{{ route('teacher.reports.index') }}" class="btn btn-outline-secondary w-100">
-                        <i class="bi bi-arrow-clockwise mr-1"></i>Reset
+                        <i class="bi bi-arrow-clockwise mr-1"></i>{{ __('general.reset') }}
                     </a>
                 </div>
             </div>
@@ -86,7 +85,8 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center py-4 text-muted">{{ __('views.no_data_available') }}</td>
+                                <td colspan="7" class="text-center py-4 text-muted">
+                                    {{ __('views.no_data_available') }}</td>
                             </tr>
                         @endforelse
                     </tbody>
