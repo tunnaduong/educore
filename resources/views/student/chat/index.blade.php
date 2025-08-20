@@ -210,7 +210,7 @@
 
                             <!-- Message input with drag & drop -->
                             <div class="border-top pt-3">
-                                <form wire:submit="sendMessage">
+                                <form wire:submit.prevent="sendMessage">
                                     <div class="row g-2">
                                         <div class="col">
                                             <div class="input-group">
@@ -225,7 +225,7 @@
                                                 </button>
                                             </div>
                                             <input type="file" wire:model="attachment" id="attachment"
-                                                class="d-none">
+                                                class="d-none" accept="image/*,.pdf,.doc,.docx,.txt">
                                             @if ($attachment)
                                                 <small class="text-muted">
                                                     <i class="bi bi-paperclip"></i>

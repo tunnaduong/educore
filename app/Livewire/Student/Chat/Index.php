@@ -76,9 +76,14 @@ class Index extends Component
     public function sendMessage()
     {
         $this->validate([
-            'messageText' => 'required|string|max:1000',
+            'messageText' => 'nullable|string|max:1000',
             'attachment' => 'nullable|file|max:10240', // 10MB max
         ]);
+
+        if ((trim($this->messageText) === '' || $this->messageText === null) && !$this->attachment) {
+            $this->addError('messageText', 'Vui lòng nhập nội dung hoặc chọn tệp đính kèm.');
+            return;
+        }
 
         $messageData = [
             'sender_id' => auth()->id(),
