@@ -3,18 +3,24 @@
 namespace App\Livewire\Admin\Users;
 
 use App\Models\User;
-use Livewire\Component;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Livewire\Component;
 
 class Create extends Component
 {
     public $name = '';
+
     public $email = '';
+
     public $phone = '';
+
     public $password = '';
+
     public $password_confirmation = '';
+
     public $role = '';
+
     public $is_active = true;
 
     protected function rules()
@@ -73,6 +79,7 @@ class Create extends Component
         ]);
 
         session()->flash('success', 'Tạo người dùng thành công!');
+
         return $this->redirect(route('users.index'));
     }
 

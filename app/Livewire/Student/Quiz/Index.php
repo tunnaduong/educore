@@ -2,20 +2,21 @@
 
 namespace App\Livewire\Student\Quiz;
 
+use App\Models\Quiz;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Quiz;
-use App\Models\Classroom;
-use App\Models\QuizResult;
-use Illuminate\Support\Facades\Auth;
 
 class Index extends Component
 {
     use WithPagination;
 
     public $search = '';
+
     public $filterClass = '';
+
     public $filterStatus = '';
+
     public $filterSubmissionStatus = '';
 
     protected $queryString = [
@@ -29,14 +30,17 @@ class Index extends Component
     {
         $this->resetPage();
     }
+
     public function updatingFilterClass()
     {
         $this->resetPage();
     }
+
     public function updatingFilterStatus()
     {
         $this->resetPage();
     }
+
     public function updatingFilterSubmissionStatus()
     {
         $this->resetPage();
@@ -56,7 +60,7 @@ class Index extends Component
         $user = Auth::user();
 
         // Kiểm tra xem user có student profile không
-        if (!$user->studentProfile) {
+        if (! $user->studentProfile) {
             return view('student.quiz.index', [
                 'quizzes' => collect(),
                 'classrooms' => collect(),
@@ -72,8 +76,8 @@ class Index extends Component
             ->whereIn('class_id', $classIds)
             ->when($this->search, function ($query) {
                 $query->where(function ($q) {
-                    $q->where('title', 'like', '%' . $this->search . '%')
-                        ->orWhere('description', 'like', '%' . $this->search . '%');
+                    $q->where('title', 'like', '%'.$this->search.'%')
+                        ->orWhere('description', 'like', '%'.$this->search.'%');
                 });
             })
             ->when($this->filterClass, function ($query) {
@@ -98,6 +102,7 @@ class Index extends Component
             if ($quiz->classroom && $quiz->classroom->status === 'completed') {
                 return $quizResults->has($quiz->id);
             }
+
             // Nếu lớp chưa kết thúc, hiển thị tất cả bài kiểm tra
             return true;
         });
@@ -109,9 +114,9 @@ class Index extends Component
 
                 switch ($this->filterSubmissionStatus) {
                     case 'not_started':
-                        return !$result;
+                        return ! $result;
                     case 'in_progress':
-                        return $result && !$result->submitted_at;
+                        return $result && ! $result->submitted_at;
                     case 'submitted':
                         return $result && $result->submitted_at;
                     case 'completed':

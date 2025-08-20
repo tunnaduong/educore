@@ -2,10 +2,9 @@
 
 namespace App\Livewire\Teacher\Notifications;
 
-use Livewire\Component;
 use App\Models\Notification;
-use App\Models\Classroom;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 use Livewire\WithPagination;
 
 class Index extends Component
@@ -13,18 +12,28 @@ class Index extends Component
     use WithPagination;
 
     public $search = '';
+
     public $filterType = '';
+
     public $filterStatus = '';
+
     public $showCreateModal = false;
+
     public $showEditModal = false;
+
     public $editingNotification = null;
 
     // Form fields
     public $title = '';
+
     public $message = '';
+
     public $type = 'info';
+
     public $class_id = '';
+
     public $scheduled_at = '';
+
     public $is_urgent = false;
 
     protected $rules = [
@@ -110,7 +119,7 @@ class Index extends Component
     {
         $user = Auth::user();
         $classrooms = $user->teachingClassrooms;
-        
+
         $this->editingNotification = Notification::whereIn('class_id', $classrooms->pluck('id'))
             ->findOrFail($id);
 
@@ -148,10 +157,10 @@ class Index extends Component
     {
         $user = Auth::user();
         $classrooms = $user->teachingClassrooms;
-        
+
         $notification = Notification::whereIn('class_id', $classrooms->pluck('id'))
             ->findOrFail($id);
-        
+
         $notification->delete();
         session()->flash('success', 'Đã xóa thông báo thành công!');
     }
@@ -160,11 +169,11 @@ class Index extends Component
     {
         $user = Auth::user();
         $classrooms = $user->teachingClassrooms;
-        
+
         $original = Notification::whereIn('class_id', $classrooms->pluck('id'))
             ->findOrFail($id);
 
-        $this->title = $original->title . ' (Bản sao)';
+        $this->title = $original->title.' (Bản sao)';
         $this->message = $original->message;
         $this->type = $original->type;
         $this->class_id = $original->class_id;
@@ -178,10 +187,10 @@ class Index extends Component
     {
         $user = Auth::user();
         $classrooms = $user->teachingClassrooms;
-        
+
         $notification = Notification::whereIn('class_id', $classrooms->pluck('id'))
             ->findOrFail($id);
-        
+
         $notification->update(['scheduled_at' => now()]);
         session()->flash('success', 'Đã gửi thông báo ngay!');
     }
@@ -190,11 +199,11 @@ class Index extends Component
     {
         $user = Auth::user();
         $classrooms = $user->teachingClassrooms;
-        
+
         Notification::whereIn('class_id', $classrooms->pluck('id'))
             ->where('is_read', false)
             ->update(['is_read' => true]);
-        
+
         session()->flash('success', 'Đã đánh dấu tất cả thông báo đã đọc!');
     }
 
@@ -202,12 +211,12 @@ class Index extends Component
     {
         $user = Auth::user();
         $classrooms = $user->teachingClassrooms;
-        
+
         $notification = Notification::whereIn('class_id', $classrooms->pluck('id'))
             ->findOrFail($id);
-        
-        $notification->update(['is_read' => !$notification->is_read]);
-        
+
+        $notification->update(['is_read' => ! $notification->is_read]);
+
         $status = $notification->is_read ? 'đã đọc' : 'chưa đọc';
         session()->flash('success', "Đã đánh dấu thông báo {$status}!");
     }
@@ -216,11 +225,11 @@ class Index extends Component
     {
         $user = Auth::user();
         $classrooms = $user->teachingClassrooms;
-        
+
         $deleted = Notification::whereIn('class_id', $classrooms->pluck('id'))
             ->where('scheduled_at', '<', now()->subDays(30))
             ->delete();
-        
+
         session()->flash('success', "Đã xóa {$deleted} thông báo hết hạn!");
     }
 
@@ -233,9 +242,9 @@ class Index extends Component
             ->with(['classroom', 'user']);
 
         if ($this->search) {
-            $query->where(function($q) {
+            $query->where(function ($q) {
                 $q->where('title', 'like', '%'.$this->search.'%')
-                  ->orWhere('message', 'like', '%'.$this->search.'%');
+                    ->orWhere('message', 'like', '%'.$this->search.'%');
             });
         }
 
@@ -256,4 +265,4 @@ class Index extends Component
             'classrooms' => $classrooms,
         ]);
     }
-} 
+}

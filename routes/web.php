@@ -1,35 +1,36 @@
 <?php
 
-use App\Livewire\Admin\Home;
-use Illuminate\Http\Request;
-use App\Livewire\Auth\Login;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-use App\Livewire\Admin\Grading\GradingList;
-use App\Livewire\Admin\Grading\GradeAssignment;
-use App\Livewire\Admin\Users\Edit as UsersEdit;
-use App\Livewire\Admin\Users\Index as UsersIndex;
-use App\Livewire\Admin\Users\Create as UsersCreate;
-use App\Livewire\Admin\Students\Edit as StudentsEdit;
-use App\Livewire\Admin\Students\Show as StudentsShow;
-use App\Livewire\Admin\Schedules\Edit as SchedulesEdit;
-use App\Livewire\Admin\Schedules\Show as SchedulesShow;
-use App\Livewire\Admin\Students\Index as StudentsIndex;
-use App\Livewire\Admin\Classrooms\Edit as ClassroomsEdit;
-use App\Livewire\Admin\Schedules\Index as SchedulesIndex;
-use App\Livewire\Admin\Students\Create as StudentsCreate;
-use App\Livewire\Admin\Classrooms\Index as ClassroomsIndex;
-use App\Livewire\Admin\Schedules\Create as SchedulesCreate;
-use App\Livewire\Admin\Classrooms\Create as ClassroomsCreate;
 use App\Livewire\Admin\Attendance\Overview as AttendanceOverview;
 use App\Livewire\Admin\Classrooms\AssignStudents as ClassroomsAssignStudents;
+use App\Livewire\Admin\Classrooms\Create as ClassroomsCreate;
+use App\Livewire\Admin\Classrooms\Edit as ClassroomsEdit;
+use App\Livewire\Admin\Classrooms\Index as ClassroomsIndex;
+use App\Livewire\Admin\Grading\GradeAssignment;
+use App\Livewire\Admin\Grading\GradingList;
+use App\Livewire\Admin\Home;
 use App\Livewire\Admin\Notifications\Index as AdminNotificationsIndex;
+use App\Livewire\Admin\Schedules\Create as SchedulesCreate;
+use App\Livewire\Admin\Schedules\Edit as SchedulesEdit;
+use App\Livewire\Admin\Schedules\Index as SchedulesIndex;
+use App\Livewire\Admin\Schedules\Show as SchedulesShow;
+use App\Livewire\Admin\Students\Create as StudentsCreate;
+use App\Livewire\Admin\Students\Edit as StudentsEdit;
+use App\Livewire\Admin\Students\Index as StudentsIndex;
+use App\Livewire\Admin\Students\Show as StudentsShow;
+use App\Livewire\Admin\Users\Create as UsersCreate;
+use App\Livewire\Admin\Users\Edit as UsersEdit;
+use App\Livewire\Admin\Users\Index as UsersIndex;
+use App\Livewire\Auth\Login;
 use App\Livewire\Student\Notifications\Index as StudentNotificationsIndex;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     if (Auth::check()) {
         return redirect()->route('dashboard');
     }
+
     return redirect()->route('login');
 });
 
@@ -37,6 +38,7 @@ Route::get('/lang/{locale}', function ($locale) {
     if (in_array($locale, ['vi', 'en', 'zh'])) {
         session(['locale' => $locale]);
     }
+
     return redirect()->back();
 })->name('lang.switch');
 
@@ -45,6 +47,7 @@ Route::post('/logout', function (Request $request) {
     Auth::logout();
     $request->session()->invalidate();
     $request->session()->regenerateToken();
+
     return redirect()->route('login');
 })->name('logout');
 

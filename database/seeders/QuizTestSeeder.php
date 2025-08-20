@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use App\Models\Quiz;
 use App\Models\Classroom;
+use App\Models\Quiz;
+use Illuminate\Database\Seeder;
 
 class QuizTestSeeder extends Seeder
 {
@@ -15,9 +15,10 @@ class QuizTestSeeder extends Seeder
     {
         // Lấy lớp học đầu tiên
         $classroom = Classroom::first();
-        
-        if (!$classroom) {
+
+        if (! $classroom) {
             $this->command->error('Không có lớp học nào để tạo quiz test!');
+
             return;
         }
 
@@ -33,7 +34,7 @@ class QuizTestSeeder extends Seeder
                         'score' => 2,
                         'options' => ['A', 'B', 'C', 'D'],
                         'correct_answer' => 'A',
-                        'explanation' => 'Đây là đáp án đúng'
+                        'explanation' => 'Đây là đáp án đúng',
                     ],
                     [
                         'question' => 'Câu hỏi đúng sai test?',
@@ -41,16 +42,16 @@ class QuizTestSeeder extends Seeder
                         'score' => 1,
                         'options' => [],
                         'correct_answer' => 'true',
-                        'explanation' => 'Đây là đáp án đúng'
-                    ]
+                        'explanation' => 'Đây là đáp án đúng',
+                    ],
                 ],
                 'deadline' => now()->addDays(7),
                 'time_limit' => 30,
             ]);
 
-            $this->command->info('Tạo quiz test thành công! ID: ' . $quiz->id);
+            $this->command->info('Tạo quiz test thành công! ID: '.$quiz->id);
         } catch (\Exception $e) {
-            $this->command->error('Lỗi khi tạo quiz test: ' . $e->getMessage());
+            $this->command->error('Lỗi khi tạo quiz test: '.$e->getMessage());
         }
     }
 }

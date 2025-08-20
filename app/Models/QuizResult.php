@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Models\Student;
 
 class QuizResult extends Model
 {
@@ -53,9 +52,10 @@ class QuizResult extends Model
      */
     public function isOnTime(): bool
     {
-        if (!$this->submitted_at || !$this->quiz->deadline) {
+        if (! $this->submitted_at || ! $this->quiz->deadline) {
             return true;
         }
+
         return $this->submitted_at->isBefore($this->quiz->deadline);
     }
 
@@ -64,18 +64,18 @@ class QuizResult extends Model
      */
     public function getDurationString(): string
     {
-        if (!$this->duration) {
+        if (! $this->duration) {
             return '-';
         }
-        
+
         $hours = floor($this->duration / 3600);
         $minutes = floor(($this->duration % 3600) / 60);
         $seconds = $this->duration % 60;
-        
+
         if ($hours > 0) {
             return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
         }
-        
+
         return sprintf('%02d:%02d', $minutes, $seconds);
     }
 
@@ -86,10 +86,11 @@ class QuizResult extends Model
     {
         $correctCount = 0;
         foreach ($this->answers ?? [] as $index => $answer) {
-            if (!empty($answer)) {
+            if (! empty($answer)) {
                 $correctCount++;
             }
         }
+
         return $correctCount;
     }
 }

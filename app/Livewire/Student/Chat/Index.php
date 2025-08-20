@@ -2,32 +2,39 @@
 
 namespace App\Livewire\Student\Chat;
 
+use App\Models\Classroom;
 use App\Models\Message;
 use App\Models\User;
-use App\Models\Classroom;
-use App\Models\Student;
-use Livewire\Component;
-use Livewire\WithPagination;
-use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Component;
+use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithFileUploads, WithPagination;
 
     public $selectedUser = null;
+
     public $selectedClass = null;
+
     public $messageText = '';
+
     public $attachment = null;
+
     public $searchTerm = '';
+
     public $messageType = 'user'; // 'user', 'class'
+
     public $unreadCount = 0;
+
     public $activeTab = 'classes'; // 'classes', 'users'
+
     public $isDragging = false;
 
     protected $listeners = [
         'messageReceived' => 'refreshMessages',
-        'fileDropped' => 'handleFileDrop'
+        'fileDropped' => 'handleFileDrop',
     ];
 
     public function mount()
@@ -143,8 +150,8 @@ class Index extends Component
 
         if ($this->searchTerm) {
             $query->where(function ($q) {
-                $q->where('name', 'like', '%' . $this->searchTerm . '%')
-                    ->orWhere('email', 'like', '%' . $this->searchTerm . '%');
+                $q->where('name', 'like', '%'.$this->searchTerm.'%')
+                    ->orWhere('email', 'like', '%'.$this->searchTerm.'%');
             });
         }
 
@@ -158,7 +165,7 @@ class Index extends Component
         });
 
         if ($this->searchTerm) {
-            $query->where('name', 'like', '%' . $this->searchTerm . '%');
+            $query->where('name', 'like', '%'.$this->searchTerm.'%');
         }
 
         $classes = $query->orderBy('name')->get();
@@ -205,6 +212,7 @@ class Index extends Component
                 return response()->download($path);
             }
         }
+
         return back()->with('error', 'File không tồn tại');
     }
 
