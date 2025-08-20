@@ -31,8 +31,9 @@
                             <div class="mb-3">
                                 <label for="phone" class="form-label">Số điện thoại <span
                                         class="text-danger">*</span></label>
-                                <input wire:model="phone" type="text"
-                                    class="form-control @error('phone') is-invalid @enderror" id="phone">
+                                <input wire:model="phone" type="tel" pattern="^\\d{10,15}$" inputmode="numeric"
+                                    oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+                                    class="form-control @error('phone') is-invalid @enderror" id="phone" >
                                 @error('phone')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

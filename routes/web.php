@@ -119,6 +119,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     // Evaluation Management routes
     Route::get('/admin/evaluation-management', \App\Livewire\Admin\EvaluationManagement\Index::class)->name('evaluation-management');
+
+    // AI routes
+    Route::get('/admin/ai', \App\Livewire\Admin\AI\Index::class)->name('ai.index');
+    Route::get('/admin/ai/grading/{submissionId}', \App\Livewire\Admin\AI\AIGrading::class)->name('ai.grading');
+    Route::get('/admin/ai/quiz-generator', \App\Livewire\Admin\AI\AIQuizGenerator::class)->name('ai.quiz-generator');
+    Route::get('/admin/ai/question-bank-generator', \App\Livewire\Admin\AI\QuestionBankGenerator::class)->name('ai.question-bank-generator');
 });
 
 // Teacher routes
