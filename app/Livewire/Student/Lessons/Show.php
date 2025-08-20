@@ -2,15 +2,17 @@
 
 namespace App\Livewire\Student\Lessons;
 
-use Livewire\Component;
 use App\Models\Lesson;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class Show extends Component
 {
     public $lessonId;
+
     public $lesson;
+
     public $completed = false;
 
     public function mount($lessonId)
@@ -26,9 +28,9 @@ class Show extends Component
     {
         /** @var User $user */
         $user = Auth::user();
-        if (!$user->lessons()->where('lesson_id', $this->lessonId)->whereNotNull('lesson_user.completed_at')->exists()) {
+        if (! $user->lessons()->where('lesson_id', $this->lessonId)->whereNotNull('lesson_user.completed_at')->exists()) {
             $user->lessons()->syncWithoutDetaching([
-                $this->lessonId => ['completed_at' => now()]
+                $this->lessonId => ['completed_at' => now()],
             ]);
             $this->completed = true;
             session()->flash('success', 'Đã đánh dấu hoàn thành bài học!');
@@ -39,7 +41,7 @@ class Show extends Component
     {
         return view('student.lessons.show', [
             'lesson' => $this->lesson,
-            'completed' => $this->completed
+            'completed' => $this->completed,
         ]);
     }
 }

@@ -2,19 +2,22 @@
 
 namespace App\Livewire\Student\Assignments;
 
-use Livewire\Component;
-use Livewire\WithPagination;
 use App\Models\AssignmentSubmission;
 use App\Models\Classroom;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 class MySubmissions extends Component
 {
     use WithPagination;
 
     public $filterStatus = 'all'; // all, graded, ungraded
+
     public $search = '';
+
     public $filterClassroom = '';
+
     public $filterGraded = '';
 
     protected $queryString = [
@@ -48,7 +51,7 @@ class MySubmissions extends Component
     {
         $student = Auth::user()->student;
 
-        if (!$student) {
+        if (! $student) {
             return collect();
         }
 
@@ -72,8 +75,8 @@ class MySubmissions extends Component
         // Search
         if ($this->search) {
             $query->whereHas('assignment', function ($q) {
-                $q->where('title', 'like', '%' . $this->search . '%')
-                    ->orWhere('description', 'like', '%' . $this->search . '%');
+                $q->where('title', 'like', '%'.$this->search.'%')
+                    ->orWhere('description', 'like', '%'.$this->search.'%');
             });
         }
 
@@ -84,7 +87,7 @@ class MySubmissions extends Component
     {
         $student = Auth::user()->student;
 
-        if (!$student) {
+        if (! $student) {
             return collect();
         }
 
@@ -96,8 +99,9 @@ class MySubmissions extends Component
     public function getTotalSubmissionsProperty()
     {
         $student = Auth::user()->student;
-        if (!$student)
+        if (! $student) {
             return 0;
+        }
 
         return AssignmentSubmission::where('student_id', $student->id)->count();
     }
@@ -105,8 +109,9 @@ class MySubmissions extends Component
     public function getGradedSubmissionsProperty()
     {
         $student = Auth::user()->student;
-        if (!$student)
+        if (! $student) {
             return 0;
+        }
 
         return AssignmentSubmission::where('student_id', $student->id)
             ->whereNotNull('score')->count();
@@ -115,8 +120,9 @@ class MySubmissions extends Component
     public function getUngradedSubmissionsProperty()
     {
         $student = Auth::user()->student;
-        if (!$student)
+        if (! $student) {
             return 0;
+        }
 
         return AssignmentSubmission::where('student_id', $student->id)
             ->whereNull('score')->count();
@@ -125,8 +131,9 @@ class MySubmissions extends Component
     public function getAverageScoreProperty()
     {
         $student = Auth::user()->student;
-        if (!$student)
+        if (! $student) {
             return 0;
+        }
 
         $gradedSubmissions = AssignmentSubmission::where('student_id', $student->id)
             ->whereNotNull('score')->get();

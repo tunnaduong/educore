@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Quiz;
 use App\Models\Classroom;
-use Illuminate\Database\Seeder;
+use App\Models\Quiz;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class QuizSeeder extends Seeder
 {

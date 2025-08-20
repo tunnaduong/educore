@@ -2,18 +2,19 @@
 
 namespace App\Livewire\Teacher\Quizzes;
 
+use App\Models\Quiz;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Quiz;
-use App\Models\Classroom;
-use Illuminate\Support\Facades\Auth;
 
 class Index extends Component
 {
     use WithPagination;
 
     public $search = '';
+
     public $filterClass = '';
+
     public $filterStatus = '';
 
     protected $queryString = [
@@ -42,11 +43,12 @@ class Index extends Component
         $quiz = Quiz::findOrFail($quizId);
         // Kiểm tra xem quiz có thuộc lớp mà giáo viên đang dạy không
         $teacherClassIds = Auth::user()->teachingClassrooms->pluck('id');
-        if (!$teacherClassIds->contains($quiz->class_id)) {
+        if (! $teacherClassIds->contains($quiz->class_id)) {
             session()->flash('error', 'Bạn không có quyền xóa bài kiểm tra này.');
+
             return;
         }
-        
+
         $quiz->delete();
         session()->flash('message', 'Bài kiểm tra đã được xóa thành công.');
     }
@@ -60,8 +62,8 @@ class Index extends Component
             ->with(['classroom'])
             ->whereIn('class_id', $teacherClassIds)
             ->when($this->search, function ($query) {
-                $query->where('title', 'like', '%' . $this->search . '%')
-                      ->orWhere('description', 'like', '%' . $this->search . '%');
+                $query->where('title', 'like', '%'.$this->search.'%')
+                    ->orWhere('description', 'like', '%'.$this->search.'%');
             })
             ->when($this->filterClass, function ($query) {
                 $query->where('class_id', $this->filterClass);

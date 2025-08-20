@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Teacher\Quizzes;
 
-use Livewire\Component;
 use App\Models\Quiz;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class Show extends Component
 {
@@ -13,11 +13,12 @@ class Show extends Component
     public function mount(Quiz $quiz)
     {
         $this->quiz = $quiz->load(['classroom', 'results']);
-        
+
         // Kiểm tra quyền xem
         $teacherClassIds = Auth::user()->teachingClassrooms->pluck('id');
-        if (!$teacherClassIds->contains($this->quiz->class_id)) {
+        if (! $teacherClassIds->contains($this->quiz->class_id)) {
             session()->flash('error', 'Bạn không có quyền xem bài kiểm tra này.');
+
             return redirect()->route('teacher.quizzes.index');
         }
     }
@@ -26,7 +27,7 @@ class Show extends Component
     {
         $questions = $this->quiz->questions ?? [];
         $results = $this->quiz->results()->with('student.user')->get();
-        
+
         return view('teacher.quizzes.show', [
             'questions' => $questions,
             'results' => $results,
