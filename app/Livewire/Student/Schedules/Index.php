@@ -2,11 +2,9 @@
 
 namespace App\Livewire\Student\Schedules;
 
-use Livewire\Component;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Classroom;
-use App\Models\Assignment;
 use App\Models\Quiz;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class Index extends Component
 {
@@ -21,7 +19,7 @@ class Index extends Component
         foreach ($classrooms as $classroom) {
             $schedule = $classroom->schedule;
             // Lịch học định kỳ
-            if (is_array($schedule) && !empty($schedule['days']) && !empty($schedule['time'])) {
+            if (is_array($schedule) && ! empty($schedule['days']) && ! empty($schedule['time'])) {
                 $timeParts = explode(' - ', $schedule['time']);
                 $startTime = $timeParts[0] ?? null;
                 $endTime = $timeParts[1] ?? null;
@@ -41,11 +39,11 @@ class Index extends Component
                         for ($i = 0; $i < 16; $i++) {
                             $eventDate = $date->copy()->addWeeks($i);
                             $teacherNames = $classroom->teachers->pluck('name')->join(', ');
-                            $teacherText = $teacherNames ? ' (' . $teacherNames . ')' : '';
+                            $teacherText = $teacherNames ? ' ('.$teacherNames.')' : '';
                             $events[] = [
-                                'title' => '' . $classroom->name . $teacherText,
-                                'start' => $eventDate->format('Y-m-d') . 'T' . $startTime,
-                                'end' => $eventDate->format('Y-m-d') . ($endTime ? 'T' . $endTime : ''),
+                                'title' => ''.$classroom->name.$teacherText,
+                                'start' => $eventDate->format('Y-m-d').'T'.$startTime,
+                                'end' => $eventDate->format('Y-m-d').($endTime ? 'T'.$endTime : ''),
                                 'allDay' => false,
                                 'backgroundColor' => '#0d6efd',
                                 'borderColor' => '#0d6efd',
@@ -58,7 +56,7 @@ class Index extends Component
             foreach ($classroom->assignments as $assignment) {
                 if ($assignment->deadline) {
                     $events[] = [
-                        'title' => '' . $assignment->title . ' (' . $classroom->name . ')',
+                        'title' => ''.$assignment->title.' ('.$classroom->name.')',
                         'start' => $assignment->deadline->format('Y-m-d\TH:i'),
                         'end' => $assignment->deadline->format('Y-m-d\TH:i'),
                         'allDay' => false,
@@ -72,7 +70,7 @@ class Index extends Component
             foreach ($quizzes as $quiz) {
                 if ($quiz->deadline) {
                     $events[] = [
-                        'title' => '' . $quiz->title . ' (' . $classroom->name . ')',
+                        'title' => ''.$quiz->title.' ('.$classroom->name.')',
                         'start' => $quiz->deadline->format('Y-m-d\TH:i'),
                         'end' => $quiz->deadline->format('Y-m-d\TH:i'),
                         'allDay' => false,
@@ -82,6 +80,7 @@ class Index extends Component
                 }
             }
         }
+
         return view('student.schedules.index', compact('events'));
     }
 }

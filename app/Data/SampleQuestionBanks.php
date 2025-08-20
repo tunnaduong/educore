@@ -20,7 +20,7 @@ class SampleQuestionBanks
                     'correct_answer' => 'Bố',
                     'explanation' => '爸爸 (bàba) có nghĩa là bố trong tiếng Trung',
                     'tags' => ['từ vựng', 'gia đình', 'cơ bản'],
-                    'score' => 1
+                    'score' => 1,
                 ],
                 [
                     'id' => 2,
@@ -31,7 +31,7 @@ class SampleQuestionBanks
                     'correct_answer' => 'Mẹ',
                     'explanation' => '妈妈 (māma) có nghĩa là mẹ trong tiếng Trung',
                     'tags' => ['từ vựng', 'gia đình', 'cơ bản'],
-                    'score' => 1
+                    'score' => 1,
                 ],
                 [
                     'id' => 3,
@@ -42,7 +42,7 @@ class SampleQuestionBanks
                     'correct_answer' => '爸爸',
                     'explanation' => '爸爸 (bàba) là từ chỉ bố trong tiếng Trung',
                     'tags' => ['từ vựng', 'gia đình', 'ngữ pháp'],
-                    'score' => 2
+                    'score' => 2,
                 ],
                 [
                     'id' => 4,
@@ -53,7 +53,7 @@ class SampleQuestionBanks
                     'correct_answer' => 'Anh trai',
                     'explanation' => '哥哥 (gēge) có nghĩa là anh trai trong tiếng Trung',
                     'tags' => ['từ vựng', 'gia đình', 'anh chị em'],
-                    'score' => 1
+                    'score' => 1,
                 ],
                 [
                     'id' => 5,
@@ -64,7 +64,7 @@ class SampleQuestionBanks
                     'correct_answer' => 'Chị gái',
                     'explanation' => '姐姐 (jiějie) có nghĩa là chị gái trong tiếng Trung',
                     'tags' => ['từ vựng', 'gia đình', 'anh chị em'],
-                    'score' => 1
+                    'score' => 1,
                 ],
                 [
                     'id' => 6,
@@ -75,7 +75,7 @@ class SampleQuestionBanks
                     'correct_answer' => '妹妹',
                     'explanation' => '妹妹 (mèimei) có nghĩa là em gái trong tiếng Trung',
                     'tags' => ['từ vựng', 'gia đình', 'anh chị em'],
-                    'score' => 2
+                    'score' => 2,
                 ],
                 [
                     'id' => 7,
@@ -86,7 +86,7 @@ class SampleQuestionBanks
                     'correct_answer' => 'Ông nội',
                     'explanation' => '爷爷 (yéye) có nghĩa là ông nội (bố của bố) trong tiếng Trung',
                     'tags' => ['từ vựng', 'gia đình', 'ông bà'],
-                    'score' => 2
+                    'score' => 2,
                 ],
                 [
                     'id' => 8,
@@ -97,7 +97,7 @@ class SampleQuestionBanks
                     'correct_answer' => 'Bà nội',
                     'explanation' => '奶奶 (nǎinai) có nghĩa là bà nội (mẹ của bố) trong tiếng Trung',
                     'tags' => ['từ vựng', 'gia đình', 'ông bà'],
-                    'score' => 2
+                    'score' => 2,
                 ],
                 [
                     'id' => 9,
@@ -108,7 +108,7 @@ class SampleQuestionBanks
                     'correct_answer' => 'Câu trả lời mẫu: 我家有四个人：爸爸、妈妈、哥哥和我。(Gia đình tôi có 4 người: bố, mẹ, anh trai và tôi.)',
                     'explanation' => 'Câu trả lời cần sử dụng từ vựng gia đình đã học và cấu trúc câu đơn giản',
                     'tags' => ['từ vựng', 'gia đình', 'viết', 'ngữ pháp'],
-                    'score' => 3
+                    'score' => 3,
                 ],
                 [
                     'id' => 10,
@@ -119,8 +119,8 @@ class SampleQuestionBanks
                     'correct_answer' => 'Em trai',
                     'explanation' => '弟弟 (dìdi) có nghĩa là em trai trong tiếng Trung',
                     'tags' => ['từ vựng', 'gia đình', 'anh chị em'],
-                    'score' => 1
-                ]
+                    'score' => 1,
+                ],
             ],
             'statistics' => [
                 'total_questions' => 10,
@@ -129,8 +129,8 @@ class SampleQuestionBanks
                 'hard_count' => 1,
                 'multiple_choice_count' => 7,
                 'fill_blank_count' => 2,
-                'essay_count' => 1
-            ]
+                'essay_count' => 1,
+            ],
         ];
     }
 
@@ -150,7 +150,7 @@ class SampleQuestionBanks
                     'correct_answer' => '1',
                     'explanation' => '一 (yī) có nghĩa là số 1 trong tiếng Trung',
                     'tags' => ['từ vựng', 'số đếm', 'cơ bản'],
-                    'score' => 1
+                    'score' => 1,
                 ],
                 [
                     'id' => 2,
@@ -161,7 +161,7 @@ class SampleQuestionBanks
                     'correct_answer' => '2',
                     'explanation' => '二 (èr) có nghĩa là số 2 trong tiếng Trung',
                     'tags' => ['từ vựng', 'số đếm', 'cơ bản'],
-                    'score' => 1
+                    'score' => 1,
                 ],
                 [
                     'id' => 3,
@@ -172,7 +172,7 @@ class SampleQuestionBanks
                     'correct_answer' => '三',
                     'explanation' => '三 (sān) có nghĩa là số 3 trong tiếng Trung',
                     'tags' => ['từ vựng', 'số đếm', 'ngữ pháp'],
-                    'score' => 2
+                    'score' => 2,
                 ],
                 [
                     'id' => 4,
@@ -183,7 +183,7 @@ class SampleQuestionBanks
                     'correct_answer' => '10',
                     'explanation' => '十 (shí) có nghĩa là số 10 trong tiếng Trung',
                     'tags' => ['từ vựng', 'số đếm', 'cơ bản'],
-                    'score' => 1
+                    'score' => 1,
                 ],
                 [
                     'id' => 5,
@@ -194,8 +194,8 @@ class SampleQuestionBanks
                     'correct_answer' => '5',
                     'explanation' => '五 (wǔ) có nghĩa là số 5 trong tiếng Trung',
                     'tags' => ['từ vựng', 'số đếm', 'cơ bản'],
-                    'score' => 1
-                ]
+                    'score' => 1,
+                ],
             ],
             'statistics' => [
                 'total_questions' => 5,
@@ -204,8 +204,8 @@ class SampleQuestionBanks
                 'hard_count' => 0,
                 'multiple_choice_count' => 4,
                 'fill_blank_count' => 1,
-                'essay_count' => 0
-            ]
+                'essay_count' => 0,
+            ],
         ];
     }
 

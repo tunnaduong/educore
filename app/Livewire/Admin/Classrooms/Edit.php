@@ -2,26 +2,37 @@
 
 namespace App\Livewire\Admin\Classrooms;
 
+use App\Helpers\ScheduleConflictHelper;
 use App\Models\Classroom;
 use App\Models\User;
-use Livewire\Component;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use App\Helpers\ScheduleConflictHelper;
+use Illuminate\Support\Facades\Log;
+use Livewire\Component;
 
 class Edit extends Component
 {
     public Classroom $classroom;
+
     public $name = '';
+
     public $level = '';
+
     public $days = [];
+
     public $startTime = '';
+
     public $endTime = '';
+
     public $notes = '';
+
     public $teacher_ids = [];
+
     public $status = 'active';
+
     public $showConflictModal = false;
+
     public $teacherConflicts = [];
+
     public $realTimeValidation = false;
 
     protected $rules = [
@@ -77,7 +88,7 @@ class Edit extends Component
         }
 
         // Đảm bảo schedule là array
-        if (!is_array($schedule)) {
+        if (! is_array($schedule)) {
             $schedule = [];
         }
 
@@ -99,7 +110,7 @@ class Edit extends Component
             'schedule_parsed' => $schedule,
             'days' => $this->days,
             'startTime' => $this->startTime,
-            'endTime' => $this->endTime
+            'endTime' => $this->endTime,
         ]);
     }
 
@@ -110,7 +121,7 @@ class Edit extends Component
         // Kiểm tra trùng lịch real-time khi thay đổi lịch học hoặc giáo viên
         if (
             in_array($propertyName, ['days', 'startTime', 'endTime', 'teacher_ids']) &&
-            !empty($this->days) && !empty($this->startTime) && !empty($this->endTime) && !empty($this->teacher_ids)
+            ! empty($this->days) && ! empty($this->startTime) && ! empty($this->endTime) && ! empty($this->teacher_ids)
         ) {
             $this->checkRealTimeConflicts();
         }
@@ -125,8 +136,8 @@ class Edit extends Component
         $tempClassroom = new Classroom([
             'schedule' => [
                 'days' => $this->days,
-                'time' => $this->startTime . ' - ' . $this->endTime,
-            ]
+                'time' => $this->startTime.' - '.$this->endTime,
+            ],
         ]);
         // Gán id lớp hiện tại để helper loại trừ chính lớp này khi kiểm tra trùng lịch
         $tempClassroom->id = $this->classroom->id;
@@ -154,8 +165,8 @@ class Edit extends Component
             $tempClassroom = new Classroom([
                 'schedule' => [
                     'days' => $this->days,
-                    'time' => $this->startTime . ' - ' . $this->endTime,
-                ]
+                    'time' => $this->startTime.' - '.$this->endTime,
+                ],
             ]);
             // Gán id lớp hiện tại để helper loại trừ chính lớp này khi kiểm tra trùng lịch
             $tempClassroom->id = $this->classroom->id;
@@ -168,17 +179,18 @@ class Edit extends Component
             if ($conflictCheck['hasConflict']) {
                 $this->teacherConflicts = $conflictCheck['conflicts'];
                 $this->showConflictModal = true;
+
                 return;
             }
 
             // Nếu không có trùng lịch, tiến hành cập nhật lớp
             $this->performUpdate();
         } catch (\Exception $e) {
-            session()->flash('error', 'Không thể cập nhật lớp học. Vui lòng thử lại sau. Lỗi: ' . $e->getMessage());
-            Log::error('Edit Classroom Error: ' . $e->getMessage(), [
+            session()->flash('error', 'Không thể cập nhật lớp học. Vui lòng thử lại sau. Lỗi: '.$e->getMessage());
+            Log::error('Edit Classroom Error: '.$e->getMessage(), [
                 'classroom_id' => $this->classroom->id ?? null,
                 'user_id' => Auth::id(),
-                'data' => $this->only(['name', 'level', 'status'])
+                'data' => $this->only(['name', 'level', 'status']),
             ]);
         }
     }
@@ -188,7 +200,7 @@ class Edit extends Component
         // Đảm bảo dữ liệu schedule được format đúng
         $scheduleData = [
             'days' => $this->days,
-            'time' => $this->startTime . ' - ' . $this->endTime,
+            'time' => $this->startTime.' - '.$this->endTime,
         ];
 
         $this->classroom->update([
@@ -211,10 +223,11 @@ class Edit extends Component
             'schedule_data' => $scheduleData,
             'days' => $this->days,
             'startTime' => $this->startTime,
-            'endTime' => $this->endTime
+            'endTime' => $this->endTime,
         ]);
 
         session()->flash('success', 'Lớp học đã được cập nhật thành công!');
+
         return $this->redirect(route('classrooms.index'), navigate: true);
     }
 
@@ -233,6 +246,7 @@ class Edit extends Component
     public function render()
     {
         $teachers = User::where('role', 'teacher')->get();
+
         return view('admin.classrooms.edit', [
             'teachers' => $teachers,
         ]);

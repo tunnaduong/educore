@@ -2,17 +2,21 @@
 
 namespace App\Livewire\Admin\Finance;
 
-use Livewire\Component;
-use App\Models\Payment;
 use App\Models\Expense;
+use App\Models\Payment;
 use Illuminate\Support\Carbon;
+use Livewire\Component;
 
 class Overview extends Component
 {
     public $fromDate;
+
     public $toDate;
+
     public $totalIncome;
+
     public $totalExpense;
+
     public $profit;
 
     public function mount()
@@ -40,10 +44,10 @@ class Overview extends Component
         $this->totalIncome = Payment::where('status', 'paid')
             ->whereBetween('paid_at', [$fromDate, $toDate])
             ->sum('amount');
-        
+
         $this->totalExpense = Expense::whereBetween('spent_at', [$fromDate, $toDate])
             ->sum('amount');
-            
+
         $this->profit = $this->totalIncome - $this->totalExpense;
     }
 

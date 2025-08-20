@@ -8,20 +8,28 @@ use Livewire\Component;
 class Edit extends Component
 {
     public User $student;
+
     public $name = '';
+
     public $email = '';
+
     public $phone = '';
+
     public $date_of_birth = '';
+
     public $joined_at = '';
+
     public $status = 'active';
+
     public $level = '';
+
     public $notes = '';
 
     protected function rules()
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'nullable|email|unique:users,email,' . $this->student->id,
+            'email' => 'nullable|email|unique:users,email,'.$this->student->id,
             'phone' => 'required|string|max:20',
             'date_of_birth' => 'nullable|date|before:today',
             'joined_at' => 'nullable|date',
@@ -92,6 +100,7 @@ class Edit extends Component
         }
 
         session()->flash('message', 'Đã cập nhật thông tin học viên thành công!');
+
         return $this->redirect(route('students.index'));
     }
 

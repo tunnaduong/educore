@@ -2,33 +2,46 @@
 
 namespace App\Livewire\Teacher\Chat;
 
+use App\Models\Classroom;
 use App\Models\Message;
 use App\Models\User;
-use App\Models\Classroom;
-use Livewire\Component;
-use Livewire\WithPagination;
-use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
+use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithFileUploads, WithPagination;
 
     public $selectedUser = null;
+
     public $selectedClass = null;
+
     public $messageText = '';
+
     public $attachment = null;
+
     public $searchTerm = '';
+
     public $messageType = 'class'; // 'user' or 'class'
+
     public $unreadCount = 0;
+
     public $memberSearch = '';
+
     public $allUsers;
+
     public $activeTab = 'classes'; // 'users' hoặc 'classes'
+
     public $isDragging = false;
+
     public $typingUsers = [];
+
     public $isTyping = false;
+
     public $typingTimeout = null;
 
     protected $listeners = [
@@ -37,7 +50,7 @@ class Index extends Component
         'echo:chat-class-*,message.sent' => 'handleNewMessage',
         'echo-private:chat-user-*,message.sent' => 'handleNewMessage',
         'userTyping' => 'handleUserTyping',
-        'userStoppedTyping' => 'handleUserStoppedTyping'
+        'userStoppedTyping' => 'handleUserStoppedTyping',
     ];
 
     public function mount()
@@ -56,7 +69,7 @@ class Index extends Component
         $this->messageType = 'user';
         $this->activeTab = 'users';
         $this->resetPage();
-        
+
         // Đánh dấu đã đọc tin nhắn 1-1
         $currentUserId = Auth::id();
         if ($currentUserId && $this->selectedUser) {
@@ -71,18 +84,18 @@ class Index extends Component
     {
         $this->selectedClass = Classroom::with('users')->find($classId);
         $currentUserId = Auth::id();
-        
+
         Log::info('[Chat Debug] selectClass: Chọn lớp', [
             'class_id' => $classId,
             'selectedClass' => $this->selectedClass ? $this->selectedClass->toArray() : null,
             'current_user_id' => $currentUserId,
         ]);
-        
+
         $this->selectedUser = null;
         $this->messageType = 'class';
         $this->activeTab = 'classes';
         $this->resetPage();
-        
+
         // Đánh dấu đã đọc tin nhắn nhóm
         if ($currentUserId) {
             $lastMsg = Message::where('class_id', $classId)->latest('id')->first();
@@ -114,7 +127,7 @@ class Index extends Component
         ]);
 
         $currentUserId = Auth::id();
-        if (!$currentUserId) {
+        if (! $currentUserId) {
             return;
         }
 
@@ -143,7 +156,7 @@ class Index extends Component
         $this->messageText = '';
         $this->attachment = null;
         $this->dispatch('messageSent');
-        
+
         // Dừng typing indicator
         $this->stopTyping();
     }
@@ -158,26 +171,26 @@ class Index extends Component
 
     public function startTyping()
     {
-        if (!$this->isTyping) {
+        if (! $this->isTyping) {
             $this->isTyping = true;
             $currentUser = Auth::user();
             $currentUserId = Auth::id();
-            
-            if (!$currentUser || !$currentUserId) {
+
+            if (! $currentUser || ! $currentUserId) {
                 return;
             }
-            
+
             if ($this->messageType === 'user' && $this->selectedUser) {
                 $this->dispatch('userTyping', [
                     'userId' => $currentUserId,
                     'userName' => $currentUser->name,
-                    'receiverId' => $this->selectedUser->id
+                    'receiverId' => $this->selectedUser->id,
                 ]);
             } elseif ($this->messageType === 'class' && $this->selectedClass) {
                 $this->dispatch('userTyping', [
                     'userId' => $currentUserId,
                     'userName' => $currentUser->name,
-                    'classId' => $this->selectedClass->id
+                    'classId' => $this->selectedClass->id,
                 ]);
             }
         }
@@ -188,20 +201,20 @@ class Index extends Component
         if ($this->isTyping) {
             $this->isTyping = false;
             $currentUserId = Auth::id();
-            
-            if (!$currentUserId) {
+
+            if (! $currentUserId) {
                 return;
             }
-            
+
             if ($this->messageType === 'user' && $this->selectedUser) {
                 $this->dispatch('userStoppedTyping', [
                     'userId' => $currentUserId,
-                    'receiverId' => $this->selectedUser->id
+                    'receiverId' => $this->selectedUser->id,
                 ]);
             } elseif ($this->messageType === 'class' && $this->selectedClass) {
                 $this->dispatch('userStoppedTyping', [
                     'userId' => $currentUserId,
-                    'classId' => $this->selectedClass->id
+                    'classId' => $this->selectedClass->id,
                 ]);
             }
         }
@@ -212,7 +225,7 @@ class Index extends Component
         $userId = $event['userId'] ?? null;
         $userName = $event['userName'] ?? null;
         $currentUserId = Auth::id();
-        
+
         if ($userId && $currentUserId && $userId != $currentUserId) {
             $this->typingUsers[$userId] = $userName;
         }
@@ -222,7 +235,7 @@ class Index extends Component
     {
         $userId = $event['userId'] ?? null;
         $currentUserId = Auth::id();
-        
+
         if ($userId && $currentUserId && $userId != $currentUserId) {
             unset($this->typingUsers[$userId]);
         }
@@ -231,7 +244,7 @@ class Index extends Component
     public function getMessagesProperty()
     {
         $currentUserId = Auth::id();
-        if (!$currentUserId) {
+        if (! $currentUserId) {
             return collect();
         }
 
@@ -257,7 +270,7 @@ class Index extends Component
     public function getUsersProperty()
     {
         $currentUserId = Auth::id();
-        if (!$currentUserId) {
+        if (! $currentUserId) {
             return collect();
         }
 
@@ -266,8 +279,8 @@ class Index extends Component
 
         if ($this->searchTerm) {
             $query->where(function ($q) {
-                $q->where('name', 'like', '%' . $this->searchTerm . '%')
-                    ->orWhere('email', 'like', '%' . $this->searchTerm . '%');
+                $q->where('name', 'like', '%'.$this->searchTerm.'%')
+                    ->orWhere('email', 'like', '%'.$this->searchTerm.'%');
             });
         }
 
@@ -277,7 +290,7 @@ class Index extends Component
     public function getClassesProperty()
     {
         $currentUserId = Auth::id();
-        if (!$currentUserId) {
+        if (! $currentUserId) {
             return collect();
         }
 
@@ -287,7 +300,7 @@ class Index extends Component
         });
 
         if ($this->searchTerm) {
-            $query->where('name', 'like', '%' . $this->searchTerm . '%');
+            $query->where('name', 'like', '%'.$this->searchTerm.'%');
         }
 
         $classes = $query->orderBy('name')->get();
@@ -295,6 +308,7 @@ class Index extends Component
         foreach ($classes as $class) {
             $class->unread_messages_count = $class->unreadMessagesCountForUser($currentUserId);
         }
+
         return $classes;
     }
 
@@ -311,7 +325,7 @@ class Index extends Component
         // Kiểm tra xem tin nhắn có thuộc về cuộc trò chuyện hiện tại không
         $message = $event['message'] ?? null;
         $currentUserId = Auth::id();
-        
+
         if ($message && $currentUserId) {
             $isRelevant = false;
 
@@ -339,13 +353,14 @@ class Index extends Component
                 return response()->download($path);
             }
         }
+
         return back()->with('error', 'File không tồn tại');
     }
 
     public function render()
     {
         $currentUserId = Auth::id();
-        
+
         if ($this->selectedClass && $currentUserId) {
             Log::info('[Chat Debug] render: Thành viên hiện tại của lớp', [
                 'class_id' => $this->selectedClass->id,
@@ -359,7 +374,7 @@ class Index extends Component
                 'user_ids' => $canAdd->pluck('id')->toArray(),
             ]);
         }
-        
+
         return view('teacher.chat.index', [
             'messages' => $this->messages,
             'users' => $this->users,

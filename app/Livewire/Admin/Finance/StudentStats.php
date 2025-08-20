@@ -2,16 +2,18 @@
 
 namespace App\Livewire\Admin\Finance;
 
-use Livewire\Component;
-use Illuminate\Support\Collection;
-use App\Models\User;
 use App\Models\Payment;
+use App\Models\User;
+use Livewire\Component;
 
 class StudentStats extends Component
 {
     public $students;
+
     public $filterClass = '';
+
     public $filterStatus = '';
+
     public $filterCourse = '';
 
     public function mount()
@@ -23,10 +25,12 @@ class StudentStats extends Component
     {
         $this->loadStudents();
     }
+
     public function updatedFilterStatus()
     {
         $this->loadStudents();
     }
+
     public function updatedFilterCourse()
     {
         $this->loadStudents();
@@ -48,12 +52,12 @@ class StudentStats extends Component
                     ->where('class_id', $class->id)
                     ->whereIn('status', ['paid', 'partial'])
                     ->sum('amount');
-                
+
                 // Tính tổng số tiền cần đóng (tất cả payments của học viên trong lớp)
                 $totalRequired = Payment::where('user_id', $student->id)
                     ->where('class_id', $class->id)
                     ->sum('amount');
-                
+
                 // Xác định trạng thái dựa trên tỷ lệ đã đóng
                 if ($totalRequired == 0) {
                     $status = 'unpaid'; // Chưa có payment nào
@@ -64,13 +68,14 @@ class StudentStats extends Component
                 } else {
                     $status = 'unpaid'; // Chưa đóng gì
                 }
-                
+
                 return [
                     'class_id' => $class->id,
                     'class_name' => $class->name,
                     'status' => $status,
                 ];
             });
+
             return [
                 'id' => $student->id,
                 'name' => $student->name,

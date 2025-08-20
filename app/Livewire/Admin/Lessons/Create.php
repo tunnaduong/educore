@@ -2,16 +2,26 @@
 
 namespace App\Livewire\Admin\Lessons;
 
-use Livewire\Component;
 use App\Models\Lesson;
+use Livewire\Component;
 use Livewire\WithFileUploads;
 
 class Create extends Component
 {
     use WithFileUploads;
 
-    public $number, $title, $description, $video, $attachment;
+    public $number;
+
+    public $title;
+
+    public $description;
+
+    public $video;
+
+    public $attachment;
+
     public $classroom_id;
+
     public $classrooms = [];
 
     protected $rules = [
@@ -38,6 +48,7 @@ class Create extends Component
     public function render()
     {
         $this->classrooms = \App\Models\Classroom::all();
+
         return view('admin.lessons.create', [
             'classrooms' => $this->classrooms,
         ]);

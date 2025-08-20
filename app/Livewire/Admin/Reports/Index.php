@@ -2,22 +2,22 @@
 
 namespace App\Livewire\Admin\Reports;
 
-use Livewire\Component;
+use App\Models\Assignment;
+use App\Models\Attendance;
 use App\Models\Classroom;
 use App\Models\Student;
-use App\Models\Assignment;
-use App\Models\AssignmentSubmission;
-use App\Models\Attendance;
-use App\Models\QuizResult;
-use Illuminate\Support\Facades\Log;
+use Livewire\Component;
 
 class Index extends Component
 {
     public $selectedClass = '';
+
     public $selectedStudent = '';
 
     public $classrooms = [];
+
     public $students = [];
+
     public $reportData = [];
 
     public function mount()
@@ -30,7 +30,7 @@ class Index extends Component
     {
         $query = Student::with(['user', 'classrooms']);
         if ($this->selectedClass) {
-            $query->whereHas('classrooms', function($q) {
+            $query->whereHas('classrooms', function ($q) {
                 $q->where('class_id', $this->selectedClass);
             });
         }
@@ -44,15 +44,17 @@ class Index extends Component
 
             if ($this->selectedClass) {
                 $class = $student->classrooms->where('id', $this->selectedClass)->first();
-                if (!$class) continue;
+                if (! $class) {
+                    continue;
+                }
                 $assignments = Assignment::where('class_id', $class->id)->get();
-                $submissions = $student->assignmentSubmissions->filter(function($sub) use ($class) {
+                $submissions = $student->assignmentSubmissions->filter(function ($sub) use ($class) {
                     return $sub->assignment && $sub->assignment->class_id == $class->id;
                 });
                 $attendanceCount = Attendance::where('student_id', $student->id)
                     ->where('class_id', $class->id)
                     ->where('present', true)->count();
-                $quizResults = $student->quizResults->filter(function($qr) use ($class) {
+                $quizResults = $student->quizResults->filter(function ($qr) use ($class) {
                     return $qr->quiz && $qr->quiz->class_id == $class->id;
                 });
                 // Tiến độ học tập theo lesson
@@ -64,15 +66,17 @@ class Index extends Component
             } else {
                 // Tổng hợp tất cả lớp
                 $classIds = $student->classrooms->pluck('id');
-                if ($classIds->count() == 0) continue;
+                if ($classIds->count() == 0) {
+                    continue;
+                }
                 $assignments = Assignment::whereIn('class_id', $classIds)->get();
-                $submissions = $student->assignmentSubmissions->filter(function($sub) use ($classIds) {
+                $submissions = $student->assignmentSubmissions->filter(function ($sub) use ($classIds) {
                     return $sub->assignment && in_array($sub->assignment->class_id, $classIds->toArray());
                 });
                 $attendanceCount = Attendance::where('student_id', $student->id)
                     ->whereIn('class_id', $classIds)
                     ->where('present', true)->count();
-                $quizResults = $student->quizResults->filter(function($qr) use ($classIds) {
+                $quizResults = $student->quizResults->filter(function ($qr) use ($classIds) {
                     return $qr->quiz && in_array($qr->quiz->class_id, $classIds->toArray());
                 });
                 // Tiến độ học tập theo lesson
@@ -100,6 +104,7 @@ class Index extends Component
             ];
         }
         $this->reportData = $reportData;
+
         return view('admin.reports.index', [
             'classrooms' => $this->classrooms,
             'students' => $this->students,

@@ -2,17 +2,19 @@
 
 namespace App\Livewire\Teacher\AI;
 
-use Livewire\Component;
-use App\Models\AssignmentSubmission;
-use App\Models\Assignment;
 use App\Helpers\AIHelper;
+use App\Models\AssignmentSubmission;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class AIGrading extends Component
 {
     public $submission;
+
     public $assignment;
+
     public $aiResult = null;
+
     public $showAIFeedback = false;
 
     public function mount($submissionId)
@@ -24,7 +26,7 @@ class AIGrading extends Component
         // Kiểm tra quyền: chỉ giáo viên dạy lớp này mới được chấm
         $user = Auth::user();
         $userClassIds = $user->teachingClassrooms->pluck('id');
-        if (!in_array($this->assignment->class_id, $userClassIds->toArray())) {
+        if (! in_array($this->assignment->class_id, $userClassIds->toArray())) {
             abort(403, 'Bạn không có quyền chấm bài tập này.');
         }
 
@@ -32,8 +34,8 @@ class AIGrading extends Component
         if (in_array($this->submission->submission_type, ['image', 'audio', 'video'])) {
             $typeNames = [
                 'image' => 'hình ảnh',
-                'audio' => 'âm thanh', 
-                'video' => 'video'
+                'audio' => 'âm thanh',
+                'video' => 'video',
             ];
             $typeName = $typeNames[$this->submission->submission_type] ?? $this->submission->submission_type;
             abort(403, "Không thể chấm bài tập có loại nộp là {$typeName} bằng AI.");
@@ -45,10 +47,11 @@ class AIGrading extends Component
         $this->aiResult = null;
 
         try {
-            $aiHelper = new AIHelper();
+            $aiHelper = new AIHelper;
 
-            if (!$aiHelper->isAIAvailable()) {
+            if (! $aiHelper->isAIAvailable()) {
                 session()->flash('error', 'AI service không khả dụng. Vui lòng kiểm tra cấu hình API.');
+
                 return;
             }
 
@@ -62,7 +65,7 @@ class AIGrading extends Component
                 session()->flash('error', 'Không thể chấm bài bằng AI. Vui lòng thử lại.');
             }
         } catch (\Exception $e) {
-            session()->flash('error', 'Có lỗi xảy ra: ' . $e->getMessage());
+            session()->flash('error', 'Có lỗi xảy ra: '.$e->getMessage());
         }
     }
 
@@ -81,10 +84,11 @@ class AIGrading extends Component
     public function correctGrammarWithAI()
     {
         try {
-            $aiHelper = new AIHelper();
+            $aiHelper = new AIHelper;
 
-            if (!$aiHelper->isAIAvailable()) {
+            if (! $aiHelper->isAIAvailable()) {
                 session()->flash('error', 'AI service không khả dụng. Vui lòng kiểm tra cấu hình API.');
+
                 return;
             }
 
@@ -97,17 +101,18 @@ class AIGrading extends Component
                 session()->flash('error', 'Không thể sửa lỗi ngữ pháp. Vui lòng thử lại.');
             }
         } catch (\Exception $e) {
-            session()->flash('error', 'Có lỗi xảy ra: ' . $e->getMessage());
+            session()->flash('error', 'Có lỗi xảy ra: '.$e->getMessage());
         }
     }
 
     public function analyzeWithAI()
     {
         try {
-            $aiHelper = new AIHelper();
+            $aiHelper = new AIHelper;
 
-            if (!$aiHelper->isAIAvailable()) {
+            if (! $aiHelper->isAIAvailable()) {
                 session()->flash('error', 'AI service không khả dụng. Vui lòng kiểm tra cấu hình API.');
+
                 return;
             }
 
@@ -120,7 +125,7 @@ class AIGrading extends Component
                 session()->flash('error', 'Không thể phân tích bài tập. Vui lòng thử lại.');
             }
         } catch (\Exception $e) {
-            session()->flash('error', 'Có lỗi xảy ra: ' . $e->getMessage());
+            session()->flash('error', 'Có lỗi xảy ra: '.$e->getMessage());
         }
     }
 
