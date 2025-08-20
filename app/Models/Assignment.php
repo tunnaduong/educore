@@ -20,11 +20,20 @@ class Assignment extends Model
         'types',
         'attachment_path',
         'video_path',
+        'max_score',
+        // Optional AI/Grading config fields (if present in DB)
+        'grading_criteria',
+        'ai_analysis_enabled',
+        'ai_analysis_config',
     ];
 
     protected $casts = [
         'types' => 'array',
         'deadline' => 'datetime',
+        'max_score' => 'decimal:1',
+        'grading_criteria' => 'array',
+        'ai_analysis_enabled' => 'boolean',
+        'ai_analysis_config' => 'array',
     ];
 
     public function classroom(): BelongsTo
