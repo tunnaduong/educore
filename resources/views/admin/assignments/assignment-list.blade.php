@@ -30,7 +30,7 @@
                 </div>
                 <div>
                     <a href="{{ route('assignments.create') }}" class="btn btn-primary">
-                        <i class="bi bi-plus-circle mr-2"></i>Tạo bài tập mới
+                        <i class="bi bi-plus-circle mr-2"></i>Giao bài tập mới
                     </a>
                 </div>
             </div>
@@ -178,7 +178,7 @@
                         <h5 class="text-muted">Không có bài tập nào</h5>
                         <p class="text-muted">Tạo bài tập đầu tiên để bắt đầu</p>
                         <a href="{{ route('assignments.create') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle mr-2"></i>Tạo bài tập mới
+                            <i class="bi bi-plus-circle mr-2"></i>Giao bài tập mới
                         </a>
                     </div>
                 @endif
