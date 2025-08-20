@@ -58,7 +58,6 @@ class Edit extends Component
         'email.email' => 'Email không hợp lệ',
         'email.unique' => 'Email đã tồn tại trong hệ thống',
         'phone.required' => 'Vui lòng nhập số điện thoại',
-        'phone.min' => 'Số điện thoại phải có ít nhất :min số',
         'phone.regex' => 'Số điện thoại chỉ gồm số và có 10-15 chữ số',
         'phone.unique' => 'Số điện thoại đã tồn tại trong hệ thống',
         'role.required' => 'Vui lòng chọn vai trò',
@@ -66,6 +65,11 @@ class Edit extends Component
         'password.min' => 'Mật khẩu phải có ít nhất :min ký tự',
         'password.confirmed' => 'Xác nhận mật khẩu không khớp',
     ];
+
+    public function updatedPhone()
+    {
+        $this->validateOnly('phone');
+    }
 
     public function update()
     {

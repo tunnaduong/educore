@@ -45,15 +45,19 @@ class Create extends Component
         'email.email' => 'Email không hợp lệ',
         'email.unique' => 'Email đã tồn tại trong hệ thống',
         'phone.required' => 'Vui lòng nhập số điện thoại',
-
-        'phone.unique' => 'Số điện thoại đã tồn tại trong hệ thống',
         'phone.regex' => 'Số điện thoại chỉ gồm số và có 10-15 chữ số',
+        'phone.unique' => 'Số điện thoại đã tồn tại trong hệ thống',
         'password.required' => 'Vui lòng nhập mật khẩu',
         'password.min' => 'Mật khẩu phải có ít nhất :min ký tự',
         'password.confirmed' => 'Xác nhận mật khẩu không khớp',
         'role.required' => 'Vui lòng chọn vai trò',
         'role.in' => 'Vai trò không hợp lệ',
     ];
+
+    public function updatedPhone()
+    {
+        $this->validateOnly('phone');
+    }
 
     public function save()
     {
