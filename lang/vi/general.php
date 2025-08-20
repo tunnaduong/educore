@@ -98,6 +98,8 @@ return [
     'delete_classroom_message' => 'Bạn có chắc chắn muốn xóa lớp học ":name"? Hành động này không thể hoàn tác.',
     'cancel' => 'Hủy',
     'showing_results' => 'Hiển thị :from - :to trên tổng số :total lớp học',
+    'copyright' => '© 2025 EduCore',
+    'footer_description' => 'Website quản lý học tập trung tâm tiếng Trung',
     'draft' => 'Nháp',
     'completed' => 'Đã hoàn thành',
     'cannot_delete_active_classroom' => 'Không thể xóa lớp đang hoạt động',

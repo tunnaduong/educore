@@ -29,6 +29,7 @@ return [
     'chat_interaction' => '聊天和互动',
     'teaching_schedule' => '教学时间表',
     'class_reports' => '班级报告',
+    'ai_assistant' => 'AI助手',
     'results' => '结果',
     'back_to_list' => '返回列表',
     'grade_assignment' => '评分作业',
@@ -98,6 +99,8 @@ return [
     'delete_classroom_message' => '您确定要删除教室":name"吗？此操作无法撤销。',
     'cancel' => '取消',
     'showing_results' => '显示 :from - :to，共 :total 个教室',
+    'copyright' => '© 2025 EduCore',
+    'footer_description' => '中文语言中心学习管理网站',
     // AI related translations
     'ai_intro_text' => '探索强大的AI工具来支持您的教学工作。从自动评分到创建测试，AI将帮助您节省时间并提高教学质量。',
     'ai_grading_description' => '使用AI快速准确地评分作业。AI将分析内容并提供详细评估。',

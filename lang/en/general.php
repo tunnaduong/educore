@@ -29,6 +29,7 @@ return [
     'chat_interaction' => 'Chat & Interaction',
     'teaching_schedule' => 'Teaching Schedule',
     'class_reports' => 'Class Reports',
+    'ai_assistant' => 'AI Assistant',
     'results' => 'Results',
     'back_to_list' => 'Back to List',
     'grade_assignment' => 'Grade Assignment',
@@ -98,6 +99,8 @@ return [
     'delete_classroom_message' => 'Are you sure you want to delete classroom ":name"? This action cannot be undone.',
     'cancel' => 'Cancel',
     'showing_results' => 'Showing :from - :to of :total classrooms',
+    'copyright' => '© 2025 EduCore',
+    'footer_description' => 'Chinese Language Center Learning Management Website',
     // AI related translations
     'ai_intro_text' => 'Explore powerful AI tools to support your teaching work. From automatic grading to creating tests, AI will help you save time and improve teaching quality.',
     'ai_grading_description' => 'Use AI to grade assignments quickly and accurately. AI will analyze content and provide detailed assessments.',
