@@ -2,14 +2,16 @@
 
 namespace App\Livewire\Admin\Classrooms;
 
-use App\Models\Classroom;
 use App\Helpers\ScheduleConflictHelper;
+use App\Models\Classroom;
 use Livewire\Component;
 
 class ScheduleConflictAlert extends Component
 {
     public Classroom $classroom;
+
     public $conflicts = [];
+
     public $showConflicts = false;
 
     protected $listeners = ['refreshConflicts' => 'checkConflicts'];
@@ -31,13 +33,13 @@ class ScheduleConflictAlert extends Component
                 if ($conflict['hasConflict']) {
                     $allConflicts[$student->id] = [
                         'student' => $student,
-                        'conflicts' => $conflict['conflicts']
+                        'conflicts' => $conflict['conflicts'],
                     ];
                 }
             }
 
             $this->conflicts = $allConflicts;
-            $this->showConflicts = !empty($allConflicts);
+            $this->showConflicts = ! empty($allConflicts);
         } catch (\Exception $e) {
             $this->conflicts = [];
             $this->showConflicts = false;
@@ -46,7 +48,7 @@ class ScheduleConflictAlert extends Component
 
     public function toggleConflicts()
     {
-        $this->showConflicts = !$this->showConflicts;
+        $this->showConflicts = ! $this->showConflicts;
     }
 
     public function render()

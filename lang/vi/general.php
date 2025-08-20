@@ -1,4 +1,5 @@
 <?php
+
 return [
     'app_name' => 'EduCore',
     'dashboard' => 'Trang chủ',

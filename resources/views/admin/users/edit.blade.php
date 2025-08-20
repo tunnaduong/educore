@@ -15,7 +15,7 @@
         <div class="card shadow-sm p-0">
             <div class="row g-0 align-items-stretch">
                 <div class="col-md-7 p-4">
-                    <form wire:submit="update">
+                    <form wire:submit="update" novalidate>
                         <!-- Thông tin cá nhân -->
                         <div class="mb-4">
                             <h5 class="text-primary mb-3">Thông tin cá nhân</h5>
@@ -31,9 +31,9 @@
                             <div class="mb-3">
                                 <label for="phone" class="form-label">Số điện thoại <span
                                         class="text-danger">*</span></label>
-                                <input wire:model="phone" type="tel" pattern="^\\d{10,15}$" inputmode="numeric"
+                                <input wire:model.live="phone" type="text" inputmode="numeric"
                                     oninput="this.value=this.value.replace(/[^0-9]/g,'')"
-                                    class="form-control @error('phone') is-invalid @enderror" id="phone" >
+                                    class="form-control @error('phone') is-invalid @enderror" id="phone">
                                 @error('phone')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

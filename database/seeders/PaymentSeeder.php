@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Classroom;
 use App\Models\Payment;
 use App\Models\User;
-use App\Models\Classroom;
-use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class PaymentSeeder extends Seeder
 {
@@ -68,7 +68,7 @@ class PaymentSeeder extends Seeder
             $paymentDate = $faker->dateTimeBetween('-6 months', 'now');
 
             // Tạo thông tin giao dịch
-            $transactionId = 'TXN' . strtoupper($faker->bothify('??????'));
+            $transactionId = 'TXN'.strtoupper($faker->bothify('??????'));
 
             // Tạo ghi chú
             $notes = $this->generateNotes($paymentType, $classroom, $student, $faker);
@@ -120,41 +120,41 @@ class PaymentSeeder extends Seeder
             case 'course_fee':
                 $notes = [
                     "Học phí khóa học {$classroom->name}",
-                    "Thanh toán học phí tháng " . rand(1, 12),
+                    'Thanh toán học phí tháng '.rand(1, 12),
                     "Học phí khóa học {$classroom->level}",
                     "Thanh toán học phí cho học viên {$student->name}",
                 ];
                 break;
             case 'material_fee':
                 $notes = [
-                    "Phí tài liệu học tập",
-                    "Phí sách giáo khoa và tài liệu bổ trợ",
+                    'Phí tài liệu học tập',
+                    'Phí sách giáo khoa và tài liệu bổ trợ',
                     "Phí tài liệu khóa học {$classroom->name}",
-                    "Phí in ấn tài liệu học tập",
+                    'Phí in ấn tài liệu học tập',
                 ];
                 break;
             case 'exam_fee':
                 $notes = [
                     "Phí thi HSK {$classroom->level}",
-                    "Phí thi cuối khóa",
-                    "Phí thi chứng chỉ quốc tế",
-                    "Phí thi đánh giá năng lực",
+                    'Phí thi cuối khóa',
+                    'Phí thi chứng chỉ quốc tế',
+                    'Phí thi đánh giá năng lực',
                 ];
                 break;
             case 'certificate_fee':
                 $notes = [
-                    "Phí cấp chứng chỉ hoàn thành khóa học",
+                    'Phí cấp chứng chỉ hoàn thành khóa học',
                     "Phí chứng chỉ HSK {$classroom->level}",
-                    "Phí chứng nhận năng lực tiếng Trung",
-                    "Phí bằng tốt nghiệp khóa học",
+                    'Phí chứng nhận năng lực tiếng Trung',
+                    'Phí bằng tốt nghiệp khóa học',
                 ];
                 break;
             case 'other':
                 $notes = [
-                    "Phí phát sinh khác",
-                    "Phí bảo hiểm học viên",
-                    "Phí hoạt động ngoại khóa",
-                    "Phí dịch vụ hỗ trợ học tập",
+                    'Phí phát sinh khác',
+                    'Phí bảo hiểm học viên',
+                    'Phí hoạt động ngoại khóa',
+                    'Phí dịch vụ hỗ trợ học tập',
                 ];
                 break;
         }

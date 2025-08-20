@@ -3,16 +3,19 @@
 namespace App\Livewire\Teacher\MyClass;
 
 use App\Models\Classroom;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class Show extends Component
 {
     public Classroom $classroom;
+
     public $activeTab = 'overview';
+
     public $showAddStudentModal = false;
+
     public $showAddLessonModal = false;
+
     public $showAddAssignmentModal = false;
 
     public function mount($classroomId)
@@ -58,7 +61,7 @@ class Show extends Component
     {
         return view('teacher.my-class.show', [
             'classroom' => $this->classroom,
-            'teacher' => Auth::user()
+            'teacher' => Auth::user(),
         ]);
     }
 }
