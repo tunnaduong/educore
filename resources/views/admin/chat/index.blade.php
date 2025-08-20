@@ -224,8 +224,7 @@
                                                     <i class="bi bi-send"></i>
                                                 </button>
                                             </div>
-                                            <input type="file" wire:model="attachment" id="attachment"
-                                                class="d-none" accept="image/*,audio/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar,.7z">
+                                            <input type="file" id="attachment" class="d-none" accept="image/*,audio/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar,.7z">
                                             @error('attachment')
                                                 <small class="text-danger d-block mt-1">{{ $message }}</small>
                                             @enderror
@@ -261,6 +260,21 @@
 
     @script
         <script>
+            // File upload handling
+            document.addEventListener('DOMContentLoaded', function() {
+                const fileInput = document.getElementById('attachment');
+                if (fileInput) {
+                    fileInput.addEventListener('change', function(e) {
+                        const file = e.target.files[0];
+                        if (file) {
+                            console.log('File selected:', file.name, file.size, file.type);
+                            // Gửi file qua Livewire
+                            @this.set('attachment', file);
+                        }
+                    });
+                }
+            });
+
             // Auto scroll to bottom when new messages arrive
             document.addEventListener('livewire:initialized', () => {
                 Livewire.on('messageSent', () => {
