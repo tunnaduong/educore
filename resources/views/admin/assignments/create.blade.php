@@ -5,7 +5,7 @@
             <a href="{{ route('assignments.overview') }}" class="text-decoration-none text-secondary">
                 <i class="bi bi-arrow-left mr-1"></i>Quay lại
             </a>
-            <h4 class="mt-2 text-primary fs-4"><i class="bi bi-journal-text mr-2"></i>Tạo bài tập mới</h4>
+            <h4 class="mt-2 text-primary fs-4"><i class="bi bi-journal-text mr-2"></i>Giao bài tập mới</h4>
         </div>
 
         <!-- Form -->
@@ -54,8 +54,8 @@
                             @enderror
                         </div>
                         <div class="col-md-6">
-                            <label for="score" class="form-label fw-semibold">Điểm tối đa (tuỳ chọn)</label>
-                            <input wire:model.defer="score" type="number" class="form-control" id="score"
+                            <label for="max_score" class="form-label fw-semibold">Điểm tối đa (tuỳ chọn)</label>
+                            <input wire:model.defer="max_score" type="number" class="form-control" id="max_score"
                                 placeholder="VD: 10" min="0" max="10" step="0.1"
                                 oninput="if(this.value > 10) this.value = 10; if(this.value < 0) this.value = 0;"
                                 onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 46 || event.charCode === 8 || event.charCode === 9">
@@ -128,7 +128,7 @@
                     <div class="d-flex justify-content-end gap-2">
                         <a href="{{ route('assignments.overview') }}" class="btn btn-outline-secondary">Hủy</a>
                         <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-send mr-1"></i> Tạo bài tập
+                            <i class="bi bi-send mr-1"></i> Giao bài tập
                         </button>
                     </div>
                 </form>
