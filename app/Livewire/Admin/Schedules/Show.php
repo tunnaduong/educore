@@ -16,7 +16,7 @@ class Show extends Component
 
     public function formatSchedule($schedule)
     {
-        if (!$schedule || !is_array($schedule)) {
+        if (! $schedule || ! is_array($schedule)) {
             return 'Chưa có lịch học';
         }
 
@@ -34,14 +34,14 @@ class Show extends Component
             'Thursday' => 'Thứ 5',
             'Friday' => 'Thứ 6',
             'Saturday' => 'Thứ 7',
-            'Sunday' => 'Chủ nhật'
+            'Sunday' => 'Chủ nhật',
         ];
 
         $formattedDays = array_map(function ($day) use ($dayNames) {
             return $dayNames[$day] ?? $day;
         }, $days);
 
-        return implode(', ', $formattedDays) . ' - ' . $time;
+        return implode(', ', $formattedDays).' - '.$time;
     }
 
     public function getStatusBadgeClass($status)

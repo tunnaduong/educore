@@ -2,19 +2,25 @@
 
 namespace App\Livewire\Admin\Quiz;
 
-use Livewire\Component;
-use App\Models\Quiz;
 use App\Models\Classroom;
 use App\Models\QuestionBank;
+use App\Models\Quiz;
+use Livewire\Component;
 
 class Create extends Component
 {
     public $title = '';
+
     public $description = '';
+
     public $class_id = '';
+
     public $deadline = '';
+
     public $time_limit = '';
+
     public $questions = [];
+
     public $currentQuestion = [
         'question' => '',
         'type' => 'multiple_choice',
@@ -26,10 +32,15 @@ class Create extends Component
 
     // Thêm các thuộc tính cho ngân hàng câu hỏi
     public $showQuestionBank = false;
+
     public $selectedQuestionBank = '';
+
     public $questionBankQuestions = [];
+
     public $selectedQuestions = [];
+
     public $questionBankFilter = '';
+
     public $questionTypeFilter = '';
 
     protected $rules = [
@@ -181,7 +192,7 @@ class Create extends Component
             $this->selectedQuestionBank = $bankId;
             $this->questionBankQuestions = $questionBank->questions ?? [];
             $this->showQuestionBank = true;
-            session()->flash('message', 'Đã tải ngân hàng câu hỏi: ' . $questionBank->name);
+            session()->flash('message', 'Đã tải ngân hàng câu hỏi: '.$questionBank->name);
         }
     }
 
@@ -216,6 +227,7 @@ class Create extends Component
     {
         if (empty($this->selectedQuestions)) {
             session()->flash('error', 'Vui lòng chọn ít nhất một câu hỏi.');
+
             return;
         }
 
@@ -239,7 +251,7 @@ class Create extends Component
 
         $addedCount = count($this->selectedQuestions);
         $this->selectedQuestions = [];
-        session()->flash('message', 'Đã thêm ' . $addedCount . ' câu hỏi từ ngân hàng câu hỏi.');
+        session()->flash('message', 'Đã thêm '.$addedCount.' câu hỏi từ ngân hàng câu hỏi.');
     }
 
     public function closeQuestionBank()
@@ -254,26 +266,28 @@ class Create extends Component
     {
         if (empty($this->questions)) {
             session()->flash('error', 'Vui lòng thêm ít nhất một câu hỏi trước khi kiểm tra.');
+
             return;
         }
 
         try {
-            $aiHelper = new \App\Helpers\AIHelper();
+            $aiHelper = new \App\Helpers\AIHelper;
 
-            if (!$aiHelper->isAIAvailable()) {
+            if (! $aiHelper->isAIAvailable()) {
                 session()->flash('error', 'AI service không khả dụng. Vui lòng kiểm tra cấu hình API key.');
+
                 return;
             }
 
             $result = $aiHelper->validateAndFixQuiz($this->questions);
 
             if ($result && isset($result['suggestions'])) {
-                session()->flash('message', 'AI đã kiểm tra quiz và đưa ra ' . count($result['suggestions']) . ' gợi ý cải thiện.');
+                session()->flash('message', 'AI đã kiểm tra quiz và đưa ra '.count($result['suggestions']).' gợi ý cải thiện.');
             } else {
                 session()->flash('message', 'Quiz đã được kiểm tra và không có lỗi nào được phát hiện.');
             }
         } catch (\Exception $e) {
-            session()->flash('error', 'Có lỗi xảy ra khi kiểm tra quiz: ' . $e->getMessage());
+            session()->flash('error', 'Có lỗi xảy ra khi kiểm tra quiz: '.$e->getMessage());
         }
     }
 

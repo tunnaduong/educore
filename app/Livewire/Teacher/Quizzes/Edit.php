@@ -2,27 +2,35 @@
 
 namespace App\Livewire\Teacher\Quizzes;
 
+use App\Models\Quiz;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use App\Models\Quiz;
-use App\Models\Classroom;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
 
 class Edit extends Component
 {
     use WithFileUploads;
 
     public Quiz $quiz;
+
     public $title = '';
+
     public $description = '';
+
     public $class_id = '';
+
     public $deadline = '';
+
     public $time_limit = '';
+
     public $questions = [];
+
     public $showQuestionForm = false;
+
     public $editingQuestionIndex = null;
+
     public $minAssignedDate;
+
     public $oldDeadline;
 
     protected $rules = [
@@ -49,11 +57,12 @@ class Edit extends Component
     {
         $this->minAssignedDate = now()->format('Y-m-d\TH:i');
         $this->quiz = $quiz;
-        
+
         // Kiểm tra quyền chỉnh sửa
         $teacherClassIds = Auth::user()->teachingClassrooms->pluck('id');
-        if (!$teacherClassIds->contains($this->quiz->class_id)) {
+        if (! $teacherClassIds->contains($this->quiz->class_id)) {
             session()->flash('error', 'Bạn không có quyền chỉnh sửa bài kiểm tra này.');
+
             return redirect()->route('teacher.quizzes.index');
         }
 
@@ -91,7 +100,7 @@ class Edit extends Component
     {
         unset($this->questions[$index]);
         $this->questions = array_values($this->questions);
-        
+
         if (empty($this->questions)) {
             $this->addQuestion();
         }
@@ -135,25 +144,27 @@ class Edit extends Component
     public function save()
     {
         $this->validate([
-            'deadline' => 'required|date|after_or_equal:' . $this->oldDeadline,
+            'deadline' => 'required|date|after_or_equal:'.$this->oldDeadline,
         ], [
             'deadline.after_or_equal' => 'Hạn nộp mới phải sau hoặc bằng hạn nộp cũ.',
         ]);
 
         // Kiểm tra xem lớp học có thuộc giáo viên không
         $teacherClassIds = Auth::user()->teachingClassrooms->pluck('id');
-        if (!$teacherClassIds->contains($this->class_id)) {
+        if (! $teacherClassIds->contains($this->class_id)) {
             session()->flash('error', 'Bạn không có quyền chỉnh sửa bài kiểm tra cho lớp này.');
+
             return;
         }
 
         // Lọc bỏ các câu hỏi trống
         $validQuestions = array_filter($this->questions, function ($question) {
-            return !empty($question['question']);
+            return ! empty($question['question']);
         });
 
         if (empty($validQuestions)) {
             session()->flash('error', 'Vui lòng thêm ít nhất một câu hỏi hợp lệ.');
+
             return;
         }
 
@@ -167,13 +178,14 @@ class Edit extends Component
         ]);
 
         session()->flash('message', 'Bài kiểm tra đã được cập nhật thành công!');
+
         return redirect()->route('teacher.quizzes.index');
     }
 
     public function render()
     {
         $classrooms = Auth::user()->teachingClassrooms()->orderBy('name')->get();
-        
+
         return view('teacher.quizzes.edit', [
             'classrooms' => $classrooms,
         ]);

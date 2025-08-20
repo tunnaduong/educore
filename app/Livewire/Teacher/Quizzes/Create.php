@@ -2,22 +2,27 @@
 
 namespace App\Livewire\Teacher\Quizzes;
 
-use Livewire\Component;
-use App\Models\Quiz;
 use App\Models\Classroom;
 use App\Models\QuestionBank;
-use App\Models\User;
+use App\Models\Quiz;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Livewire\Component;
 
 class Create extends Component
 {
     public $title = '';
+
     public $description = '';
+
     public $class_id = '';
+
     public $deadline = '';
+
     public $time_limit = '';
+
     public $questions = [];
+
     public $currentQuestion = [
         'question' => '',
         'type' => 'multiple_choice',
@@ -29,10 +34,15 @@ class Create extends Component
 
     // Thêm các thuộc tính cho ngân hàng câu hỏi
     public $showQuestionBank = false;
+
     public $selectedQuestionBank = '';
+
     public $questionBankQuestions = [];
+
     public $selectedQuestions = [];
+
     public $questionBankFilter = '';
+
     public $questionTypeFilter = '';
 
     protected $rules = [
@@ -163,24 +173,26 @@ class Create extends Component
     {
         if (empty($this->questions)) {
             session()->flash('error', 'Không có câu hỏi để kiểm tra.');
+
             return;
         }
 
         try {
-            $aiHelper = new \App\Helpers\AIHelper();
+            $aiHelper = new \App\Helpers\AIHelper;
 
-            if (!$aiHelper->isAIAvailable()) {
+            if (! $aiHelper->isAIAvailable()) {
                 session()->flash('error', 'AI service không khả dụng. Vui lòng kiểm tra cấu hình API.');
+
                 return;
             }
 
             $tempQuiz = (object) [
-                'questions' => $this->questions
+                'questions' => $this->questions,
             ];
 
             $result = $aiHelper->validateQuizWithAI($tempQuiz);
 
-            if ($result && !empty($result['fixed_questions'])) {
+            if ($result && ! empty($result['fixed_questions'])) {
                 $this->questions = $result['fixed_questions'];
 
                 // Hiển thị thông tin validation
@@ -200,7 +212,7 @@ class Create extends Component
                 session()->flash('info', 'Quiz không có lỗi cần sửa.');
             }
         } catch (\Exception $e) {
-            session()->flash('error', 'Có lỗi xảy ra khi kiểm tra quiz: ' . $e->getMessage());
+            session()->flash('error', 'Có lỗi xảy ra khi kiểm tra quiz: '.$e->getMessage());
         }
     }
 
@@ -212,7 +224,7 @@ class Create extends Component
             $this->selectedQuestionBank = $bankId;
             $this->questionBankQuestions = $questionBank->questions ?? [];
             $this->showQuestionBank = true;
-            session()->flash('message', 'Đã tải ngân hàng câu hỏi: ' . $questionBank->name);
+            session()->flash('message', 'Đã tải ngân hàng câu hỏi: '.$questionBank->name);
         }
     }
 
@@ -247,6 +259,7 @@ class Create extends Component
     {
         if (empty($this->selectedQuestions)) {
             session()->flash('error', 'Vui lòng chọn ít nhất một câu hỏi.');
+
             return;
         }
 
@@ -270,7 +283,7 @@ class Create extends Component
 
         $addedCount = count($this->selectedQuestions);
         $this->selectedQuestions = [];
-        session()->flash('message', 'Đã thêm ' . $addedCount . ' câu hỏi từ ngân hàng câu hỏi.');
+        session()->flash('message', 'Đã thêm '.$addedCount.' câu hỏi từ ngân hàng câu hỏi.');
     }
 
     public function closeQuestionBank()
@@ -290,15 +303,16 @@ class Create extends Component
             $query->where('users.id', Auth::id());
         })->first();
 
-        if (!$classroom) {
+        if (! $classroom) {
             session()->flash('error', 'Không tìm thấy lớp học nào cho giáo viên này.');
+
             return;
         }
 
         // Test tạo quiz đơn giản
         try {
             $quiz = Quiz::create([
-                'title' => 'Test Quiz - ' . now()->format('Y-m-d H:i:s'),
+                'title' => 'Test Quiz - '.now()->format('Y-m-d H:i:s'),
                 'description' => 'Test quiz description',
                 'class_id' => $classroom->id,
                 'questions' => [
@@ -307,16 +321,16 @@ class Create extends Component
                         'type' => 'multiple_choice',
                         'options' => ['A', 'B', 'C', 'D'],
                         'correct_answer' => 'A',
-                        'score' => 1
-                    ]
+                        'score' => 1,
+                    ],
                 ],
             ]);
 
             Log::info('Test quiz created successfully', ['quiz_id' => $quiz->id]);
-            session()->flash('message', 'Test quiz created successfully with ID: ' . $quiz->id);
+            session()->flash('message', 'Test quiz created successfully with ID: '.$quiz->id);
         } catch (\Exception $e) {
             Log::error('Test quiz creation failed', ['error' => $e->getMessage()]);
-            session()->flash('error', 'Test failed: ' . $e->getMessage());
+            session()->flash('error', 'Test failed: '.$e->getMessage());
         }
     }
 
@@ -337,54 +351,63 @@ class Create extends Component
             // Kiểm tra dữ liệu cơ bản
             if (empty($this->title)) {
                 session()->flash('error', 'Vui lòng nhập tiêu đề bài kiểm tra.');
+
                 return;
             }
 
             if (empty($this->class_id)) {
                 session()->flash('error', 'Vui lòng chọn lớp học.');
+
                 return;
             }
 
             if (empty($this->questions)) {
                 session()->flash('error', 'Vui lòng thêm ít nhất một câu hỏi.');
+
                 return;
             }
 
             // Validate câu hỏi
             foreach ($this->questions as $index => $question) {
                 if (empty($question['question']) || strlen($question['question']) < 3) {
-                    session()->flash('error', "Câu hỏi " . ($index + 1) . " phải có ít nhất 3 ký tự.");
+                    session()->flash('error', 'Câu hỏi '.($index + 1).' phải có ít nhất 3 ký tự.');
+
                     return;
                 }
 
-                if (empty($question['type']) || !in_array($question['type'], ['multiple_choice', 'fill_blank', 'drag_drop', 'essay'])) {
-                    session()->flash('error', "Câu hỏi " . ($index + 1) . " có loại câu hỏi không hợp lệ.");
+                if (empty($question['type']) || ! in_array($question['type'], ['multiple_choice', 'fill_blank', 'drag_drop', 'essay'])) {
+                    session()->flash('error', 'Câu hỏi '.($index + 1).' có loại câu hỏi không hợp lệ.');
+
                     return;
                 }
 
                 if (empty($question['score']) || $question['score'] < 1 || $question['score'] > 10) {
-                    session()->flash('error', "Câu hỏi " . ($index + 1) . " phải có điểm từ 1-10.");
+                    session()->flash('error', 'Câu hỏi '.($index + 1).' phải có điểm từ 1-10.');
+
                     return;
                 }
 
                 // Validate câu hỏi trắc nghiệm
                 if ($question['type'] === 'multiple_choice') {
                     if (empty($question['options']) || count($question['options']) < 2) {
-                        session()->flash('error', "Câu hỏi " . ($index + 1) . " phải có ít nhất 2 đáp án.");
+                        session()->flash('error', 'Câu hỏi '.($index + 1).' phải có ít nhất 2 đáp án.');
+
                         return;
                     }
 
                     $validOptions = array_filter($question['options'], function ($option) {
-                        return !empty(trim($option));
+                        return ! empty(trim($option));
                     });
 
                     if (count($validOptions) < 2) {
-                        session()->flash('error', "Câu hỏi " . ($index + 1) . " phải có ít nhất 2 đáp án hợp lệ.");
+                        session()->flash('error', 'Câu hỏi '.($index + 1).' phải có ít nhất 2 đáp án hợp lệ.');
+
                         return;
                     }
 
                     if (empty($question['correct_answer'])) {
-                        session()->flash('error', "Câu hỏi " . ($index + 1) . " phải có đáp án đúng.");
+                        session()->flash('error', 'Câu hỏi '.($index + 1).' phải có đáp án đúng.');
+
                         return;
                     }
                 }
@@ -406,7 +429,8 @@ class Create extends Component
             return redirect()->route('teacher.quizzes.show', $quiz);
         } catch (\Exception $e) {
             Log::error('Quiz Create - General error:', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
-            session()->flash('error', 'Có lỗi xảy ra khi tạo bài kiểm tra: ' . $e->getMessage());
+            session()->flash('error', 'Có lỗi xảy ra khi tạo bài kiểm tra: '.$e->getMessage());
+
             return null;
         }
     }
@@ -422,7 +446,7 @@ class Create extends Component
         Log::info('Classrooms found for teacher', [
             'teacher_id' => Auth::id(),
             'classrooms_count' => $classrooms->count(),
-            'classrooms' => $classrooms->pluck('id', 'name')->toArray()
+            'classrooms' => $classrooms->pluck('id', 'name')->toArray(),
         ]);
 
         $questionBanks = QuestionBank::orderBy('name')->get();

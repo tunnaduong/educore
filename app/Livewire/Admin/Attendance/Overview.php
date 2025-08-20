@@ -6,15 +6,19 @@ use App\Models\Attendance;
 use App\Models\Classroom;
 use App\Models\User;
 use Livewire\Component;
-use Carbon\Carbon;
 
 class Overview extends Component
 {
     public $selectedMonth;
+
     public $selectedYear;
+
     public $overviewStats = [];
+
     public $recentAttendances = [];
+
     public $topClasses = [];
+
     public $topStudents = [];
 
     public function mount()
@@ -50,7 +54,7 @@ class Overview extends Component
                     'total_days' => $attendances->count(),
                     'present_days' => $attendances->where('present', true)->count(),
                     'attendance_rate' => $attendances->count() > 0 ?
-                        round(($attendances->where('present', true)->count() / $attendances->count()) * 100, 1) : 0
+                        round(($attendances->where('present', true)->count() / $attendances->count()) * 100, 1) : 0,
                 ];
             })
             ->sortByDesc('total_days')
@@ -67,7 +71,7 @@ class Overview extends Component
                     'total_days' => $attendances->count(),
                     'present_days' => $attendances->where('present', true)->count(),
                     'attendance_rate' => $attendances->count() > 0 ?
-                        round(($attendances->where('present', true)->count() / $attendances->count()) * 100, 1) : 0
+                        round(($attendances->where('present', true)->count() / $attendances->count()) * 100, 1) : 0,
                 ];
             })
             ->sortByDesc('attendance_rate')
@@ -107,7 +111,7 @@ class Overview extends Component
 
     public function getMonthName($month)
     {
-        return 'Tháng ' . (int) $month;
+        return 'Tháng '.(int) $month;
     }
 
     public function render()

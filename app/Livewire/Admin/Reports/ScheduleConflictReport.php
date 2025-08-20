@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Admin\Reports;
 
+use App\Helpers\ScheduleConflictHelper;
 use App\Models\Classroom;
 use App\Models\User;
-use App\Helpers\ScheduleConflictHelper;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -13,15 +13,25 @@ class ScheduleConflictReport extends Component
     use WithPagination;
 
     public $studentConflicts = [];
+
     public $teacherConflicts = [];
+
     public $totalStudentConflicts = 0;
+
     public $totalTeacherConflicts = 0;
+
     public $loading = true;
+
     public $lastChecked = null;
+
     public $search = '';
+
     public $filterClassroom = '';
+
     public $filterStudent = '';
+
     public $showDetails = false;
+
     public $selectedConflict = null;
 
     public function mount()
@@ -54,7 +64,7 @@ class ScheduleConflictReport extends Component
                     $allStudentConflicts[] = [
                         'classroom' => $classroom,
                         'student' => $student,
-                        'conflicts' => $conflict['conflicts']
+                        'conflicts' => $conflict['conflicts'],
                     ];
                 }
             }
@@ -67,7 +77,7 @@ class ScheduleConflictReport extends Component
                     $allTeacherConflicts[] = [
                         'classroom' => $classroom,
                         'teacher' => $teacher,
-                        'conflicts' => $conflict['conflicts']
+                        'conflicts' => $conflict['conflicts'],
                     ];
                 }
             }
@@ -106,7 +116,7 @@ class ScheduleConflictReport extends Component
             $this->selectedConflict = [
                 'classroom' => $classroom,
                 'student' => $student,
-                'conflicts' => $conflict['conflicts']
+                'conflicts' => $conflict['conflicts'],
             ];
             $this->showDetails = true;
         }
@@ -146,7 +156,7 @@ class ScheduleConflictReport extends Component
                     $allConflicts[] = [
                         'classroom' => $classroom,
                         'student' => $student,
-                        'conflicts' => $conflict['conflicts']
+                        'conflicts' => $conflict['conflicts'],
                     ];
                 }
             }
@@ -181,10 +191,10 @@ class ScheduleConflictReport extends Component
 
     public function exportReport()
     {
-        $filename = 'schedule_conflicts_report_' . date('Y-m-d_H-i-s') . '.txt';
-        $content = "=== BÁO CÁO TRÙNG LỊCH - " . date('Y-m-d H:i:s') . " ===\n\n";
+        $filename = 'schedule_conflicts_report_'.date('Y-m-d_H-i-s').'.txt';
+        $content = '=== BÁO CÁO TRÙNG LỊCH - '.date('Y-m-d H:i:s')." ===\n\n";
 
-        if (!empty($this->studentConflicts)) {
+        if (! empty($this->studentConflicts)) {
             $content .= "TRÙNG LỊCH HỌC SINH:\n";
             foreach ($this->studentConflicts as $conflict) {
                 $content .= "- Lớp: {$conflict['classroom']->name}\n";
@@ -195,7 +205,7 @@ class ScheduleConflictReport extends Component
             }
         }
 
-        if (!empty($this->teacherConflicts)) {
+        if (! empty($this->teacherConflicts)) {
             $content .= "\nTRÙNG LỊCH GIÁO VIÊN:\n";
             foreach ($this->teacherConflicts as $conflict) {
                 $content .= "- Lớp: {$conflict['classroom']->name}\n";
@@ -208,7 +218,7 @@ class ScheduleConflictReport extends Component
 
         return response($content)
             ->header('Content-Type', 'text/plain')
-            ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
+            ->header('Content-Disposition', 'attachment; filename="'.$filename.'"');
     }
 
     public function render()

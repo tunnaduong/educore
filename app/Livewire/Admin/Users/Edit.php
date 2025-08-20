@@ -3,19 +3,26 @@
 namespace App\Livewire\Admin\Users;
 
 use App\Models\User;
-use Livewire\Component;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Livewire\Component;
 
 class Edit extends Component
 {
     public $user;
+
     public $name = '';
+
     public $email = '';
+
     public $phone = '';
+
     public $role = '';
+
     public $is_active = true;
+
     public $password = '';
+
     public $password_confirmation = '';
 
     public function mount(User $user)
@@ -84,6 +91,7 @@ class Edit extends Component
         $this->user->save();
 
         session()->flash('success', 'Cập nhật người dùng thành công!');
+
         return $this->redirect(route('users.index'));
     }
 

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->json('ai_validation_errors')->nullable()->after('questions');
             $table->json('ai_suggestions')->nullable()->after('ai_validation_errors');
             $table->timestamp('ai_validated_at')->nullable()->after('ai_suggestions');
-            
+
             // AI generation fields
             $table->boolean('ai_generated')->default(false)->after('ai_validated_at');
             $table->string('ai_generation_source')->nullable()->after('ai_generated'); // lesson_id, topic, etc.
@@ -38,7 +38,7 @@ return new class extends Migration
                 'ai_generated',
                 'ai_generation_source',
                 'ai_generation_params',
-                'ai_generated_at'
+                'ai_generated_at',
             ]);
         });
     }
