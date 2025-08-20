@@ -182,4 +182,28 @@ return [
     'pending_grading' => 'Pending Grading',
     'submission_list' => 'Submission List',
     'assignment' => 'Assignment',
+    // Assignment editing translations
+    'edit_assignment' => 'Edit Assignment',
+    'title' => 'Title',
+    'assignment_types' => 'Assignment Types',
+    // Grading list translations
+    'assignments_to_grade' => 'Assignments to Grade',
+    'manage_grade_assignments' => 'Manage and grade student assignments',
+    'search' => 'Search',
+    'search_by_name_description' => 'Search by name or assignment description...',
+    'sort' => 'Sort',
+    'assignments_list' => 'Assignments List',
+    'total_assignments' => 'Total: :count assignments',
+    'no_assignments' => 'No assignments yet',
+    'info' => 'Information',
+    'total_assignments_info' => 'Total assignments:',
+    // Finance translations
+    'expense_filter' => 'Expense Filter',
+    'expense_type' => 'Expense Type',
+    'amount' => 'Amount',
+    'employee' => 'Employee',
+    'class' => 'Class',
+    'expense_date' => 'Expense Date',
+    'notes' => 'Notes',
+    'actions' => 'Actions',
 ];

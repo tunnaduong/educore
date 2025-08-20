@@ -182,4 +182,28 @@ return [
     'pending_grading' => '待评分',
     'submission_list' => '提交列表',
     'assignment' => '作业',
+    // Assignment editing translations
+    'edit_assignment' => '编辑作业',
+    'title' => '标题',
+    'assignment_types' => '作业类型',
+    // Grading list translations
+    'assignments_to_grade' => '待评分作业列表',
+    'manage_grade_assignments' => '管理和评分学生作业',
+    'search' => '搜索',
+    'search_by_name_description' => '按名称或作业描述搜索...',
+    'sort' => '排序',
+    'assignments_list' => '待评分作业列表',
+    'total_assignments' => ':count 个作业',
+    'no_assignments' => '暂无作业',
+    'info' => '信息',
+    'total_assignments_info' => '作业总数:',
+    // Finance translations
+    'expense_filter' => '费用筛选',
+    'expense_type' => '费用类型',
+    'amount' => '金额',
+    'employee' => '员工',
+    'class' => '班级',
+    'expense_date' => '费用日期',
+    'notes' => '备注',
+    'actions' => '操作',
 ];

@@ -206,4 +206,28 @@ return [
     'pending_grading' => 'Chờ chấm điểm',
     'submission_list' => 'Danh sách bài nộp',
     'assignment' => 'Bài tập',
+    // Assignment editing translations
+    'edit_assignment' => 'Chỉnh sửa bài tập',
+    'title' => 'Tiêu đề',
+    'assignment_types' => 'Loại bài tập',
+    // Grading list translations
+    'assignments_to_grade' => 'Danh sách bài tập cần chấm',
+    'manage_grade_assignments' => 'Quản lý và chấm điểm các bài tập của học viên',
+    'search' => 'Tìm kiếm',
+    'search_by_name_description' => 'Tìm theo tên hoặc mô tả bài tập...',
+    'sort' => 'Sắp xếp',
+    'assignments_list' => 'Danh sách bài tập cần chấm',
+    'total_assignments' => ':count bài tập',
+    'no_assignments' => 'Chưa có bài tập nào',
+    'info' => 'Thông tin',
+    'total_assignments_info' => 'Tổng bài tập:',
+    // Finance translations
+    'expense_filter' => 'Bộ lọc chi tiêu',
+    'expense_type' => 'Loại chi tiêu',
+    'amount' => 'Số tiền',
+    'employee' => 'Nhân viên',
+    'class' => 'Lớp học',
+    'expense_date' => 'Ngày chi',
+    'notes' => 'Ghi chú',
+    'actions' => 'Thao tác',
 ];
