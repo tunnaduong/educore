@@ -84,7 +84,7 @@ class Edit extends Component
         $this->user->save();
 
         session()->flash('success', 'Cập nhật người dùng thành công!');
-        return $this->redirect(route('users.index'), navigate: true);
+        return $this->redirect(route('users.index'));
     }
 
     public function render()

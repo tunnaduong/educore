@@ -223,7 +223,7 @@
     @if ($selectedNotification)
         <div class="modal fade show" style="display: block;" tabindex="-1" aria-labelledby="notificationModalLabel"
             aria-hidden="true">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-dialog-scrollable modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="d-flex align-items-center">
@@ -292,7 +292,8 @@
                             <div class="mt-3">
                                 <strong>Lớp học:</strong>
                                 <span class="badge bg-secondary ml-2">
-                                    <i class="bi bi-diagram-3 mr-1"></i>{{ $selectedNotification->classroom?->name ?? 'N/A' }}
+                                    <i
+                                        class="bi bi-diagram-3 mr-1"></i>{{ $selectedNotification->classroom?->name ?? 'N/A' }}
                                 </span>
                             </div>
                         @endif

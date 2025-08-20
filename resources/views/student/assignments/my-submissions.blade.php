@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
-            <a href="{{ route('student.assignments.overview') }}" wire:navigate
+            <a href="{{ route('student.assignments.overview') }}"
                 class="text-decoration-none text-secondary d-inline-block mb-3">
                 <i class="bi bi-arrow-left mr-2"></i>Quay lại
             </a>
@@ -184,8 +184,7 @@
                                         </td>
                                         <td>
                                             <a href="{{ route('student.assignments.show', $submission->assignment->id) }}"
-                                                class="btn btn-sm btn-outline-primary" title="Xem chi tiết"
-                                                wire:navigate>
+                                                class="btn btn-sm btn-outline-primary" title="Xem chi tiết">
                                                 <i class="bi bi-eye"></i> Xem
                                             </a>
                                         </td>
@@ -203,7 +202,7 @@
                         <i class="bi bi-folder-x fs-1 text-muted mb-3"></i>
                         <h5 class="text-muted">Chưa có bài tập nào được nộp</h5>
                         <p class="text-muted">Bạn chưa nộp bài tập nào hoặc không có bài tập nào phù hợp với bộ lọc.</p>
-                        <a href="{{ route('student.assignments.overview') }}" class="btn btn-primary" wire:navigate>
+                        <a href="{{ route('student.assignments.overview') }}" class="btn btn-primary">
                             <i class="bi bi-journal-text mr-2"></i>Xem danh sách bài tập
                         </a>
                     </div>

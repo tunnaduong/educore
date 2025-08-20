@@ -29,7 +29,7 @@
                     <!-- Header with Logo -->
                     <div class="card-body p-5">
                         <div class="text-center mb-4">
-                            <div class="flex justify-center">
+                            <div class="d-flex justify-content-center">
                                 <img src="/educore-logo.png" alt="Logo" style="width: 60px; height: 60px;">
                             </div>
 

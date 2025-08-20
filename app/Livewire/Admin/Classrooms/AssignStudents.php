@@ -92,17 +92,20 @@ class AssignStudents extends Component
     
     public function performAssignment()
     {
-        // Xóa tất cả học viên hiện tại khỏi lớp
-        $this->classroom->students()->detach();
-
-        // Gán học viên mới được chọn
-        if (!empty($this->selectedStudents)) {
-            $studentData = [];
-            foreach ($this->selectedStudents as $studentId) {
-                $studentData[$studentId] = ['role' => 'student'];
-            }
-            $this->classroom->students()->attach($studentData);
+        // Đồng bộ danh sách học viên theo lựa chọn hiện tại
+        // - Không dùng detach/attach để tránh reset created_at của các học viên cũ
+        // - Sử dụng sync để:
+        //   + Giữ nguyên các bản ghi đang tồn tại (bảo toàn created_at)
+        //   + Thêm mới các học viên được chọn (tạo created_at mới)
+        //   + Gỡ các học viên bị bỏ chọn khỏi lớp
+        $studentData = [];
+        foreach ($this->selectedStudents as $studentId) {
+            $studentData[$studentId] = ['role' => 'student'];
         }
+
+        // Gọi sync trên quan hệ students() để chỉ tác động đến role = 'student'
+        // (không ảnh hưởng đến giáo viên trong bảng pivot class_user)
+        $this->classroom->students()->sync($studentData);
 
         $this->showModal = false;
         $this->showConflictModal = false;

@@ -38,8 +38,15 @@
         }
 
         @keyframes fadeInOut {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
         }
 
         .animate__pulse {
@@ -56,13 +63,13 @@
 
         #timer-container {
             transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             border: 2px solid transparent;
         }
 
         #timer-container:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
         #timer {
@@ -96,7 +103,7 @@
                         <i class="bi bi-exclamation-triangle display-4 mb-3"></i>
                         <h3 class="mb-3">403 | Không thể truy cập bài kiểm tra</h3>
                         <p class="lead">{{ $accessDenied }}</p>
-                        <a href="{{ route('student.quizzes.index') }}" wire:navigate class="btn btn-primary mt-3">
+                        <a href="{{ route('student.quizzes.index') }}" class="btn btn-primary mt-3">
                             <i class="bi bi-arrow-left mr-1"></i>Quay lại danh sách bài kiểm tra
                         </a>
                     </div>
@@ -149,7 +156,7 @@
                             </div>
 
                             <div class="mt-4">
-                                <a href="{{ route('student.quizzes.index') }}" wire:navigate class="btn btn-primary">
+                                <a href="{{ route('student.quizzes.index') }}" class="btn btn-primary">
                                     <i class="bi bi-house mr-2"></i>Về trang chủ
                                 </a>
                             </div>
@@ -184,18 +191,21 @@
                                 </div>
                                 <div class="col-md-6 text-md-end">
                                     @if ($timeRemaining)
-                                        <div class="d-inline-block px-3 py-2 rounded {{ $this->getTimerClass() }}" id="timer-container">
+                                        <div class="d-inline-block px-3 py-2 rounded {{ $this->getTimerClass() }}"
+                                            id="timer-container">
                                             <i class="bi bi-clock mr-2"></i>
                                             <span id="timer" class="fw-bold fs-5">
                                                 {{ $this->getFormattedTimeRemaining() }}
                                             </span>
-                                            @if($this->shouldShowWarning())
-                                                <span class="badge bg-warning text-dark ms-2 animate__animated animate__pulse">
+                                            @if ($this->shouldShowWarning())
+                                                <span
+                                                    class="badge bg-warning text-dark ms-2 animate__animated animate__pulse">
                                                     <i class="bi bi-exclamation-triangle"></i> Cảnh báo
                                                 </span>
                                             @endif
-                                            @if($this->shouldShowUrgentWarning())
-                                                <span class="badge bg-danger text-white ms-2 animate__animated animate__pulse">
+                                            @if ($this->shouldShowUrgentWarning())
+                                                <span
+                                                    class="badge bg-danger text-white ms-2 animate__animated animate__pulse">
                                                     <i class="bi bi-exclamation-triangle-fill"></i> Khẩn cấp
                                                 </span>
                                             @endif
@@ -366,11 +376,11 @@
 
                                     @if ($currentQuestionIndex === count($questions) - 1)
                                         <button class="btn btn-success" wire:click="submitQuiz"
-                                            onclick="return confirmSubmit()">
+                                            wire:confirm="Bạn có chắc chắn muốn nộp bài?">
                                             <i class="bi bi-check-circle mr-2"></i>Nộp bài
                                         </button>
                                     @else
-                                        <button class="btn btn-primary" wire:click="nextQuestion">
+                                        <button type="button" class="btn btn-primary" wire:click="nextQuestion">
                                             Câu tiếp<i class="bi bi-arrow-right ml-2"></i>
                                         </button>
                                     @endif
@@ -391,129 +401,209 @@
         </div>
 
         <!-- JavaScript cho timer -->
+        <script>
+            // Debug: Log khi trang được load
+            console.log('Quiz page loaded');
+
+            // Debug: Kiểm tra Livewire
+            if (typeof Livewire !== 'undefined') {
+                console.log('Livewire is available');
+            } else {
+                console.log('Livewire is not available');
+            }
+
+            // Biến global để theo dõi trạng thái timer
+            window.quizTimer = window.quizTimer || {
+                initialized: false,
+                interval: null,
+                timeRemaining: null
+            };
+        </script>
+
         @if ($timeRemaining)
             <script>
-                let timeRemaining = {{ $timeRemaining }};
-                const timerElement = document.getElementById('timer');
-                const timerContainer = document.getElementById('timer-container');
+                // Chỉ khởi tạo timer một lần
+                if (!window.quizTimer.initialized) {
+                    window.quizTimer.timeRemaining = {{ $timeRemaining }};
+                    window.quizTimer.initialized = true;
 
-                // Cảnh báo khi người dùng cố gắng reload hoặc rời khỏi trang
-                window.onbeforeunload = function() {
-                    return 'Nếu bạn tải lại hoặc rời khỏi trang, bài kiểm tra sẽ bị nộp tự động và bạn không thể tiếp tục làm tiếp!';
-                };
+                    const timerElement = document.getElementById('timer');
+                    const timerContainer = document.getElementById('timer-container');
 
-                // Function để format thời gian - chỉ hiển thị phút:giây
-                function formatTime(seconds) {
-                    const minutes = Math.floor(seconds / 60);
-                    const secs = seconds % 60;
-                    
-                    // Luôn hiển thị định dạng MM:SS
-                    return (minutes < 10 ? '0' : '') + minutes + ':' +
-                           (secs < 10 ? '0' : '') + secs;
-                }
+                    // Cảnh báo khi người dùng cố gắng reload hoặc rời khỏi trang
+                    window.onbeforeunload = function(e) {
+                        // Chỉ hiển thị cảnh báo khi chưa nộp bài và còn thời gian
+                        if (window.quizTimer.timeRemaining > 0 && !window.quizSubmitted) {
+                            e.preventDefault();
+                            e.returnValue =
+                                'Nếu bạn tải lại hoặc rời khỏi trang, bài kiểm tra sẽ bị nộp tự động và bạn không thể tiếp tục làm tiếp!';
+                            return e.returnValue;
+                        }
+                    };
 
-                // Function để cập nhật class CSS cho timer
-                function updateTimerClass() {
-                    if (!timerContainer) return;
+                    // Function để format thời gian - chỉ hiển thị phút:giây
+                    function formatTime(seconds) {
+                        const minutes = Math.floor(seconds / 60);
+                        const secs = seconds % 60;
 
-                    // Xóa tất cả class cũ
-                    timerContainer.classList.remove('timer-normal', 'timer-warning', 'timer-urgent');
-
-                    if (timeRemaining <= 300) { // 5 phút cuối
-                        timerContainer.className = 'd-inline-block bg-danger text-white px-3 py-2 rounded animate__animated animate__pulse timer-urgent';
-                    } else if (timeRemaining <= 600) { // 10 phút cuối
-                        timerContainer.className = 'd-inline-block bg-warning text-dark px-3 py-2 rounded animate__animated animate__pulse timer-warning';
-                    } else {
-                        timerContainer.className = 'd-inline-block bg-info text-white px-3 py-2 rounded timer-normal';
+                        // Luôn hiển thị định dạng MM:SS
+                        return (minutes < 10 ? '0' : '') + minutes + ':' +
+                            (secs < 10 ? '0' : '') + secs;
                     }
-                }
 
-                // Function để cập nhật cảnh báo
-                function updateWarnings() {
-                    // Cảnh báo khi còn 5 phút
-                    if (timeRemaining === 300) {
-                        if (Notification.permission === 'granted') {
-                            new Notification('Cảnh báo thời gian', {
-                                body: 'Chỉ còn 5 phút để hoàn thành bài kiểm tra!',
-                                icon: '/favicon.ico'
+                    // Function để cập nhật class CSS cho timer
+                    function updateTimerClass() {
+                        if (!timerContainer) return;
+
+                        // Xóa tất cả class cũ
+                        timerContainer.classList.remove('timer-normal', 'timer-warning', 'timer-urgent');
+
+                        if (window.quizTimer.timeRemaining <= 300) { // 5 phút cuối
+                            timerContainer.className =
+                                'd-inline-block bg-danger text-white px-3 py-2 rounded animate__animated animate__pulse timer-urgent';
+                        } else if (window.quizTimer.timeRemaining <= 600) { // 10 phút cuối
+                            timerContainer.className =
+                                'd-inline-block bg-warning text-dark px-3 py-2 rounded animate__animated animate__pulse timer-warning';
+                        } else {
+                            timerContainer.className = 'd-inline-block bg-info text-white px-3 py-2 rounded timer-normal';
+                        }
+                    }
+
+                    // Function để cập nhật cảnh báo
+                    function updateWarnings() {
+                        // Cảnh báo khi còn 5 phút
+                        if (window.quizTimer.timeRemaining === 300) {
+                            if (Notification.permission === 'granted') {
+                                new Notification('Cảnh báo thời gian', {
+                                    body: 'Chỉ còn 5 phút để hoàn thành bài kiểm tra!',
+                                    icon: '/favicon.ico'
+                                });
+                            }
+                            // Hiển thị alert
+                            alert('⚠️ CẢNH BÁO: Chỉ còn 5 phút để hoàn thành bài kiểm tra!');
+                        }
+
+                        // Cảnh báo khi còn 1 phút
+                        if (window.quizTimer.timeRemaining === 60) {
+                            if (Notification.permission === 'granted') {
+                                new Notification('Cảnh báo thời gian', {
+                                    body: 'Chỉ còn 1 phút để hoàn thành bài kiểm tra!',
+                                    icon: '/favicon.ico'
+                                });
+                            }
+                            // Hiển thị alert
+                            alert('🚨 KHẨN CẤP: Chỉ còn 1 phút để hoàn thành bài kiểm tra!');
+                        }
+                    }
+
+                    // Khởi tạo timer
+                    window.quizTimer.interval = setInterval(function() {
+                        window.quizTimer.timeRemaining--;
+
+                        if (timerElement) {
+                            timerElement.textContent = formatTime(window.quizTimer.timeRemaining);
+                            updateTimerClass();
+                            updateWarnings();
+                        }
+
+                        if (window.quizTimer.timeRemaining <= 0) {
+                            clearInterval(window.quizTimer.interval);
+                            window.onbeforeunload = null; // Cho phép rời trang khi đã nộp
+                            window.quizSubmitted = true;
+
+                            // Hiển thị thông báo hết thời gian
+                            if (timerContainer) {
+                                timerContainer.className =
+                                    'd-inline-block bg-danger text-white px-3 py-2 rounded animate__animated animate__shakeX';
+                                timerElement.textContent = 'HẾT THỜI GIAN!';
+                            }
+
+                            // Tự động nộp bài sau 2 giây
+                            setTimeout(function() {
+                                @this.call('submitQuiz').then(function(result) {
+                                    if (result && result.submitted) {
+                                        window.quizSubmitted = true;
+                                        window.onbeforeunload = null;
+                                    }
+                                });
+                            }, 2000);
+                        }
+                    }, 1000);
+
+                    // Yêu cầu quyền thông báo
+                    if (Notification.permission === 'default') {
+                        Notification.requestPermission();
+                    }
+
+                    // Cập nhật timer mỗi 30 giây để đồng bộ với server
+                    setInterval(function() {
+                        if (window.quizTimer.timeRemaining > 0) {
+                            @this.call('calculateTimeRemaining').then(function(result) {
+                                // Cập nhật biến local từ server
+                                if (result && result.timeRemaining !== undefined) {
+                                    window.quizTimer.timeRemaining = Math.floor(result.timeRemaining);
+                                }
                             });
                         }
-                        // Hiển thị alert
-                        alert('⚠️ CẢNH BÁO: Chỉ còn 5 phút để hoàn thành bài kiểm tra!');
-                    }
+                    }, 30000);
+                } else {
+                    // Nếu timer đã được khởi tạo, chỉ cập nhật hiển thị
+                    const timerElement = document.getElementById('timer');
+                    const timerContainer = document.getElementById('timer-container');
 
-                    // Cảnh báo khi còn 1 phút
-                    if (timeRemaining === 60) {
-                        if (Notification.permission === 'granted') {
-                            new Notification('Cảnh báo thời gian', {
-                                body: 'Chỉ còn 1 phút để hoàn thành bài kiểm tra!',
-                                icon: '/favicon.ico'
-                            });
+                    if (timerElement && window.quizTimer.timeRemaining !== null) {
+                        function formatTime(seconds) {
+                            const minutes = Math.floor(seconds / 60);
+                            const secs = seconds % 60;
+                            return (minutes < 10 ? '0' : '') + minutes + ':' +
+                                (secs < 10 ? '0' : '') + secs;
                         }
-                        // Hiển thị alert
-                        alert('🚨 KHẨN CẤP: Chỉ còn 1 phút để hoàn thành bài kiểm tra!');
-                    }
-                }
 
-                const timer = setInterval(function() {
-                    timeRemaining--;
+                        timerElement.textContent = formatTime(window.quizTimer.timeRemaining);
 
-                    if (timerElement) {
-                        timerElement.textContent = formatTime(timeRemaining);
-                        updateTimerClass();
-                        updateWarnings();
-                    }
-
-                    if (timeRemaining <= 0) {
-                        clearInterval(timer);
-                        window.onbeforeunload = null; // Cho phép rời trang khi đã nộp
-
-                        // Hiển thị thông báo hết thời gian
+                        // Cập nhật class CSS
                         if (timerContainer) {
-                            timerContainer.className = 'd-inline-block bg-danger text-white px-3 py-2 rounded animate__animated animate__shakeX';
-                            timerElement.textContent = 'HẾT THỜI GIAN!';
+                            timerContainer.classList.remove('timer-normal', 'timer-warning', 'timer-urgent');
+                            if (window.quizTimer.timeRemaining <= 300) {
+                                timerContainer.className =
+                                    'd-inline-block bg-danger text-white px-3 py-2 rounded animate__animated animate__pulse timer-urgent';
+                            } else if (window.quizTimer.timeRemaining <= 600) {
+                                timerContainer.className =
+                                    'd-inline-block bg-warning text-dark px-3 py-2 rounded animate__animated animate__pulse timer-warning';
+                            } else {
+                                timerContainer.className = 'd-inline-block bg-info text-white px-3 py-2 rounded timer-normal';
+                            }
                         }
-
-                        // Tự động nộp bài sau 2 giây
-                        setTimeout(function() {
-                            @this.call('submitQuiz');
-                        }, 2000);
                     }
-                }, 1000);
-
-                // Yêu cầu quyền thông báo
-                if (Notification.permission === 'default') {
-                    Notification.requestPermission();
                 }
 
-                // Cập nhật timer mỗi 30 giây để đồng bộ với server
-                setInterval(function() {
-                    if (timeRemaining > 0) {
-                        @this.call('calculateTimeRemaining');
-                        // Cập nhật biến local - đảm bảo chỉ lấy số nguyên
-                        timeRemaining = Math.floor({{ $timeRemaining }});
-                    }
-                }, 30000);
-
-                // Function xác nhận nộp bài
-                function confirmSubmit() {
-                    const answeredCount = {{ count(array_filter($answers)) }};
-                    const totalQuestions = {{ count($questions) }};
-                    const unansweredCount = totalQuestions - answeredCount;
-
-                    let message = 'Bạn có chắc chắn muốn nộp bài?\n\n';
-                    message += `- Tổng số câu hỏi: ${totalQuestions}\n`;
-                    message += `- Đã trả lời: ${answeredCount}\n`;
-                    message += `- Chưa trả lời: ${unansweredCount}\n\n`;
-
-                    if (unansweredCount > 0) {
-                        message += '⚠️ Có ' + unansweredCount + ' câu chưa trả lời. Bạn có muốn tiếp tục?';
-                    } else {
-                        message += '✅ Tất cả câu hỏi đã được trả lời!';
+                // Thêm event listener cho nút nộp bài để đánh dấu đã nộp
+                document.addEventListener('DOMContentLoaded', function() {
+                    const submitButton = document.querySelector('button[wire\\:click="submitQuiz"]');
+                    if (submitButton) {
+                        submitButton.addEventListener('click', function() {
+                            window.quizSubmitted = true;
+                            window.onbeforeunload = null;
+                        });
                     }
 
-                    return confirm(message);
-                }
+                    // Thêm event listener cho các nút điều hướng để tránh confirm nộp bài
+                    const navigationButtons = document.querySelectorAll(
+                        'button[wire\\:click="nextQuestion"], button[wire\\:click="previousQuestion"], button[wire\\:click^="goToQuestion"]'
+                        );
+                    navigationButtons.forEach(function(button) {
+                        button.addEventListener('click', function() {
+                            // Tạm thời vô hiệu hóa onbeforeunload khi chuyển câu hỏi
+                            const originalOnBeforeUnload = window.onbeforeunload;
+                            window.onbeforeunload = null;
+
+                            // Khôi phục lại sau 1 giây
+                            setTimeout(function() {
+                                window.onbeforeunload = originalOnBeforeUnload;
+                            }, 1000);
+                        });
+                    });
+                });
             </script>
         @endif
     @endif

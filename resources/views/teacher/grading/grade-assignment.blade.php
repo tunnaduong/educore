@@ -4,8 +4,7 @@
         <div class="mb-4">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <a href="{{ route('teacher.grading.index') }}" wire:navigate
-                        class="text-decoration-none text-secondary">
+                    <a href="{{ route('teacher.grading.index') }}" class="text-decoration-none text-secondary">
                         <i class="bi bi-arrow-left mr-1"></i>Quay lại danh sách
                     </a>
                     <h4 class="mt-2 mb-0 text-primary fs-4">
@@ -184,10 +183,20 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <button wire:click="viewSubmission({{ $submission->id }})"
-                                                        class="btn btn-sm btn-outline-primary">
-                                                        <i class="bi bi-eye mr-1"></i>Xem
-                                                    </button>
+                                                    <div class="btn-group" role="group">
+                                                        <button wire:click="viewSubmission({{ $submission->id }})"
+                                                            class="btn btn-sm btn-outline-primary">
+                                                            <i class="bi bi-eye mr-1"></i>Xem
+                                                        </button>
+                                                        @if (
+                                                            ($submission->submission_type === 'essay' || $submission->submission_type === 'text') &&
+                                                                !in_array($submission->submission_type, ['image', 'audio', 'video']))
+                                                            <a href="{{ route('teacher.ai.grading', $submission->id) }}"
+                                                                class="btn btn-sm btn-outline-success">
+                                                                <i class="fas fa-robot mr-1"></i>AI
+                                                            </a>
+                                                        @endif
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -209,7 +218,7 @@
     <!-- Modal xem chi tiết bài nộp -->
     @if ($showModal && $selectedSubmission)
         <div class="modal fade show" style="display: block;" tabindex="-1">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-dialog-scrollable modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">

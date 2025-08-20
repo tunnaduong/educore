@@ -4,7 +4,8 @@
             <h4 class="mb-0 text-primary fs-4">
                 <i class="bi bi-bar-chart mr-2"></i>Báo cáo & Thống kê học tập
             </h4>
-            <p class="text-muted mb-0">Tổng hợp tiến độ, điểm, tỷ lệ nộp bài, số buổi tham gia của học viên các lớp bạn đang dạy</p>
+            <p class="text-muted mb-0">Tổng hợp tiến độ, điểm, tỷ lệ nộp bài, số buổi tham gia của học viên các lớp bạn
+                đang dạy</p>
         </div>
     </div>
     <div class="card mb-4">
@@ -31,7 +32,7 @@
                     </select>
                 </div>
                 <div class="col-md-4 d-flex align-items-end">
-                    <a wire:navigate href="{{ route('teacher.reports.index') }}" class="btn btn-outline-secondary w-100">
+                    <a href="{{ route('teacher.reports.index') }}" class="btn btn-outline-secondary w-100">
                         <i class="bi bi-arrow-clockwise mr-1"></i>Reset
                     </a>
                 </div>

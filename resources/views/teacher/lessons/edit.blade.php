@@ -11,7 +11,7 @@
                     <p class="text-muted mb-0">Cập nhật thông tin bài học và tài nguyên</p>
                 </div>
                 <div>
-                    <a href="{{ route('teacher.lessons.index') }}" wire:navigate class="btn btn-outline-secondary">
+                    <a href="{{ route('teacher.lessons.index') }}" class="btn btn-outline-secondary">
                         <i class="bi bi-arrow-left mr-1"></i>Quay lại
                     </a>
                 </div>
@@ -123,7 +123,7 @@
                     </div>
 
                     <div class="mt-4 d-flex justify-content-end gap-2">
-                        <a href="{{ route('teacher.lessons.index') }}" wire:navigate class="btn btn-secondary">
+                        <a href="{{ route('teacher.lessons.index') }}" class="btn btn-secondary">
                             <i class="bi bi-x-circle mr-1"></i>Huỷ
                         </a>
                         <button type="submit" class="btn btn-warning">

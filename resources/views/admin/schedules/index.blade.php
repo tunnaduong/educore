@@ -7,7 +7,7 @@
                 <i class="bi bi-calendar3 mr-2 text-primary"></i>
                 Lịch học
             </h2>
-            <a wire:navigate href="{{ route('schedules.create') }}" class="btn btn-primary">
+            <a href="{{ route('schedules.create') }}" class="btn btn-primary">
                 <i class="bi bi-plus-circle mr-2"></i>Thêm lịch học
             </a>
         </div>
@@ -103,11 +103,11 @@
                                         </td>
                                         <td>
                                             <div class="d-flex gap-x-2">
-                                                <a wire:navigate href="{{ route('schedules.show', $classroom) }}"
+                                                <a href="{{ route('schedules.show', $classroom) }}"
                                                     class="btn btn-sm btn-outline-primary" title="Xem chi tiết">
                                                     <i class="bi bi-eye"></i>
                                                 </a>
-                                                <a wire:navigate href="{{ route('schedules.edit', $classroom) }}"
+                                                <a href="{{ route('schedules.edit', $classroom) }}"
                                                     class="btn btn-sm btn-outline-warning" title="Chỉnh sửa">
                                                     <i class="bi bi-pencil"></i>
                                                 </a>

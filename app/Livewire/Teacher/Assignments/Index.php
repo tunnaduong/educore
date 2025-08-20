@@ -26,7 +26,10 @@ class Index extends Component
     public function mount()
     {
         $user = Auth::user();
-        $this->classrooms = $user->teachingClassrooms ?? Classroom::all();
+        // Chỉ lấy các lớp học mà giáo viên hiện tại đã tham gia
+        $this->classrooms = Classroom::whereHas('teachers', function ($query) {
+            $query->where('users.id', Auth::id());
+        })->orderBy('name')->get();
         $this->selectedMonth = now()->month;
         $this->selectedYear = now()->year;
         $this->loadStats();
@@ -49,7 +52,7 @@ class Index extends Component
         $user = Auth::user();
         $query = Assignment::query();
         if ($user->role === 'teacher') {
-            $classIds = $user->teachingClassrooms->pluck('id');
+            $classIds = $this->classrooms->pluck('id');
             $query->whereIn('class_id', $classIds);
         }
         $assignments = $query->whereYear('created_at', $year)->whereMonth('created_at', $month)->get();
@@ -120,7 +123,7 @@ class Index extends Component
     {
         $user = Auth::user();
         $query = Assignment::with(['classroom', 'submissions'])
-            ->whereIn('class_id', $user->teachingClassrooms->pluck('id'));
+            ->whereIn('class_id', $this->classrooms->pluck('id'));
 
         if ($this->search) {
             $query->where(function($q) {

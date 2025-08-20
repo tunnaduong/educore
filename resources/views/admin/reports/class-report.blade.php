@@ -1,6 +1,6 @@
 <x-layouts.dash-admin active="reports">
     <div class="mb-4">
-        <a wire:navigate href="{{ route('reports.index') }}" class="btn btn-outline-secondary">
+        <a href="{{ route('reports.index') }}" class="btn btn-outline-secondary">
             <i class="bi bi-arrow-left"></i> Quay lại báo cáo tổng hợp
         </a>
     </div>
@@ -56,7 +56,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a wire:navigate href="{{ route('reports.student', $row['student_id']) }}"
+                                    <a href="{{ route('reports.student', $row['student_id']) }}"
                                         class="btn btn-sm btn-outline-primary">Xem</a>
                                 </td>
                             </tr>

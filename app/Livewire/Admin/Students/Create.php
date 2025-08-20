@@ -75,7 +75,7 @@ class Create extends Component
         ]);
 
         session()->flash('message', 'Đã tạo học viên thành công!');
-        return $this->redirect(route('students.index'), navigate: true);
+        return $this->redirect(route('students.index'));
     }
 
     public function render()

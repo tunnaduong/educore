@@ -282,7 +282,7 @@
                                                         </button>
                                                         <button class="btn btn-outline-danger"
                                                             wire:click="deleteEvaluation({{ $evaluation->id }})"
-                                                            onclick="return confirm('Bạn có chắc chắn muốn xóa đánh giá này?')"
+                                                            wire:confirm="Bạn có chắc chắn muốn xóa đánh giá này?"
                                                             data-bs-toggle="tooltip" data-bs-placement="top"
                                                             title="Xóa đánh giá">
                                                             <i class="bi bi-trash"></i>
@@ -384,7 +384,7 @@
                                                         </button>
                                                         <button class="btn btn-outline-danger"
                                                             wire:click="deleteQuestion({{ $question->id }})"
-                                                            onclick="return confirm('Bạn có chắc chắn muốn xóa câu hỏi này?')"
+                                                            wire:confirm="Bạn có chắc chắn muốn xóa câu hỏi này?"
                                                             data-bs-toggle="tooltip" data-bs-placement="top"
                                                             title="Xóa câu hỏi">
                                                             <i class="bi bi-trash"></i>
@@ -499,7 +499,7 @@
                                                         </button>
                                                         <button class="btn btn-outline-danger"
                                                             wire:click="deleteRound({{ $round->id }})"
-                                                            onclick="return confirm('Bạn có chắc chắn muốn xóa đợt đánh giá này?')"
+                                                            wire:confirm="Bạn có chắc chắn muốn xóa đợt đánh giá này?"
                                                             data-bs-toggle="tooltip" data-bs-placement="top"
                                                             title="Xóa đợt đánh giá">
                                                             <i class="bi bi-trash"></i>
@@ -533,7 +533,7 @@
         @if ($selectedEvaluation)
             <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5); z-index: 1050;"
                 tabindex="-1">
-                <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-dialog modal-dialog-scrollable modal-lg modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title text-primary fw-bold fs-4">
@@ -605,7 +605,7 @@
         @if ($showQuestionModal)
             <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5); z-index: 1050;"
                 tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">
@@ -677,7 +677,7 @@
         @if ($showRoundModal)
             <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5); z-index: 1050;"
                 tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">

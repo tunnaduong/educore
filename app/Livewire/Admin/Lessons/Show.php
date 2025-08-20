@@ -31,7 +31,7 @@ class Show extends Component
 
         $lesson->delete();
         session()->flash('success', 'Đã xoá bài học thành công!');
-        return $this->redirect(route('lessons.index'), true);
+        return $this->redirect(route('lessons.index'));
     }
 
     public function render()

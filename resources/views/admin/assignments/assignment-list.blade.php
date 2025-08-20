@@ -29,7 +29,7 @@
                     <p class="text-muted mb-0">Quản lý tất cả bài tập của bạn</p>
                 </div>
                 <div>
-                    <a href="{{ route('assignments.create') }}" class="btn btn-primary" wire:navigate>
+                    <a href="{{ route('assignments.create') }}" class="btn btn-primary">
                         <i class="bi bi-plus-circle mr-2"></i>Tạo bài tập mới
                     </a>
                 </div>
@@ -148,11 +148,11 @@
                                         <td>
                                             <div class="btn-group" role="group">
                                                 <a href="{{ route('assignments.show', $assignment->id) }}"
-                                                    class="btn btn-sm btn-outline-primary" wire:navigate>
+                                                    class="btn btn-sm btn-outline-primary">
                                                     <i class="bi bi-eye"></i>
                                                 </a>
                                                 <a href="{{ route('assignments.edit', $assignment->id) }}"
-                                                    class="btn btn-sm btn-outline-warning" wire:navigate>
+                                                    class="btn btn-sm btn-outline-warning">
                                                     <i class="bi bi-pencil"></i>
                                                 </a>
                                                 <button type="button" class="btn btn-sm btn-outline-danger"
@@ -177,7 +177,7 @@
                         <i class="bi bi-journal-x fs-1 text-muted mb-3"></i>
                         <h5 class="text-muted">Không có bài tập nào</h5>
                         <p class="text-muted">Tạo bài tập đầu tiên để bắt đầu</p>
-                        <a href="{{ route('assignments.create') }}" class="btn btn-primary" wire:navigate>
+                        <a href="{{ route('assignments.create') }}" class="btn btn-primary">
                             <i class="bi bi-plus-circle mr-2"></i>Tạo bài tập mới
                         </a>
                     </div>
@@ -187,7 +187,7 @@
 
         <!-- Back Button -->
         <div class="text-center mt-4">
-            <a href="{{ route('assignments.overview') }}" class="btn btn-outline-secondary" wire:navigate>
+            <a href="{{ route('assignments.overview') }}" class="btn btn-outline-secondary">
                 <i class="bi bi-arrow-left mr-2"></i>Quay lại tổng quan
             </a>
         </div>

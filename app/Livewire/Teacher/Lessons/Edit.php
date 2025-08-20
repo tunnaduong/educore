@@ -7,6 +7,7 @@ use App\Models\Lesson;
 use App\Models\Classroom;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use Livewire\WithFileUploads;
 
 class Edit extends Component
@@ -40,13 +41,10 @@ class Edit extends Component
 
     public function mount(Lesson $lesson)
     {
-        $user = Auth::user();
-        $this->classrooms = $user->teachingClassrooms;
-        
-        // Fallback: nếu teacher chưa được gán vào lớp nào, hiển thị tất cả lớp học
-        if ($this->classrooms->isEmpty()) {
-            $this->classrooms = Classroom::all();
-        }
+        // Chỉ lấy các lớp học mà giáo viên hiện tại đã tham gia
+        $this->classrooms = Classroom::whereHas('teachers', function ($query) {
+            $query->where('users.id', Auth::id());
+        })->orderBy('name')->get();
         
         // Kiểm tra xem teacher có quyền chỉnh sửa bài học này không
         $this->lesson = Lesson::whereIn('classroom_id', $this->classrooms->pluck('id'))
@@ -83,20 +81,20 @@ class Edit extends Component
             $this->lesson->video = $this->video;
 
             if ($this->attachment) {
-                \Log::info('Uploading new file: ' . $this->attachment->getClientOriginalName());
-                \Log::info('File size: ' . $this->attachment->getSize());
-                \Log::info('File mime: ' . $this->attachment->getMimeType());
+                Log::info('Uploading new file: ' . $this->attachment->getClientOriginalName());
+                Log::info('File size: ' . $this->attachment->getSize());
+                Log::info('File mime: ' . $this->attachment->getMimeType());
                 
                 // Xóa file cũ nếu có
                 if ($this->currentAttachment) {
                     Storage::disk('public')->delete($this->currentAttachment);
-                    \Log::info('Deleted old file: ' . $this->currentAttachment);
+                    Log::info('Deleted old file: ' . $this->currentAttachment);
                 }
                 
                 $path = $this->attachment->store('lessons/attachments', 'public');
                 $this->lesson->attachment = $path;
                 
-                \Log::info('New file stored at: ' . $path);
+                Log::info('New file stored at: ' . $path);
             }
 
             $this->lesson->save();
@@ -106,7 +104,7 @@ class Edit extends Component
             return redirect()->route('teacher.lessons.index');
             
         } catch (\Exception $e) {
-            \Log::error('Error updating lesson: ' . $e->getMessage());
+            Log::error('Error updating lesson: ' . $e->getMessage());
             session()->flash('error', 'Có lỗi xảy ra khi cập nhật bài học: ' . $e->getMessage());
         }
     }
@@ -114,10 +112,10 @@ class Edit extends Component
     public function updatedAttachment()
     {
         if ($this->attachment) {
-            \Log::info('File selected: ' . $this->attachment->getClientOriginalName());
-            \Log::info('File size: ' . $this->attachment->getSize());
-            \Log::info('File mime: ' . $this->attachment->getMimeType());
-            \Log::info('File extension: ' . $this->attachment->getClientOriginalExtension());
+            Log::info('File selected: ' . $this->attachment->getClientOriginalName());
+            Log::info('File size: ' . $this->attachment->getSize());
+            Log::info('File mime: ' . $this->attachment->getMimeType());
+            Log::info('File extension: ' . $this->attachment->getClientOriginalExtension());
         }
     }
 

@@ -9,8 +9,9 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.5);
+            background-color: rgba(0, 0, 0, 0.5);
         }
+
         .modal-content-custom {
             background-color: #fefefe;
             margin: 5% auto;
@@ -22,6 +23,7 @@
             max-height: 90vh;
             overflow: hidden;
         }
+
         .modal-header-custom {
             padding: 15px 20px;
             background-color: #f8f9fa;
@@ -30,11 +32,13 @@
             justify-content: space-between;
             align-items: center;
         }
+
         .modal-body-custom {
             padding: 0;
             max-height: calc(90vh - 80px);
             overflow: auto;
         }
+
         .close-custom {
             color: #aaa;
             font-size: 28px;
@@ -43,13 +47,13 @@
             border: none;
             background: none;
         }
+
         .close-custom:hover {
             color: #000;
         }
     </style>
     <div class="container py-4">
-        <a href="{{ route('lessons.index') }}" wire:navigate
-            class="text-decoration-none text-secondary d-inline-block mb-3">
+        <a href="{{ route('lessons.index') }}" class="text-decoration-none text-secondary d-inline-block mb-3">
             <i class="bi bi-arrow-left mr-2"></i>Quay lại danh sách
         </a>
         <div class="card shadow-lg border-0">
@@ -77,7 +81,7 @@
                             </div>
                         @endif
                         <div class="d-flex gap-2 mt-4">
-                            <a href="{{ route('lessons.edit', $lesson->id) }}" wire:navigate class="btn btn-warning"><i
+                            <a href="{{ route('lessons.edit', $lesson->id) }}" class="btn btn-warning"><i
                                     class="bi bi-pencil mr-1"></i>Sửa</a>
                             <button type="button" class="btn btn-danger" wire:click="deleteLesson({{ $lesson->id }})"
                                 wire:confirm="Bạn có chắc chắn muốn xóa bài học '{{ $lesson->title }}' không?"><i
@@ -98,7 +102,8 @@
                             @if ($lesson->attachment)
                                 <a href="{{ asset('storage/' . $lesson->attachment) }}" target="_blank"
                                     class="btn btn-outline-success mb-2"><i class="bi bi-download"></i> Tải tài liệu</a>
-                                <button class="btn btn-outline-primary mb-2 ms-2" type="button" onclick="openPreviewModal()">
+                                <button class="btn btn-outline-primary mb-2 ms-2" type="button"
+                                    onclick="openPreviewModal()">
                                     <i class="bi bi-eye"></i> Xem trước tài liệu
                                 </button>
                                 @php
@@ -125,13 +130,17 @@
             <div class="modal-body-custom">
                 @if ($lesson->attachment)
                     @if (in_array($ext, ['pdf']))
-                        <iframe src="{{ $fileUrl }}" width="100%" height="600px" style="border:1px solid #ccc;"></iframe>
+                        <iframe src="{{ $fileUrl }}" width="100%" height="600px"
+                            style="border:1px solid #ccc;"></iframe>
                     @elseif (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp']))
-                        <img src="{{ $fileUrl }}" alt="Tài liệu hình ảnh" class="img-fluid border rounded d-block mx-auto" style="max-height:600px;">
+                        <img src="{{ $fileUrl }}" alt="Tài liệu hình ảnh"
+                            class="img-fluid border rounded d-block mx-auto" style="max-height:600px;">
                     @elseif (in_array($ext, ['doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx']))
-                        <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={{ urlencode($fileUrl) }}" width="100%" height="600px" frameborder="0"></iframe>
+                        <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={{ urlencode($fileUrl) }}"
+                            width="100%" height="600px" frameborder="0"></iframe>
                     @else
-                        <div class="alert alert-info m-3">Không hỗ trợ xem trước loại tệp này. Vui lòng tải về để xem chi tiết.</div>
+                        <div class="alert alert-info m-3">Không hỗ trợ xem trước loại tệp này. Vui lòng tải về để xem
+                            chi tiết.</div>
                     @endif
                 @endif
             </div>

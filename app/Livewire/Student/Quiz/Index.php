@@ -16,21 +16,45 @@ class Index extends Component
     public $search = '';
     public $filterClass = '';
     public $filterStatus = '';
+    public $filterSubmissionStatus = '';
 
     protected $queryString = [
         'search' => ['except' => ''],
         'filterClass' => ['except' => ''],
         'filterStatus' => ['except' => ''],
+        'filterSubmissionStatus' => ['except' => ''],
     ];
 
-    public function updatingSearch() { $this->resetPage(); }
-    public function updatingFilterClass() { $this->resetPage(); }
-    public function updatingFilterStatus() { $this->resetPage(); }
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+    public function updatingFilterClass()
+    {
+        $this->resetPage();
+    }
+    public function updatingFilterStatus()
+    {
+        $this->resetPage();
+    }
+    public function updatingFilterSubmissionStatus()
+    {
+        $this->resetPage();
+    }
+
+    public function resetFilters()
+    {
+        $this->search = '';
+        $this->filterClass = '';
+        $this->filterStatus = '';
+        $this->filterSubmissionStatus = '';
+        $this->resetPage();
+    }
 
     public function render()
     {
         $user = Auth::user();
-        
+
         // Kiểm tra xem user có student profile không
         if (!$user->studentProfile) {
             return view('student.quiz.index', [
@@ -39,7 +63,7 @@ class Index extends Component
                 'quizResults' => collect(),
             ]);
         }
-        
+
         $classIds = $user->enrolledClassrooms->pluck('id');
         $classrooms = $user->enrolledClassrooms;
 
@@ -47,9 +71,9 @@ class Index extends Component
             ->with(['classroom'])
             ->whereIn('class_id', $classIds)
             ->when($this->search, function ($query) {
-                $query->where(function($q) {
+                $query->where(function ($q) {
                     $q->where('title', 'like', '%' . $this->search . '%')
-                      ->orWhere('description', 'like', '%' . $this->search . '%');
+                        ->orWhere('description', 'like', '%' . $this->search . '%');
                 });
             })
             ->when($this->filterClass, function ($query) {
@@ -77,6 +101,26 @@ class Index extends Component
             // Nếu lớp chưa kết thúc, hiển thị tất cả bài kiểm tra
             return true;
         });
+
+        // Lọc theo trạng thái làm bài
+        if ($this->filterSubmissionStatus) {
+            $filteredQuizzes = $filteredQuizzes->filter(function ($quiz) use ($quizResults) {
+                $result = $quizResults->get($quiz->id);
+
+                switch ($this->filterSubmissionStatus) {
+                    case 'not_started':
+                        return !$result;
+                    case 'in_progress':
+                        return $result && !$result->submitted_at;
+                    case 'submitted':
+                        return $result && $result->submitted_at;
+                    case 'completed':
+                        return $result;
+                    default:
+                        return true;
+                }
+            });
+        }
 
         // Phân trang thủ công
         $perPage = 10;

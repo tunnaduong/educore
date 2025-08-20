@@ -70,11 +70,6 @@ class Submit extends Component
     public function mount($assignmentId)
     {
         $this->assignmentId = $assignmentId;
-        $this->loadAssignment();
-    }
-
-    public function loadAssignment()
-    {
         $student = Auth::user()->student;
 
         if (!$student) {
@@ -113,6 +108,9 @@ class Submit extends Component
             $this->submissionType = $this->assignment->types[0] ?? 'text';
         }
 
+        // Tự động chọn loại bài tập chưa nộp
+        $this->autoSelectUnsubmittedType();
+
         // Debug: Log submission type
         Log::info('Submission type set to: ' . $this->submissionType, [
             'assignment_types' => $this->assignment->types,
@@ -120,8 +118,86 @@ class Submit extends Component
         ]);
     }
 
+    /**
+     * Lấy trạng thái nộp bài hiện tại
+     */
+    public function getSubmissionStatus()
+    {
+        $student = Auth::user()->student;
+        if (!$student) {
+            return [
+                'submitted_types' => [],
+                'required_types' => $this->assignment->types ?? [],
+                'submitted_count' => 0,
+                'required_count' => count($this->assignment->types ?? []),
+                'missing_types' => $this->assignment->types ?? []
+            ];
+        }
+
+        $submissions = AssignmentSubmission::where('assignment_id', $this->assignment->id)
+            ->where('student_id', $student->id)
+            ->get();
+
+        $submittedTypes = $submissions->pluck('submission_type')->toArray();
+        $requiredTypes = $this->assignment->types ?? [];
+        $missingTypes = array_diff($requiredTypes, $submittedTypes);
+
+        return [
+            'submitted_types' => $submittedTypes,
+            'required_types' => $requiredTypes,
+            'submitted_count' => count($submittedTypes),
+            'required_count' => count($requiredTypes),
+            'missing_types' => $missingTypes
+        ];
+    }
+
+    /**
+     * Kiểm tra xem loại bài tập đã được nộp chưa
+     */
+    public function isTypeSubmitted($type)
+    {
+        $status = $this->getSubmissionStatus();
+        return in_array($type, $status['submitted_types']);
+    }
+
+    /**
+     * Lấy label cho loại bài tập
+     */
+    public function getTypeLabel($type)
+    {
+        return match ($type) {
+            'text' => 'Điền từ',
+            'essay' => 'Tự luận',
+            'image' => 'Nộp ảnh',
+            'audio' => 'Ghi âm',
+            'video' => 'Quay video',
+            default => $type
+        };
+    }
+
+    /**
+     * Tự động chọn loại bài tập chưa nộp
+     */
+    public function autoSelectUnsubmittedType()
+    {
+        $status = $this->getSubmissionStatus();
+        $missingTypes = $status['missing_types'];
+
+        if (!empty($missingTypes)) {
+            // Chọn loại đầu tiên chưa nộp
+            $this->submissionType = $missingTypes[0];
+        }
+    }
+
     public function updatedSubmissionType()
     {
+        // Kiểm tra xem loại bài tập đã được nộp chưa
+        if ($this->isTypeSubmitted($this->submissionType)) {
+            // Nếu đã nộp, tự động chọn loại khác chưa nộp
+            $this->autoSelectUnsubmittedType();
+            return;
+        }
+
         $this->resetValidation();
         $this->content = '';
         $this->essay = '';
@@ -167,6 +243,12 @@ class Submit extends Component
             ->first();
         if ($existing) {
             session()->flash('error', 'Bạn đã nộp dạng này rồi!');
+            return;
+        }
+
+        // Kiểm tra xem loại bài tập này có trong danh sách yêu cầu không
+        if (!in_array($this->submissionType, $this->assignment->types ?? [])) {
+            session()->flash('error', 'Loại bài tập này không được yêu cầu trong bài tập!');
             return;
         }
 
@@ -218,7 +300,7 @@ class Submit extends Component
 
             Log::info('Nộp bài thành công!');
             session()->flash('success', 'Nộp bài tập thành công!');
-            return $this->redirect(route('student.assignments.show', $this->assignmentId), navigate: true);
+            return $this->redirect(route('student.assignments.show', $this->assignmentId));
         } catch (\Exception $e) {
             Log::error('Có lỗi xảy ra khi nộp bài tập', ['error' => $e->getMessage()]);
             session()->flash('error', 'Có lỗi xảy ra khi nộp bài tập: ' . $e->getMessage());

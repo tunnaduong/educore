@@ -56,13 +56,10 @@ class Index extends Component
 
     public function render()
     {
-        $user = Auth::user();
-        $classrooms = $user->teachingClassrooms;
-        
-        // Fallback: nếu teacher chưa được gán vào lớp nào, hiển thị tất cả lớp học
-        if ($classrooms->isEmpty()) {
-            $classrooms = Classroom::all();
-        }
+        // Chỉ lấy các lớp học mà giáo viên hiện tại đã tham gia
+        $classrooms = Classroom::whereHas('teachers', function ($query) {
+            $query->where('users.id', Auth::id());
+        })->orderBy('name')->get();
         
         $lessons = Lesson::query()
             ->when($classrooms->isNotEmpty(), function($query) use ($classrooms) {

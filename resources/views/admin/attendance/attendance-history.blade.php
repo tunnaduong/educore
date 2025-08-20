@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
-            <a href="{{ route('classrooms.show', $classroom) }}" wire:navigate
+            <a href="{{ route('classrooms.show', $classroom) }}"
                 class="text-decoration-none text-secondary d-inline-block mb-3">
                 <i class="bi bi-arrow-left mr-2"></i>Quay lại lớp học
             </a>

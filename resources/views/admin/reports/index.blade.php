@@ -20,7 +20,7 @@
                             @endforeach
                         </select>
                         @if ($selectedClass)
-                            <a wire:navigate href="{{ route('reports.class', $selectedClass) }}"
+                            <a href="{{ route('reports.class', $selectedClass) }}"
                                 class="btn btn-outline-primary ml-2">Báo cáo lớp</a>
                         @endif
                     </div>
@@ -35,7 +35,7 @@
                     </select>
                 </div>
                 <div class="col-md-4 d-flex align-items-end">
-                    <a wire:navigate href="{{ route('reports.index') }}" class="btn btn-outline-secondary w-100">
+                    <a href="{{ route('reports.index') }}" class="btn btn-outline-secondary w-100">
                         <i class="bi bi-arrow-clockwise mr-1"></i>Reset
                     </a>
                 </div>
@@ -88,7 +88,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a wire:navigate href="{{ route('reports.student', $row['student_id']) }}"
+                                    <a href="{{ route('reports.student', $row['student_id']) }}"
                                         class="btn btn-sm btn-outline-primary">Xem</a>
                                 </td>
                             </tr>

@@ -3,10 +3,10 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="mb-0 fs-4">Chi tiết lịch học</h2>
             <div class="btn-group" role="group">
-                <a wire:navigate href="{{ route('schedules.index') }}" class="btn btn-outline-secondary">
+                <a href="{{ route('schedules.index') }}" class="btn btn-outline-secondary">
                     <i class="bi bi-arrow-left mr-2"></i>Quay lại
                 </a>
-                <a wire:navigate href="{{ route('schedules.edit', $classroom) }}" class="btn btn-warning">
+                <a href="{{ route('schedules.edit', $classroom) }}" class="btn btn-warning">
                     <i class="bi bi-pencil mr-2"></i>Chỉnh sửa
                 </a>
             </div>
@@ -132,8 +132,7 @@
                             <div class="text-center py-4">
                                 <i class="bi bi-calendar-x" style="font-size: 3rem; color: #6c757d;"></i>
                                 <h6 class="mt-3 text-muted">Chưa có lịch học</h6>
-                                <a wire:navigate href="{{ route('schedules.edit', $classroom) }}"
-                                    class="btn btn-primary">
+                                <a href="{{ route('schedules.edit', $classroom) }}" class="btn btn-primary">
                                     <i class="bi bi-plus-circle mr-2"></i>Thêm lịch học
                                 </a>
                             </div>

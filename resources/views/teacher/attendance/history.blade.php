@@ -1,7 +1,7 @@
 <x-layouts.dash-teacher active="attendances">
     <div class="container-fluid">
         <div class="mb-4">
-            <a href="{{ route('teacher.attendance.overview') }}" wire:navigate class="btn btn-light mb-2">
+            <a href="{{ route('teacher.attendance.overview') }}" class="btn btn-light mb-2">
                 <i class="bi bi-arrow-left mr-2"></i>Quay lại tổng quan
             </a>
             <h4 class="mb-0 text-primary fs-4">

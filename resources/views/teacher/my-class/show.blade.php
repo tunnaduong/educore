@@ -23,18 +23,17 @@
             </div>
             <div class="col-md-4 text-end">
                 <div class="d-flex justify-content-end gap-2">
-                    <a href="{{ route('teacher.attendance.take', $classroom) }}" wire:navigate
-                        class="btn btn-primary btn-sm">
+                    <a href="{{ route('teacher.attendance.take', $classroom) }}" class="btn btn-primary btn-sm">
                         <i class="bi bi-calendar-check mr-1"></i>
                         Điểm danh
                     </a>
-                    <a href="{{ route('teacher.lessons.create', ['classroom_id' => $classroom->id]) }}" wire:navigate
+                    <a href="{{ route('teacher.lessons.create', ['classroom_id' => $classroom->id]) }}"
                         class="btn btn-outline-primary btn-sm">
                         <i class="bi bi-plus-circle mr-1"></i>
                         Thêm bài học
                     </a>
                     <a href="{{ route('teacher.assignments.create', ['classroom_id' => $classroom->id]) }}"
-                        wire:navigate class="btn btn-outline-success btn-sm">
+                        class="btn btn-outline-success btn-sm">
                         <i class="bi bi-plus-circle mr-1"></i>
                         Thêm bài tập
                     </a>
@@ -126,123 +125,108 @@
             <div class="card-body">
                 <!-- Overview Tab -->
                 @if ($activeTab === 'overview')
-                    @php
-                        // Giả lập: user_id lẻ là đã đóng đủ, chẵn là chưa đủ
-                        $isEnrolled = $classroom->students->contains('id', auth()->id());
-                        $hasPaid = auth()->id() % 2 == 1;
-                    @endphp
-                    @if (!$isEnrolled)
-                        <div class="alert alert-danger mb-4">
-                            Bạn chưa đăng ký tham gia lớp học này.
-                        </div>
-                    @elseif (!$hasPaid)
-                        <div class="alert alert-warning mb-4">
-                            Vui lòng hoàn tất học phí để tiếp tục sử dụng các chức năng của khóa học.
-                        </div>
-                    @else
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h6 class="text-primary mb-3">
-                                    <i class="bi bi-info-circle mr-2"></i>
-                                    Thông tin lớp học
-                                </h6>
-                                <div class="mb-3">
-                                    <strong>Tên lớp:</strong> {{ $classroom->name }}
-                                </div>
-                                <div class="mb-3">
-                                    <strong>Mô tả:</strong> {{ $classroom->description }}
-                                </div>
-                                <div class="mb-3">
-                                    <strong>Ngày tạo:</strong> {{ $classroom->created_at->format('d/m/Y H:i') }}
-                                </div>
-                                <div class="mb-3">
-                                    <strong>Trạng thái:</strong>
-                                    <span class="badge bg-success">Hoạt động</span>
-                                </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-primary mb-3">
+                                <i class="bi bi-info-circle mr-2"></i>
+                                Thông tin lớp học
+                            </h6>
+                            <div class="mb-3">
+                                <strong>Tên lớp:</strong> {{ $classroom->name }}
                             </div>
-                            <div class="col-md-6">
-                                <h6 class="text-success mb-3">
-                                    <i class="bi bi-graph-up mr-2"></i>
-                                    Thống kê nhanh
-                                </h6>
-                                <div class="row">
-                                    <div class="col-6 mb-3">
-                                        <div class="border rounded p-3 text-center">
-                                            <h4 class="text-primary mb-1">{{ $classroom->lessons->count() }}</h4>
-                                            <small class="text-muted">Bài học</small>
-                                        </div>
-                                    </div>
-                                    <div class="col-6 mb-3">
-                                        <div class="border rounded p-3 text-center">
-                                            <h4 class="text-success mb-1">{{ $classroom->assignments->count() }}</h4>
-                                            <small class="text-muted">Bài tập</small>
-                                        </div>
-                                    </div>
-                                    <div class="col-6 mb-3">
-                                        <div class="border rounded p-3 text-center">
-                                            <h4 class="text-info mb-1">{{ $classroom->students->count() }}</h4>
-                                            <small class="text-muted">Học sinh</small>
-                                        </div>
-                                    </div>
-                                    <div class="col-6 mb-3">
-                                        <div class="border rounded p-3 text-center">
-                                            <h4 class="text-warning mb-1">{{ $classroom->attendances->count() }}</h4>
-                                            <small class="text-muted">Buổi học</small>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="mb-3">
+                                <strong>Mô tả:</strong> {{ $classroom->description }}
+                            </div>
+                            <div class="mb-3">
+                                <strong>Ngày tạo:</strong> {{ $classroom->created_at->format('d/m/Y H:i') }}
+                            </div>
+                            <div class="mb-3">
+                                <strong>Trạng thái:</strong>
+                                <span class="badge bg-success">Hoạt động</span>
                             </div>
                         </div>
-                        <!-- Recent Activities -->
-                        <div class="mt-4">
-                            <h6 class="text-info mb-3">
-                                <i class="bi bi-clock-history mr-2"></i>
-                                Hoạt động gần đây
+                        <div class="col-md-6">
+                            <h6 class="text-success mb-3">
+                                <i class="bi bi-graph-up mr-2"></i>
+                                Thống kê nhanh
                             </h6>
                             <div class="row">
-                                <div class="col-md-6">
-                                    <h6 class="text-warning mb-2">Bài học mới nhất</h6>
-                                    @forelse($classroom->lessons->take(3) as $lesson)
-                                        <div class="card mb-2">
-                                            <div class="card-body py-2">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <div>
-                                                        <h6 class="mb-1">{{ $lesson->title }}</h6>
-                                                        <small
-                                                            class="text-muted">{{ Str::limit($lesson->description, 50) }}</small>
-                                                    </div>
-                                                    <small
-                                                        class="text-muted">{{ $lesson->created_at->format('d/m/Y') }}</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @empty
-                                        <p class="text-muted">Chưa có bài học nào</p>
-                                    @endforelse
+                                <div class="col-6 mb-3">
+                                    <div class="border rounded p-3 text-center">
+                                        <h4 class="text-primary mb-1">{{ $classroom->lessons->count() }}</h4>
+                                        <small class="text-muted">Bài học</small>
+                                    </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <h6 class="text-success mb-2">Bài tập mới nhất</h6>
-                                    @forelse($classroom->assignments->take(3) as $assignment)
-                                        <div class="card mb-2">
-                                            <div class="card-body py-2">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <div>
-                                                        <h6 class="mb-1">{{ $assignment->title }}</h6>
-                                                        <small
-                                                            class="text-muted">{{ Str::limit($assignment->description, 50) }}</small>
-                                                    </div>
-                                                    <small
-                                                        class="text-muted">{{ $assignment->created_at->format('d/m/Y') }}</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @empty
-                                        <p class="text-muted">Chưa có bài tập nào</p>
-                                    @endforelse
+                                <div class="col-6 mb-3">
+                                    <div class="border rounded p-3 text-center">
+                                        <h4 class="text-success mb-1">{{ $classroom->assignments->count() }}</h4>
+                                        <small class="text-muted">Bài tập</small>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <div class="border rounded p-3 text-center">
+                                        <h4 class="text-info mb-1">{{ $classroom->students->count() }}</h4>
+                                        <small class="text-muted">Học sinh</small>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <div class="border rounded p-3 text-center">
+                                        <h4 class="text-warning mb-1">{{ $classroom->attendances->count() }}</h4>
+                                        <small class="text-muted">Buổi học</small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    @endif
+                    </div>
+                    <!-- Recent Activities -->
+                    <div class="mt-4">
+                        <h6 class="text-info mb-3">
+                            <i class="bi bi-clock-history mr-2"></i>
+                            Hoạt động gần đây
+                        </h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="text-warning mb-2">Bài học mới nhất</h6>
+                                @forelse($classroom->lessons->take(3) as $lesson)
+                                    <div class="card mb-2">
+                                        <div class="card-body py-2">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h6 class="mb-1">{{ $lesson->title }}</h6>
+                                                    <small
+                                                        class="text-muted">{{ Str::limit($lesson->description, 50) }}</small>
+                                                </div>
+                                                <small
+                                                    class="text-muted">{{ $lesson->created_at->format('d/m/Y') }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @empty
+                                    <p class="text-muted">Chưa có bài học nào</p>
+                                @endforelse
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-success mb-2">Bài tập mới nhất</h6>
+                                @forelse($classroom->assignments->take(3) as $assignment)
+                                    <div class="card mb-2">
+                                        <div class="card-body py-2">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h6 class="mb-1">{{ $assignment->title }}</h6>
+                                                    <small
+                                                        class="text-muted">{{ Str::limit($assignment->description, 50) }}</small>
+                                                </div>
+                                                <small
+                                                    class="text-muted">{{ $assignment->created_at->format('d/m/Y') }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @empty
+                                    <p class="text-muted">Chưa có bài tập nào</p>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
                 @endif
 
                 <!-- Students Tab -->
@@ -252,10 +236,6 @@
                             <i class="bi bi-people mr-2"></i>
                             Danh sách học sinh ({{ $classroom->students->count() }})
                         </h6>
-                        <button class="btn btn-primary btn-sm" wire:click="showAddStudentModal">
-                            <i class="bi bi-plus-circle mr-1"></i>
-                            Thêm học sinh
-                        </button>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-hover">
@@ -266,7 +246,6 @@
                                     <th>Email</th>
                                     <th>Ngày tham gia</th>
                                     <th>Trạng thái</th>
-                                    <th>Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -285,17 +264,15 @@
                                         <td>{{ $student->email }}</td>
                                         <td>{{ $student->pivot->created_at->format('d/m/Y') }}</td>
                                         <td>
-                                            <span class="badge bg-success">Hoạt động</span>
-                                        </td>
-                                        <td>
-                                            <div class="btn-group btn-group-sm">
-                                                <button class="btn btn-outline-primary">
-                                                    <i class="bi bi-eye"></i>
-                                                </button>
-                                                <button class="btn btn-outline-danger">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </div>
+                                            @if ($student->status === 'active')
+                                                <span class="badge bg-success">Hoạt động</span>
+                                            @elseif($student->status === 'paused')
+                                                <span class="badge bg-warning">Tạm dừng</span>
+                                            @elseif($student->status === 'dropped')
+                                                <span class="badge bg-danger">Đã rời lớp</span>
+                                            @else
+                                                <span class="badge bg-secondary">Không xác định</span>
+                                            @endif
                                         </td>
                                     </tr>
                                 @empty
@@ -319,7 +296,7 @@
                             Danh sách bài học ({{ $classroom->lessons->count() }})
                         </h6>
                         <a href="{{ route('teacher.lessons.create', ['classroom_id' => $classroom->id]) }}"
-                            wire:navigate class="btn btn-warning btn-sm">
+                            class="btn btn-warning btn-sm">
                             <i class="bi bi-plus-circle mr-1"></i>
                             Thêm bài học
                         </a>
@@ -369,7 +346,7 @@
                             Danh sách bài tập ({{ $classroom->assignments->count() }})
                         </h6>
                         <a href="{{ route('teacher.assignments.create', ['classroom_id' => $classroom->id]) }}"
-                            wire:navigate class="btn btn-success btn-sm">
+                            class="btn btn-success btn-sm">
                             <i class="bi bi-plus-circle mr-1"></i>
                             Thêm bài tập
                         </a>
@@ -419,8 +396,7 @@
                             <i class="bi bi-calendar-check mr-2"></i>
                             Lịch sử điểm danh
                         </h6>
-                        <a href="{{ route('teacher.attendance.take', $classroom) }}" wire:navigate
-                            class="btn btn-primary btn-sm">
+                        <a href="{{ route('teacher.attendance.take', $classroom) }}" class="btn btn-primary btn-sm">
                             <i class="bi bi-plus-circle mr-1"></i>
                             Điểm danh mới
                         </a>
@@ -471,67 +447,4 @@
             </div>
         </div>
     </div>
-
-    <!-- Add Student Modal -->
-    @if ($showAddStudentModal)
-        <div class="modal fade show" style="display: block;" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Thêm học sinh vào lớp</h5>
-                        <button type="button" class="btn-close" wire:click="closeModals"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p class="text-muted">Chức năng này sẽ được phát triển sau.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" wire:click="closeModals">Đóng</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal-backdrop fade show"></div>
-    @endif
-
-    <!-- Add Lesson Modal -->
-    @if ($showAddLessonModal)
-        <div class="modal fade show" style="display: block;" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Thêm bài học mới</h5>
-                        <button type="button" class="btn-close" wire:click="closeModals"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p class="text-muted">Chức năng này sẽ được phát triển sau.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" wire:click="closeModals">Đóng</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal-backdrop fade show"></div>
-    @endif
-
-    <!-- Add Assignment Modal -->
-    @if ($showAddAssignmentModal)
-        <div class="modal fade show" style="display: block;" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Thêm bài tập mới</h5>
-                        <button type="button" class="btn-close" wire:click="closeModals"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p class="text-muted">Chức năng này sẽ được phát triển sau.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" wire:click="closeModals">Đóng</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal-backdrop fade show"></div>
-    @endif
 </x-layouts.dash-teacher>
