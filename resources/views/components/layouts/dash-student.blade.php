@@ -1,5 +1,12 @@
 @props(['active' => null, 'title' => __('general.dashboard')])
 <div class="wrapper">
+    <style>
+        /* Đặt lại vị trí cho các thông báo cố định để không bị navbar che */
+        .alert.position-fixed.top-0 {
+            top: 70px !important;
+            z-index: 2000;
+        }
+    </style>
     @include('components.evaluation')
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
         <ul class="navbar-nav">
