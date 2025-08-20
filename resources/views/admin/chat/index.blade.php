@@ -177,17 +177,18 @@
                                                             <span class="fw-bold"
                                                                 style="font-size: 0.95rem;">{{ $sender->name }}</span>
                                                         </div>
-                                                        <p class="mb-1">{{ $message->message }}</p>
-                                                        @if ($message->attachment)
-                                                            <div class="mt-2">
-                                                                <a href="{{ Storage::url($message->attachment) }}"
-                                                                    target="_blank"
-                                                                    class="btn btn-sm {{ $isMine ? 'btn-light' : 'btn-outline-light' }}">
-                                                                    <i class="bi bi-paperclip mr-1"></i>
-                                                                    Tệp đính kèm
-                                                                </a>
-                                                            </div>
-                                                        @endif
+                                        <div class="message-content">
+                                            <div class="message-text">{{ $message->message }}</div>
+                                            @if($message->attachment)
+                                                <div class="attachment mt-2">
+                                                    <i class="bi bi-paperclip"></i>
+                                                    <a href="{{ Storage::url($message->attachment) }}" target="_blank" class="text-decoration-none">
+                                                        {{ basename($message->attachment) }}
+                                                    </a>
+                                                    <small class="text-muted d-block">{{ number_format(Storage::size($message->attachment) / 1024, 1) }} KB</small>
+                                                </div>
+                                            @endif
+                                        </div>
                                                         <small class="text-white d-block mt-1"
                                                             style="font-size: 0.85rem;">
                                                             {{ $message->created_at->format('H:i d/m/Y') }}
