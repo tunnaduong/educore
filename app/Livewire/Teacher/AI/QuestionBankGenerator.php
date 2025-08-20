@@ -2,20 +2,26 @@
 
 namespace App\Livewire\Teacher\AI;
 
-use Livewire\Component;
-use App\Models\QuestionBank;
-use App\Helpers\AIHelper;
 use App\Data\SampleQuestionBanks;
+use App\Helpers\AIHelper;
+use App\Models\QuestionBank;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class QuestionBankGenerator extends Component
 {
     public $name = '';
+
     public $description = '';
+
     public $topic = '';
+
     public $maxQuestions = 50;
+
     public $generatedBank = null;
+
     public $isProcessing = false;
+
     public $showPreview = false;
 
     public function mount()
@@ -36,11 +42,12 @@ class QuestionBankGenerator extends Component
         $this->generatedBank = null;
 
         try {
-            $aiHelper = new AIHelper();
+            $aiHelper = new AIHelper;
 
-            if (!$aiHelper->isAIAvailable()) {
+            if (! $aiHelper->isAIAvailable()) {
                 session()->flash('error', 'AI service không khả dụng. Vui lòng kiểm tra cấu hình API key trong file .env (GEMINI_API_KEY=your_api_key_here)');
                 $this->isProcessing = false;
+
                 return;
             }
 
@@ -59,11 +66,12 @@ class QuestionBankGenerator extends Component
                     $this->showPreview = true;
                     session()->flash('warning', 'API hiện tại bị quá tải, chúng tôi đã tạo ngân hàng câu hỏi mẫu cho bạn. Bạn có thể chỉnh sửa hoặc thử tạo lại sau.');
                     $this->isProcessing = false;
+
                     return;
                 }
 
                 // Kiểm tra nếu có câu hỏi
-                if (!empty($result['questions'])) {
+                if (! empty($result['questions'])) {
                     $this->generatedBank = $result;
                     $this->showPreview = true;
                     session()->flash('success', 'Đã tạo ngân hàng câu hỏi tiếng Trung bằng AI thành công!');
@@ -78,7 +86,7 @@ class QuestionBankGenerator extends Component
                 session()->flash('warning', 'Không thể kết nối với AI, chúng tôi đã tạo ngân hàng câu hỏi mẫu cho bạn. Bạn có thể chỉnh sửa hoặc thử tạo lại khi kết nối ổn định.');
             }
         } catch (\Exception $e) {
-            session()->flash('error', 'Có lỗi xảy ra: ' . $e->getMessage() . '. Vui lòng kiểm tra log trong storage/logs/laravel.log');
+            session()->flash('error', 'Có lỗi xảy ra: '.$e->getMessage().'. Vui lòng kiểm tra log trong storage/logs/laravel.log');
         }
 
         $this->isProcessing = false;
@@ -86,8 +94,9 @@ class QuestionBankGenerator extends Component
 
     public function saveQuestionBank()
     {
-        if (!$this->generatedBank) {
+        if (! $this->generatedBank) {
             session()->flash('error', 'Không có ngân hàng câu hỏi để lưu.');
+
             return;
         }
 
@@ -116,14 +125,15 @@ class QuestionBankGenerator extends Component
             // Reset form
             $this->reset(['name', 'description', 'topic', 'maxQuestions']);
         } catch (\Exception $e) {
-            session()->flash('error', 'Có lỗi xảy ra khi lưu ngân hàng câu hỏi: ' . $e->getMessage());
+            session()->flash('error', 'Có lỗi xảy ra khi lưu ngân hàng câu hỏi: '.$e->getMessage());
         }
     }
 
     public function createQuizFromBank()
     {
-        if (!$this->generatedBank) {
+        if (! $this->generatedBank) {
             session()->flash('error', 'Không có ngân hàng câu hỏi để tạo quiz.');
+
             return;
         }
 
