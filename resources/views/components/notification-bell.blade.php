@@ -74,7 +74,7 @@
                 <div class="dropdown-item text-center p-2">
                     <a href="{{ auth()->user()->role === 'admin' ? route('notifications.index') : route('student.notifications.index') }}"
                         class="text-decoration-none">
-                        Xem tất cả thông báo
+                        {{ __('general.view_all_notifications') }}
                     </a>
                 </div>
             @else
