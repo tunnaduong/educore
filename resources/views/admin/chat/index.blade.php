@@ -224,6 +224,9 @@
                                             </div>
                                             <input type="file" wire:model="attachment" id="attachment"
                                                 class="d-none" accept="image/*,.pdf,.doc,.docx,.txt">
+                                            @error('attachment')
+                                                <small class="text-danger d-block mt-1">{{ $message }}</small>
+                                            @enderror
                                             @if ($attachment)
                                                 <small class="text-muted">
                                                     <i class="bi bi-paperclip"></i>
