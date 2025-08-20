@@ -83,7 +83,7 @@ class Index extends Component
     {
         $this->validate([
             'messageText' => 'nullable|string|max:1000',
-            'attachment' => 'nullable|file|max:10240', // 10MB max
+            'attachment' => 'nullable|file|mimes:jpg,jpeg,png,gif,webp,pdf,doc,docx,txt|max:30720', // 30MB
         ]);
 
         if ((trim($this->messageText) === '' || $this->messageText === null) && !$this->attachment) {
