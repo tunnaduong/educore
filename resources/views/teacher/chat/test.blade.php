@@ -13,10 +13,11 @@
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 <h6>{{ __('views.test_user') }}</h6>
-                                @if($selectedTestUser)
+                                @if ($selectedTestUser)
                                     <div class="alert alert-info">
                                         <strong>{{ $selectedTestUser->name }}</strong><br>
-                                        <small>{{ $selectedTestUser->email }} ({{ ucfirst($selectedTestUser->role) }})</small>
+                                        <small>{{ $selectedTestUser->email }}
+                                            ({{ ucfirst($selectedTestUser->role) }})</small>
                                     </div>
                                 @else
                                     <div class="alert alert-warning">{{ __('views.no_users_to_test') }}</div>
@@ -24,10 +25,11 @@
                             </div>
                             <div class="col-md-6">
                                 <h6>{{ __('views.test_class') }}</h6>
-                                @if($selectedTestClass)
+                                @if ($selectedTestClass)
                                     <div class="alert alert-info">
                                         <strong>{{ $selectedTestClass->name }}</strong><br>
-                                        <small>{{ $selectedTestClass->users->count() }} {{ __('views.members') }}</small>
+                                        <small>{{ $selectedTestClass->users->count() }}
+                                            {{ __('views.members') }}</small>
                                     </div>
                                 @else
                                     <div class="alert alert-warning">{{ __('views.no_classes_to_test') }}</div>
@@ -38,11 +40,7 @@
                         <form wire:submit.prevent="sendTestMessage">
                             <div class="mb-3">
                                 <label for="testMessage" class="form-label">{{ __('views.test_message') }}</label>
-                                <textarea 
-                                    id="testMessage"
-                                    class="form-control" 
-                                    rows="3"
-                                    wire:model="testMessage"
+                                <textarea id="testMessage" class="form-control" rows="3" wire:model="testMessage"
                                     placeholder="Nhập tin nhắn test..."></textarea>
                                 @error('testMessage')
                                     <small class="text-danger">{{ $message }}</small>
@@ -50,13 +48,10 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="testAttachment" class="form-label">{{ __('views.test_attachment') }}</label>
-                                <input 
-                                    type="file" 
-                                    id="testAttachment"
-                                    class="form-control" 
-                                    wire:model="testAttachment"
-                                    accept="image/*,.pdf,.doc,.docx,.txt">
+                                <label for="testAttachment"
+                                    class="form-label">{{ __('views.test_attachment') }}</label>
+                                <input type="file" id="testAttachment" class="form-control"
+                                    wire:model="testAttachment" accept="image/*,.pdf,.doc,.docx,.txt">
                                 @error('testAttachment')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -86,9 +81,12 @@
                             <h6>{{ __('views.debug_information') }}</h6>
                             <div class="alert alert-secondary">
                                 <strong>{{ __('views.current_user_id') }}</strong> {{ Auth::id() }}<br>
-                                <strong>{{ __('views.broadcast_driver') }}</strong> {{ config('broadcasting.default') }}<br>
-                                <strong>{{ __('views.pusher_app_key') }}</strong> {{ config('broadcasting.connections.pusher.key') ? 'Set' : 'Not Set' }}<br>
-                                <strong>{{ __('views.echo_available') }}</strong> <span id="echoStatus">{{ __('views.checking') }}</span>
+                                <strong>{{ __('views.broadcast_driver') }}</strong>
+                                {{ config('broadcasting.default') }}<br>
+                                <strong>{{ __('views.pusher_app_key') }}</strong>
+                                {{ config('broadcasting.connections.pusher.key') ? 'Set' : 'Not Set' }}<br>
+                                <strong>{{ __('views.echo_available') }}</strong> <span
+                                    id="echoStatus">{{ __('views.checking') }}</span>
                             </div>
                         </div>
                     </div>
@@ -98,15 +96,15 @@
     </div>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Check if Echo is available
-        if (typeof window.Echo !== 'undefined') {
-            document.getElementById('echoStatus').textContent = 'Available';
-            document.getElementById('echoStatus').className = 'text-success';
-        } else {
-            document.getElementById('echoStatus').textContent = 'Not Available';
-            document.getElementById('echoStatus').className = 'text-danger';
-        }
-    });
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if Echo is available
+            if (typeof window.Echo !== 'undefined') {
+                document.getElementById('echoStatus').textContent = 'Available';
+                document.getElementById('echoStatus').className = 'text-success';
+            } else {
+                document.getElementById('echoStatus').textContent = 'Not Available';
+                document.getElementById('echoStatus').className = 'text-danger';
+            }
+        });
     </script>
-</x-layouts.dash-teacher> 
+</x-layouts.dash-teacher>
