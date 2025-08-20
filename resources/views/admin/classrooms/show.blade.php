@@ -3,8 +3,7 @@
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
-            <a href="{{ route('classrooms.index') }}" wire:navigate
-                class="text-decoration-none text-secondary d-inline-block mb-3">
+            <a href="{{ route('classrooms.index') }}" class="text-decoration-none text-secondary d-inline-block mb-3">
                 <i class="bi bi-arrow-left mr-2"></i>Quay lại danh sách lớp học
             </a>
             <h4 class="mb-0 text-primary fs-4">
@@ -127,7 +126,7 @@
                             <h5 class="mb-0 text-primary">
                                 <i class="bi bi-people mr-2"></i>Danh sách học viên
                             </h5>
-                            <a href="{{ route('classrooms.assign-students', $classroom) }}" wire:navigate
+                            <a href="{{ route('classrooms.assign-students', $classroom) }}"
                                 class="btn btn-sm btn-primary">
                                 <i class="bi bi-person-plus mr-2"></i>Gán học viên
                             </a>
@@ -200,7 +199,7 @@
                                 <i class="bi bi-people fs-1 text-muted mb-3"></i>
                                 <h5 class="text-muted">Chưa có học viên nào</h5>
                                 <p class="text-muted">Vui lòng gán học viên vào lớp học.</p>
-                                <a href="{{ route('classrooms.assign-students', $classroom) }}" wire:navigate
+                                <a href="{{ route('classrooms.assign-students', $classroom) }}"
                                     class="btn btn-primary">
                                     <i class="bi bi-person-plus mr-2"></i>Gán học viên
                                 </a>
@@ -219,25 +218,25 @@
                     <div class="card-body">
                         <div class="row gy-3">
                             <div class="col-md-6">
-                                <a href="{{ route('classrooms.attendance', $classroom) }}" wire:navigate
+                                <a href="{{ route('classrooms.attendance', $classroom) }}"
                                     class="btn btn-outline-primary w-100">
                                     <i class="bi bi-calendar-check mr-2"></i>Điểm danh
                                 </a>
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ route('classrooms.attendance-history', $classroom) }}" wire:navigate
+                                <a href="{{ route('classrooms.attendance-history', $classroom) }}"
                                     class="btn btn-outline-info w-100">
                                     <i class="bi bi-calendar-week mr-2"></i>Lịch sử điểm danh
                                 </a>
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ route('classrooms.assign-students', $classroom) }}" wire:navigate
+                                <a href="{{ route('classrooms.assign-students', $classroom) }}"
                                     class="btn btn-outline-success w-100">
                                     <i class="bi bi-person-plus mr-2"></i>Gán học viên
                                 </a>
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ route('classrooms.edit', $classroom) }}" wire:navigate
+                                <a href="{{ route('classrooms.edit', $classroom) }}"
                                     class="btn btn-outline-warning w-100">
                                     <i class="bi bi-pencil-square mr-2"></i>Chỉnh sửa
                                 </a>

@@ -9,7 +9,7 @@
                 <p class="text-muted mb-0">Theo dõi và quản lý các khoản chi của trung tâm</p>
             </div>
             <div class="d-flex gap-2">
-                <a href="{{ route('admin.finance.index') }}" class="btn btn-outline-secondary btn-lg" wire:navigate>
+                <a href="{{ route('admin.finance.index') }}" class="btn btn-outline-secondary btn-lg">
                     <i class="bi bi-arrow-left mr-2"></i>Quay lại thống kê
                 </a>
                 <button class="btn btn-danger btn-lg shadow-sm" wire:click="openCreateModal">
@@ -74,7 +74,7 @@
             <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
                 <i class="bi bi-check-circle-fill mr-2"></i>{{ session('success') }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
         @endif
@@ -183,7 +183,8 @@
                                 <td>
                                     @if ($expense->classroom)
                                         <span class="badge bg-light text-dark border">
-                                            <i class="bi bi-building-fill mr-1"></i>{{ $expense->classroom?->name ?? 'N/A' }}
+                                            <i
+                                                class="bi bi-building-fill mr-1"></i>{{ $expense->classroom?->name ?? 'N/A' }}
                                         </span>
                                     @else
                                         <span class="text-muted">-</span>
@@ -206,7 +207,7 @@
                                             <i class="bi bi-pencil"></i>
                                         </button>
                                         <button wire:click="deleteExpense({{ $expense->id }})"
-                                            onclick="return confirm('Bạn có chắc muốn xóa khoản chi này?')"
+                                            wire:confirm="Bạn có chắc muốn xóa khoản chi này?"
                                             class="btn btn-outline-danger">
                                             <i class="bi bi-trash"></i>
                                         </button>
@@ -232,7 +233,7 @@
         <!-- Create/Edit Modal -->
         @if ($showCreateModal)
             <div class="modal fade show d-block" tabindex="-1" style="background:rgba(0,0,0,0.5);">
-                <div class="modal-dialog modal-lg">
+                <div class="modal-dialog modal-dialog-scrollable modal-lg">
                     <div class="modal-content">
                         <div class="modal-header bg-danger text-white">
                             <h5 class="modal-title">

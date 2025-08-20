@@ -6,11 +6,12 @@
                 <h4 class="mb-0 text-success fs-4">
                     <i class="bi bi-cash-coin mr-2"></i>Thống kê thu chi
                 </h4>
-                <p class="text-muted mb-0">Quản lý, tổng hợp và theo dõi các khoản thu (học phí, tài liệu...) và chi (lương,
+                <p class="text-muted mb-0">Quản lý, tổng hợp và theo dõi các khoản thu (học phí, tài liệu...) và chi
+                    (lương,
                     vận hành...) cho trung tâm.</p>
             </div>
             <div>
-                <a href="{{ route('admin.finance.expenses') }}" class="btn btn-danger btn-lg shadow-sm" wire:navigate>
+                <a href="{{ route('admin.finance.expenses') }}" class="btn btn-danger btn-lg shadow-sm">
                     <i class="bi bi-wallet2 mr-2"></i>Quản lý chi tiêu
                 </a>
             </div>

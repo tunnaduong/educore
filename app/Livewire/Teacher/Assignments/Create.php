@@ -24,6 +24,7 @@ class Create extends Component
         'audio' => 'Ghi âm',
         'video' => 'Quay video',
     ];
+
     public $classrooms = [];
     public $attachment;
     public $video;
@@ -32,7 +33,15 @@ class Create extends Component
     public function mount()
     {
         $user = Auth::user();
-        $this->classrooms = $user->teachingClassrooms ?? Classroom::all();
+        // Nếu là admin thì lấy tất cả lớp, nếu là giáo viên thì chỉ lấy lớp mình dạy
+        if ($user->role === 'admin') {
+            $this->classrooms = Classroom::all();
+        } else {
+            // Chỉ lấy các lớp học mà giáo viên hiện tại đã tham gia
+            $this->classrooms = Classroom::whereHas('teachers', function ($query) {
+                $query->where('users.id', Auth::id());
+            })->orderBy('name')->get();
+        }
     }
 
     public function createAssignment()
@@ -85,6 +94,8 @@ class Create extends Component
 
     public function render()
     {
-        return view('teacher.assignments.create');
+        return view('teacher.assignments.create', [
+            'classrooms' => $this->classrooms
+        ]);
     }
 }

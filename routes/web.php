@@ -119,6 +119,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     // Evaluation Management routes
     Route::get('/admin/evaluation-management', \App\Livewire\Admin\EvaluationManagement\Index::class)->name('evaluation-management');
+
+    // AI routes
+    Route::get('/admin/ai', \App\Livewire\Admin\AI\Index::class)->name('ai.index');
+    Route::get('/admin/ai/grading/{submissionId}', \App\Livewire\Admin\AI\AIGrading::class)->name('ai.grading');
+    Route::get('/admin/ai/quiz-generator', \App\Livewire\Admin\AI\AIQuizGenerator::class)->name('ai.quiz-generator');
+    Route::get('/admin/ai/question-bank-generator', \App\Livewire\Admin\AI\QuestionBankGenerator::class)->name('ai.question-bank-generator');
 });
 
 // Teacher routes
@@ -171,6 +177,12 @@ Route::middleware(['auth', 'role:teacher'])->name('teacher.')->group(function ()
 
     // Báo cáo đánh giá sinh viên
     Route::get('/teacher/evaluations', \App\Livewire\Teacher\EvaluationReport::class)->name('evaluations.report');
+
+    // AI routes
+    Route::get('/teacher/ai', \App\Livewire\Teacher\AI\Index::class)->name('ai.index');
+    Route::get('/teacher/ai/grading/{submissionId}', \App\Livewire\Teacher\AI\AIGrading::class)->name('ai.grading');
+    Route::get('/teacher/ai/quiz-generator', \App\Livewire\Teacher\AI\AIQuizGenerator::class)->name('ai.quiz-generator');
+    Route::get('/teacher/ai/question-bank-generator', \App\Livewire\Teacher\AI\QuestionBankGenerator::class)->name('ai.question-bank-generator');
 });
 
 // Student routes
