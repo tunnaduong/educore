@@ -209,12 +209,13 @@
 
                             <!-- Message input -->
                             <div class="border-top pt-3">
-                                <form wire:submit.prevent="sendMessage">
+                                <form wire:submit.prevent="sendMessage" enctype="multipart/form-data">
                                     <div class="row g-2">
                                         <div class="col">
                                             <div class="input-group">
                                                 <input type="text" wire:model="messageText" class="form-control"
                                                     placeholder="Nhập tin nhắn..." maxlength="1000">
+                                                <input type="file" wire:model="attachment" id="attachment" class="d-none" accept="image/*,audio/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar,.7z">
                                                 <button type="button" class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('attachment').click()">
                                                     <i class="fas fa-paperclip"></i>
                                                 </button>
@@ -225,7 +226,6 @@
                                                     <i class="bi bi-send"></i>
                                                 </button>
                                             </div>
-                                            <input type="file" id="attachment" class="d-none" accept="image/*,audio/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar,.7z">
                                             @error('attachment')
                                                 <small class="text-danger d-block mt-1">{{ $message }}</small>
                                             @enderror
