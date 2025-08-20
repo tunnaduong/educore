@@ -48,12 +48,14 @@ class Index extends Component
         // Kiểm tra trạng thái học viên
         if ($student->studentProfile && $student->studentProfile->status === 'active') {
             session()->flash('error', 'Không thể xóa học viên đang học. Vui lòng chuyển trạng thái sang "Nghỉ" hoặc "Bảo lưu" trước khi xóa.');
+
             return;
         }
 
         // Kiểm tra xem học viên có đang tham gia lớp học nào không
         if ($student->enrolledClassrooms()->where('status', 'active')->exists()) {
             session()->flash('error', 'Không thể xóa học viên đang tham gia lớp học. Vui lòng rút học viên khỏi lớp trước khi xóa.');
+
             return;
         }
 
