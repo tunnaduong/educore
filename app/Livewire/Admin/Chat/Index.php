@@ -162,27 +162,39 @@ class Index extends Component
         $this->dispatch('messageSent');
     }
 
-    public function updatedAttachment()
-    {
-        if ($this->attachment) {
-            Log::info('Attachment selected', [
-                'name' => $this->attachment->getClientOriginalName(),
-                'size' => $this->attachment->getSize(),
-                'mime' => $this->attachment->getMimeType(),
-                'temp_path' => $this->attachment->getRealPath(),
-            ]);
-        }
-    }
-
     public function testUpload()
     {
         if ($this->attachment) {
             try {
+                Log::info('Test upload - File info:', [
+                    'name' => $this->attachment->getClientOriginalName(),
+                    'size' => $this->attachment->getSize(),
+                    'mime' => $this->attachment->getMimeType(),
+                    'isValid' => $this->attachment->isValid(),
+                    'error' => $this->attachment->getError(),
+                ]);
+                
                 $path = $this->attachment->store('chat-attachments', 'public');
                 $this->dispatch('alert', ['type' => 'success', 'message' => 'File uploaded: ' . $path]);
             } catch (\Exception $e) {
+                Log::error('Test upload failed:', ['error' => $e->getMessage()]);
                 $this->dispatch('alert', ['type' => 'error', 'message' => 'Upload failed: ' . $e->getMessage()]);
             }
+        } else {
+            $this->dispatch('alert', ['type' => 'warning', 'message' => 'No file selected']);
+        }
+    }
+
+    public function updatedAttachment()
+    {
+        if ($this->attachment) {
+            Log::info('Attachment updated:', [
+                'name' => $this->attachment->getClientOriginalName(),
+                'size' => $this->attachment->getSize(),
+                'mime' => $this->attachment->getMimeType(),
+                'isValid' => $this->attachment->isValid(),
+                'error' => $this->attachment->getError(),
+            ]);
         }
     }
 
