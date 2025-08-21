@@ -1,4 +1,5 @@
 <x-layouts.dash-teacher active="ai">
+    @include('components.language')
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -54,15 +55,20 @@
                                                 @if ($submission->submission_type === 'text')
                                                     <span class="badge badge-info">{{ __('general.text_type') }}</span>
                                                 @elseif ($submission->submission_type === 'file')
-                                                    <span class="badge badge-secondary">{{ __('general.file_type') }}</span>
+                                                    <span
+                                                        class="badge badge-secondary">{{ __('general.file_type') }}</span>
                                                 @elseif ($submission->submission_type === 'image')
-                                                    <span class="badge badge-warning">{{ __('general.image_type') }}</span>
+                                                    <span
+                                                        class="badge badge-warning">{{ __('general.image_type') }}</span>
                                                 @elseif ($submission->submission_type === 'audio')
-                                                    <span class="badge badge-danger">{{ __('general.audio_type') }}</span>
+                                                    <span
+                                                        class="badge badge-danger">{{ __('general.audio_type') }}</span>
                                                 @elseif ($submission->submission_type === 'video')
-                                                    <span class="badge badge-dark">{{ __('general.video_type') }}</span>
+                                                    <span
+                                                        class="badge badge-dark">{{ __('general.video_type') }}</span>
                                                 @else
-                                                    <span class="badge badge-light">{{ ucfirst($submission->submission_type) }}</span>
+                                                    <span
+                                                        class="badge badge-light">{{ ucfirst($submission->submission_type) }}</span>
                                                 @endif
                                             </td>
                                             <td>{{ $submission->submitted_at ? $submission->submitted_at->format('d/m/Y H:i') : $submission->created_at->format('d/m/Y H:i') }}
@@ -71,7 +77,8 @@
                                                 @if ($submission->score || $submission->ai_score)
                                                     <span class="badge badge-success">{{ __('general.graded') }}</span>
                                                 @else
-                                                    <span class="badge badge-warning">{{ __('general.not_graded') }}</span>
+                                                    <span
+                                                        class="badge badge-warning">{{ __('general.not_graded') }}</span>
                                                 @endif
                                             </td>
                                             <td>
@@ -136,7 +143,8 @@
                                     <i class="bi bi-collection text-success" style="font-size: 3rem;"></i>
                                     <h5 class="mt-3">{{ __('general.create_question_bank') }}</h5>
                                     <p class="text-muted">{{ __('general.create_question_bank_desc') }}</p>
-                                    <a href="{{ route('teacher.ai.question-bank-generator') }}" class="btn btn-success">
+                                    <a href="{{ route('teacher.ai.question-bank-generator') }}"
+                                        class="btn btn-success">
                                         <i class="bi bi-robot"></i>
                                         {{ __('general.create_question_bank_btn') }}
                                     </a>

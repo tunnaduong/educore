@@ -1,4 +1,5 @@
 <x-layouts.dash-teacher active="attendances">
+    @include('components.language')
     <div class="container-fluid">
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">

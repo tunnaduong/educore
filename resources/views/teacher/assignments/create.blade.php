@@ -1,4 +1,5 @@
 <x-layouts.dash-teacher active="assignments">
+    @include('components.language')
     <div class="container py-4">
         <!-- Header -->
         <div class="mb-4">
