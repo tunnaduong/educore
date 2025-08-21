@@ -1,4 +1,5 @@
 <x-layouts.dash-teacher active="chat">
+    @include('components.language')
     <div class="container-fluid py-4">
         <div class="row">
             <div class="col-md-8 mx-auto">

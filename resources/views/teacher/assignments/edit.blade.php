@@ -1,11 +1,13 @@
 <x-layouts.dash-teacher active="assignments">
+    @include('components.language')
     <div class="container py-4">
         <!-- Header -->
         <div class="mb-4">
             <a href="{{ route('teacher.assignments.index') }}" class="text-decoration-none text-secondary">
                 <i class="bi bi-arrow-left mr-1"></i>{{ __('general.back') }}
             </a>
-            <h4 class="mt-2 text-primary fs-4"><i class="bi bi-journal-text mr-2"></i>{{ __('general.edit_assignment') }}</h4>
+            <h4 class="mt-2 text-primary fs-4"><i class="bi bi-journal-text mr-2"></i>{{ __('general.edit_assignment') }}
+            </h4>
         </div>
 
         <!-- Form -->

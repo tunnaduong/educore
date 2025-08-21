@@ -4,10 +4,10 @@
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-people-fill mr-2"></i>Quản lý học viên
+                <i class="bi bi-people-fill mr-2"></i>{{ __('general.student_management') }}
             </h4>
             <a href="{{ route('students.create') ?? '#' }}" class="btn btn-primary">
-                <i class="bi bi-plus-circle mr-2"></i>Thêm học viên
+                <i class="bi bi-plus-circle mr-2"></i>{{ __('general.add_student') }}
             </a>
         </div>
 
@@ -39,20 +39,20 @@
                                 <i class="bi bi-search"></i>
                             </span>
                             <input wire:model.live="search" type="text" class="form-control"
-                                placeholder="Tìm kiếm theo tên, email, SĐT...">
+                                placeholder="{{ __('general.search_by_name_email_phone') }}">
                         </div>
                     </div>
                     <div class="col-md-2">
                         <select wire:model.live="statusFilter" class="form-control">
-                            <option value="">Trạng thái</option>
-                            <option value="active">Đang học</option>
-                            <option value="paused">Nghỉ</option>
-                            <option value="dropped">Bảo lưu</option>
+                            <option value="">{{ __('general.status_filter') }}</option>
+                            <option value="active">{{ __('general.studying') }}</option>
+                            <option value="paused">{{ __('general.paused') }}</option>
+                            <option value="dropped">{{ __('general.reserved') }}</option>
                         </select>
                     </div>
                     <div class="col-md-2">
                         <select wire:model.live="classroomFilter" class="form-control">
-                            <option value="">Lớp học</option>
+                            <option value="">{{ __('general.classroom_filter') }}</option>
                             @foreach ($classrooms as $classroom)
                                 <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
                             @endforeach
@@ -60,7 +60,7 @@
                     </div>
                     <div class="col-md-2">
                         <button wire:click="resetFilters" class="btn btn-outline-secondary w-100">
-                            <i class="bi bi-arrow-clockwise mr-1"></i>Reset
+                            <i class="bi bi-arrow-clockwise mr-1"></i>{{ __('general.reset') }}
                         </button>
                     </div>
                 </div>
@@ -73,15 +73,15 @@
                 <div class="table-responsive">
                     <table class="table table-hover align-middle">
                         <thead class="table-light">
-                            <tr>
-                                <th class="text-center">#</th>
-                                <th>Học viên</th>
-                                <th>Thông tin liên hệ</th>
-                                <th>Lớp đang học</th>
-                                <th class="text-center">Trạng thái</th>
-                                <th class="text-center">Tiến độ</th>
-                                <th class="text-end">Hành động</th>
-                            </tr>
+                                                            <tr>
+                                    <th class="text-center">#</th>
+                                    <th>{{ __('general.student') }}</th>
+                                    <th>{{ __('general.contact_information') }}</th>
+                                    <th>{{ __('general.enrolled_classes') }}</th>
+                                    <th class="text-center">{{ __('general.status') }}</th>
+                                    <th class="text-center">{{ __('general.progress') }}</th>
+                                    <th class="text-end">{{ __('general.actions') }}</th>
+                                </tr>
                         </thead>
                         <tbody>
                             @forelse ($students as $index => $student)

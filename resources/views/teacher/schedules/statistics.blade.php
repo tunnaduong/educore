@@ -1,4 +1,5 @@
 <div>
+    @include('components.language')
     <div class="row g-3 mb-4">
         <!-- Tổng số bài học -->
         <div class="col-md-3">
@@ -87,7 +88,8 @@
         <div class="col-md-4">
             <div class="card border-warning h-100">
                 <div class="card-header bg-warning text-white">
-                    <h6 class="mb-0"><i class="bi bi-hourglass-split mr-2"></i>{{ __('views.pending_assignments') }}</h6>
+                    <h6 class="mb-0"><i class="bi bi-hourglass-split mr-2"></i>{{ __('views.pending_assignments') }}
+                    </h6>
                 </div>
                 <div class="card-body text-center">
                     <h2 class="text-warning mb-0">{{ $pendingAssignments }}</h2>
