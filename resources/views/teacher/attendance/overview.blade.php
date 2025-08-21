@@ -5,13 +5,13 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h4 class="mb-0 text-primary fs-4">
-                    <i class="bi bi-calendar-check mr-2"></i>Tổng quan điểm danh
+                    <i class="bi bi-calendar-check mr-2"></i>{{ __('general.attendance_overview') }}
                 </h4>
-                <p class="text-muted mb-0">Quản lý và theo dõi điểm danh học viên</p>
+                <p class="text-muted mb-0">{{ __('general.manage_track_attendance') }}</p>
             </div>
             <div class="d-flex gap-2">
                 <a href="{{ route('teacher.my-class.index') }}" class="btn btn-outline-primary">
-                    <i class="bi bi-mortarboard mr-2"></i>Lớp học của tôi
+                    <i class="bi bi-mortarboard mr-2"></i>{{ __('general.my_classes') }}
                 </a>
             </div>
         </div>
@@ -22,7 +22,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-6">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-funnel mr-2"></i>Lọc theo tháng
+                            <i class="bi bi-funnel mr-2"></i>{{ __('general.filter_by_month') }}
                         </h5>
                     </div>
                     <div class="col-md-6">
@@ -50,7 +50,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">Tổng học viên</h6>
+                                <h6 class="card-title mb-0">{{ __('general.total_students') }}</h6>
                                 <h3 class="mb-0">{{ $overviewStats['total_students'] }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -65,7 +65,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">Lớp đang dạy</h6>
+                                <h6 class="card-title mb-0">{{ __('general.classes_teaching') }}</h6>
                                 <h3 class="mb-0">{{ $overviewStats['total_classes'] }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -80,7 +80,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">Số lần điểm danh</h6>
+                                <h6 class="card-title mb-0">{{ __('general.attendance_sessions') }}</h6>
                                 <h3 class="mb-0">{{ $overviewStats['total_attendance_days'] }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -95,7 +95,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">Tỷ lệ trung bình</h6>
+                                <h6 class="card-title mb-0">{{ __('general.average_rate') }}</h6>
                                 <h3 class="mb-0">{{ $overviewStats['attendance_rate'] }}%</h3>
                             </div>
                             <div class="align-self-center">

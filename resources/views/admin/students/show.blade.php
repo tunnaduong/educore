@@ -4,18 +4,18 @@
         <!-- Header -->
         <div class="mb-4">
             <a href="{{ route('students.index') }}" class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left mr-2"></i>Quay lại
+                <i class="bi bi-arrow-left mr-2"></i>{{ __('general.back') }}
             </a>
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-person-circle mr-2"></i>Chi tiết học viên
+                        <i class="bi bi-person-circle mr-2"></i>{{ __('general.student_details') }}
                     </h4>
                     <p class="text-muted mb-0">{{ $student->name }}</p>
                 </div>
                 <div class="d-flex gap-2">
                     <a href="{{ route('students.edit', $student) }}" class="btn btn-primary">
-                        <i class="bi bi-pencil-square mr-2"></i>Chỉnh sửa
+                        <i class="bi bi-pencil-square mr-2"></i>{{ __('general.edit_student') }}
                     </a>
                 </div>
             </div>
@@ -27,7 +27,7 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-person mr-2"></i>Thông tin cá nhân
+                            <i class="bi bi-person mr-2"></i>{{ __('general.personal_info') }}
                         </h5>
                     </div>
                     <div class="card-body">
@@ -42,18 +42,19 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="mb-3">
-                                    <label class="form-label text-muted small">Số điện thoại</label>
-                                    <div class="fw-medium">{{ $student->phone ?? 'Chưa có' }}</div>
+                                    <label class="form-label text-muted small">{{ __('general.phone_number') }}</label>
+                                    <div class="fw-medium">{{ $student->phone ?? __('general.not_available') }}</div>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="mb-3">
-                                    <label class="form-label text-muted small">Ngày sinh</label>
+                                    <label
+                                        class="form-label text-muted small">{{ __('general.date_of_birth') }}</label>
                                     <div class="fw-medium">
                                         @if ($student->studentProfile && $student->studentProfile->date_of_birth)
                                             {{ \Carbon\Carbon::parse($student->studentProfile->date_of_birth)->format('d/m/Y') }}
                                         @else
-                                            Chưa có
+                                            {{ __('general.not_available') }}
                                         @endif
                                     </div>
                                 </div>
@@ -63,12 +64,13 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="mb-3">
-                                    <label class="form-label text-muted small">Ngày vào học</label>
+                                    <label
+                                        class="form-label text-muted small">{{ __('general.enrollment_date') }}</label>
                                     <div class="fw-medium">
                                         @if ($student->studentProfile && $student->studentProfile->joined_at)
                                             {{ \Carbon\Carbon::parse($student->studentProfile->joined_at)->format('d/m/Y') }}
                                         @else
-                                            Chưa có
+                                            {{ __('general.not_available') }}
                                         @endif
                                     </div>
                                 </div>
