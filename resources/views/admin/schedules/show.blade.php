@@ -137,7 +137,7 @@
                                 <i class="bi bi-calendar-x" style="font-size: 3rem; color: #6c757d;"></i>
                                 <h6 class="mt-3 text-muted">{{ __('general.no_schedule') }}</h6>
                                 <a href="{{ route('schedules.edit', $classroom) }}" class="btn btn-primary">
-                                    <i class="bi bi-plus-circle mr-2"></i>Thêm lịch học
+                                    <i class="bi bi-plus-circle mr-2"></i>{{ __('general.add_schedule_button') }}
                                 </a>
                             </div>
                         @endif
@@ -152,7 +152,7 @@
                     <div class="card-header">
                         <h6 class="mb-0">
                             <i class="bi bi-graph-up mr-2 text-info"></i>
-                            Thống kê nhanh
+                            {{ __('general.quick_statistics') }}
                         </h6>
                     </div>
                     <div class="card-body">
