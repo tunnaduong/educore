@@ -100,27 +100,28 @@
                                                 @foreach ($classroom->schedule['days'] as $day)
                                                     @php
                                                         $dayNames = [
-                                                            'Monday' => 'Thứ 2',
-                                                            'Tuesday' => 'Thứ 3',
-                                                            'Wednesday' => 'Thứ 4',
-                                                            'Thursday' => 'Thứ 5',
-                                                            'Friday' => 'Thứ 6',
-                                                            'Saturday' => 'Thứ 7',
-                                                            'Sunday' => 'Chủ nhật',
+                                                            'Monday' => __('general.monday'),
+                                                            'Tuesday' => __('general.tuesday'),
+                                                            'Wednesday' => __('general.wednesday'),
+                                                            'Thursday' => __('general.thursday'),
+                                                            'Friday' => __('general.friday'),
+                                                            'Saturday' => __('general.saturday'),
+                                                            'Sunday' => __('general.sunday'),
                                                         ];
                                                     @endphp
                                                     <span
                                                         class="badge bg-primary mr-2 mb-2">{{ $dayNames[$day] ?? $day }}</span>
                                                 @endforeach
                                             @else
-                                                <span class="text-muted">Chưa có thông tin</span>
+                                                <span class="text-muted">{{ __('general.no_schedule_info') }}</span>
                                             @endif
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label fw-bold text-muted">{{ __('general.study_time') }}</label>
+                                        <label
+                                            class="form-label fw-bold text-muted">{{ __('general.study_time') }}</label>
                                         <p class="mb-0 fs-5">
                                             @if (isset($classroom->schedule['time']))
                                                 <i class="bi bi-clock mr-2"></i>
@@ -157,17 +158,17 @@
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <span class="text-muted">Tổng số học viên</span>
+                            <span class="text-muted">{{ __('general.total_students') }}</span>
                             <span class="badge bg-primary fs-6">{{ $classroom->students->count() }}</span>
                         </div>
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <span class="text-muted">Số buổi học/tuần</span>
+                            <span class="text-muted">{{ __('general.sessions_per_week') }}</span>
                             <span class="badge bg-success fs-6">
                                 {{ $classroom->schedule && isset($classroom->schedule['days']) ? count($classroom->schedule['days']) : 0 }}
                             </span>
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="text-muted">Thời lượng/buổi</span>
+                            <span class="text-muted">{{ __('general.duration_per_session') }}</span>
                             <span class="badge bg-warning fs-6">
                                 @if ($classroom->schedule && isset($classroom->schedule['time']))
                                     @php
@@ -176,7 +177,7 @@
                                             $start = \Carbon\Carbon::parse($timeParts[0]);
                                             $end = \Carbon\Carbon::parse($timeParts[1]);
                                             $duration = $start->diffInMinutes($end);
-                                            echo $duration . ' phút';
+                                            echo $duration . ' ' . __('general.minutes');
                                         } else {
                                             echo 'N/A';
                                         }
@@ -194,7 +195,7 @@
                     <div class="card-header">
                         <h6 class="mb-0">
                             <i class="bi bi-people mr-2 text-success"></i>
-                            Danh sách học viên
+                            {{ __('general.student_list') }}
                         </h6>
                     </div>
                     <div class="card-body">
@@ -213,14 +214,14 @@
                             @if ($classroom->students->count() > 5)
                                 <div class="text-center mt-3">
                                     <small class="text-muted">
-                                        Và {{ $classroom->students->count() - 5 }} học viên khác...
+                                        {{ __('general.and_other_students', ['count' => $classroom->students->count() - 5]) }}
                                     </small>
                                 </div>
                             @endif
                         @else
                             <div class="text-center py-3">
                                 <i class="bi bi-people" style="font-size: 2rem; color: #6c757d;"></i>
-                                <p class="text-muted mb-0 mt-2">Chưa có học viên nào</p>
+                                <p class="text-muted mb-0 mt-2">{{ __('general.no_students_yet') }}</p>
                             </div>
                         @endif
                     </div>

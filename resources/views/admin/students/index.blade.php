@@ -73,15 +73,15 @@
                 <div class="table-responsive">
                     <table class="table table-hover align-middle">
                         <thead class="table-light">
-                                                            <tr>
-                                    <th class="text-center">#</th>
-                                    <th>{{ __('general.student') }}</th>
-                                    <th>{{ __('general.contact_information') }}</th>
-                                    <th>{{ __('general.enrolled_classes') }}</th>
-                                    <th class="text-center">{{ __('general.status') }}</th>
-                                    <th class="text-center">{{ __('general.progress') }}</th>
-                                    <th class="text-end">{{ __('general.actions') }}</th>
-                                </tr>
+                            <tr>
+                                <th class="text-center">#</th>
+                                <th>{{ __('general.student') }}</th>
+                                <th>{{ __('general.contact_information') }}</th>
+                                <th>{{ __('general.enrolled_classes') }}</th>
+                                <th class="text-center">{{ __('general.status') }}</th>
+                                <th class="text-center">{{ __('general.progress') }}</th>
+                                <th class="text-end">{{ __('general.actions') }}</th>
+                            </tr>
                         </thead>
                         <tbody>
                             @forelse ($students as $index => $student)
@@ -98,7 +98,7 @@
                                                     @if ($student->studentProfile && $student->studentProfile->date_of_birth)
                                                         {{ \Carbon\Carbon::parse($student->studentProfile->date_of_birth)->format('d/m/Y') }}
                                                     @else
-                                                        Chưa có ngày sinh
+                                                        {{ __('general.not_available') }}
                                                     @endif
                                                 </small>
                                             </div>
@@ -110,7 +110,8 @@
                                                 <i class="bi bi-envelope mr-1"></i>{{ $student->email }}
                                             </div>
                                             <div class="small text-muted">
-                                                <i class="bi bi-telephone mr-1"></i>{{ $student->phone ?? 'Chưa có' }}
+                                                <i
+                                                    class="bi bi-telephone mr-1"></i>{{ $student->phone ?? __('general.not_available') }}
                                             </div>
                                         </div>
                                     </td>
@@ -124,7 +125,8 @@
                                                     class="badge bg-secondary">+{{ $student->enrolledClassrooms->count() - 2 }}</span>
                                             @endif
                                         @else
-                                            <span class="text-muted small">Chưa đăng ký lớp</span>
+                                            <span
+                                                class="text-muted small">{{ __('general.no_classes_registered') }}</span>
                                         @endif
                                     </td>
                                     <td class="text-center">
@@ -136,48 +138,50 @@
                                                     'dropped' => 'danger',
                                                 ];
                                                 $statusLabels = [
-                                                    'active' => 'Đang học',
-                                                    'paused' => 'Nghỉ',
-                                                    'dropped' => 'Bảo lưu',
+                                                    'active' => __('general.studying'),
+                                                    'paused' => __('general.paused'),
+                                                    'dropped' => __('general.reserved'),
                                                 ];
                                                 $color = $statusColors[$student->studentProfile->status] ?? 'secondary';
                                                 $label =
-                                                    $statusLabels[$student->studentProfile->status] ?? 'Không xác định';
+                                                    $statusLabels[$student->studentProfile->status] ??
+                                                    __('general.undefined');
                                             @endphp
                                             <span class="badge bg-{{ $color }}">{{ $label }}</span>
                                         @else
-                                            <span class="badge bg-secondary">Chưa có</span>
+                                            <span class="badge bg-secondary">{{ __('general.not_available') }}</span>
                                         @endif
                                     </td>
                                     <td class="text-center">
                                         <div class="small">
-                                            <div class="text-muted">Buổi học: <span class="fw-medium">0</span></div>
-                                            <div class="text-muted">Điểm TB: <span class="fw-medium">-</span></div>
+                                            <div class="text-muted">{{ __('general.study_sessions') }}: <span
+                                                    class="fw-medium">0</span></div>
+                                            <div class="text-muted">{{ __('general.average_score') }}: <span
+                                                    class="fw-medium">-</span></div>
                                         </div>
                                     </td>
                                     <td class="text-end">
                                         <div class="d-flex justify-content-end gap-1">
                                             <a href="{{ route('students.show', $student) }}"
-                                                class="btn btn-sm btn-outline-info" title="Xem chi tiết">
+                                                class="btn btn-sm btn-outline-info"
+                                                title="{{ __('general.view_details') }}">
                                                 <i class="bi bi-eye"></i>
                                             </a>
                                             <a href="{{ route('students.edit', $student) }}"
-                                                class="btn btn-sm btn-outline-primary" title="Chỉnh sửa">
+                                                class="btn btn-sm btn-outline-primary"
+                                                title="{{ __('general.edit') }}">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
                                             @if (!$student->studentProfile || $student->studentProfile->status !== 'active')
-                                                <button type="button"
-                                                    data-toggle="modal"
+                                                <button type="button" data-toggle="modal"
                                                     data-target="#deleteModal{{ $student->id }}"
                                                     class="btn btn-sm btn-outline-danger"
-                                                    title="Xóa học viên">
+                                                    title="{{ __('general.delete') }}">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             @else
-                                                <button type="button"
-                                                    class="btn btn-sm btn-outline-secondary"
-                                                    title="Không thể xóa học viên đang học"
-                                                    disabled>
+                                                <button type="button" class="btn btn-sm btn-outline-secondary"
+                                                    title="{{ __('general.cannot_delete_active_student') }}" disabled>
                                                     <i class="bi bi-lock"></i>
                                                 </button>
                                             @endif
@@ -192,22 +196,21 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="deleteModalLabel{{ $student->id }}">
-                                                    Xác nhận xóa học viên</h5>
+                                                    {{ __('general.confirm_delete_student') }}</h5>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                     aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                Bạn có chắc chắn muốn xóa học viên "{{ $student->name }}"? Hành động
-                                                này không thể hoàn tác.
+                                                {{ __('general.confirm_delete_student_message', ['name' => $student->name]) }}
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary"
-                                                    data-dismiss="modal">Hủy</button>
+                                                    data-dismiss="modal">{{ __('general.cancel') }}</button>
                                                 <button type="button" class="btn btn-danger"
                                                     wire:click="delete({{ $student->id }})"
-                                                    data-dismiss="modal">Xóa</button>
+                                                    data-dismiss="modal">{{ __('general.delete') }}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -217,7 +220,7 @@
                                     <td colspan="7" class="text-center py-4">
                                         <div class="text-muted">
                                             <i class="bi bi-people fs-1 d-block mb-2"></i>
-                                            Không tìm thấy học viên nào
+                                            {{ __('general.no_students_found') }}
                                         </div>
                                     </td>
                                 </tr>
@@ -229,8 +232,9 @@
                 <!-- Pagination -->
                 <div class="d-flex justify-content-between align-items-center mt-4">
                     <div class="text-muted small">
-                        Hiển thị {{ $students->firstItem() ?? 0 }} - {{ $students->lastItem() ?? 0 }}
-                        trên tổng số {{ $students->total() ?? 0 }} học viên
+                        {{ __('general.showing') }} {{ $students->firstItem() ?? 0 }} -
+                        {{ $students->lastItem() ?? 0 }}
+                        {{ __('general.of_total_students', ['total' => $students->total() ?? 0]) }}
                     </div>
                     <div>
                         {{ $students->links('vendor.pagination.bootstrap-5') }}
