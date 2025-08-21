@@ -102,7 +102,7 @@
                     <div class="mb-2">
                         <i class="bi bi-star-fill" style="font-size:2.5rem; color:#e91e63;"></i>
                     </div>
-                    <div>Báo cáo đánh giá</div>
+                    <div>{{ __('general.evaluation_report') }}</div>
                 </a>
             </div>
         </div>
