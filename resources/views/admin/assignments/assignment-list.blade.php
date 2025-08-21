@@ -1,4 +1,5 @@
 <x-layouts.dash-admin active="assignments">
+    @include('components.language')
     <div class="container-fluid">
         <!-- Flash Messages -->
         @if (session()->has('success'))

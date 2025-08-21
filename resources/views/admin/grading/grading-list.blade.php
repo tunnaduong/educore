@@ -1,4 +1,5 @@
 <x-layouts.dash-admin active="grading">
+    @include('components.language')
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
@@ -124,18 +125,21 @@
                                                 <td class="text-center">
                                                     @if ($assignment->submissions_count > 0)
                                                         <span class="badge bg-success">
-                                                            <i class="bi bi-check2-all"></i> {{ __('general.has_submission') }}
+                                                            <i class="bi bi-check2-all"></i>
+                                                            {{ __('general.has_submission') }}
                                                         </span>
                                                     @else
                                                         <span class="badge bg-secondary">
-                                                            <i class="bi bi-hourglass-split"></i> {{ __('general.no_submission') }}
+                                                            <i class="bi bi-hourglass-split"></i>
+                                                            {{ __('general.no_submission') }}
                                                         </span>
                                                     @endif
                                                 </td>
                                                 <td class="text-center">
                                                     <button class="btn btn-primary btn-sm px-3"
                                                         wire:click="selectAssignment({{ $assignment->id }})">
-                                                        <i class="bi bi-pencil-square"></i> {{ __('general.grade_assignment') }}
+                                                        <i class="bi bi-pencil-square"></i>
+                                                        {{ __('general.grade_assignment') }}
                                                     </button>
                                                 </td>
                                             </tr>

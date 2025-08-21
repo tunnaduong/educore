@@ -1,4 +1,5 @@
 <x-layouts.dash-admin active="assignments" title="Tổng quan bài tập">
+    @include('components.language')
     <div class="d-flex justify-content-end mb-3">
         <a href="{{ route('assignments.create') }}" class="btn btn-primary">
             <i class="bi bi-plus-circle mr-2"></i>Giao bài tập mới
