@@ -5,14 +5,14 @@
         <div class="mb-4">
             <a href="{{ route('student.assignments.overview') }}"
                 class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left mr-2"></i>Quay lại
+                <i class="bi bi-arrow-left mr-2"></i>{{ __('general.back') }}
             </a>
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-folder-check mr-2"></i>Bài tập đã nộp
+                        <i class="bi bi-folder-check mr-2"></i>{{ __('general.submitted_assignments') }}
                     </h4>
-                    <p class="text-muted mb-0">Danh sách các bài tập bạn đã hoàn thành</p>
+                    <p class="text-muted mb-0">{{ __('general.submitted_assignments_list') }}</p>
                 </div>
             </div>
         </div>
@@ -27,11 +27,11 @@
                             placeholder="Tìm theo tên bài tập...">
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label">Trạng thái chấm điểm</label>
+                        <label class="form-label">{{ __('general.grading_status') }}</label>
                         <select class="form-control" wire:model.live="filterGraded">
                             <option value="">Tất cả</option>
-                            <option value="graded">Đã chấm điểm</option>
-                            <option value="ungraded">Chưa chấm điểm</option>
+                            <option value="graded">{{ __('general.graded') }}</option>
+                            <option value="ungraded">{{ __('general.ungraded') }}</option>
                         </select>
                     </div>
                     <div class="col-md-3">
@@ -69,7 +69,7 @@
                         <div class="card-body text-center">
                             <i class="bi bi-check-circle fs-1 mb-2"></i>
                             <h5 class="card-title">{{ $gradedSubmissions }}</h5>
-                            <p class="card-text">Đã chấm điểm</p>
+                            <p class="card-text">{{ __('general.graded') }}</p>
                         </div>
                     </div>
                 </div>
@@ -78,7 +78,7 @@
                         <div class="card-body text-center">
                             <i class="bi bi-hourglass-split fs-1 mb-2"></i>
                             <h5 class="card-title">{{ $ungradedSubmissions }}</h5>
-                            <p class="card-text">Chờ chấm điểm</p>
+                            <p class="card-text">{{ __('general.pending_grading') }}</p>
                         </div>
                     </div>
                 </div>
@@ -177,9 +177,9 @@
                                         </td>
                                         <td>
                                             @if ($submission->score !== null)
-                                                <span class="badge bg-success">Đã chấm điểm</span>
+                                                <span class="badge bg-success">{{ __('general.graded') }}</span>
                                             @else
-                                                <span class="badge bg-warning text-dark">Chờ chấm điểm</span>
+                                                <span class="badge bg-warning text-dark">{{ __('general.pending_grading') }}</span>
                                             @endif
                                         </td>
                                         <td>

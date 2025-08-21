@@ -24,13 +24,13 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-journal-text mr-2"></i>Danh sách bài tập
+                        <i class="bi bi-journal-text mr-2"></i>{{ __('general.assignment_list') }}
                     </h4>
-                    <p class="text-muted mb-0">Quản lý tất cả bài tập của bạn</p>
+                    <p class="text-muted mb-0">{{ __('general.manage_all_assignments') }}</p>
                 </div>
                 <div>
                     <a href="{{ route('assignments.create') }}" class="btn btn-primary">
-                        <i class="bi bi-plus-circle mr-2"></i>Giao bài tập mới
+                        <i class="bi bi-plus-circle mr-2"></i>{{ __('general.create_new_assignment') }}
                     </a>
                 </div>
             </div>
@@ -41,22 +41,22 @@
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <label for="search" class="form-label">Tìm kiếm</label>
+                        <label for="search" class="form-label">{{ __('general.search') }}</label>
                         <input type="text" class="form-control" id="search" wire:model.live="search"
-                            placeholder="Tìm theo tên bài tập...">
+                            placeholder="{{ __('general.search_by_assignment_name') }}">
                     </div>
                     <div class="col-md-3">
-                        <label for="statusFilter" class="form-label">Trạng thái</label>
+                        <label for="statusFilter" class="form-label">{{ __('general.status') }}</label>
                         <select class="form-control" id="statusFilter" wire:model.live="statusFilter">
-                            <option value="">Tất cả</option>
-                            <option value="active">Đang hoạt động</option>
-                            <option value="overdue">Quá hạn</option>
+                            <option value="">{{ __('general.all') }}</option>
+                            <option value="active">{{ __('general.active') }}</option>
+                            <option value="overdue">{{ __('general.overdue') }}</option>
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <label for="classroomFilter" class="form-label">Lớp học</label>
+                        <label for="classroomFilter" class="form-label">{{ __('general.classroom') }}</label>
                         <select class="form-control" id="classroomFilter" wire:model.live="classroomFilter">
-                            <option value="">Tất cả lớp</option>
+                            <option value="">{{ __('general.all_classes') }}</option>
                             @foreach ($classrooms as $classroom)
                                 <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
                             @endforeach
@@ -65,7 +65,7 @@
                     <div class="col-md-2">
                         <label class="form-label">&nbsp;</label>
                         <button class="btn btn-outline-secondary w-100" wire:click="clearFilters">
-                            <i class="bi bi-x-circle mr-2"></i>Xóa bộ lọc
+                            <i class="bi bi-x-circle mr-2"></i>{{ __('general.clear_filters') }}
                         </button>
                     </div>
                 </div>
@@ -80,12 +80,12 @@
                         <table class="table table-hover">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Tiêu đề</th>
-                                    <th>Lớp học</th>
-                                    <th>Hạn nộp</th>
-                                    <th>Trạng thái</th>
-                                    <th>Bài nộp</th>
-                                    <th>Thao tác</th>
+                                    <th>{{ __('general.title') }}</th>
+                                    <th>{{ __('general.classroom') }}</th>
+                                    <th>{{ __('general.deadline') }}</th>
+                                    <th>{{ __('general.status') }}</th>
+                                    <th>{{ __('general.submissions') }}</th>
+                                    <th>{{ __('general.actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -1,4 +1,4 @@
-@props(['url', 'title' => 'Video bài học', 'class' => ''])
+@props(['url', 'title' => __('general.lesson_video'), 'class' => ''])
 
 @php
     use App\Helpers\VideoHelper;
@@ -18,31 +18,31 @@
             <i class="bi bi-play-circle mr-1"></i>
             @switch($videoInfo['type'])
                 @case('youtube')
-                    YouTube Video
+                    {{ __('general.youtube_video') }}
                 @break
 
                 @case('drive')
-                    Google Drive Video
+                    {{ __('general.google_drive_video') }}
                 @break
 
                 @case('vimeo')
-                    Vimeo Video
+                    {{ __('general.vimeo_video') }}
                 @break
 
                 @default
-                    Video
+                    {{ __('general.video') }}
             @endswitch
         </small>
         <a href="{{ $videoInfo['original_url'] }}" target="_blank" class="btn btn-outline-primary btn-sm ml-2">
-            <i class="bi bi-box-arrow-up-right mr-1"></i>Mở trong tab mới
+            <i class="bi bi-box-arrow-up-right mr-1"></i>{{ __('general.open_in_new_tab') }}
         </a>
     </div>
 @else
     <div class="alert alert-warning">
         <i class="bi bi-exclamation-triangle mr-2"></i>
-        Không thể nhúng video này.
+        {{ __('general.cannot_embed_video') }}
         <a href="{{ $url }}" target="_blank" class="btn btn-outline-primary btn-sm ml-2">
-            <i class="bi bi-box-arrow-up-right mr-1"></i>Xem video
+            <i class="bi bi-box-arrow-up-right mr-1"></i>{{ __('general.watch_video') }}
         </a>
     </div>
 @endif
