@@ -1,4 +1,4 @@
-<x-layouts.dash-admin active="submissions">
+<x-layouts.dash-admin active="grading">
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
