@@ -219,8 +219,8 @@
                     </div>
                 </div>
 
-                <h3 class="mb-3 typing-animation">AI đang xử lý...</h3>
-                <p class="mb-4">Đang phân tích và xử lý dữ liệu với trí tuệ nhân tạo</p>
+                <h3 class="mb-3 typing-animation">{{ __('general.ai_processing') }}</h3>
+                <p class="mb-4">{{ __('general.ai_processing_description') }}</p>
 
                 <div class="progress mb-3" style="height: 8px;">
                     <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%"></div>
@@ -228,13 +228,13 @@
 
                 <div class="loading-steps">
                     <div class="loading-step active">
-                        <i class="fas fa-search"></i> Phân tích nội dung
+                        <i class="fas fa-search"></i> {{ __('general.analyzing_content') }}
                     </div>
                     <div class="loading-step">
-                        <i class="fas fa-cogs"></i> Xử lý AI
+                        <i class="fas fa-cogs"></i> {{ __('general.ai_processing_step') }}
                     </div>
                     <div class="loading-step">
-                        <i class="fas fa-check"></i> Hoàn thành
+                        <i class="fas fa-check"></i> {{ __('general.completing') }}
                     </div>
                 </div>
             </div>
@@ -246,9 +246,9 @@
                     <div class="card-header">
                         <h4 class="card-title">
                             <i class="fas fa-robot text-primary"></i>
-                            Tạo Quiz Tiếng Trung bằng AI
+                            {{ __('general.create_chinese_quiz_with_ai') }}
                         </h4><br>
-                        <p class="text-muted">Tự động tạo quiz tiếng Trung từ nội dung bài học</p>
+                        <p class="text-muted">{{ __('general.auto_create_chinese_quiz') }}</p>
                     </div>
                     <div class="card-body">
                         <!-- Thông báo -->
@@ -271,17 +271,19 @@
                             <div class="col-md-4">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5 class="card-title">Cấu hình Quiz Tiếng Trung</h5>
+                                        <h5 class="card-title">{{ __('general.chinese_quiz_configuration') }}</h5>
                                     </div>
                                     <div class="card-body">
                                         <form wire:submit.prevent="generateQuiz">
                                             <div class="mb-3">
-                                                <label for="selectedClass" class="form-label">Lớp học</label>
+                                                <label for="selectedClass"
+                                                    class="form-label">{{ __('general.class') }}</label>
                                                 <select wire:model.live="selectedClass" id="selectedClass"
                                                     class="form-control">
-                                                    <option value="">Chọn lớp học</option>
+                                                    <option value="">{{ __('general.select_class') }}</option>
                                                     @foreach ($classes as $class)
-                                                        <option value="{{ $class->id }}">{{ $class->name }}</option>
+                                                        <option value="{{ $class->id }}">{{ $class->name }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                                 @error('selectedClass')
@@ -290,11 +292,11 @@
                                             </div>
 
                                             <div class="mb-3">
-                                                <label for="selectedLesson" class="form-label">Bài học tiếng
-                                                    Trung</label>
+                                                <label for="selectedLesson"
+                                                    class="form-label">{{ __('general.chinese_lesson') }}</label>
                                                 <select wire:model.live="selectedLesson" id="selectedLesson"
                                                     class="form-control" {{ !$selectedClass ? 'disabled' : '' }}>
-                                                    <option value="">Chọn bài học</option>
+                                                    <option value="">{{ __('general.select_lesson') }}</option>
                                                     @foreach ($lessons as $lesson)
                                                         <option value="{{ $lesson->id }}">{{ $lesson->title }}
                                                         </option>
@@ -306,16 +308,19 @@
                                             </div>
 
                                             <div class="mb-3">
-                                                <label for="quizTitle" class="form-label">Tiêu đề Quiz</label>
+                                                <label for="quizTitle"
+                                                    class="form-label">{{ __('general.quiz_title') }}</label>
                                                 <input type="text" wire:model="quizTitle" id="quizTitle"
-                                                    class="form-control" placeholder="Nhập tiêu đề quiz tiếng Trung">
+                                                    class="form-control"
+                                                    placeholder="{{ __('general.enter_chinese_quiz_title') }}">
                                                 @error('quizTitle')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
 
                                             <div class="mb-3">
-                                                <label for="questionCount" class="form-label">Số câu hỏi</label>
+                                                <label for="questionCount"
+                                                    class="form-label">{{ __('general.question_count') }}</label>
                                                 <input type="number" wire:model="questionCount" id="questionCount"
                                                     class="form-control" min="5" max="50">
                                                 @error('questionCount')
@@ -324,11 +329,12 @@
                                             </div>
 
                                             <div class="mb-3">
-                                                <label for="difficulty" class="form-label">Độ khó</label>
+                                                <label for="difficulty"
+                                                    class="form-label">{{ __('general.difficulty') }}</label>
                                                 <select wire:model="difficulty" id="difficulty" class="form-control">
-                                                    <option value="easy">Dễ (HSK 1-2)</option>
-                                                    <option value="medium">Trung bình (HSK 3-4)</option>
-                                                    <option value="hard">Khó (HSK 5-6)</option>
+                                                    <option value="easy">{{ __('general.easy_hsk_1_2') }}</option>
+                                                    <option value="medium">{{ __('general.medium_hsk_3_4') }}</option>
+                                                    <option value="hard">{{ __('general.hard_hsk_5_6') }}</option>
                                                 </select>
                                                 @error('difficulty')
                                                     <span class="text-danger">{{ $message }}</span>
@@ -338,7 +344,7 @@
                                             <button type="submit" class="btn btn-primary w-100 position-relative"
                                                 wire:loading.attr="disabled" wire:loading.class="disabled">
                                                 <i class="fas fa-magic me-2"></i>
-                                                Tạo Quiz Tiếng Trung bằng AI
+                                                {{ __('general.create_chinese_quiz_with_ai_button') }}
                                             </button>
                                         </form>
                                     </div>
@@ -350,21 +356,21 @@
                                 @if ($showPreview && $generatedQuiz)
                                     <div class="card">
                                         <div class="card-header d-flex justify-content-between align-items-center">
-                                            <h5 class="card-title">Preview Quiz Tiếng Trung</h5>
+                                            <h5 class="card-title">{{ __('general.preview_chinese_quiz') }}</h5>
                                             <div class="btn-group">
                                                 <button wire:click="validateQuiz"
                                                     class="btn btn-outline-warning btn-sm position-relative"
                                                     wire:loading.attr="disabled" wire:loading.class="disabled">
                                                     <div wire:loading.remove>
                                                         <i class="fas fa-check-circle"></i>
-                                                        Kiểm tra lỗi
+                                                        {{ __('general.check_errors') }}
                                                     </div>
                                                     <div wire:loading class="loading-overlay">
                                                         <div class="spinner-border spinner-border-sm text-light me-2"
                                                             role="status">
                                                             <span class="visually-hidden">Loading...</span>
                                                         </div>
-                                                        <span class="loading-text">Đang kiểm tra...</span>
+                                                        <span class="loading-text">{{ __('general.checking') }}</span>
                                                     </div>
                                                 </button>
                                                 <button wire:click="saveQuiz" class="btn btn-success btn-sm">
