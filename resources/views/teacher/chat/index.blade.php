@@ -8,7 +8,7 @@
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0">
                             <i class="fas fa-comments me-2"></i>
-                            Chat
+                            {{ __('general.chat') }}
                         </h5>
                     </div>
 
@@ -19,7 +19,7 @@
                                 <button class="nav-link {{ $activeTab === 'classes' ? 'active' : '' }}"
                                     wire:click="setActiveTab('classes')" type="button" role="tab">
                                     <i class="fas fa-users me-1"></i>
-                                    Lớp học
+                                    {{ __('general.classes') }}
                                     @if ($unreadCount > 0)
                                         <span class="badge bg-danger ms-1">{{ $unreadCount }}</span>
                                     @endif
@@ -29,7 +29,7 @@
                                 <button class="nav-link {{ $activeTab === 'users' ? 'active' : '' }}"
                                     wire:click="setActiveTab('users')" type="button" role="tab">
                                     <i class="fas fa-user me-1"></i>
-                                    Người dùng
+                                    {{ __('general.users') }}
                                 </button>
                             </li>
                         </ul>
@@ -40,7 +40,7 @@
                                 <span class="input-group-text">
                                     <i class="fas fa-search"></i>
                                 </span>
-                                <input type="text" class="form-control" placeholder="Tìm kiếm..."
+                                <input type="text" class="form-control" placeholder="{{ __('general.search') }}..."
                                     wire:model.live="searchTerm">
                             </div>
                         </div>
@@ -66,7 +66,7 @@
                                                     </h6>
                                                     <small
                                                         class="text-muted {{ $selectedClass && $selectedClass->id === $class->id ? 'text-white-50' : '' }}">
-                                                        {{ $class->users->count() }} thành viên
+                                                        {{ $class->users->count() }} {{ __('general.members') }}
                                                     </small>
                                                 </div>
                                             </div>
@@ -79,7 +79,7 @@
                                     @empty
                                         <div class="text-center p-4">
                                             <i class="fas fa-inbox fa-2x text-muted mb-2"></i>
-                                            <p class="text-muted">{{ __('views.no_classes') }}</p>
+                                            <p class="text-muted">{{ __('general.no_classes') }}</p>
                                         </div>
                                     @endforelse
                                 </div>
