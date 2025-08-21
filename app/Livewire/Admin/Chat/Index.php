@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Chat;
 use App\Models\Classroom;
 use App\Models\Message;
 use App\Models\User;
+<<<<<<< Updated upstream
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +16,17 @@ use Livewire\WithPagination;
 class Index extends Component
 {
     use WithFileUploads, WithPagination;
+=======
+use Livewire\Component;
+use Livewire\WithPagination;
+use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+
+class Index extends Component
+{
+    use WithPagination, WithFileUploads;
+>>>>>>> Stashed changes
 
     public $selectedUser = null;
 
@@ -236,8 +248,8 @@ class Index extends Component
 
         if ($this->searchTerm) {
             $query->where(function ($q) {
-                $q->where('name', 'like', '%' . $this->searchTerm . '%')
-                    ->orWhere('email', 'like', '%' . $this->searchTerm . '%');
+                $q->where('name', 'like', '%'.$this->searchTerm.'%')
+                    ->orWhere('email', 'like', '%'.$this->searchTerm.'%');
             });
         }
 
@@ -257,7 +269,7 @@ class Index extends Component
         }
 
         if ($this->searchTerm) {
-            $query->where('name', 'like', '%' . $this->searchTerm . '%');
+            $query->where('name', 'like', '%'.$this->searchTerm.'%');
         }
 
         $classes = $query->orderBy('name')->get();
@@ -309,7 +321,11 @@ class Index extends Component
         if (! $this->selectedClass) {
             return;
         }
+<<<<<<< Updated upstream
         if (Auth::user()->role !== 'admin') {
+=======
+        if (auth()->user()->role !== 'admin') {
+>>>>>>> Stashed changes
             $this->dispatch('showToast', ['type' => 'error', 'message' => 'Chỉ admin mới được thêm giáo viên!']);
 
             return;
@@ -332,10 +348,17 @@ class Index extends Component
         if (! $this->selectedClass) {
             return;
         }
+<<<<<<< Updated upstream
         if (! in_array(Auth::user()->role, ['admin', 'teacher'])) {
             return;
         }
         if ($userId == Auth::id()) {
+=======
+        if (! in_array(auth()->user()->role, ['admin', 'teacher'])) {
+            return;
+        }
+        if ($userId == auth()->id()) {
+>>>>>>> Stashed changes
             return;
         }
         $user = User::find($userId);

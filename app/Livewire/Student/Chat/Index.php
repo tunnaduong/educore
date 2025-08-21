@@ -7,6 +7,10 @@ use App\Models\Message;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+<<<<<<< Updated upstream
+=======
+use Illuminate\Support\Facades\Auth;
+>>>>>>> Stashed changes
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
@@ -40,7 +44,7 @@ class Index extends Component
 
     public function mount()
     {
-        $this->unreadCount = Message::unread(auth()->id())->count();
+        $this->unreadCount = Message::unread(Auth::id())->count();
     }
 
     public function selectUser($userId)
@@ -65,7 +69,7 @@ class Index extends Component
         if ($lastMsg) {
             \App\Models\ClassroomMessageRead::updateOrCreate(
                 [
-                    'user_id' => auth()->id(),
+                    'user_id' => Auth::id(),
                     'class_id' => $classId,
                 ],
                 [
@@ -121,7 +125,7 @@ class Index extends Component
         }
 
         $messageData = [
-            'sender_id' => auth()->id(),
+            'sender_id' => Auth::id(),
             'message' => $this->messageText,
         ];
 
@@ -156,7 +160,7 @@ class Index extends Component
         $message = Message::create($messageData);
 
         // Dispatch event để broadcast tin nhắn
-        \Log::info('Dispatching MessageSent event', ['message_id' => $message->id]);
+        Log::info('Dispatching MessageSent event', ['message_id' => $message->id]);
         \App\Events\MessageSent::dispatch($message);
 
         $this->messageText = '';
@@ -176,10 +180,10 @@ class Index extends Component
     {
         if ($this->selectedUser) {
             return Message::where(function ($query) {
-                $query->where('sender_id', auth()->id())
+                $query->where('sender_id', Auth::id())
                     ->where('receiver_id', $this->selectedUser->id)
                     ->orWhere('sender_id', $this->selectedUser->id)
-                    ->where('receiver_id', auth()->id());
+                    ->where('receiver_id', Auth::id());
             })->with(['sender', 'receiver'])->orderBy('created_at', 'desc')->paginate(20);
         }
 
@@ -195,7 +199,7 @@ class Index extends Component
 
     public function getUsersProperty()
     {
-        $query = User::where('id', '!=', auth()->id())
+        $query = User::where('id', '!=', Auth::id())
             ->whereIn('role', ['admin', 'teacher']);
 
         if ($this->searchTerm) {
@@ -211,7 +215,7 @@ class Index extends Component
     public function getClassesProperty()
     {
         $query = Classroom::whereHas('users', function ($q) {
-            $q->where('users.id', auth()->id());
+            $q->where('users.id', Auth::id());
         });
 
         if ($this->searchTerm) {
@@ -221,7 +225,7 @@ class Index extends Component
         $classes = $query->orderBy('name')->get();
 
         foreach ($classes as $class) {
-            $class->unread_messages_count = $class->unreadMessagesCountForUser(auth()->id());
+            $class->unread_messages_count = $class->unreadMessagesCountForUser(Auth::id());
         }
 
         return $classes;
@@ -229,7 +233,7 @@ class Index extends Component
 
     public function refreshMessages()
     {
-        $this->unreadCount = Message::unread(auth()->id())->count();
+        $this->unreadCount = Message::unread(Auth::id())->count();
     }
 
     public function handleNewMessage($event)
@@ -238,9 +242,9 @@ class Index extends Component
         if ($message) {
             $isRelevant = false;
 
-            if ($this->selectedUser && $message['receiver_id'] == $this->selectedUser->id && $message['sender_id'] == auth()->id()) {
+            if ($this->selectedUser && $message['receiver_id'] == $this->selectedUser->id && $message['sender_id'] == Auth::id()) {
                 $isRelevant = true;
-            } elseif ($this->selectedUser && $message['sender_id'] == $this->selectedUser->id && $message['receiver_id'] == auth()->id()) {
+            } elseif ($this->selectedUser && $message['sender_id'] == $this->selectedUser->id && $message['receiver_id'] == Auth::id()) {
                 $isRelevant = true;
             } elseif ($this->selectedClass && $message['class_id'] == $this->selectedClass->id) {
                 $isRelevant = true;
