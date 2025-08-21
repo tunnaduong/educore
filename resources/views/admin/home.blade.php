@@ -8,13 +8,13 @@
             <div class="small-box bg-info">
                 <div class="inner">
                     <h3>{{ $unreadCount }}</h3>
-                    <p>Tin nhắn chưa đọc</p>
+                    <p>{{ __('general.unread_messages') }}</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-envelope"></i>
                 </div>
                 <a href="{{ route('chat.index') }}" class="small-box-footer">
-                    Xem thêm <i class="fas fa-arrow-circle-right"></i>
+                    {{ __('general.view_more') }} <i class="fas fa-arrow-circle-right"></i>
                 </a>
             </div>
         </div>
@@ -24,13 +24,13 @@
             <div class="small-box bg-success">
                 <div class="inner">
                     <h3>{{ $unreadNotification }}</h3>
-                    <p>Thông báo chưa đọc</p>
+                    <p>{{ __('general.unread_notifications') }}</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-bell"></i>
                 </div>
                 <a href="{{ route('notifications.index') }}" class="small-box-footer">
-                    Xem thêm <i class="fas fa-arrow-circle-right"></i>
+                    {{ __('general.view_more') }} <i class="fas fa-arrow-circle-right"></i>
                 </a>
             </div>
         </div>
@@ -40,13 +40,13 @@
             <div class="small-box bg-warning">
                 <div class="inner">
                     <h3>{{ \App\Models\User::where('role', 'student')->count() }}</h3>
-                    <p>Tổng số học sinh</p>
+                    <p>{{ __('general.total_students') }}</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-users"></i>
                 </div>
                 <a href="{{ route('students.index') }}" class="small-box-footer">
-                    Xem thêm <i class="fas fa-arrow-circle-right"></i>
+                    {{ __('general.view_more') }} <i class="fas fa-arrow-circle-right"></i>
                 </a>
             </div>
         </div>
@@ -56,13 +56,13 @@
             <div class="small-box bg-danger">
                 <div class="inner">
                     <h3>{{ \App\Models\User::where('role', 'teacher')->count() }}</h3>
-                    <p>Tổng số giáo viên</p>
+                    <p>{{ __('general.total_teachers') }}</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-chalkboard-teacher"></i>
                 </div>
                 <a href="{{ route('users.index') }}" class="small-box-footer">
-                    Xem thêm <i class="fas fa-arrow-circle-right"></i>
+                    {{ __('general.view_more') }} <i class="fas fa-arrow-circle-right"></i>
                 </a>
             </div>
         </div>
@@ -75,7 +75,7 @@
                 <div class="card-header">
                     <h3 class="card-title">
                         <i class="fas fa-tachometer-alt mr-1"></i>
-                        Thao tác nhanh
+                        {{ __('general.quick_actions') }}
                     </h3>
                 </div>
                 <div class="card-body">
@@ -176,7 +176,7 @@
                                 <div class="mb-2">
                                     <i class="fas fa-coins" style="font-size:2.5rem; color:#ffc107;"></i>
                                 </div>
-                                <div>Thống kê thu chi</div>
+                                <div>{{ __('general.financial_statistics') }}</div>
                             </a>
                         </div>
                         <!-- Quản lý đánh giá -->
@@ -185,7 +185,7 @@
                                 <div class="mb-2">
                                     <i class="fas fa-star" style="font-size:2.5rem; color:#e91e63;"></i>
                                 </div>
-                                <div>Quản lý đánh giá</div>
+                                <div>{{ __('general.evaluation_management') }}</div>
                             </a>
                         </div>
                         <!-- Thông báo & nhắc lịch -->
@@ -228,7 +228,7 @@
                 <div class="card-header">
                     <h3 class="card-title">
                         <i class="fas fa-chart-pie mr-1"></i>
-                        Thống kê điểm danh
+                        {{ __('general.attendance_statistics') }}
                     </h3>
                 </div>
                 <div class="card-body">
@@ -243,32 +243,32 @@
                 <div class="card-header">
                     <h3 class="card-title">
                         <i class="fas fa-chart-bar mr-1"></i>
-                        Hoạt động gần đây
+                        {{ __('general.recent_activities') }}
                     </h3>
                 </div>
                 <div class="card-body">
                     <div class="timeline">
                         <!-- Timeline items would go here -->
                         <div class="time-label">
-                            <span class="bg-red">Hôm nay</span>
+                            <span class="bg-red">{{ __('general.today') }}</span>
                         </div>
                         <div>
                             <i class="fas fa-envelope bg-blue"></i>
                             <div class="timeline-item">
-                                <span class="time"><i class="fas fa-clock"></i> 2 phút trước</span>
-                                <h3 class="timeline-header">Tin nhắn mới từ giáo viên</h3>
+                                <span class="time"><i class="fas fa-clock"></i> {{ __('general.minutes_ago', ['count' => 2]) }}</span>
+                                <h3 class="timeline-header">{{ __('general.new_teacher_message') }}</h3>
                                 <div class="timeline-body">
-                                    Có {{ $unreadCount }} tin nhắn chưa đọc cần xem xét.
+                                    {{ __('general.unread_messages_count', ['count' => $unreadCount]) }}
                                 </div>
                             </div>
                         </div>
                         <div>
                             <i class="fas fa-bell bg-yellow"></i>
                             <div class="timeline-item">
-                                <span class="time"><i class="fas fa-clock"></i> 5 phút trước</span>
-                                <h3 class="timeline-header">Thông báo mới</h3>
+                                <span class="time"><i class="fas fa-clock"></i> {{ __('general.minutes_ago', ['count' => 5]) }}</span>
+                                <h3 class="timeline-header">{{ __('general.new_notification') }}</h3>
                                 <div class="timeline-body">
-                                    Có {{ $unreadNotification }} thông báo chưa đọc.
+                                    {{ __('general.unread_notifications_count', ['count' => $unreadNotification]) }}
                                 </div>
                             </div>
                         </div>
@@ -286,7 +286,7 @@
                 new Chart(ctx, {
                     type: 'doughnut',
                     data: {
-                        labels: ['Có mặt', 'Vắng mặt', 'Trễ'],
+                        labels: ['{{ __("general.present") }}', '{{ __("general.absent") }}', '{{ __("general.late") }}'],
                         datasets: [{
                             data: [75, 15, 10],
                             backgroundColor: ['#28a745', '#dc3545', '#ffc107'],

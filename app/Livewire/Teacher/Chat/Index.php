@@ -2,33 +2,46 @@
 
 namespace App\Livewire\Teacher\Chat;
 
+use App\Models\Classroom;
 use App\Models\Message;
 use App\Models\User;
-use App\Models\Classroom;
-use Livewire\Component;
-use Livewire\WithPagination;
-use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
+use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithFileUploads, WithPagination;
 
     public $selectedUser = null;
+
     public $selectedClass = null;
+
     public $messageText = '';
+
     public $attachment = null;
+
     public $searchTerm = '';
+
     public $messageType = 'class'; // 'user' or 'class'
+
     public $unreadCount = 0;
+
     public $memberSearch = '';
+
     public $allUsers;
+
     public $activeTab = 'classes'; // 'users' hoặc 'classes'
+
     public $isDragging = false;
+
     public $typingUsers = [];
+
     public $isTyping = false;
+
     public $typingTimeout = null;
 
     protected $listeners = [
@@ -37,7 +50,7 @@ class Index extends Component
         'echo:chat-class-*,message.sent' => 'handleNewMessage',
         'echo-private:chat-user-*,message.sent' => 'handleNewMessage',
         'userTyping' => 'handleUserTyping',
-        'userStoppedTyping' => 'handleUserStoppedTyping'
+        'userStoppedTyping' => 'handleUserStoppedTyping',
     ];
 
     public function mount()
@@ -146,7 +159,7 @@ class Index extends Component
         }
 
         $currentUserId = Auth::id();
-        if (!$currentUserId) {
+        if (! $currentUserId) {
             return;
         }
 
@@ -186,7 +199,7 @@ class Index extends Component
         $message = Message::create($messageData);
 
         // Dispatch event để broadcast tin nhắn
-        \Log::info('Dispatching MessageSent event', ['message_id' => $message->id]);
+        Log::info('Dispatching MessageSent event', ['message_id' => $message->id]);
         \App\Events\MessageSent::dispatch($message);
 
         $this->messageText = '';
@@ -207,12 +220,12 @@ class Index extends Component
 
     public function startTyping()
     {
-        if (!$this->isTyping) {
+        if (! $this->isTyping) {
             $this->isTyping = true;
             $currentUser = Auth::user();
             $currentUserId = Auth::id();
 
-            if (!$currentUser || !$currentUserId) {
+            if (! $currentUser || ! $currentUserId) {
                 return;
             }
 
@@ -220,13 +233,13 @@ class Index extends Component
                 $this->dispatch('userTyping', [
                     'userId' => $currentUserId,
                     'userName' => $currentUser->name,
-                    'receiverId' => $this->selectedUser->id
+                    'receiverId' => $this->selectedUser->id,
                 ]);
             } elseif ($this->messageType === 'class' && $this->selectedClass) {
                 $this->dispatch('userTyping', [
                     'userId' => $currentUserId,
                     'userName' => $currentUser->name,
-                    'classId' => $this->selectedClass->id
+                    'classId' => $this->selectedClass->id,
                 ]);
             }
         }
@@ -238,19 +251,19 @@ class Index extends Component
             $this->isTyping = false;
             $currentUserId = Auth::id();
 
-            if (!$currentUserId) {
+            if (! $currentUserId) {
                 return;
             }
 
             if ($this->messageType === 'user' && $this->selectedUser) {
                 $this->dispatch('userStoppedTyping', [
                     'userId' => $currentUserId,
-                    'receiverId' => $this->selectedUser->id
+                    'receiverId' => $this->selectedUser->id,
                 ]);
             } elseif ($this->messageType === 'class' && $this->selectedClass) {
                 $this->dispatch('userStoppedTyping', [
                     'userId' => $currentUserId,
-                    'classId' => $this->selectedClass->id
+                    'classId' => $this->selectedClass->id,
                 ]);
             }
         }
@@ -280,7 +293,7 @@ class Index extends Component
     public function getMessagesProperty()
     {
         $currentUserId = Auth::id();
-        if (!$currentUserId) {
+        if (! $currentUserId) {
             return collect();
         }
 
@@ -306,7 +319,7 @@ class Index extends Component
     public function getUsersProperty()
     {
         $currentUserId = Auth::id();
-        if (!$currentUserId) {
+        if (! $currentUserId) {
             return collect();
         }
 
@@ -326,7 +339,7 @@ class Index extends Component
     public function getClassesProperty()
     {
         $currentUserId = Auth::id();
-        if (!$currentUserId) {
+        if (! $currentUserId) {
             return collect();
         }
 
@@ -344,6 +357,7 @@ class Index extends Component
         foreach ($classes as $class) {
             $class->unread_messages_count = $class->unreadMessagesCountForUser($currentUserId);
         }
+
         return $classes;
     }
 
@@ -388,6 +402,7 @@ class Index extends Component
                 return response()->download($path);
             }
         }
+
         return back()->with('error', 'File không tồn tại');
     }
 

@@ -4,10 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use App\Models\QuizResult;
-use App\Models\AssignmentSubmission;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Student extends Model
 {

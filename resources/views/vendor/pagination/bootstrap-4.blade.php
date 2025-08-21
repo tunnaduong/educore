@@ -81,9 +81,9 @@
 
         <div class="w-100 mt-2 text-center">
             <p class="small text-muted mb-0">
-                Đang hiển thị <span class="font-weight-bold">{{ $paginator->firstItem() }}</span>
-                tới <span class="font-weight-bold">{{ $paginator->lastItem() }}</span>
-                trong <span class="font-weight-bold">{{ $paginator->total() }}</span> kết quả
+                {{ __('views.showing') }} <span class="font-weight-bold">{{ $paginator->firstItem() }}</span>
+                {{ __('views.to') }} <span class="font-weight-bold">{{ $paginator->lastItem() }}</span>
+                {{ __('views.in') }} <span class="font-weight-bold">{{ $paginator->total() }}</span> {{ __('views.results') }}
             </p>
         </div>
     </nav>

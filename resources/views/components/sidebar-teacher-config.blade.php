@@ -87,7 +87,7 @@
         ],
         [
             'key' => 'evaluations-report',
-            'label' => 'Báo cáo đánh giá',
+            'label' => __('general.evaluation_report'),
             'route' => route('teacher.evaluations.report'),
             'icon' => 'bi bi-star',
             'visible' => true,

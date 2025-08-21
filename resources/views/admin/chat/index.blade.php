@@ -1,4 +1,5 @@
 <x-layouts.dash-admin active="chat">
+    @include('components.language')
     <div class="container-fluid py-2">
         <div class="row">
             <!-- Sidebar - Danh sách người dùng và lớp học -->
@@ -7,7 +8,7 @@
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0">
                             <i class="bi bi-chat-dots-fill mr-2"></i>
-                            Chat & Tương tác
+                            {{ __('general.chat_and_interaction') }}
                         </h5>
                     </div>
                     <div class="card-body p-0">
@@ -18,7 +19,7 @@
                                     <i class="bi bi-search"></i>
                                 </span>
                                 <input type="text" wire:model.live="searchTerm" class="form-control"
-                                    placeholder="Tìm kiếm...">
+                                    placeholder="{{ __('general.search') }}...">
                             </div>
                         </div>
 
@@ -27,13 +28,13 @@
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link @if ($activeTab === 'users') active @endif"
                                     wire:click="setActiveTab('users')" id="users-tab" type="button" role="tab">
-                                    <i class="bi bi-people-fill mr-1"></i>Người dùng
+                                    <i class="bi bi-people-fill mr-1"></i>{{ __('general.users') }}
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link @if ($activeTab === 'classes') active @endif"
                                     wire:click="setActiveTab('classes')" id="classes-tab" type="button" role="tab">
-                                    <i class="bi bi-diagram-3-fill mr-1"></i>Lớp học
+                                    <i class="bi bi-diagram-3-fill mr-1"></i>{{ __('general.classes') }}
                                 </button>
                             </li>
                         </ul>
@@ -66,7 +67,7 @@
                                     @empty
                                         <div class="list-group-item text-center text-muted">
                                             <i class="bi bi-people-fill" style="font-size: 2rem; color: #dee2e6;"></i>
-                                            <p class="mt-2">Không có người dùng nào</p>
+                                            <p class="mt-2">{{ __('general.no_users_found') }}</p>
                                         </div>
                                     @endforelse
                                 </div>

@@ -1,49 +1,52 @@
 <x-layouts.dash-teacher active="evaluations-report">
+    @include('components.language')
     <div class="container py-4">
         <!-- Header -->
         <div class="mb-4">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-bar-chart-line mr-2"></i>Báo cáo đánh giá chất lượng học viên
+                        <i class="bi bi-bar-chart-line mr-2"></i>{{ __('general.student_quality_evaluation_report') }}
                     </h4>
-                    <p class="text-muted mb-0">Tổng hợp đánh giá chất lượng học tập từ học viên</p>
+                    <p class="text-muted mb-0">{{ __('general.evaluation_summary') }}</p>
                 </div>
             </div>
         </div>
         <div class="alert alert-info mb-4">
-            <strong>Hướng dẫn tính điểm:</strong><br>
+            <strong>{{ __('general.scoring_guide') }}</strong><br>
             <ul class="mb-1">
-                <li><b>Điểm TB đánh giá giáo viên</b>: Trung bình cộng các câu hỏi nhóm 1 (1-5 điểm/câu).</li>
-                <li><b>Điểm TB đánh giá khóa học</b>: Trung bình cộng các câu hỏi nhóm 2 (1-5 điểm/câu).</li>
-                <li><b>Điểm hài lòng cá nhân</b>: Điểm câu hỏi số 10 (1-5 điểm).</li>
+                <li><b>{{ __('general.teacher_rating_avg') }}</b></li>
+                <li><b>{{ __('general.course_rating_avg') }}</b></li>
+                <li><b>{{ __('general.personal_satisfaction_score') }}</b></li>
             </ul>
-            <span class="text-muted">Điểm càng cao mức độ hài lòng càng lớn.</span>
+            <span class="text-muted">{{ __('general.higher_score_higher_satisfaction') }}</span>
         </div>
         <div class="card mb-4">
             <div class="card-body">
                 <form wire:submit.prevent="loadEvaluations" class="row g-3 align-items-end">
                     <div class="col-md-4">
-                        <label for="classroomId" class="form-label">Lọc theo lớp học</label>
+                        <label for="classroomId" class="form-label">{{ __('general.filter_by_class') }}</label>
                         <select wire:model="classroomId" id="classroomId" class="form-control">
-                            <option value="">Tất cả lớp</option>
+                            <option value="">{{ __('general.all_classes') }}</option>
                             @foreach ($classrooms as $class)
                                 <option value="{{ $class->id }}">{{ $class->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-md-4">
-                        <label for="roundId" class="form-label">Lọc theo đợt đánh giá</label>
+                        <label for="roundId" class="form-label">{{ __('general.filter_by_evaluation_round') }}</label>
                         <select wire:model="roundId" id="roundId" class="form-control">
-                            <option value="">Tất cả đợt</option>
+                            <option value="">{{ __('general.all_rounds') }}</option>
                             @foreach ($rounds as $r)
                                 <option value="{{ $r->id }}">{{ $r->name }}
-                                    ({{ $r->start_date->format('d/m') }} - {{ $r->end_date->format('d/m') }})</option>
+                                    ({{ $r->start_date->format('d/m') }} - {{ $r->end_date->format('d/m') }})
+                                </option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary w-100"><i class="bi bi-search"></i> Lọc</button>
+                        <button type="submit" class="btn btn-primary w-100"><i class="bi bi-search"></i>
+                            {{ __('general.filter') }}</button>
                     </div>
                 </form>
             </div>
@@ -52,7 +55,7 @@
         <!-- Thống kê mức độ hài lòng -->
         <div class="card mb-4">
             <div class="card-header bg-light fw-bold">
-                <i class="bi bi-emoji-smile"></i> Thống kê mức độ hài lòng của sinh viên
+                <i class="bi bi-emoji-smile"></i> {{ __('general.student_satisfaction_statistics') }}
             </div>
             <div class="card-body">
                 @php
@@ -74,11 +77,12 @@
                                     {{ round(($count / $totalEva) * 100) }}%
                                 </div>
                             </div>
-                            <small class="text-muted">{{ $count }} lượt</small>
+                            <small class="text-muted">{{ $count }} {{ __('general.times') }}</small>
                         </div>
                     @endforeach
                 </div>
-                <div class="text-center mt-2 text-muted small">1: Rất không hài lòng &nbsp; 5: Rất hài lòng</div>
+                <div class="text-center mt-2 text-muted small">1: {{ __('general.very_dissatisfied') }} &nbsp; 5:
+                    {{ __('general.very_satisfied') }}</div>
             </div>
         </div>
 
@@ -87,7 +91,7 @@
                 <div class="card text-center shadow-sm">
                     <div class="card-body">
                         <div class="fw-bold text-success fs-3">{{ number_format($avgTeacher, 1) }}</div>
-                        <div class="text-muted">Điểm TB đánh giá giáo viên</div>
+                        <div class="text-muted">{{ __('general.teacher_rating_average') }}</div>
                     </div>
                 </div>
             </div>
@@ -95,7 +99,7 @@
                 <div class="card text-center shadow-sm">
                     <div class="card-body">
                         <div class="fw-bold text-info fs-3">{{ number_format($avgCourse, 1) }}</div>
-                        <div class="text-muted">Điểm TB đánh giá khóa học</div>
+                        <div class="text-muted">{{ __('general.course_rating_average') }}</div>
                     </div>
                 </div>
             </div>
@@ -103,7 +107,7 @@
                 <div class="card text-center shadow-sm">
                     <div class="card-body">
                         <div class="fw-bold text-warning fs-3">{{ number_format($avgPersonal, 1) }}</div>
-                        <div class="text-muted">Điểm TB hài lòng cá nhân</div>
+                        <div class="text-muted">{{ __('general.personal_satisfaction_average') }}</div>
                     </div>
                 </div>
             </div>
@@ -111,18 +115,18 @@
 
         <div class="card shadow-sm">
             <div class="card-header bg-light fw-bold">
-                <i class="bi bi-list-check"></i> Danh sách đánh giá ({{ $total }})
+                <i class="bi bi-list-check"></i> {{ __('general.evaluation_list') }} ({{ $total }})
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0">
                         <thead class="table-light">
                             <tr>
-                                <th>Học viên</th>
-                                <th>Điểm giáo viên</th>
-                                <th>Điểm khóa học</th>
-                                <th>Hài lòng</th>
-                                <th>Đề xuất</th>
+                                <th>{{ __('general.student') }}</th>
+                                <th>{{ __('general.teacher_score') }}</th>
+                                <th>{{ __('general.course_score') }}</th>
+                                <th>{{ __('general.satisfaction') }}</th>
+                                <th>{{ __('general.suggestions') }}</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -146,13 +150,14 @@
                                     <td>
                                         <button class="btn btn-sm btn-outline-info"
                                             wire:click="showEvaluationDetail({{ $eva->id }})">
-                                            <i class="bi bi-eye"></i> Xem chi tiết
+                                            <i class="bi bi-eye"></i> {{ __('general.view_details') }}
                                         </button>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center text-muted py-4">Chưa có đánh giá nào.</td>
+                                    <td colspan="6" class="text-center text-muted py-4">
+                                        {{ __('general.no_evaluations_yet') }}</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -168,15 +173,16 @@
                 <div class="modal-dialog modal-dialog-scrollable modal-lg modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title fw-bold text-primary fs-4">Chi tiết đánh giá của
-                                {{ $selectedEvaluation->student->user->name ?? 'Học viên' }}</h5>
+                            <h5 class="modal-title fw-bold text-primary fs-4">{{ __('general.evaluation_details') }}
+                                của
+                                {{ $selectedEvaluation->student->user->name ?? __('general.student') }}</h5>
                             <button type="button" class="btn-close" wire:click="closeEvaluationDetail">
                                 <i class="bi bi-x-lg"></i>
                             </button>
                         </div>
                         <div class="modal-body">
                             <div class="mb-3">
-                                <strong>Nhóm 1 - Đánh giá giáo viên:</strong>
+                                <strong>{{ __('general.group_1_teacher_evaluation') }}</strong>
                                 <ul class="mb-2">
                                     @foreach ($selectedEvaluation->teacher_ratings ?? [] as $k => $v)
                                         @php
@@ -193,7 +199,7 @@
                                 </ul>
                             </div>
                             <div class="mb-3">
-                                <strong>Nhóm 2 - Đánh giá khóa học:</strong>
+                                <strong>{{ __('general.group_2_course_evaluation') }}</strong>
                                 <ul class="mb-2">
                                     @foreach ($selectedEvaluation->course_ratings ?? [] as $k => $v)
                                         @php
@@ -210,22 +216,23 @@
                                 </ul>
                             </div>
                             <div class="mb-3">
-                                <strong>Nhóm 3 - Hài lòng cá nhân:</strong>
+                                <strong>{{ __('general.group_3_personal_satisfaction') }}</strong>
                                 @php
                                     $personalQuestion = $questions->where('category', 'personal')->first();
                                 @endphp
-                                <div>{{ $personalQuestion ? $personalQuestion->question : 'Mức độ hài lòng cá nhân' }}:
+                                <div>
+                                    {{ $personalQuestion ? $personalQuestion->question : __('general.personal_satisfaction_level') }}:
                                     <b>{{ $selectedEvaluation->personal_satisfaction }}/5</b>
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <strong>Đề xuất/Góp ý:</strong>
+                                <strong>{{ __('general.suggestions_comments') }}</strong>
                                 <div>{{ $selectedEvaluation->suggestions ?: '-' }}</div>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" wire:click="closeEvaluationDetail">
-                                Đóng
+                                {{ __('general.close') }}
                             </button>
                         </div>
                     </div>

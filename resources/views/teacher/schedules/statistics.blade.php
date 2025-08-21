@@ -1,4 +1,5 @@
 <div>
+    @include('components.language')
     <div class="row g-3 mb-4">
         <!-- Tổng số bài học -->
         <div class="col-md-3">
@@ -6,7 +7,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="card-title mb-0">Tổng bài học</h6>
+                            <h6 class="card-title mb-0">{{ __('views.total_lessons') }}</h6>
                             <h3 class="mb-0">{{ $totalLessons }}</h3>
                         </div>
                         <div>
@@ -23,7 +24,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="card-title mb-0">Tổng bài tập</h6>
+                            <h6 class="card-title mb-0">{{ __('views.total_assignments') }}</h6>
                             <h3 class="mb-0">{{ $totalAssignments }}</h3>
                         </div>
                         <div>
@@ -40,7 +41,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="card-title mb-0">Tổng kiểm tra</h6>
+                            <h6 class="card-title mb-0">{{ __('views.total_quizzes') }}</h6>
                             <h3 class="mb-0">{{ $totalQuizzes }}</h3>
                         </div>
                         <div>
@@ -57,7 +58,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="card-title mb-0">Hôm nay</h6>
+                            <h6 class="card-title mb-0">{{ __('views.today') }}</h6>
                             <h3 class="mb-0">{{ $todayEvents }}</h3>
                         </div>
                         <div>
@@ -74,11 +75,11 @@
         <div class="col-md-4">
             <div class="card border-primary h-100">
                 <div class="card-header bg-primary text-white">
-                    <h6 class="mb-0"><i class="bi bi-clock mr-2"></i>Bài học sắp tới</h6>
+                    <h6 class="mb-0"><i class="bi bi-clock mr-2"></i>{{ __('views.upcoming_lessons') }}</h6>
                 </div>
                 <div class="card-body text-center">
                     <h2 class="text-primary mb-0">{{ $upcomingLessons }}</h2>
-                    <p class="text-muted mb-0">bài học</p>
+                    <p class="text-muted mb-0">{{ __('views.lessons') }}</p>
                 </div>
             </div>
         </div>
@@ -87,11 +88,12 @@
         <div class="col-md-4">
             <div class="card border-warning h-100">
                 <div class="card-header bg-warning text-white">
-                    <h6 class="mb-0"><i class="bi bi-hourglass-split mr-2"></i>Bài tập chưa đến hạn</h6>
+                    <h6 class="mb-0"><i class="bi bi-hourglass-split mr-2"></i>{{ __('views.pending_assignments') }}
+                    </h6>
                 </div>
                 <div class="card-body text-center">
                     <h2 class="text-warning mb-0">{{ $pendingAssignments }}</h2>
-                    <p class="text-muted mb-0">bài tập</p>
+                    <p class="text-muted mb-0">{{ __('views.assignments_pending') }}</p>
                 </div>
             </div>
         </div>

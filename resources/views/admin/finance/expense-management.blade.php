@@ -1,4 +1,5 @@
 <x-layouts.dash-admin active="finance" title="Quản lý chi tiêu">
+    @include('components.language')
     <div class="container-fluid">
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -22,14 +23,14 @@
         <div class="card shadow-sm mb-4">
             <div class="card-header bg-light">
                 <h6 class="mb-0 text-primary">
-                    <i class="bi bi-funnel-fill mr-2"></i>Bộ lọc chi tiêu
+                    <i class="bi bi-funnel-fill mr-2"></i>{{ __('general.expense_filter') }}
                 </h6>
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-3">
                         <label class="form-label fw-semibold">
-                            <i class="bi bi-tag-fill text-danger mr-1"></i>Loại chi tiêu
+                            <i class="bi bi-tag-fill mr-1"></i>{{ __('general.expense_type') }}
                         </label>
                         <select wire:model="filterType" class="form-control">
                             <option value="">Tất cả loại</option>
@@ -92,22 +93,22 @@
                         <tr>
                             <th class="text-center" width="8%">#</th>
                             <th width="15%">
-                                <i class="bi bi-tag-fill mr-1"></i>Loại chi tiêu
+                                <i class="bi bi-tag-fill mr-1"></i>{{ __('general.expense_type') }}
                             </th>
                             <th width="15%">
-                                <i class="bi bi-cash-stack mr-1"></i>Số tiền
+                                <i class="bi bi-cash-stack mr-1"></i>{{ __('general.amount') }}
                             </th>
                             <th width="12%">
-                                <i class="bi bi-person-fill mr-1"></i>Nhân viên
+                                <i class="bi bi-person-fill mr-1"></i>{{ __('general.employee') }}
                             </th>
                             <th width="12%">
-                                <i class="bi bi-building mr-1"></i>Lớp học
+                                <i class="bi bi-building mr-1"></i>{{ __('general.class') }}
                             </th>
                             <th width="15%">
-                                <i class="bi bi-calendar-event mr-1"></i>Ngày chi
+                                <i class="bi bi-calendar-event mr-1"></i>{{ __('general.expense_date') }}
                             </th>
                             <th width="13%">
-                                <i class="bi bi-chat-left-text mr-1"></i>Ghi chú
+                                <i class="bi bi-chat-left-text mr-1"></i>{{ __('general.notes') }}
                             </th>
                             <th class="text-center" width="10%">
                                 <i class="bi bi-gear mr-1"></i>Thao tác

@@ -1,4 +1,5 @@
 <x-layouts.dash-teacher active="schedules">
+    @include('components.language')
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
@@ -7,7 +8,7 @@
                     <h4 class="mb-0 text-primary fs-4">
                         <i class="bi bi-calendar3 mr-2"></i>Lịch giảng dạy
                     </h4>
-                    <p class="text-muted mb-0">Xem thời khóa biểu các buổi giảng dạy, bài tập, kiểm tra</p>
+                    <p class="text-muted mb-0">{{ __('views.view_teaching_schedule') }}</p>
                 </div>
             </div>
         </div>
@@ -17,15 +18,15 @@
             <div class="d-flex align-items-center gap-4 flex-wrap">
                 <div><span
                         style="display:inline-block;width:18px;height:18px;background:#0d6efd;border-radius:4px;margin-right:6px;"></span>
-                    <b>Lịch giảng dạy</b>
+                    <b>{{ __('views.teaching_schedule') }}</b>
                 </div>
                 <div><span
                         style="display:inline-block;width:18px;height:18px;background:#fd7e14;border-radius:4px;margin-right:6px;"></span>
-                    <b>Bài tập</b>
+                    <b>{{ __('views.assignments') }}</b>
                 </div>
                 <div><span
                         style="display:inline-block;width:18px;height:18px;background:#20c997;border-radius:4px;margin-right:6px;"></span>
-                    <b>Kiểm tra</b>
+                    <b>{{ __('views.quizzes') }}</b>
                 </div>
             </div>
         </div>

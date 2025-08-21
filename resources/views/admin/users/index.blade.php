@@ -4,10 +4,10 @@
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-people-fill mr-2"></i>Quản lý người dùng
+                <i class="bi bi-people-fill mr-2"></i>{{ __('general.user_management') }}
             </h4>
             <a href="{{ route('users.create') ?? '#' }}" class="btn btn-primary">
-                <i class="bi bi-plus-circle mr-2"></i>Thêm người dùng
+                <i class="bi bi-plus-circle mr-2"></i>{{ __('general.add_user') }}
             </a>
         </div>
 
@@ -21,22 +21,22 @@
                                 <i class="bi bi-search"></i>
                             </span>
                             <input wire:model.live="search" type="text" class="form-control"
-                                placeholder="Tìm kiếm theo tên, số điện thoại hoặc email...">
+                                placeholder="{{ __('general.search_by_name_phone_email') }}">
                         </div>
                     </div>
                     <div class="col">
                         <select wire:model.live="filterRole" class="form-control">
-                            <option value="">Tất cả vai trò</option>
-                            <option value="admin">Quản trị viên</option>
-                            <option value="teacher">Giảng viên</option>
-                            <option value="student">Học viên</option>
+                            <option value="">{{ __('general.all_roles') }}</option>
+                            <option value="admin">{{ __('general.administrator') }}</option>
+                            <option value="teacher">{{ __('general.instructor') }}</option>
+                            <option value="student">{{ __('general.learner') }}</option>
                         </select>
                     </div>
                     <div class="col">
                         <select wire:model.live="filterStatus" class="form-control">
-                            <option value="">Tất cả trạng thái</option>
-                            <option value="active">Hoạt động</option>
-                            <option value="inactive">Không hoạt động</option>
+                            <option value="">{{ __('general.all_statuses') }}</option>
+                            <option value="active">{{ __('general.active_status') }}</option>
+                            <option value="inactive">{{ __('general.inactive_status') }}</option>
                         </select>
                     </div>
                 </div>
@@ -68,14 +68,14 @@
                 <div class="table-responsive">
                     <table class="table table-hover align-middle">
                         <thead class="table-light">
-                            <tr>
-                                <th class="text-center">#</th>
-                                <th>Họ tên</th>
-                                <th>Email</th>
-                                <th class="text-center">Vai trò</th>
-                                <th class="text-center">Trạng thái</th>
-                                <th class="text-end">Hành động</th>
-                            </tr>
+                                                            <tr>
+                                    <th class="text-center">#</th>
+                                    <th>{{ __('general.full_name') }}</th>
+                                    <th>Email</th>
+                                    <th class="text-center">{{ __('general.role') }}</th>
+                                    <th class="text-center">{{ __('general.status') }}</th>
+                                    <th class="text-end">{{ __('general.actions') }}</th>
+                                </tr>
                         </thead>
                         <tbody>
                             @foreach ($users as $index => $user)
@@ -101,18 +101,18 @@
                                     </td>
                                     <td class="text-center">
                                         <span class="badge bg-{{ $user->is_active ? 'success' : 'secondary' }}">
-                                            {{ $user->is_active ? 'Hoạt động' : 'Không hoạt động' }}
+                                            {{ $user->is_active ? __('general.active_status') : __('general.inactive_status') }}
                                         </span>
                                     </td>
                                     <td>
                                         <div class="d-flex justify-content-end gap-2">
                                             <a href="{{ route('users.edit', $user->id) ?? '#' }}"
-                                                class="btn btn-sm btn-outline-primary" title="Sửa">
+                                                class="btn btn-sm btn-outline-primary" title="{{ __('general.edit') }}">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
                                             <button type="button" data-toggle="modal"
                                                 data-target="#deleteModal{{ $user->id }}"
-                                                class="btn btn-sm btn-outline-danger" title="Xóa">
+                                                class="btn btn-sm btn-outline-danger" title="{{ __('general.delete') }}">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </div>
@@ -129,7 +129,7 @@
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="deleteModalLabel{{ $user->id }}">
                                                     <i class="bi bi-exclamation-triangle text-danger mr-2"></i>
-                                                    Xác nhận xóa người dùng
+                                                    {{ __('general.confirm_delete_user') }}
                                                 </h5>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                     aria-label="Close">
@@ -141,23 +141,22 @@
                                                     <i class="bi bi-person-x text-danger" style="font-size: 3rem;"></i>
                                                 </div>
                                                 <p class="text-center">
-                                                    Bạn có chắc chắn muốn xóa người dùng
+                                                    {{ __('general.confirm_delete_user_message') }}
                                                     <strong>"{{ $user->name }}"</strong>?
                                                 </p>
                                                 <div class="alert alert-warning">
                                                     <i class="bi bi-exclamation-triangle mr-2"></i>
-                                                    <strong>Cảnh báo:</strong> Hành động này không thể hoàn tác và sẽ
-                                                    xóa tất cả dữ liệu liên quan.
+                                                    <strong>{{ __('general.warning_action_irreversible') }}</strong>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary"
                                                     data-dismiss="modal">
-                                                    <i class="bi bi-x-circle mr-1"></i>Hủy
+                                                    <i class="bi bi-x-circle mr-1"></i>{{ __('general.cancel') }}
                                                 </button>
                                                 <button type="button" class="btn btn-danger"
                                                     wire:click="delete({{ $user->id }})" data-dismiss="modal">
-                                                    <i class="bi bi-trash mr-1"></i>Xóa người dùng
+                                                    <i class="bi bi-trash mr-1"></i>{{ __('general.delete_user') }}
                                                 </button>
                                             </div>
                                         </div>

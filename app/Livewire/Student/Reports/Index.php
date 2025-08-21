@@ -2,18 +2,23 @@
 
 namespace App\Livewire\Student\Reports;
 
-use Livewire\Component;
-use Illuminate\Support\Facades\Auth;
 use App\Models\AssignmentSubmission;
 use App\Models\QuizResult;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class Index extends Component
 {
     public $assignmentSubmissions = [];
+
     public $quizResults = [];
+
     public $avgAssignmentScore = 0;
+
     public $avgQuizScore = 0;
+
     public $attendancePresent = 0;
+
     public $attendanceAbsent = 0;
 
     public function mount()

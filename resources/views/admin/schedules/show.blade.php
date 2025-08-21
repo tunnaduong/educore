@@ -1,13 +1,14 @@
 <x-layouts.dash-admin active="schedules">
+    @include('components.language')
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="mb-0 fs-4">Chi tiết lịch học</h2>
+            <h2 class="mb-0 fs-4">{{ __('general.schedule_details') }}</h2>
             <div class="btn-group" role="group">
                 <a href="{{ route('schedules.index') }}" class="btn btn-outline-secondary">
-                    <i class="bi bi-arrow-left mr-2"></i>Quay lại
+                    <i class="bi bi-arrow-left mr-2"></i>{{ __('general.back_to_schedules') }}
                 </a>
                 <a href="{{ route('schedules.edit', $classroom) }}" class="btn btn-warning">
-                    <i class="bi bi-pencil mr-2"></i>Chỉnh sửa
+                    <i class="bi bi-pencil mr-2"></i>{{ __('general.edit_schedule') }}
                 </a>
             </div>
         </div>
@@ -19,20 +20,21 @@
                     <div class="card-header">
                         <h5 class="mb-0">
                             <i class="bi bi-calendar3 mr-2 text-primary"></i>
-                            Thông tin lớp học
+                            {{ __('general.classroom_information') }}
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label class="form-label fw-bold text-muted">Tên lớp học</label>
+                                    <label
+                                        class="form-label fw-bold text-muted">{{ __('general.classroom_name') }}</label>
                                     <p class="mb-0 fs-5">{{ $classroom->name }}</p>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label class="form-label fw-bold text-muted">Cấp độ</label>
+                                    <label class="form-label fw-bold text-muted">{{ __('general.level_grade') }}</label>
                                     <p class="mb-0">
                                         <span class="badge bg-info fs-6">{{ $classroom->level }}</span>
                                     </p>
@@ -43,7 +45,8 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label class="form-label fw-bold text-muted">Giáo viên phụ trách</label>
+                                    <label
+                                        class="form-label fw-bold text-muted">{{ __('general.assigned_teacher') }}</label>
                                     <p class="mb-0">
                                         @if ($classroom->teachers->count())
                                             <div class="mb-2">
@@ -51,14 +54,14 @@
                                                 {{ $classroom->teachers->pluck('name')->join(', ') }}
                                             </div>
                                         @else
-                                            <span class="text-muted">Chưa phân công</span>
+                                            <span class="text-muted">{{ __('general.not_assigned') }}</span>
                                         @endif
                                     </p>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label class="form-label fw-bold text-muted">Trạng thái</label>
+                                    <label class="form-label fw-bold text-muted">{{ __('general.status') }}</label>
                                     <p class="mb-0">
                                         <span class="badge {{ $this->getStatusBadgeClass($classroom->status) }} fs-6">
                                             {{ $this->getStatusText($classroom->status) }}
@@ -70,7 +73,7 @@
 
                         @if ($classroom->notes)
                             <div class="mb-3">
-                                <label class="form-label fw-bold text-muted">Ghi chú</label>
+                                <label class="form-label fw-bold text-muted">{{ __('general.notes') }}</label>
                                 <p class="mb-0">{{ $classroom->notes }}</p>
                             </div>
                         @endif
@@ -82,7 +85,7 @@
                     <div class="card-header">
                         <h5 class="mb-0">
                             <i class="bi bi-clock mr-2 text-success"></i>
-                            Lịch học
+                            {{ __('general.detailed_schedule') }}
                         </h5>
                     </div>
                     <div class="card-body">
@@ -90,39 +93,41 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label fw-bold text-muted">Ngày học trong tuần</label>
+                                        <label
+                                            class="form-label fw-bold text-muted">{{ __('general.study_days') }}</label>
                                         <div class="mt-2">
                                             @if (isset($classroom->schedule['days']) && is_array($classroom->schedule['days']))
                                                 @foreach ($classroom->schedule['days'] as $day)
                                                     @php
                                                         $dayNames = [
-                                                            'Monday' => 'Thứ 2',
-                                                            'Tuesday' => 'Thứ 3',
-                                                            'Wednesday' => 'Thứ 4',
-                                                            'Thursday' => 'Thứ 5',
-                                                            'Friday' => 'Thứ 6',
-                                                            'Saturday' => 'Thứ 7',
-                                                            'Sunday' => 'Chủ nhật',
+                                                            'Monday' => __('general.monday'),
+                                                            'Tuesday' => __('general.tuesday'),
+                                                            'Wednesday' => __('general.wednesday'),
+                                                            'Thursday' => __('general.thursday'),
+                                                            'Friday' => __('general.friday'),
+                                                            'Saturday' => __('general.saturday'),
+                                                            'Sunday' => __('general.sunday'),
                                                         ];
                                                     @endphp
                                                     <span
                                                         class="badge bg-primary mr-2 mb-2">{{ $dayNames[$day] ?? $day }}</span>
                                                 @endforeach
                                             @else
-                                                <span class="text-muted">Chưa có thông tin</span>
+                                                <span class="text-muted">{{ __('general.no_schedule_info') }}</span>
                                             @endif
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label fw-bold text-muted">Thời gian học</label>
+                                        <label
+                                            class="form-label fw-bold text-muted">{{ __('general.study_time') }}</label>
                                         <p class="mb-0 fs-5">
                                             @if (isset($classroom->schedule['time']))
                                                 <i class="bi bi-clock mr-2"></i>
                                                 {{ $classroom->schedule['time'] }}
                                             @else
-                                                <span class="text-muted">Chưa có thông tin</span>
+                                                <span class="text-muted">{{ __('general.no_schedule_info') }}</span>
                                             @endif
                                         </p>
                                     </div>
@@ -131,9 +136,9 @@
                         @else
                             <div class="text-center py-4">
                                 <i class="bi bi-calendar-x" style="font-size: 3rem; color: #6c757d;"></i>
-                                <h6 class="mt-3 text-muted">Chưa có lịch học</h6>
+                                <h6 class="mt-3 text-muted">{{ __('general.no_schedule') }}</h6>
                                 <a href="{{ route('schedules.edit', $classroom) }}" class="btn btn-primary">
-                                    <i class="bi bi-plus-circle mr-2"></i>Thêm lịch học
+                                    <i class="bi bi-plus-circle mr-2"></i>{{ __('general.add_schedule_button') }}
                                 </a>
                             </div>
                         @endif
@@ -148,22 +153,22 @@
                     <div class="card-header">
                         <h6 class="mb-0">
                             <i class="bi bi-graph-up mr-2 text-info"></i>
-                            Thống kê nhanh
+                            {{ __('general.quick_statistics') }}
                         </h6>
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <span class="text-muted">Tổng số học viên</span>
+                            <span class="text-muted">{{ __('general.total_students') }}</span>
                             <span class="badge bg-primary fs-6">{{ $classroom->students->count() }}</span>
                         </div>
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <span class="text-muted">Số buổi học/tuần</span>
+                            <span class="text-muted">{{ __('general.sessions_per_week') }}</span>
                             <span class="badge bg-success fs-6">
                                 {{ $classroom->schedule && isset($classroom->schedule['days']) ? count($classroom->schedule['days']) : 0 }}
                             </span>
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="text-muted">Thời lượng/buổi</span>
+                            <span class="text-muted">{{ __('general.duration_per_session') }}</span>
                             <span class="badge bg-warning fs-6">
                                 @if ($classroom->schedule && isset($classroom->schedule['time']))
                                     @php
@@ -172,7 +177,7 @@
                                             $start = \Carbon\Carbon::parse($timeParts[0]);
                                             $end = \Carbon\Carbon::parse($timeParts[1]);
                                             $duration = $start->diffInMinutes($end);
-                                            echo $duration . ' phút';
+                                            echo $duration . ' ' . __('general.minutes');
                                         } else {
                                             echo 'N/A';
                                         }
@@ -190,7 +195,7 @@
                     <div class="card-header">
                         <h6 class="mb-0">
                             <i class="bi bi-people mr-2 text-success"></i>
-                            Danh sách học viên
+                            {{ __('general.student_list') }}
                         </h6>
                     </div>
                     <div class="card-body">
@@ -209,14 +214,14 @@
                             @if ($classroom->students->count() > 5)
                                 <div class="text-center mt-3">
                                     <small class="text-muted">
-                                        Và {{ $classroom->students->count() - 5 }} học viên khác...
+                                        {{ __('general.and_other_students', ['count' => $classroom->students->count() - 5]) }}
                                     </small>
                                 </div>
                             @endif
                         @else
                             <div class="text-center py-3">
                                 <i class="bi bi-people" style="font-size: 2rem; color: #6c757d;"></i>
-                                <p class="text-muted mb-0 mt-2">Chưa có học viên nào</p>
+                                <p class="text-muted mb-0 mt-2">{{ __('general.no_students_yet') }}</p>
                             </div>
                         @endif
                     </div>

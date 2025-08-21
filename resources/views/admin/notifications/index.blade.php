@@ -1,11 +1,12 @@
 <x-layouts.dash-admin active="notifications">
+    @include('components.language')
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h4 class="mb-0 text-primary fs-4">
                 <i class="bi bi-bell mr-2"></i>Thông báo & Nhắc lịch
             </h4>
-            <p class="text-muted mb-0">Tạo và quản lý thông báo cho học viên</p>
+            <p class="text-muted mb-0">{{ __('views.create_and_manage_notifications') }}</p>
         </div>
         <div class="d-flex gap-2">
             <button wire:click="markAllAsRead" class="btn btn-outline-secondary">
@@ -25,27 +26,27 @@
         <div class="card-body">
             <div class="row g-3">
                 <div class="col-md-4">
-                    <label class="form-label">Tìm kiếm</label>
+                    <label class="form-label">{{ __('views.search') }}</label>
                     <input wire:model.live="search" type="text" class="form-control"
                         placeholder="Tìm theo tiêu đề hoặc nội dung...">
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">Loại thông báo</label>
+                    <label class="form-label">{{ __('views.notification_type') }}</label>
                     <select wire:model.live="filterType" class="form-control">
-                        <option value="">Tất cả</option>
-                        <option value="info">Thông tin</option>
-                        <option value="warning">Cảnh báo</option>
-                        <option value="success">Thành công</option>
-                        <option value="danger">Nguy hiểm</option>
-                        <option value="reminder">Nhắc nhở</option>
+                        <option value="">{{ __('views.all') }}</option>
+                        <option value="info">{{ __('views.info') }}</option>
+                        <option value="warning">{{ __('views.warning') }}</option>
+                        <option value="success">{{ __('views.success') }}</option>
+                        <option value="danger">{{ __('views.danger') }}</option>
+                        <option value="reminder">{{ __('views.reminder') }}</option>
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">Trạng thái</label>
+                    <label class="form-label">{{ __('views.notification_status') }}</label>
                     <select wire:model.live="filterStatus" class="form-control">
-                        <option value="">Tất cả</option>
-                        <option value="unread">Chưa đọc</option>
-                        <option value="read">Đã đọc</option>
+                        <option value="">{{ __('views.all') }}</option>
+                        <option value="unread">{{ __('views.unread_status') }}</option>
+                        <option value="read">{{ __('views.read_status') }}</option>
                     </select>
                 </div>
                 <div class="col-md-2 d-flex align-items-end">
@@ -65,14 +66,14 @@
                     <table class="table table-hover mb-0">
                         <thead class="table-light">
                             <tr>
-                                <th>Tiêu đề</th>
-                                <th>Loại</th>
-                                <th>Người nhận</th>
-                                <th>Lớp học</th>
-                                <th>Lịch gửi</th>
-                                <th>Trạng thái</th>
-                                <th>Ngày tạo</th>
-                                <th>Thao tác</th>
+                                <th>{{ __('views.notification_title') }}</th>
+                                <th>{{ __('views.notification_type') }}</th>
+                                <th>{{ __('views.notification_recipients') }}</th>
+                                <th>{{ __('views.notification_class') }}</th>
+                                <th>{{ __('views.notification_schedule') }}</th>
+                                <th>{{ __('views.notification_status') }}</th>
+                                <th>{{ __('views.notification_created_at') }}</th>
+                                <th>{{ __('views.notification_actions') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -93,11 +94,11 @@
                                                 'reminder' => 'info',
                                             ];
                                             $typeLabels = [
-                                                'info' => 'Thông tin',
-                                                'warning' => 'Cảnh báo',
-                                                'success' => 'Thành công',
-                                                'danger' => 'Nguy hiểm',
-                                                'reminder' => 'Nhắc nhở',
+                                                'info' => __('views.info'),
+                                                'warning' => __('views.warning'),
+                                                'success' => __('views.success'),
+                                                'danger' => __('views.danger'),
+                                                'reminder' => __('views.reminder'),
                                             ];
                                         @endphp
                                         <span class="badge bg-{{ $typeColors[$notification->type] }}">
@@ -111,7 +112,7 @@
                                                 {{ $notification->user->name }}
                                             </div>
                                         @else
-                                            <span class="text-muted">Tất cả học viên</span>
+                                            <span class="text-muted">{{ __('views.all_students') }}</span>
                                         @endif
                                     </td>
                                     <td>
@@ -126,24 +127,25 @@
                                         @if ($notification->scheduled_at)
                                             <div>{{ $notification->scheduled_at->format('d/m/Y H:i') }}</div>
                                             @if ($notification->scheduled_at->isPast())
-                                                <small class="text-warning fw-bold">Đã gửi</small>
+                                                <small class="text-warning fw-bold">{{ __('views.sent') }}</small>
                                             @else
-                                                <small class="text-muted">Chờ gửi</small>
+                                                <small class="text-muted">{{ __('views.pending') }}</small>
                                             @endif
                                         @else
-                                            <span class="text-success fw-bold">Đã gửi</span>
+                                            <span class="text-success fw-bold">{{ __('views.sent') }}</span>
                                         @endif
                                     </td>
                                     <td>
                                         @if ($notification->is_read)
-                                            <span class="badge bg-success">Đã đọc</span>
+                                            <span class="badge bg-success">{{ __('views.read_status') }}</span>
                                         @else
-                                            <span class="badge bg-warning">Chưa đọc</span>
+                                            <span class="badge bg-warning">{{ __('views.unread_status') }}</span>
                                         @endif
                                     </td>
                                     <td>
                                         <div>{{ $notification->created_at->format('d/m/Y') }}</div>
-                                        <small class="text-muted">{{ $notification->created_at->format('H:i') }}</small>
+                                        <small
+                                            class="text-muted">{{ $notification->created_at->format('H:i') }}</small>
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group">
@@ -184,8 +186,8 @@
             @else
                 <div class="text-center py-5">
                     <i class="bi bi-bell-slash" style="font-size: 3rem; color: #ccc;"></i>
-                    <h5 class="mt-3 text-muted">Không có thông báo nào</h5>
-                    <p class="text-muted">Tạo thông báo đầu tiên để bắt đầu</p>
+                    <h5 class="mt-3 text-muted">{{ __('views.no_notifications_found') }}</h5>
+                    <p class="text-muted">{{ __('views.create_first_notification') }}</p>
                     <button wire:click="create" class="btn btn-primary">
                         <i class="bi bi-plus-circle mr-2"></i>Tạo thông báo mới
                     </button>
@@ -201,7 +203,7 @@
             <div class="modal-dialog modal-dialog-scrollable modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Tạo thông báo mới</h5>
+                        <h5 class="modal-title">{{ __('views.create_notification') }}</h5>
                         <button type="button" class="btn-close"
                             wire:click="$set('showCreateModal', false)"></button>
                     </div>
@@ -248,16 +250,16 @@
                                         <input wire:model="is_global" class="form-check-input" type="checkbox"
                                             id="isGlobal">
                                         <label class="form-check-label" for="isGlobal">
-                                            Gửi cho tất cả học viên
+                                            {{ __('views.all_students') }}
                                         </label>
                                     </div>
                                 </div>
 
                                 @if (!$is_global)
                                     <div class="col-md-6">
-                                        <label class="form-label">Học viên</label>
+                                        <label class="form-label">{{ __('views.student') }}</label>
                                         <select wire:model="user_id" class="form-control">
-                                            <option value="">Chọn học viên</option>
+                                            <option value="">{{ __('views.choose_student') }}</option>
                                             @foreach ($users as $user)
                                                 <option value="{{ $user->id }}">{{ $user->name }}</option>
                                             @endforeach
@@ -298,7 +300,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary"
-                                wire:click="$set('showCreateModal', false)">Hủy</button>
+                                wire:click="$set('showCreateModal', false)">{{ __('views.cancel') }}</button>
                             <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-check-circle mr-2"></i>Tạo thông báo
                             </button>
@@ -316,7 +318,7 @@
             <div class="modal-dialog modal-dialog-scrollable modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Chỉnh sửa thông báo</h5>
+                        <h5 class="modal-title">{{ __('views.edit_notification') }}</h5>
                         <button type="button" class="btn-close" wire:click="$set('showEditModal', false)"></button>
                     </div>
                     <form wire:submit="update">
@@ -400,7 +402,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary"
-                                wire:click="$set('showEditModal', false)">Hủy</button>
+                                wire:click="$set('showEditModal', false)">{{ __('views.cancel') }}</button>
                             <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-check-circle mr-2"></i>Cập nhật
                             </button>
@@ -418,12 +420,12 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Xác nhận xóa</h5>
+                        <h5 class="modal-title">{{ __('views.confirm') }}</h5>
                         <button type="button" class="btn-close"
                             wire:click="$set('showDeleteModal', false)"></button>
                     </div>
                     <div class="modal-body">
-                        <p>Bạn có chắc chắn muốn xóa thông báo này không?</p>
+                        <p>{{ __('views.confirm_delete_notification') }}</p>
                         @if ($selectedNotification)
                             <div class="alert alert-warning">
                                 <strong>{{ $selectedNotification->title }}</strong>
@@ -432,7 +434,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary"
-                            wire:click="$set('showDeleteModal', false)">Hủy</button>
+                            wire:click="$set('showDeleteModal', false)">{{ __('views.cancel') }}</button>
                         <button type="button" class="btn btn-danger" wire:click="confirmDelete">
                             <i class="bi bi-trash mr-2"></i>Xóa
                         </button>
@@ -448,7 +450,7 @@
             <div class="toast show" role="alert">
                 <div class="toast-header">
                     <i class="bi bi-check-circle text-success mr-2"></i>
-                    <strong class="mr-auto">Thành công</strong>
+                    <strong class="mr-auto">{{ __('views.success') }}</strong>
                     <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
                 </div>
                 <div class="toast-body">
