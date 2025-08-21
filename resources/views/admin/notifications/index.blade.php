@@ -1,4 +1,5 @@
 <x-layouts.dash-admin active="notifications">
+    @include('components.language')
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -143,7 +144,8 @@
                                     </td>
                                     <td>
                                         <div>{{ $notification->created_at->format('d/m/Y') }}</div>
-                                        <small class="text-muted">{{ $notification->created_at->format('H:i') }}</small>
+                                        <small
+                                            class="text-muted">{{ $notification->created_at->format('H:i') }}</small>
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group">

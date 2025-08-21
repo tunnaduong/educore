@@ -1,4 +1,5 @@
 <x-layouts.dash-admin active="ai">
+    @include('components.language')
     <div class="container-fluid">
         <style>
             /* AI Loading Modal */

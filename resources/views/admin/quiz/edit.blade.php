@@ -1,4 +1,5 @@
 <x-layouts.dash-admin active="quizzes">
+    @include('components.language')
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
@@ -85,7 +86,8 @@
                         <div class="card-header bg-light">
                             <h6 class="mb-0">
                                 @if ($editingIndex !== null)
-                                    <i class="bi bi-pencil mr-2"></i>{{ __('general.edit_question', ['number' => $editingIndex + 1]) }}
+                                    <i
+                                        class="bi bi-pencil mr-2"></i>{{ __('general.edit_question', ['number' => $editingIndex + 1]) }}
                                 @else
                                     <i class="bi bi-plus-circle mr-2"></i>{{ __('general.add_new_question') }}
                                 @endif
@@ -110,7 +112,8 @@
                                                 class="text-danger">*</span></label>
                                         <select class="form-control @error('currentQuestion.type') is-invalid @enderror"
                                             wire:model="currentQuestion.type">
-                                            <option value="multiple_choice">{{ __('general.multiple_choice') }}</option>
+                                            <option value="multiple_choice">{{ __('general.multiple_choice') }}
+                                            </option>
                                             <option value="fill_blank">{{ __('general.fill_blank') }}</option>
                                             <option value="drag_drop">{{ __('general.drag_drop') }}</option>
                                             <option value="essay">{{ __('general.essay') }}</option>
@@ -121,7 +124,8 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label class="form-label">{{ __('general.score') }} <span class="text-danger">*</span></label>
+                                        <label class="form-label">{{ __('general.score') }} <span
+                                                class="text-danger">*</span></label>
                                         <input type="number"
                                             class="form-control @error('currentQuestion.score') is-invalid @enderror"
                                             wire:model="currentQuestion.score" min="1" max="10">
@@ -135,7 +139,8 @@
                             <!-- Tùy chọn cho câu hỏi trắc nghiệm -->
                             @if ($currentQuestion['type'] === 'multiple_choice')
                                 <div class="mb-3">
-                                    <label class="form-label">{{ __('general.answer_options') }} <span class="text-danger">*</span></label>
+                                    <label class="form-label">{{ __('general.answer_options') }} <span
+                                            class="text-danger">*</span></label>
                                     @foreach ($currentQuestion['options'] as $index => $option)
                                         <div class="input-group mb-2">
                                             <input type="text"
@@ -157,14 +162,16 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="form-label">{{ __('general.correct_answer') }} <span class="text-danger">*</span></label>
+                                    <label class="form-label">{{ __('general.correct_answer') }} <span
+                                            class="text-danger">*</span></label>
                                     <select
                                         class="form-control @error('currentQuestion.correct_answer') is-invalid @enderror"
                                         wire:model.live="currentQuestion.correct_answer">
                                         <option value="">{{ __('general.choose_correct_answer') }}</option>
                                         @foreach ($currentQuestion['options'] as $index => $option)
                                             <option value="{{ $option }}" {{ $option ? '' : 'disabled' }}>
-                                                {{ $option ?: __('general.answer_number', ['number' => $index + 1]) }}</option>
+                                                {{ $option ?: __('general.answer_number', ['number' => $index + 1]) }}
+                                            </option>
                                         @endforeach
                                     </select>
                                     @error('currentQuestion.correct_answer')
@@ -176,10 +183,12 @@
                             <!-- Tùy chọn cho câu hỏi điền từ -->
                             @if ($currentQuestion['type'] === 'fill_blank')
                                 <div class="mb-3">
-                                    <label class="form-label">{{ __('general.correct_answer') }} <span class="text-danger">*</span></label>
+                                    <label class="form-label">{{ __('general.correct_answer') }} <span
+                                            class="text-danger">*</span></label>
                                     <input type="text"
                                         class="form-control @error('currentQuestion.correct_answer') is-invalid @enderror"
-                                        wire:model="currentQuestion.correct_answer" placeholder="{{ __('general.enter_correct_answer') }}">
+                                        wire:model="currentQuestion.correct_answer"
+                                        placeholder="{{ __('general.enter_correct_answer') }}">
                                     @error('currentQuestion.correct_answer')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -209,7 +218,8 @@
                         <div class="card shadow-sm">
                             <div class="card-header bg-light">
                                 <h6 class="mb-0">
-                                    <i class="bi bi-list-ul mr-2"></i>{{ __('general.question_list', ['count' => count($questions)]) }}
+                                    <i
+                                        class="bi bi-list-ul mr-2"></i>{{ __('general.question_list', ['count' => count($questions)]) }}
                                 </h6>
                             </div>
                             <div class="card-body">
@@ -224,7 +234,8 @@
                                             </div>
                                             <div class="btn-group btn-group-sm">
                                                 <button type="button" class="btn btn-outline-warning"
-                                                    wire:click="editQuestion({{ $index }})" title="{{ __('general.edit') }}">
+                                                    wire:click="editQuestion({{ $index }})"
+                                                    title="{{ __('general.edit') }}">
                                                     <i class="bi bi-pencil"></i>
                                                 </button>
                                                 @if ($index > 0)

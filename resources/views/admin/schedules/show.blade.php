@@ -1,4 +1,5 @@
 <x-layouts.dash-admin active="schedules">
+    @include('components.language')
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="mb-0 fs-4">Chi tiết lịch học</h2>
