@@ -175,6 +175,12 @@ Route::middleware(['auth', 'role:teacher'])->name('teacher.')->group(function ()
     Route::get('/teacher/chat/download/{messageId}', [\App\Livewire\Teacher\Chat\Index::class, 'downloadAttachment'])->name('chat.download');
     Route::get('/teacher/chat/test', \App\Livewire\Teacher\Chat\Test::class)->name('chat.test');
 
+    // AI routes
+    Route::get('/teacher/ai', \App\Livewire\Teacher\AI\Index::class)->name('ai.index');
+    Route::get('/teacher/ai/grading/{submissionId}', \App\Livewire\Teacher\AI\AIGrading::class)->name('ai.grading');
+    Route::get('/teacher/ai/quiz-generator', \App\Livewire\Teacher\AI\AIQuizGenerator::class)->name('ai.quiz-generator');
+    Route::get('/teacher/ai/question-bank-generator', \App\Livewire\Teacher\AI\QuestionBankGenerator::class)->name('ai.question-bank-generator');
+
     // Báo cáo - Reports cho giáo viên
     Route::get('/teacher/reports', \App\Livewire\Teacher\Reports\Index::class)->name('reports.index');
 
