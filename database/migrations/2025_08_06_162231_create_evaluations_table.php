@@ -21,7 +21,7 @@ return new class extends Migration
             $table->text('suggestions')->nullable(); // Đề xuất cải thiện
             $table->timestamp('submitted_at')->nullable();
             $table->timestamps();
-            
+
             // Đảm bảo mỗi học viên chỉ đánh giá 1 lần mỗi học kỳ
             $table->unique(['student_id', 'semester']);
         });

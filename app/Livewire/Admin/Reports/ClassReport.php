@@ -2,16 +2,15 @@
 
 namespace App\Livewire\Admin\Reports;
 
-use Livewire\Component;
-use App\Models\Classroom;
-use App\Models\Student;
 use App\Models\Assignment;
 use App\Models\Attendance;
-use App\Models\QuizResult;
+use App\Models\Classroom;
+use Livewire\Component;
 
 class ClassReport extends Component
 {
     public $classroom;
+
     public $reportData = [];
 
     public function mount($classroom)
@@ -22,7 +21,9 @@ class ClassReport extends Component
         $reportData = [];
         foreach ($students as $user) {
             $student = $user->studentProfile;
-            if (!$student) continue;
+            if (! $student) {
+                continue;
+            }
             $submissions = $student->assignmentSubmissions;
             $attendanceCount = Attendance::where('student_id', $student->id)
                 ->where('class_id', $this->classroom->id)

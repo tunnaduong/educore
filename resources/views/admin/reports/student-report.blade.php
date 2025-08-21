@@ -1,4 +1,5 @@
 <x-layouts.dash-admin active="reports">
+    @include('components.language')
     <div class="mb-4">
         <a href="{{ route('reports.index') }}" class="btn btn-outline-secondary">
             <i class="bi bi-arrow-left"></i> Quay lại báo cáo tổng hợp

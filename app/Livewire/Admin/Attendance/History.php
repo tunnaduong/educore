@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Admin\Attendance;
 
+use App\Models\Attendance;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Attendance;
 
 class History extends Component
 {

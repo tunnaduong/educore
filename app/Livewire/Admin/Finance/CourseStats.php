@@ -2,11 +2,10 @@
 
 namespace App\Livewire\Admin\Finance;
 
-use Livewire\Component;
-use Illuminate\Support\Collection;
 use App\Models\Classroom;
-use App\Models\Payment;
 use App\Models\Expense;
+use App\Models\Payment;
+use Livewire\Component;
 
 class CourseStats extends Component
 {
@@ -31,6 +30,7 @@ class CourseStats extends Component
                 ->distinct('user_id')->count('user_id');
             $totalExpense = Expense::where('class_id', $class->id)->sum('amount');
             $profit = $totalIncome - $totalExpense;
+
             return [
                 'id' => $class->id,
                 'name' => $class->name,

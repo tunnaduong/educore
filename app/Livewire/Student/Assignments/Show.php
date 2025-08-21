@@ -2,16 +2,17 @@
 
 namespace App\Livewire\Student\Assignments;
 
-use Livewire\Component;
 use App\Models\Assignment;
-use App\Models\AssignmentSubmission;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class Show extends Component
 {
     public Assignment $assignment;
+
     public $assignmentId;
+
     public Collection $submissions;
 
     public function mount($assignmentId)
@@ -24,7 +25,7 @@ class Show extends Component
     {
         $student = Auth::user()->student;
 
-        if (!$student) {
+        if (! $student) {
             abort(403, 'Bạn không có quyền truy cập');
         }
 
@@ -35,7 +36,7 @@ class Show extends Component
                 'classroom.teachers',
                 'submissions' => function ($q) use ($student) {
                     $q->where('student_id', $student->id);
-                }
+                },
             ])
             ->findOrFail($this->assignmentId);
 
@@ -50,18 +51,18 @@ class Show extends Component
 
     public function isCompleted()
     {
-        return !empty($this->submissions) && $this->submissions->count() > 0;
+        return ! empty($this->submissions) && $this->submissions->count() > 0;
     }
 
     public function canSubmit()
     {
-        return !$this->isOverdue() && !$this->isCompleted();
+        return ! $this->isOverdue() && ! $this->isCompleted();
     }
 
     public function canRedo()
     {
         // Cho phép làm lại nếu chưa quá hạn
-        return !$this->isOverdue();
+        return ! $this->isOverdue();
     }
 
     public function redoSubmission()
@@ -75,30 +76,30 @@ class Show extends Component
         if ($this->isCompleted()) {
             return [
                 'text' => 'Đã hoàn thành',
-                'class' => 'bg-green-100 text-green-800'
+                'class' => 'bg-green-100 text-green-800',
             ];
         }
 
         if ($this->isOverdue()) {
             return [
                 'text' => 'Quá hạn',
-                'class' => 'bg-red-100 text-red-800'
+                'class' => 'bg-red-100 text-red-800',
             ];
         }
 
         return [
             'text' => 'Cần làm',
-            'class' => 'bg-yellow-100 text-yellow-800'
+            'class' => 'bg-yellow-100 text-yellow-800',
         ];
     }
 
     public function getTimeRemaining()
     {
         if ($this->isOverdue()) {
-            return 'Đã quá hạn ' . $this->assignment->deadline->diffForHumans();
+            return 'Đã quá hạn '.$this->assignment->deadline->diffForHumans();
         }
 
-        return 'Còn lại ' . $this->assignment->deadline->diffForHumans(now(), ['parts' => 2]);
+        return 'Còn lại '.$this->assignment->deadline->diffForHumans(now(), ['parts' => 2]);
     }
 
     public function render()

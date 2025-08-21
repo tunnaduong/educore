@@ -2,21 +2,25 @@
 
 namespace App\Livewire\Admin\Lessons;
 
-use Livewire\Component;
-use App\Models\Lesson;
-use Livewire\WithPagination;
-use App\Livewire\Admin\Lessons\Create;
 use App\Models\Classroom;
+use App\Models\Lesson;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
     use WithPagination;
 
     public $search = '';
+
     public $showCreateForm = false;
+
     public $showDeleteModal = false;
+
     public $lessonToDelete = null;
+
     public $lessonTitleToDelete = '';
+
     public $filterClass = '';
 
     protected $listeners = [
@@ -28,11 +32,25 @@ class Index extends Component
         'search' => ['except' => ''],
     ];
 
-    public function updatingSearch() { $this->resetPage(); }
-    public function updatingFilterClass() { $this->resetPage(); }
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
 
-    public function openCreateForm() { $this->showCreateForm = true; }
-    public function closeCreateForm() { $this->showCreateForm = false; }
+    public function updatingFilterClass()
+    {
+        $this->resetPage();
+    }
+
+    public function openCreateForm()
+    {
+        $this->showCreateForm = true;
+    }
+
+    public function closeCreateForm()
+    {
+        $this->showCreateForm = false;
+    }
 
     public function confirmDelete($id, $title)
     {
@@ -62,15 +80,16 @@ class Index extends Component
     {
         $classrooms = Classroom::all();
         $lessons = Lesson::query()
-            ->when($this->search, function($query) {
+            ->when($this->search, function ($query) {
                 $query->where('title', 'like', '%'.$this->search.'%')
-                      ->orWhere('number', 'like', '%'.$this->search.'%');
+                    ->orWhere('number', 'like', '%'.$this->search.'%');
             })
-            ->when($this->filterClass, function($query) {
+            ->when($this->filterClass, function ($query) {
                 $query->where('classroom_id', $this->filterClass);
             })
             ->orderByDesc('created_at')
             ->paginate(10);
+
         return view('admin.lessons.index', [
             'lessons' => $lessons,
             'showCreateForm' => $this->showCreateForm,

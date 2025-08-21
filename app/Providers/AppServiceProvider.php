@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use Livewire\Livewire;
+use App\Livewire\Admin\Students\AttendanceStats;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
-use App\Livewire\Admin\Students\AttendanceStats;
+use Livewire\Livewire;
 
 class AppServiceProvider extends ServiceProvider
 {

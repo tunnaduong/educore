@@ -1,4 +1,5 @@
 <x-layouts.dash-admin title="Chi tiết học phí">
+    @include('components.language')
     <div class="container py-4">
         <!-- Header với thông tin học viên -->
         <div class="card border-0 shadow-sm mb-4 bg-gradient-info">

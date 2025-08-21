@@ -2,27 +2,36 @@
 
 namespace App\Livewire\Teacher\Schedules;
 
-use Livewire\Component;
-use App\Models\Classroom;
-use App\Models\Lesson;
 use App\Models\Assignment;
+use App\Models\Lesson;
 use App\Models\Quiz;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
+use Livewire\Component;
 
 class CreateEvent extends Component
 {
     public $showModal = false;
+
     public $eventType = 'lesson';
+
     public $selectedDate;
+
     public $classroomId;
+
     public $title;
+
     public $description;
+
     public $startTime;
+
     public $endTime;
+
     public $location;
+
     public $dueDate;
+
     public $maxScore;
+
     public $duration;
 
     protected $listeners = ['openCreateEventModal' => 'openModal'];
@@ -57,8 +66,8 @@ class CreateEvent extends Component
     public function mount($selectedDate = null)
     {
         $this->selectedDate = $selectedDate ?? now()->format('Y-m-d');
-        $this->startTime = $this->selectedDate . ' 08:00';
-        $this->endTime = $this->selectedDate . ' 09:30';
+        $this->startTime = $this->selectedDate.' 08:00';
+        $this->endTime = $this->selectedDate.' 09:30';
         $this->dueDate = $this->selectedDate;
     }
 
@@ -80,8 +89,8 @@ class CreateEvent extends Component
         $this->classroomId = '';
         $this->title = '';
         $this->description = '';
-        $this->startTime = $this->selectedDate . ' 08:00';
-        $this->endTime = $this->selectedDate . ' 09:30';
+        $this->startTime = $this->selectedDate.' 08:00';
+        $this->endTime = $this->selectedDate.' 09:30';
         $this->location = '';
         $this->dueDate = $this->selectedDate;
         $this->maxScore = '';
@@ -98,16 +107,16 @@ class CreateEvent extends Component
             $this->duration = '';
         } else {
             $this->dueDate = '';
-            $this->startTime = $this->selectedDate . ' 08:00';
-            $this->endTime = $this->selectedDate . ' 09:30';
+            $this->startTime = $this->selectedDate.' 08:00';
+            $this->endTime = $this->selectedDate.' 09:30';
         }
     }
 
     public function updatedSelectedDate()
     {
         if ($this->eventType !== 'assignment') {
-            $this->startTime = $this->selectedDate . ' 08:00';
-            $this->endTime = $this->selectedDate . ' 09:30';
+            $this->startTime = $this->selectedDate.' 08:00';
+            $this->endTime = $this->selectedDate.' 09:30';
         }
         $this->dueDate = $this->selectedDate;
     }
@@ -124,7 +133,7 @@ class CreateEvent extends Component
                         'classroom_id' => $this->classroomId,
                         'title' => $this->title,
                         'description' => $this->description,
-                        'content' => 'Nội dung bài học: ' . $this->description,
+                        'content' => 'Nội dung bài học: '.$this->description,
                     ]);
                     $this->dispatch('eventCreated', type: 'lesson', id: $lesson->id);
                     break;
@@ -155,13 +164,14 @@ class CreateEvent extends Component
             $this->closeModal();
             session()->flash('message', 'Sự kiện đã được tạo thành công!');
         } catch (\Exception $e) {
-            session()->flash('error', 'Có lỗi xảy ra khi tạo sự kiện: ' . $e->getMessage());
+            session()->flash('error', 'Có lỗi xảy ra khi tạo sự kiện: '.$e->getMessage());
         }
     }
 
     public function getClassroomsProperty()
     {
         $teacher = Auth::user();
+
         return $teacher->teachingClassrooms;
     }
 

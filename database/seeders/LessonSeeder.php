@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Lesson;
 use App\Models\Classroom;
-use Illuminate\Database\Seeder;
+use App\Models\Lesson;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class LessonSeeder extends Seeder
 {

@@ -3,7 +3,6 @@
 namespace App\Livewire\Teacher\MyClass;
 
 use App\Models\Classroom;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -13,7 +12,9 @@ class Index extends Component
     use WithPagination;
 
     public $search = '';
+
     public $selectedClassroom = null;
+
     public $showClassroomDetails = false;
 
     protected $paginationTheme = 'bootstrap';
@@ -51,15 +52,15 @@ class Index extends Component
         })
             ->with(['students', 'lessons', 'assignments'])
             ->when($this->search, function ($query) {
-                $query->where('name', 'like', '%' . $this->search . '%')
-                    ->orWhere('description', 'like', '%' . $this->search . '%');
+                $query->where('name', 'like', '%'.$this->search.'%')
+                    ->orWhere('description', 'like', '%'.$this->search.'%');
             })
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
         return view('teacher.my-class.index', [
             'classrooms' => $classrooms,
-            'teacher' => $teacher
+            'teacher' => $teacher,
         ]);
     }
 }

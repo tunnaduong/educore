@@ -1,11 +1,13 @@
 <x-layouts.dash-teacher active="assignments">
+    @include('components.language')
     <div class="container py-4">
         <!-- Header -->
         <div class="mb-4">
             <a href="{{ route('teacher.assignments.index') }}" class="text-decoration-none text-secondary">
-                <i class="bi bi-arrow-left mr-1"></i>Quay lại
+                <i class="bi bi-arrow-left mr-1"></i>{{ __('general.back') }}
             </a>
-            <h4 class="mt-2 text-primary fs-4"><i class="bi bi-journal-text mr-2"></i>Chỉnh sửa bài tập</h4>
+            <h4 class="mt-2 text-primary fs-4"><i class="bi bi-journal-text mr-2"></i>{{ __('general.edit_assignment') }}
+            </h4>
         </div>
 
         <!-- Form -->
@@ -19,7 +21,7 @@
                     <!-- Bài tập -->
                     <div class="row mb-4">
                         <div class="col-md-8">
-                            <label for="title" class="form-label fw-semibold">Tiêu đề *</label>
+                            <label for="title" class="form-label fw-semibold">{{ __('general.title') }} *</label>
                             <input wire:model.defer="title" type="text"
                                 class="form-control @error('title') is-invalid @enderror" id="title"
                                 placeholder="VD: Bài luyện viết Hán tự - Bài 3">
@@ -54,8 +56,8 @@
                             @enderror
                         </div>
                         <div class="col-md-6">
-                            <label for="score" class="form-label fw-semibold">Điểm tối đa (tuỳ chọn)</label>
-                            <input wire:model.defer="score" type="number" class="form-control" id="score"
+                            <label for="max_score" class="form-label fw-semibold">Điểm tối đa (tuỳ chọn)</label>
+                            <input wire:model.defer="max_score" type="number" class="form-control" id="max_score"
                                 placeholder="VD: 10" min="0" max="10" step="0.1"
                                 oninput="if(this.value > 10) this.value = 10; if(this.value < 0) this.value = 0;"
                                 onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 46 || event.charCode === 8 || event.charCode === 9">
@@ -64,7 +66,7 @@
 
                     <!-- Loại bài tập -->
                     <div class="mb-4">
-                        <label class="form-label fw-semibold">Loại bài tập *</label>
+                        <label class="form-label fw-semibold">{{ __('general.assignment_types') }} *</label>
                         <div class="d-flex flex-wrap gap-3">
                             @foreach ($allTypes as $key => $label)
                                 <div class="form-check">

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('quizzes', function (Blueprint $table) {
-            if (!Schema::hasColumn('quizzes', 'time_limit')) {
+            if (! Schema::hasColumn('quizzes', 'time_limit')) {
                 $table->integer('time_limit')->nullable()->after('deadline')->comment('Thời gian làm bài tính bằng phút');
             }
         });

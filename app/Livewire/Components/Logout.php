@@ -10,7 +10,7 @@ class Logout extends Component
 
     public function toggleDropdown()
     {
-        $this->showDropdown = !$this->showDropdown;
+        $this->showDropdown = ! $this->showDropdown;
     }
 
     public function render()

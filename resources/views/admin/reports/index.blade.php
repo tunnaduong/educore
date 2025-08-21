@@ -1,4 +1,5 @@
 <x-layouts.dash-admin active="reports">
+    @include('components.language')
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h4 class="mb-0 text-primary fs-4">

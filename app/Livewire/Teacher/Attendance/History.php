@@ -13,8 +13,11 @@ class History extends Component
     use WithPagination;
 
     public $search = '';
+
     public $selectedClassroom = null;
+
     public $selectedMonth;
+
     public $selectedYear;
 
     protected $paginationTheme = 'bootstrap';
@@ -61,11 +64,11 @@ class History extends Component
             })
             ->when($this->search, function ($query) {
                 $query->whereHas('student.user', function ($q) {
-                    $q->where('name', 'like', '%' . $this->search . '%')
-                        ->orWhere('email', 'like', '%' . $this->search . '%');
+                    $q->where('name', 'like', '%'.$this->search.'%')
+                        ->orWhere('email', 'like', '%'.$this->search.'%');
                 })
                     ->orWhereHas('classroom', function ($q) {
-                        $q->where('name', 'like', '%' . $this->search . '%');
+                        $q->where('name', 'like', '%'.$this->search.'%');
                     });
             })
             ->latest('date')

@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Classroom;
+use App\Models\Message;
+use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Message;
-use App\Models\User;
-use App\Models\Classroom;
 
 class CheckChatSystem extends Command
 {
@@ -62,7 +62,7 @@ class CheckChatSystem extends Command
         $this->info('📊 Checking database tables...');
 
         // Check messages table
-        if (!DB::getSchemaBuilder()->hasTable('messages')) {
+        if (! DB::getSchemaBuilder()->hasTable('messages')) {
             $issues[] = '❌ Messages table does not exist';
         } else {
             $this->info('✅ Messages table exists');
@@ -72,14 +72,14 @@ class CheckChatSystem extends Command
             $requiredColumns = ['id', 'sender_id', 'receiver_id', 'class_id', 'message', 'attachment', 'read_at', 'created_at', 'updated_at'];
 
             foreach ($requiredColumns as $column) {
-                if (!in_array($column, $columns)) {
+                if (! in_array($column, $columns)) {
                     $issues[] = "❌ Messages table missing column: {$column}";
                 }
             }
         }
 
         // Check classroom_message_reads table
-        if (!DB::getSchemaBuilder()->hasTable('classroom_message_reads')) {
+        if (! DB::getSchemaBuilder()->hasTable('classroom_message_reads')) {
             $issues[] = '❌ Classroom message reads table does not exist';
         } else {
             $this->info('✅ Classroom message reads table exists');
@@ -91,7 +91,7 @@ class CheckChatSystem extends Command
         $this->info('💾 Checking storage...');
 
         // Check if storage link exists
-        if (!file_exists(public_path('storage'))) {
+        if (! file_exists(public_path('storage'))) {
             $issues[] = '❌ Storage link does not exist. Run: php artisan storage:link';
         } else {
             $this->info('✅ Storage link exists');
@@ -99,13 +99,13 @@ class CheckChatSystem extends Command
 
         // Check chat-attachments directory
         $chatDir = storage_path('app/public/chat-attachments');
-        if (!is_dir($chatDir)) {
+        if (! is_dir($chatDir)) {
             $issues[] = '❌ Chat attachments directory does not exist';
         } else {
             $this->info('✅ Chat attachments directory exists');
 
             // Check permissions
-            if (!is_writable($chatDir)) {
+            if (! is_writable($chatDir)) {
                 $issues[] = '❌ Chat attachments directory is not writable';
             }
         }
@@ -117,10 +117,10 @@ class CheckChatSystem extends Command
 
         // Check Message model
         try {
-            $message = new Message();
+            $message = new Message;
             $this->info('✅ Message model works');
         } catch (\Exception $e) {
-            $issues[] = '❌ Message model error: ' . $e->getMessage();
+            $issues[] = '❌ Message model error: '.$e->getMessage();
         }
 
         // Check User model
@@ -128,7 +128,7 @@ class CheckChatSystem extends Command
             $user = User::first();
             $this->info('✅ User model works');
         } catch (\Exception $e) {
-            $issues[] = '❌ User model error: ' . $e->getMessage();
+            $issues[] = '❌ User model error: '.$e->getMessage();
         }
 
         // Check Classroom model
@@ -136,7 +136,7 @@ class CheckChatSystem extends Command
             $classroom = Classroom::first();
             $this->info('✅ Classroom model works');
         } catch (\Exception $e) {
-            $issues[] = '❌ Classroom model error: ' . $e->getMessage();
+            $issues[] = '❌ Classroom model error: '.$e->getMessage();
         }
     }
 
@@ -145,7 +145,7 @@ class CheckChatSystem extends Command
         $this->info('📡 Checking broadcasting...');
 
         $driver = config('broadcasting.default');
-        if (!$driver) {
+        if (! $driver) {
             $issues[] = '❌ No broadcast driver configured';
         } else {
             $this->info("✅ Broadcast driver: {$driver}");
@@ -156,7 +156,7 @@ class CheckChatSystem extends Command
             $secret = config('broadcasting.connections.pusher.secret');
             $appId = config('broadcasting.connections.pusher.app_id');
 
-            if (!$key || !$secret || !$appId) {
+            if (! $key || ! $secret || ! $appId) {
                 $issues[] = '❌ Pusher configuration incomplete';
             } else {
                 $this->info('✅ Pusher configuration complete');
@@ -171,7 +171,7 @@ class CheckChatSystem extends Command
         if (empty($issues)) {
             $this->info('🎉 All checks passed! Chat system is working correctly.');
         } else {
-            $this->error('⚠️ Found ' . count($issues) . ' issue(s):');
+            $this->error('⚠️ Found '.count($issues).' issue(s):');
             foreach ($issues as $issue) {
                 $this->line($issue);
             }
@@ -193,7 +193,7 @@ class CheckChatSystem extends Command
 
             if (str_contains($issue, 'Chat attachments directory does not exist')) {
                 $chatDir = storage_path('app/public/chat-attachments');
-                if (!is_dir($chatDir)) {
+                if (! is_dir($chatDir)) {
                     mkdir($chatDir, 0755, true);
                     $this->info('✅ Created chat attachments directory');
                 }

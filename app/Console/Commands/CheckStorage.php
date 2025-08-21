@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class CheckStorage extends Command
 {
@@ -44,13 +44,13 @@ class CheckStorage extends Command
     private function checkSymbolicLink()
     {
         $this->info('🔗 Kiểm tra symbolic link...');
-        
+
         $publicPath = public_path('storage');
         $storagePath = storage_path('app/public');
 
-        if (!file_exists($publicPath)) {
+        if (! file_exists($publicPath)) {
             $this->warn('⚠️  Symbolic link chưa được tạo!');
-            
+
             if ($this->option('fix')) {
                 $this->info('🔧 Đang tạo symbolic link...');
                 $this->call('storage:link');
@@ -66,7 +66,7 @@ class CheckStorage extends Command
     private function checkStorageDirectories()
     {
         $this->info('📁 Kiểm tra thư mục storage...');
-        
+
         $directories = [
             'storage/app/public',
             'storage/app/public/lessons',
@@ -77,10 +77,10 @@ class CheckStorage extends Command
 
         foreach ($directories as $dir) {
             $fullPath = base_path($dir);
-            
-            if (!is_dir($fullPath)) {
+
+            if (! is_dir($fullPath)) {
                 $this->warn("⚠️  Thư mục {$dir} chưa tồn tại!");
-                
+
                 if ($this->option('fix')) {
                     $this->info("🔧 Đang tạo thư mục {$dir}...");
                     File::makeDirectory($fullPath, 0755, true);
@@ -95,16 +95,16 @@ class CheckStorage extends Command
     private function checkWritePermissions()
     {
         $this->info('📝 Kiểm tra quyền ghi...');
-        
+
         $testFile = storage_path('app/public/test.txt');
-        
+
         try {
             File::put($testFile, 'test');
             File::delete($testFile);
             $this->info('✅ Quyền ghi hoạt động bình thường');
         } catch (\Exception $e) {
-            $this->error('❌ Không thể ghi file vào storage: ' . $e->getMessage());
+            $this->error('❌ Không thể ghi file vào storage: '.$e->getMessage());
             $this->info('💡 Kiểm tra quyền thư mục storage/app/public');
         }
     }
-} 
+}

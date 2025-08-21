@@ -2,18 +2,20 @@
 
 namespace App\Livewire\Teacher\Quizzes;
 
-use Livewire\Component;
-use Livewire\WithPagination;
 use App\Models\Quiz;
 use App\Models\QuizResult;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 class Results extends Component
 {
     use WithPagination;
 
     public Quiz $quiz;
+
     public $search = '';
+
     public $filterScore = '';
 
     protected $queryString = [
@@ -24,11 +26,12 @@ class Results extends Component
     public function mount(Quiz $quiz)
     {
         $this->quiz = $quiz->load(['classroom']);
-        
+
         // Kiểm tra quyền xem
         $teacherClassIds = Auth::user()->teachingClassrooms->pluck('id');
-        if (!$teacherClassIds->contains($this->quiz->class_id)) {
+        if (! $teacherClassIds->contains($this->quiz->class_id)) {
             session()->flash('error', 'Bạn không có quyền xem kết quả bài kiểm tra này.');
+
             return redirect()->route('teacher.quizzes.index');
         }
     }
@@ -50,8 +53,8 @@ class Results extends Component
             ->where('quiz_id', $this->quiz->id)
             ->when($this->search, function ($query) {
                 $query->whereHas('student.user', function ($q) {
-                    $q->where('name', 'like', '%' . $this->search . '%')
-                      ->orWhere('email', 'like', '%' . $this->search . '%');
+                    $q->where('name', 'like', '%'.$this->search.'%')
+                        ->orWhere('email', 'like', '%'.$this->search.'%');
                 });
             })
             ->when($this->filterScore, function ($query) {
@@ -61,11 +64,11 @@ class Results extends Component
                         break;
                     case 'good':
                         $query->where('score', '>=', $this->quiz->getMaxScore() * 0.7)
-                              ->where('score', '<', $this->quiz->getMaxScore() * 0.9);
+                            ->where('score', '<', $this->quiz->getMaxScore() * 0.9);
                         break;
                     case 'average':
                         $query->where('score', '>=', $this->quiz->getMaxScore() * 0.5)
-                              ->where('score', '<', $this->quiz->getMaxScore() * 0.7);
+                            ->where('score', '<', $this->quiz->getMaxScore() * 0.7);
                         break;
                     case 'poor':
                         $query->where('score', '<', $this->quiz->getMaxScore() * 0.5);
@@ -91,4 +94,4 @@ class Results extends Component
             'passRate' => $passRate,
         ]);
     }
-} 
+}

@@ -2,25 +2,34 @@
 
 namespace App\Livewire\Teacher\Assignments;
 
-use Livewire\Component;
 use App\Models\Assignment;
+use App\Models\AssignmentSubmission;
 use App\Models\Classroom;
+use App\Models\Student;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use App\Models\AssignmentSubmission;
-use App\Models\Student;
+use Livewire\Component;
 
 class Index extends Component
 {
     public $search = '';
+
     public $statusFilter = '';
+
     public $classroomFilter = '';
+
     public $classrooms = [];
+
     public $overviewStats = [];
+
     public $topClasses = [];
+
     public $recentAssignments = [];
+
     public $topStudents = [];
+
     public $selectedMonth;
+
     public $selectedYear;
 
     public function mount()
@@ -87,6 +96,7 @@ class Index extends Component
             $onTime = $subs->filter(function ($s) {
                 return $s->submitted_at && $s->assignment && $s->submitted_at <= $s->assignment->deadline;
             })->count();
+
             return [
                 'student' => Student::find($studentId)->user,
                 'total_submissions' => $subs->count(),
@@ -126,9 +136,9 @@ class Index extends Component
             ->whereIn('class_id', $this->classrooms->pluck('id'));
 
         if ($this->search) {
-            $query->where(function($q) {
+            $query->where(function ($q) {
                 $q->where('title', 'like', '%'.$this->search.'%')
-                  ->orWhere('description', 'like', '%'.$this->search.'%');
+                    ->orWhere('description', 'like', '%'.$this->search.'%');
             });
         }
         if ($this->statusFilter === 'active') {
@@ -140,6 +150,7 @@ class Index extends Component
             $query->where('class_id', $this->classroomFilter);
         }
         $assignments = $query->orderBy('created_at', 'desc')->paginate(10);
+
         return view('teacher.assignments.index', [
             'assignments' => $assignments,
             'classrooms' => $this->classrooms,

@@ -1,4 +1,5 @@
 <div class="card shadow-sm mb-4">
+    @include('components.language')
     <div class="card-header bg-light">
         <div class="row align-items-center">
             <div class="col-md-6">

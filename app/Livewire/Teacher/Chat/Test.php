@@ -2,20 +2,23 @@
 
 namespace App\Livewire\Teacher\Chat;
 
+use App\Models\Classroom;
 use App\Models\Message;
 use App\Models\User;
-use App\Models\Classroom;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Illuminate\Support\Facades\Auth;
 
 class Test extends Component
 {
     use WithFileUploads;
 
     public $testMessage = '';
+
     public $testAttachment = null;
+
     public $selectedTestUser = null;
+
     public $selectedTestClass = null;
 
     public function mount()
@@ -32,7 +35,7 @@ class Test extends Component
         ]);
 
         $currentUserId = Auth::id();
-        if (!$currentUserId) {
+        if (! $currentUserId) {
             return;
         }
 

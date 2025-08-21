@@ -2,22 +2,29 @@
 
 namespace App\Livewire\Admin\Students;
 
-use App\Models\User;
 use App\Models\Student;
-use Livewire\Component;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
+use Livewire\Component;
 
 class Create extends Component
 {
     public $name = '';
+
     public $email = '';
+
     public $phone = '';
+
     public $password = '';
+
     public $date_of_birth = '';
+
     public $joined_at = '';
+
     public $status = 'active';
+
     public $level = '';
+
     public $notes = '';
 
     protected function rules()
@@ -75,6 +82,7 @@ class Create extends Component
         ]);
 
         session()->flash('message', 'Đã tạo học viên thành công!');
+
         return $this->redirect(route('students.index'));
     }
 

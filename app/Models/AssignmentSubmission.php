@@ -68,7 +68,7 @@ class AssignmentSubmission extends Model
      */
     public function hasAICorrection(): bool
     {
-        return !empty($this->ai_corrected_content);
+        return ! empty($this->ai_corrected_content);
     }
 
     /**
@@ -76,7 +76,7 @@ class AssignmentSubmission extends Model
      */
     public function hasAIGrading(): bool
     {
-        return !is_null($this->ai_score);
+        return ! is_null($this->ai_score);
     }
 
     /**
@@ -84,7 +84,7 @@ class AssignmentSubmission extends Model
      */
     public function hasAIAnalysis(): bool
     {
-        return !empty($this->ai_analysis);
+        return ! empty($this->ai_analysis);
     }
 
     /**

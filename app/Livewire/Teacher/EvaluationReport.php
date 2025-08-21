@@ -2,20 +2,22 @@
 
 namespace App\Livewire\Teacher;
 
-use Livewire\Component;
+use App\Models\Classroom;
 use App\Models\Evaluation;
 use App\Models\EvaluationQuestion;
-use App\Models\Classroom;
-use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 class EvaluationReport extends Component
 {
     use WithPagination;
 
     public $classroomId = '';
+
     public $selectedEvaluation = null;
+
     public $roundId = '';
 
     protected $queryString = ['classroomId', 'roundId'];
@@ -55,7 +57,7 @@ class EvaluationReport extends Component
         $classrooms = Classroom::whereIn('id', $teacherClassroomIds)->get();
 
         // Nếu classroomId không thuộc các lớp giáo viên dạy, reset về rỗng
-        if ($this->classroomId && !in_array((int)$this->classroomId, $teacherClassroomIds, true)) {
+        if ($this->classroomId && ! in_array((int) $this->classroomId, $teacherClassroomIds, true)) {
             $this->classroomId = '';
         }
 
@@ -76,7 +78,7 @@ class EvaluationReport extends Component
 
         // Lọc theo đợt đánh giá
         if ($this->roundId) {
-            $query->where('evaluation_round_id', (int)$this->roundId);
+            $query->where('evaluation_round_id', (int) $this->roundId);
         }
 
         $evaluations = $query->orderBy('created_at', 'desc')->paginate(10);

@@ -2,33 +2,40 @@
 
 namespace App\Livewire\Student\Chat;
 
+use App\Models\Classroom;
 use App\Models\Message;
 use App\Models\User;
-use App\Models\Classroom;
-use App\Models\Student;
-use Livewire\Component;
-use Livewire\WithPagination;
-use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Livewire\Component;
+use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithFileUploads, WithPagination;
 
     public $selectedUser = null;
+
     public $selectedClass = null;
+
     public $messageText = '';
+
     public $attachment = null;
+
     public $searchTerm = '';
+
     public $messageType = 'user'; // 'user', 'class'
+
     public $unreadCount = 0;
+
     public $activeTab = 'classes'; // 'classes', 'users'
+
     public $isDragging = false;
 
     protected $listeners = [
         'messageReceived' => 'refreshMessages',
-        'fileDropped' => 'handleFileDrop'
+        'fileDropped' => 'handleFileDrop',
     ];
 
     public function mount()
@@ -84,13 +91,13 @@ class Index extends Component
                     $this->addError('attachment', 'File không hợp lệ hoặc bị hỏng.');
                     return;
                 }
-                
+
                 // Kiểm tra kích thước
                 if ($this->attachment->getSize() > 102400 * 1024) { // 100MB
                     $this->addError('attachment', 'File quá lớn. Kích thước tối đa là 100MB.');
                     return;
                 }
-                
+
                 // Kiểm tra MIME type
                 $allowedMimes = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'zip', 'rar', '7z', 'mp3', 'm4a', 'wav', 'ogg', 'oga', 'flac', 'amr', 'webm', 'mp4'];
                 $fileExtension = strtolower($this->attachment->getClientOriginalExtension());
@@ -131,10 +138,10 @@ class Index extends Component
                     'size' => $this->attachment->getSize(),
                     'mime_type' => $this->attachment->getMimeType(),
                 ]);
-                
+
                 $path = $this->attachment->store('chat-attachments', 'public');
                 $messageData['attachment'] = $path;
-                
+
                 Log::info('Attachment uploaded successfully', ['path' => $path]);
             } catch (\Exception $e) {
                 Log::error('Failed to upload attachment', [
@@ -193,8 +200,8 @@ class Index extends Component
 
         if ($this->searchTerm) {
             $query->where(function ($q) {
-                $q->where('name', 'like', '%' . $this->searchTerm . '%')
-                    ->orWhere('email', 'like', '%' . $this->searchTerm . '%');
+                $q->where('name', 'like', '%'.$this->searchTerm.'%')
+                    ->orWhere('email', 'like', '%'.$this->searchTerm.'%');
             });
         }
 
@@ -208,7 +215,7 @@ class Index extends Component
         });
 
         if ($this->searchTerm) {
-            $query->where('name', 'like', '%' . $this->searchTerm . '%');
+            $query->where('name', 'like', '%'.$this->searchTerm.'%');
         }
 
         $classes = $query->orderBy('name')->get();
@@ -255,6 +262,7 @@ class Index extends Component
                 return response()->download($path);
             }
         }
+
         return back()->with('error', 'File không tồn tại');
     }
 

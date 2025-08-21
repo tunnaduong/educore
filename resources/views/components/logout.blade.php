@@ -13,7 +13,7 @@
         <form method="POST" action="{{ route('logout') }}">
             @csrf
             <button type="submit" class="dropdown-item text-danger">
-                <i class="fas fa-sign-out-alt mr-2"></i>Đăng xuất
+                <i class="fas fa-sign-out-alt mr-2"></i>{{ __('general.logout') }}
             </button>
         </form>
     </div>

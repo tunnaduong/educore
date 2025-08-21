@@ -2,13 +2,14 @@
 
 namespace App\Services;
 
+use Exception;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Exception;
 
 class GeminiService
 {
     protected $apiKey;
+
     protected $baseUrl;
 
     public function __construct()
@@ -33,8 +34,8 @@ class GeminiService
                     'max_attempts' => $retryCount,
                     'prompt_length' => strlen($prompt),
                     'max_tokens' => $maxTokens,
-                    'api_key_exists' => !empty($this->apiKey),
-                    'base_url' => $this->baseUrl
+                    'api_key_exists' => ! empty($this->apiKey),
+                    'base_url' => $this->baseUrl,
                 ]);
 
                 $requestData = [
@@ -42,28 +43,28 @@ class GeminiService
                         [
                             'parts' => [
                                 [
-                                    'text' => $prompt
-                                ]
-                            ]
-                        ]
+                                    'text' => $prompt,
+                                ],
+                            ],
+                        ],
                     ],
                     'generationConfig' => [
                         'maxOutputTokens' => $maxTokens,
                         'temperature' => 0.7,
                         'topP' => 0.8,
-                        'topK' => 40
-                    ]
+                        'topK' => 40,
+                    ],
                 ];
 
                 $response = Http::timeout(60)->withHeaders([
                     'Content-Type' => 'application/json',
-                ])->post($this->baseUrl . '?key=' . $this->apiKey, $requestData);
+                ])->post($this->baseUrl.'?key='.$this->apiKey, $requestData);
 
                 Log::info('GeminiService: API response received', [
                     'attempt' => $attempt,
                     'status' => $response->status(),
                     'successful' => $response->successful(),
-                    'body_length' => strlen($response->body())
+                    'body_length' => strlen($response->body()),
                 ]);
 
                 if ($response->successful()) {
@@ -72,9 +73,9 @@ class GeminiService
 
                     Log::info('GeminiService: Successful response parsed', [
                         'attempt' => $attempt,
-                        'has_result' => !empty($result),
+                        'has_result' => ! empty($result),
                         'result_length' => strlen($result ?? ''),
-                        'result_preview' => substr($result ?? '', 0, 200)
+                        'result_preview' => substr($result ?? '', 0, 200),
                     ]);
 
                     return $result;
@@ -88,11 +89,11 @@ class GeminiService
                     'attempt' => $attempt,
                     'status' => $status,
                     'should_retry' => $shouldRetry,
-                    'response' => $response->body()
+                    'response' => $response->body(),
                 ]);
 
                 // Nếu không thể retry hoặc đã hết lần thử, trả về null
-                if (!$shouldRetry || $attempt >= $retryCount) {
+                if (! $shouldRetry || $attempt >= $retryCount) {
                     return null;
                 }
 
@@ -100,14 +101,14 @@ class GeminiService
                 $waitTime = pow(2, $attempt - 1) * 2; // 2s, 4s, 8s...
                 Log::info('GeminiService: Waiting before retry', [
                     'wait_seconds' => $waitTime,
-                    'next_attempt' => $attempt + 1
+                    'next_attempt' => $attempt + 1,
                 ]);
                 sleep($waitTime);
             } catch (Exception $e) {
                 Log::error('GeminiService: API exception', [
                     'attempt' => $attempt,
                     'message' => $e->getMessage(),
-                    'trace' => $e->getTraceAsString()
+                    'trace' => $e->getTraceAsString(),
                 ]);
 
                 // Nếu đã hết lần thử, trả về null
@@ -151,7 +152,7 @@ class GeminiService
         Log::info('GeminiService: Parsing JSON response', [
             'original_length' => strlen($response),
             'cleaned_length' => strlen($jsonText),
-            'cleaned_preview' => substr($jsonText, 0, 200)
+            'cleaned_preview' => substr($jsonText, 0, 200),
         ]);
 
         try {
@@ -160,21 +161,24 @@ class GeminiService
             if (json_last_error() === JSON_ERROR_NONE) {
                 Log::info('GeminiService: JSON parse successful', [
                     'decoded_type' => gettype($decoded),
-                    'is_array' => is_array($decoded)
+                    'is_array' => is_array($decoded),
                 ]);
+
                 return $decoded;
             } else {
                 Log::error('GeminiService: JSON parse error', [
                     'json_error' => json_last_error_msg(),
-                    'cleaned_text' => $jsonText
+                    'cleaned_text' => $jsonText,
                 ]);
+
                 return null;
             }
         } catch (Exception $e) {
             Log::error('GeminiService: JSON parse exception', [
                 'error' => $e->getMessage(),
-                'cleaned_text' => $jsonText
+                'cleaned_text' => $jsonText,
             ]);
+
             return null;
         }
     }
@@ -212,7 +216,7 @@ class GeminiService
             return [
                 'corrected_text' => $result,
                 'errors_found' => [],
-                'suggestions' => []
+                'suggestions' => [],
             ];
         }
 
@@ -260,7 +264,7 @@ class GeminiService
                 'criteria_scores' => [],
                 'strengths' => [],
                 'weaknesses' => [],
-                'suggestions' => []
+                'suggestions' => [],
             ];
         }
 
@@ -303,7 +307,7 @@ class GeminiService
             return [
                 'fixed_questions' => $questions,
                 'errors_found' => [],
-                'suggestions' => []
+                'suggestions' => [],
             ];
         }
 
@@ -348,7 +352,7 @@ class GeminiService
             return [
                 'questions' => [],
                 'total_score' => 0,
-                'estimated_time' => 0
+                'estimated_time' => 0,
             ];
         }
 
@@ -364,8 +368,8 @@ class GeminiService
             'topic' => $topic,
             'subject' => $subject,
             'maxQuestions' => $maxQuestions,
-            'api_key_exists' => !empty($this->apiKey),
-            'base_url' => $this->baseUrl
+            'api_key_exists' => ! empty($this->apiKey),
+            'base_url' => $this->baseUrl,
         ]);
 
         $prompt = "Hãy tạo ngân hàng câu hỏi với tối đa {$maxQuestions} câu hỏi về chủ đề '{$topic}' thuộc môn học '{$subject}'.
@@ -399,25 +403,26 @@ class GeminiService
         $result = $this->makeRequest($prompt, 8000);
 
         Log::info('GeminiService: API response received', [
-            'has_result' => !empty($result),
+            'has_result' => ! empty($result),
             'result_length' => strlen($result ?? ''),
-            'result_preview' => substr($result ?? '', 0, 200)
+            'result_preview' => substr($result ?? '', 0, 200),
         ]);
 
         if ($result) {
             $decoded = $this->parseJsonResponse($result);
 
-            if ($decoded && !empty($decoded['questions'])) {
+            if ($decoded && ! empty($decoded['questions'])) {
                 Log::info('GeminiService: Question bank generation successful', [
                     'question_count' => count($decoded['questions']),
-                    'has_statistics' => !empty($decoded['statistics'])
+                    'has_statistics' => ! empty($decoded['statistics']),
                 ]);
+
                 return $decoded;
             } else {
                 Log::error('GeminiService: Question bank generation failed - invalid structure', [
-                    'has_decoded' => !empty($decoded),
-                    'has_questions' => !empty($decoded['questions']),
-                    'decoded_keys' => $decoded ? array_keys($decoded) : []
+                    'has_decoded' => ! empty($decoded),
+                    'has_questions' => ! empty($decoded['questions']),
+                    'decoded_keys' => $decoded ? array_keys($decoded) : [],
                 ]);
             }
         }
@@ -436,8 +441,8 @@ class GeminiService
                 'hard_count' => 0,
                 'multiple_choice_count' => 0,
                 'fill_blank_count' => 0,
-                'essay_count' => 0
-            ]
+                'essay_count' => 0,
+            ],
         ];
     }
 
@@ -494,7 +499,7 @@ class GeminiService
                 'analysis' => [],
                 'score_breakdown' => [],
                 'improvement_suggestions' => [],
-                'learning_resources' => []
+                'learning_resources' => [],
             ];
         }
 

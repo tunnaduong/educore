@@ -1,4 +1,5 @@
 <x-layouts.dash-teacher active="grading">
+    @include('components.language')
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">

@@ -2,20 +2,24 @@
 
 namespace App\Livewire\Teacher\Lessons;
 
-use Livewire\Component;
-use App\Models\Lesson;
-use Livewire\WithPagination;
 use App\Models\Classroom;
+use App\Models\Lesson;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
     use WithPagination;
 
     public $search = '';
+
     public $showDeleteModal = false;
+
     public $lessonToDelete = null;
+
     public $lessonTitleToDelete = '';
+
     public $filterClass = '';
 
     protected $listeners = [
@@ -27,8 +31,15 @@ class Index extends Component
         'search' => ['except' => ''],
     ];
 
-    public function updatingSearch() { $this->resetPage(); }
-    public function updatingFilterClass() { $this->resetPage(); }
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingFilterClass()
+    {
+        $this->resetPage();
+    }
 
     public function confirmDelete($id, $title)
     {
@@ -60,16 +71,16 @@ class Index extends Component
         $classrooms = Classroom::whereHas('teachers', function ($query) {
             $query->where('users.id', Auth::id());
         })->orderBy('name')->get();
-        
+
         $lessons = Lesson::query()
-            ->when($classrooms->isNotEmpty(), function($query) use ($classrooms) {
+            ->when($classrooms->isNotEmpty(), function ($query) use ($classrooms) {
                 $query->whereIn('classroom_id', $classrooms->pluck('id'));
             })
-            ->when($this->search, function($query) {
+            ->when($this->search, function ($query) {
                 $query->where('title', 'like', '%'.$this->search.'%')
-                      ->orWhere('number', 'like', '%'.$this->search.'%');
+                    ->orWhere('number', 'like', '%'.$this->search.'%');
             })
-            ->when($this->filterClass, function($query) {
+            ->when($this->filterClass, function ($query) {
                 $query->where('classroom_id', $this->filterClass);
             })
             ->orderByDesc('created_at')
@@ -81,4 +92,4 @@ class Index extends Component
             'filterClass' => $this->filterClass,
         ]);
     }
-} 
+}

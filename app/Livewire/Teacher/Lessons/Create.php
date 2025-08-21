@@ -2,12 +2,11 @@
 
 namespace App\Livewire\Teacher\Lessons;
 
-use Livewire\Component;
-use App\Models\Lesson;
 use App\Models\Classroom;
+use App\Models\Lesson;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Livewire\Component;
 use Livewire\WithFileUploads;
 
 class Create extends Component
@@ -15,11 +14,17 @@ class Create extends Component
     use WithFileUploads;
 
     public $title = '';
+
     public $description = '';
+
     public $number = '';
+
     public $classroom_id = '';
+
     public $video = '';
+
     public $attachment;
+
     public $classrooms = [];
 
     protected $rules = [
@@ -61,7 +66,7 @@ class Create extends Component
         }
 
         try {
-            $lesson = new Lesson();
+            $lesson = new Lesson;
             $lesson->title = $this->title;
             $lesson->description = $this->description;
             $lesson->number = $this->number;
@@ -69,41 +74,42 @@ class Create extends Component
             $lesson->video = $this->video;
 
             if ($this->attachment) {
-                Log::info('Uploading file: ' . $this->attachment->getClientOriginalName());
-                Log::info('File size: ' . $this->attachment->getSize());
-                Log::info('File mime: ' . $this->attachment->getMimeType());
+                Log::info('Uploading file: '.$this->attachment->getClientOriginalName());
+                Log::info('File size: '.$this->attachment->getSize());
+                Log::info('File mime: '.$this->attachment->getMimeType());
 
                 $path = $this->attachment->store('lessons/attachments', 'public');
                 $lesson->attachment = $path;
 
-                Log::info('File stored at: ' . $path);
+                Log::info('File stored at: '.$path);
             }
 
             $lesson->save();
 
             session()->flash('success', 'Đã tạo bài học thành công!');
             $this->dispatch('lessonCreated');
+
             return redirect()->route('teacher.lessons.index');
         } catch (\Exception $e) {
-            Log::error('Error creating lesson: ' . $e->getMessage());
-            session()->flash('error', 'Có lỗi xảy ra khi tạo bài học: ' . $e->getMessage());
+            Log::error('Error creating lesson: '.$e->getMessage());
+            session()->flash('error', 'Có lỗi xảy ra khi tạo bài học: '.$e->getMessage());
         }
     }
 
     public function updatedAttachment()
     {
         if ($this->attachment) {
-            Log::info('File selected: ' . $this->attachment->getClientOriginalName());
-            Log::info('File size: ' . $this->attachment->getSize());
-            Log::info('File mime: ' . $this->attachment->getMimeType());
-            Log::info('File extension: ' . $this->attachment->getClientOriginalExtension());
+            Log::info('File selected: '.$this->attachment->getClientOriginalName());
+            Log::info('File size: '.$this->attachment->getSize());
+            Log::info('File mime: '.$this->attachment->getMimeType());
+            Log::info('File extension: '.$this->attachment->getClientOriginalExtension());
         }
     }
 
     public function render()
     {
         return view('teacher.lessons.create', [
-            'classrooms' => $this->classrooms
+            'classrooms' => $this->classrooms,
         ]);
     }
 }

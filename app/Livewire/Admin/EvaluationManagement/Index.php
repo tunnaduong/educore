@@ -2,31 +2,36 @@
 
 namespace App\Livewire\Admin\EvaluationManagement;
 
-use Livewire\Component;
+use App\Models\Classroom;
 use App\Models\Evaluation;
 use App\Models\EvaluationQuestion;
 use App\Models\EvaluationRound;
-use App\Models\Classroom;
-use Livewire\WithPagination;
-use Livewire\WithFileUploads;
-use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
+use Livewire\Component;
+use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithFileUploads, WithPagination;
 
     public $classroomId = '';
+
     public $roundId = '';
+
     public $selectedEvaluation = null;
+
     public $showQuestionModal = false;
+
     public $editingQuestion = null;
+
     public $activeTab = 'evaluations';
 
     // Giới hạn câu hỏi hiển thị giống student
     protected array $categoryLimits = [
         'teacher' => 5,
-        'course'  => 4,
+        'course' => 4,
         'personal' => 1,
     ];
 
@@ -34,18 +39,20 @@ class Index extends Component
         'category' => '',
         'question' => '',
         'order' => 0,
-        'is_active' => true
+        'is_active' => true,
     ];
 
     // Quản lý đợt đánh giá
     public $showRoundModal = false;
+
     public $editingRound = null;
+
     public $roundForm = [
         'name' => '',
         'description' => '',
         'start_date' => '',
         'end_date' => '',
-        'is_active' => true
+        'is_active' => true,
     ];
 
     protected $queryString = ['classroomId', 'roundId', 'activeTab'];
@@ -59,7 +66,7 @@ class Index extends Component
         'roundForm.description' => 'nullable|max:500',
         'roundForm.start_date' => 'required|date',
         'roundForm.end_date' => 'required|date|after:start_date',
-        'roundForm.is_active' => 'boolean'
+        'roundForm.is_active' => 'boolean',
     ];
 
     protected $messages = [
@@ -84,13 +91,13 @@ class Index extends Component
     public function updatedClassroomId()
     {
         $this->resetPage();
-        Log::info('Classroom filter changed to: ' . ($this->classroomId ?: 'null'));
+        Log::info('Classroom filter changed to: '.($this->classroomId ?: 'null'));
     }
 
     public function updatedRoundId()
     {
         $this->resetPage();
-        Log::info('Round filter changed to: ' . ($this->roundId ?: 'null'));
+        Log::info('Round filter changed to: '.($this->roundId ?: 'null'));
     }
 
     public function resetFilter()
@@ -122,7 +129,7 @@ class Index extends Component
             'category' => 'teacher',
             'question' => '',
             'order' => 0,
-            'is_active' => true
+            'is_active' => true,
         ];
         $this->showQuestionModal = true;
     }
@@ -136,7 +143,7 @@ class Index extends Component
                 'category' => $question->category,
                 'question' => $question->question,
                 'order' => $question->order,
-                'is_active' => $question->is_active
+                'is_active' => $question->is_active,
             ];
             $this->showQuestionModal = true;
         }
@@ -150,18 +157,19 @@ class Index extends Component
             'category' => '',
             'question' => '',
             'order' => 0,
-            'is_active' => true
+            'is_active' => true,
         ];
     }
 
     private function validateQuestionLimits(array $form, ?int $excludeId = null): bool
     {
         $category = $form['category'];
-        $isActive = (bool)($form['is_active'] ?? false);
-        $order = (int)($form['order'] ?? 0);
+        $isActive = (bool) ($form['is_active'] ?? false);
+        $order = (int) ($form['order'] ?? 0);
 
-        if (!array_key_exists($category, $this->categoryLimits)) {
+        if (! array_key_exists($category, $this->categoryLimits)) {
             session()->flash('error', 'Danh mục câu hỏi không hợp lệ.');
+
             return false;
         }
 
@@ -169,10 +177,11 @@ class Index extends Component
         if ($isActive) {
             $activeCount = EvaluationQuestion::where('category', $category)
                 ->where('is_active', true)
-                ->when($excludeId, fn($q) => $q->where('id', '!=', $excludeId))
+                ->when($excludeId, fn ($q) => $q->where('id', '!=', $excludeId))
                 ->count();
             if ($activeCount >= $this->categoryLimits[$category]) {
                 session()->flash('error', 'Đã đạt giới hạn câu hỏi hoạt động cho danh mục này.');
+
                 return false;
             }
 
@@ -180,10 +189,11 @@ class Index extends Component
             $dupOrder = EvaluationQuestion::where('category', $category)
                 ->where('is_active', true)
                 ->where('order', $order)
-                ->when($excludeId, fn($q) => $q->where('id', '!=', $excludeId))
+                ->when($excludeId, fn ($q) => $q->where('id', '!=', $excludeId))
                 ->exists();
             if ($dupOrder) {
                 session()->flash('error', 'Thứ tự hiển thị đã tồn tại ở danh mục này.');
+
                 return false;
             }
         }
@@ -197,13 +207,13 @@ class Index extends Component
 
         // Kiểm tra giới hạn & thứ tự để đồng bộ với phần student
         if ($this->editingQuestion) {
-            if (!$this->validateQuestionLimits($this->questionForm, $this->editingQuestion->id)) {
+            if (! $this->validateQuestionLimits($this->questionForm, $this->editingQuestion->id)) {
                 return;
             }
             $this->editingQuestion->update($this->questionForm);
             session()->flash('success', 'Câu hỏi đã được cập nhật thành công!');
         } else {
-            if (!$this->validateQuestionLimits($this->questionForm, null)) {
+            if (! $this->validateQuestionLimits($this->questionForm, null)) {
                 return;
             }
             EvaluationQuestion::create($this->questionForm);
@@ -226,7 +236,7 @@ class Index extends Component
     {
         $question = EvaluationQuestion::find($questionId);
         if ($question) {
-            $targetStatus = !$question->is_active;
+            $targetStatus = ! $question->is_active;
             if ($targetStatus) {
                 // Bật hoạt động: kiểm tra giới hạn & trùng thứ tự
                 $form = [
@@ -234,7 +244,7 @@ class Index extends Component
                     'order' => $question->order,
                     'is_active' => true,
                 ];
-                if (!$this->validateQuestionLimits($form, $questionId)) {
+                if (! $this->validateQuestionLimits($form, $questionId)) {
                     return;
                 }
             }
@@ -253,7 +263,7 @@ class Index extends Component
             'description' => '',
             'start_date' => now()->format('Y-m-d'),
             'end_date' => now()->addDays(30)->format('Y-m-d'),
-            'is_active' => true
+            'is_active' => true,
         ];
         $this->showRoundModal = true;
     }
@@ -268,7 +278,7 @@ class Index extends Component
                 'description' => $round->description,
                 'start_date' => $round->start_date->format('Y-m-d'),
                 'end_date' => $round->end_date->format('Y-m-d'),
-                'is_active' => $round->is_active
+                'is_active' => $round->is_active,
             ];
             $this->showRoundModal = true;
         }
@@ -283,17 +293,18 @@ class Index extends Component
             'description' => '',
             'start_date' => '',
             'end_date' => '',
-            'is_active' => true
+            'is_active' => true,
         ];
     }
 
     public function saveRound()
     {
         // Kiểm tra nhanh để hiển thị thông báo lỗi rõ ràng (trước khi validate chuẩn)
-        if (!empty($this->roundForm['start_date'])) {
+        if (! empty($this->roundForm['start_date'])) {
             $start = Carbon::parse($this->roundForm['start_date'])->startOfDay();
             if ($start->lt(Carbon::today())) {
                 session()->flash('error', 'Không thể tạo đợt ở quá khứ. Ngày bắt đầu phải từ hôm nay trở đi.');
+
                 return;
             }
         }
@@ -304,7 +315,7 @@ class Index extends Component
             'roundForm.description' => 'nullable|max:500',
             'roundForm.start_date' => 'required|date|after_or_equal:today',
             'roundForm.end_date' => 'required|date|after:roundForm.start_date',
-            'roundForm.is_active' => 'boolean'
+            'roundForm.is_active' => 'boolean',
         ], $this->messages);
 
         $startDate = Carbon::parse($this->roundForm['start_date'])->toDateString();
@@ -316,6 +327,7 @@ class Index extends Component
         }
         if ($duplicateStartQuery->exists()) {
             session()->flash('error', 'Ngày bắt đầu này đã tồn tại ở một đợt đánh giá khác. Vui lòng chọn ngày bắt đầu khác.');
+
             return;
         }
 
@@ -337,6 +349,7 @@ class Index extends Component
             // Kiểm tra xem có đánh giá nào thuộc đợt này không
             if ($round->evaluations()->count() > 0) {
                 session()->flash('error', 'Không thể xóa đợt đánh giá đã có học viên đánh giá!');
+
                 return;
             }
 
@@ -349,7 +362,7 @@ class Index extends Component
     {
         $round = EvaluationRound::find($roundId);
         if ($round) {
-            $round->update(['is_active' => !$round->is_active]);
+            $round->update(['is_active' => ! $round->is_active]);
             session()->flash('success', 'Cập nhật trạng thái đợt đánh giá thành công!');
         }
     }

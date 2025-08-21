@@ -2,27 +2,36 @@
 
 namespace App\Livewire\Admin\Finance;
 
+use App\Models\Payment;
+use App\Models\User;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use App\Models\User;
-use App\Models\Payment;
 
 class ShowPayment extends Component
 {
     use WithFileUploads;
 
     public $user;
+
     public $payments;
+
     public $proof;
+
     public $selectedPaymentId;
 
     // Thêm các trường cho form tạo payment mới
     public $newAmount;
+
     public $newType = 'tuition';
+
     public $newStatus = 'unpaid';
+
     public $newPaidAt;
+
     public $newClassId;
+
     public $newNotes;
+
     public $showCreateModal = false;
 
     protected $rules = [
@@ -82,6 +91,7 @@ class ShowPayment extends Component
     {
         $this->showCreateModal = true;
     }
+
     public function closeCreateModal()
     {
         $this->showCreateModal = false;

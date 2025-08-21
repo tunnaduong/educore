@@ -2,17 +2,19 @@
 
 namespace App\Livewire\Admin\Quiz;
 
+use App\Models\Classroom;
+use App\Models\Quiz;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Quiz;
-use App\Models\Classroom;
 
 class Index extends Component
 {
     use WithPagination;
 
     public $search = '';
+
     public $filterClass = '';
+
     public $filterStatus = '';
 
     protected $queryString = [
@@ -40,7 +42,7 @@ class Index extends Component
     {
         $quiz = Quiz::findOrFail($quizId);
         $quiz->delete();
-        
+
         session()->flash('message', 'Bài kiểm tra đã được xóa thành công.');
     }
 
@@ -49,8 +51,8 @@ class Index extends Component
         $quizzes = Quiz::query()
             ->with(['classroom'])
             ->when($this->search, function ($query) {
-                $query->where('title', 'like', '%' . $this->search . '%')
-                      ->orWhere('description', 'like', '%' . $this->search . '%');
+                $query->where('title', 'like', '%'.$this->search.'%')
+                    ->orWhere('description', 'like', '%'.$this->search.'%');
             })
             ->when($this->filterClass, function ($query) {
                 $query->where('class_id', $this->filterClass);

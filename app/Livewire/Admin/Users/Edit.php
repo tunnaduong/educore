@@ -3,19 +3,26 @@
 namespace App\Livewire\Admin\Users;
 
 use App\Models\User;
-use Livewire\Component;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Livewire\Component;
 
 class Edit extends Component
 {
     public $user;
+
     public $name = '';
+
     public $email = '';
+
     public $phone = '';
+
     public $role = '';
+
     public $is_active = true;
+
     public $password = '';
+
     public $password_confirmation = '';
 
     public function mount(User $user)
@@ -43,8 +50,7 @@ class Edit extends Component
             ],
             'phone' => [
                 'required',
-                'string',
-                'min:10',
+                'regex:/^\d{10,15}$/',
                 Rule::unique('users', 'phone')->ignore($this->user->id),
             ],
             'role' => 'required|in:admin,teacher,student',
@@ -59,13 +65,18 @@ class Edit extends Component
         'email.email' => 'Email không hợp lệ',
         'email.unique' => 'Email đã tồn tại trong hệ thống',
         'phone.required' => 'Vui lòng nhập số điện thoại',
-        'phone.min' => 'Số điện thoại phải có ít nhất :min số',
+        'phone.regex' => 'Số điện thoại chỉ gồm số và có 10-15 chữ số',
         'phone.unique' => 'Số điện thoại đã tồn tại trong hệ thống',
         'role.required' => 'Vui lòng chọn vai trò',
         'role.in' => 'Vai trò không hợp lệ',
         'password.min' => 'Mật khẩu phải có ít nhất :min ký tự',
         'password.confirmed' => 'Xác nhận mật khẩu không khớp',
     ];
+
+    public function updatedPhone()
+    {
+        $this->validateOnly('phone');
+    }
 
     public function update()
     {
@@ -84,6 +95,7 @@ class Edit extends Component
         $this->user->save();
 
         session()->flash('success', 'Cập nhật người dùng thành công!');
+
         return $this->redirect(route('users.index'));
     }
 

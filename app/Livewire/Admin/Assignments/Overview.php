@@ -2,22 +2,28 @@
 
 namespace App\Livewire\Admin\Assignments;
 
-use Livewire\Component;
 use App\Models\Assignment;
 use App\Models\AssignmentSubmission;
 use App\Models\Classroom;
 use App\Models\Student;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Component;
 
 class Overview extends Component
 {
     public $overviewStats = [];
+
     public $topClasses = [];
+
     public $recentAssignments = [];
+
     public $topStudents = [];
+
     public $monthlyStats = [];
+
     public $selectedMonth;
+
     public $selectedYear;
 
     public function mount()
@@ -31,6 +37,7 @@ class Overview extends Component
     {
         $this->loadStats();
     }
+
     public function updatedSelectedYear()
     {
         $this->loadStats();
@@ -78,6 +85,7 @@ class Overview extends Component
             $onTime = $subs->filter(function ($s) {
                 return $s->submitted_at && $s->assignment && $s->submitted_at <= $s->assignment->deadline;
             })->count();
+
             return [
                 'student' => Student::find($studentId)->user,
                 'total_submissions' => $subs->count(),
@@ -111,6 +119,7 @@ class Overview extends Component
     public function getMonthName($month)
     {
         $months = [1 => 'Tháng 1', 2 => 'Tháng 2', 3 => 'Tháng 3', 4 => 'Tháng 4', 5 => 'Tháng 5', 6 => 'Tháng 6', 7 => 'Tháng 7', 8 => 'Tháng 8', 9 => 'Tháng 9', 10 => 'Tháng 10', 11 => 'Tháng 11', 12 => 'Tháng 12'];
+
         return $months[$month] ?? '';
     }
 

@@ -4,18 +4,18 @@
         <!-- Header -->
         <div class="mb-4">
             <a href="{{ route('students.index') }}" class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left mr-2"></i>Quay lại
+                <i class="bi bi-arrow-left mr-2"></i>{{ __('general.back') }}
             </a>
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-person-circle mr-2"></i>Chi tiết học viên
+                        <i class="bi bi-person-circle mr-2"></i>{{ __('general.student_details') }}
                     </h4>
                     <p class="text-muted mb-0">{{ $student->name }}</p>
                 </div>
                 <div class="d-flex gap-2">
                     <a href="{{ route('students.edit', $student) }}" class="btn btn-primary">
-                        <i class="bi bi-pencil-square mr-2"></i>Chỉnh sửa
+                        <i class="bi bi-pencil-square mr-2"></i>{{ __('general.edit_student') }}
                     </a>
                 </div>
             </div>
@@ -27,7 +27,7 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-person mr-2"></i>Thông tin cá nhân
+                            <i class="bi bi-person mr-2"></i>{{ __('general.personal_info') }}
                         </h5>
                     </div>
                     <div class="card-body">
@@ -42,18 +42,19 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="mb-3">
-                                    <label class="form-label text-muted small">Số điện thoại</label>
-                                    <div class="fw-medium">{{ $student->phone ?? 'Chưa có' }}</div>
+                                    <label class="form-label text-muted small">{{ __('general.phone_number') }}</label>
+                                    <div class="fw-medium">{{ $student->phone ?? __('general.not_available') }}</div>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="mb-3">
-                                    <label class="form-label text-muted small">Ngày sinh</label>
+                                    <label
+                                        class="form-label text-muted small">{{ __('general.date_of_birth') }}</label>
                                     <div class="fw-medium">
                                         @if ($student->studentProfile && $student->studentProfile->date_of_birth)
                                             {{ \Carbon\Carbon::parse($student->studentProfile->date_of_birth)->format('d/m/Y') }}
                                         @else
-                                            Chưa có
+                                            {{ __('general.not_available') }}
                                         @endif
                                     </div>
                                 </div>
@@ -63,19 +64,20 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="mb-3">
-                                    <label class="form-label text-muted small">Ngày vào học</label>
+                                    <label
+                                        class="form-label text-muted small">{{ __('general.enrollment_date') }}</label>
                                     <div class="fw-medium">
                                         @if ($student->studentProfile && $student->studentProfile->joined_at)
                                             {{ \Carbon\Carbon::parse($student->studentProfile->joined_at)->format('d/m/Y') }}
                                         @else
-                                            Chưa có
+                                            {{ __('general.not_available') }}
                                         @endif
                                     </div>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="mb-3">
-                                    <label class="form-label text-muted small">Trạng thái</label>
+                                    <label class="form-label text-muted small">{{ __('general.status') }}</label>
                                     <div>
                                         @if ($student->studentProfile)
                                             @php
@@ -85,17 +87,18 @@
                                                     'dropped' => 'danger',
                                                 ];
                                                 $statusLabels = [
-                                                    'active' => 'Đang học',
-                                                    'paused' => 'Nghỉ',
-                                                    'dropped' => 'Bảo lưu',
+                                                    'active' => __('general.studying'),
+                                                    'paused' => __('general.paused'),
+                                                    'dropped' => __('general.reserved'),
                                                 ];
                                                 $color = $statusColors[$student->studentProfile->status] ?? 'secondary';
                                                 $label =
-                                                    $statusLabels[$student->studentProfile->status] ?? 'Không xác định';
+                                                    $statusLabels[$student->studentProfile->status] ??
+                                                    __('general.undefined');
                                             @endphp
                                             <span class="badge bg-{{ $color }}">{{ $label }}</span>
                                         @else
-                                            <span class="badge bg-secondary">Chưa có</span>
+                                            <span class="badge bg-secondary">{{ __('general.not_available') }}</span>
                                         @endif
                                     </div>
                                 </div>
@@ -104,14 +107,14 @@
 
                         @if ($student->studentProfile && $student->studentProfile->level)
                             <div class="mb-3">
-                                <label class="form-label text-muted small">Trình độ</label>
+                                <label class="form-label text-muted small">{{ __('general.level') }}</label>
                                 <div class="fw-medium">{{ $student->studentProfile->level }}</div>
                             </div>
                         @endif
 
                         @if ($student->studentProfile && $student->studentProfile->notes)
                             <div class="mb-3">
-                                <label class="form-label text-muted small">Ghi chú</label>
+                                <label class="form-label text-muted small">{{ __('general.notes') }}</label>
                                 <div class="fw-medium">{{ $student->studentProfile->notes }}</div>
                             </div>
                         @endif
@@ -125,7 +128,7 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-mortarboard mr-2"></i>Lớp đang học
+                            <i class="bi bi-mortarboard mr-2"></i>{{ __('general.enrolled_classes_info') }}
                         </h5>
                     </div>
                     <div class="card-body">
@@ -138,15 +141,15 @@
                                                 <h6 class="mb-0">{{ $classroom->name }}</h6>
                                                 <span
                                                     class="badge bg-{{ $classroom->status == 'active' ? 'success' : 'secondary' }}">
-                                                    {{ $classroom->status == 'active' ? 'Đang hoạt động' : 'Đã kết thúc' }}
+                                                    {{ $classroom->status == 'active' ? __('general.currently_active') : __('general.ended') }}
                                                 </span>
                                             </div>
                                             <div class="small text-muted">
                                                 <div><i
-                                                        class="bi bi-person mr-1"></i>{{ $classroom->getFirstTeacher()?->name ?? 'Chưa có giáo viên' }}
+                                                        class="bi bi-person mr-1"></i>{{ $classroom->getFirstTeacher()?->name ?? __('general.no_teacher_assigned') }}
                                                 </div>
                                                 <div><i
-                                                        class="bi bi-calendar mr-1"></i>{{ $classroom->level ?? 'Chưa có trình độ' }}
+                                                        class="bi bi-calendar mr-1"></i>{{ $classroom->level ?? __('general.no_level_assigned') }}
                                                 </div>
                                             </div>
                                         </div>
@@ -157,7 +160,7 @@
                             <div class="text-center py-4">
                                 <div class="text-muted">
                                     <i class="bi bi-mortarboard fs-1 d-block mb-2"></i>
-                                    Chưa đăng ký lớp học nào
+                                    {{ __('general.no_classes_registered') }}
                                 </div>
                             </div>
                         @endif
@@ -168,7 +171,7 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-graph-up mr-2"></i>Tiến độ học tập
+                            <i class="bi bi-graph-up mr-2"></i>{{ __('general.learning_progress') }}
                         </h5>
                     </div>
                     <div class="card-body">
@@ -176,25 +179,25 @@
                             <div class="col-md-3 mb-3">
                                 <div class="border rounded p-3">
                                     <div class="fs-4 fw-bold text-primary">0</div>
-                                    <div class="small text-muted">Buổi học</div>
+                                    <div class="small text-muted">{{ __('general.study_sessions') }}</div>
                                 </div>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <div class="border rounded p-3">
                                     <div class="fs-4 fw-bold text-success">-</div>
-                                    <div class="small text-muted">Điểm TB</div>
+                                    <div class="small text-muted">{{ __('general.average_score') }}</div>
                                 </div>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <div class="border rounded p-3">
                                     <div class="fs-4 fw-bold text-info">0</div>
-                                    <div class="small text-muted">Bài tập hoàn thành</div>
+                                    <div class="small text-muted">{{ __('general.completed_assignments') }}</div>
                                 </div>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <div class="border rounded p-3">
                                     <div class="fs-4 fw-bold text-warning">0%</div>
-                                    <div class="small text-muted">Tỷ lệ tham gia</div>
+                                    <div class="small text-muted">{{ __('general.attendance_rate') }}</div>
                                 </div>
                             </div>
                         </div>
@@ -208,14 +211,14 @@
                 <div class="card shadow-sm">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-journal-check mr-2"></i>Lịch sử bài tập
+                            <i class="bi bi-journal-check mr-2"></i>{{ __('general.assignment_history') }}
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="text-center py-4">
                             <div class="text-muted">
                                 <i class="bi bi-journal-check fs-1 d-block mb-2"></i>
-                                Chưa có lịch sử bài tập
+                                {{ __('general.no_assignment_history') }}
                             </div>
                         </div>
                     </div>

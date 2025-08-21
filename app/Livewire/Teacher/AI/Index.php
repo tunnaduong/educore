@@ -2,16 +2,17 @@
 
 namespace App\Livewire\Teacher\AI;
 
-use Livewire\Component;
-use App\Models\AssignmentSubmission;
 use App\Models\Assignment;
-use App\Models\Classroom;
+use App\Models\AssignmentSubmission;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class Index extends Component
 {
     public $recentSubmissions = [];
+
     public $availableAssignments = [];
+
     public $classrooms = [];
 
     public function mount()

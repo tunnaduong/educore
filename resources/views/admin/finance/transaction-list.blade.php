@@ -1,4 +1,5 @@
 <div class="container-fluid">
+    @include('components.language')
     <!-- Bảng danh sách giao dịch -->
     <div class="card shadow-sm">
         <div class="card-header bg-gradient-primary text-white">

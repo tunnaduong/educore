@@ -80,6 +80,7 @@ class Quiz extends Model
         foreach ($this->questions ?? [] as $question) {
             $maxScore += $question['score'] ?? 1;
         }
+
         return $maxScore;
     }
 
@@ -88,7 +89,7 @@ class Quiz extends Model
      */
     public function hasAIValidation(): bool
     {
-        return !is_null($this->ai_validated_at);
+        return ! is_null($this->ai_validated_at);
     }
 
     /**

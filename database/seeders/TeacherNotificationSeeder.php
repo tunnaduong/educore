@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Notification;
 use App\Models\User;
-use App\Models\Classroom;
 use Carbon\Carbon;
+use Illuminate\Database\Seeder;
 
 class TeacherNotificationSeeder extends Seeder
 {
@@ -14,17 +13,19 @@ class TeacherNotificationSeeder extends Seeder
     {
         // Lấy teacher đầu tiên
         $teacher = User::where('role', 'teacher')->first();
-        
-        if (!$teacher) {
+
+        if (! $teacher) {
             $this->command->info('Không tìm thấy teacher nào. Vui lòng chạy UserSeeder trước.');
+
             return;
         }
 
         // Lấy các lớp mà teacher đang dạy
         $classrooms = $teacher->teachingClassrooms;
-        
+
         if ($classrooms->isEmpty()) {
             $this->command->info('Teacher chưa được gán vào lớp nào. Vui lòng chạy TeacherClassroomSeeder trước.');
+
             return;
         }
 
@@ -39,7 +40,7 @@ class TeacherNotificationSeeder extends Seeder
             'Thông báo thay đổi lịch học',
             'Nhắc nhở deadline nộp bài',
             'Thông báo kết quả kiểm tra',
-            'Cập nhật tài liệu học tập'
+            'Cập nhật tài liệu học tập',
         ];
 
         $notificationMessages = [
@@ -52,7 +53,7 @@ class TeacherNotificationSeeder extends Seeder
             'Lịch học thứ 4 tuần này sẽ được thay đổi từ 8h sáng thành 2h chiều.',
             'Deadline nộp bài tập cuối kỳ là ngày 15/12. Vui lòng hoàn thành đúng hạn.',
             'Kết quả kiểm tra giữa kỳ đã có. Các em có thể xem điểm trên hệ thống.',
-            'Tài liệu học tập chương 5 đã được cập nhật. Vui lòng tải về và nghiên cứu.'
+            'Tài liệu học tập chương 5 đã được cập nhật. Vui lòng tải về và nghiên cứu.',
         ];
 
         foreach ($classrooms as $classroom) {
@@ -60,7 +61,7 @@ class TeacherNotificationSeeder extends Seeder
             for ($i = 0; $i < rand(5, 10); $i++) {
                 $type = $notificationTypes[array_rand($notificationTypes)];
                 $titleIndex = array_rand($notificationTitles);
-                
+
                 $scheduledAt = null;
                 if (rand(0, 1)) {
                     // 50% thông báo có lịch gửi
@@ -82,6 +83,6 @@ class TeacherNotificationSeeder extends Seeder
             }
         }
 
-        $this->command->info('Đã tạo ' . ($classrooms->count() * rand(5, 10)) . ' thông báo cho teacher.');
+        $this->command->info('Đã tạo '.($classrooms->count() * rand(5, 10)).' thông báo cho teacher.');
     }
-} 
+}

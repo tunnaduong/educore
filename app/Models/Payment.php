@@ -15,15 +15,18 @@ class Payment extends Model
         'paid_at',
         'proof_path',
         'note',
-        'operator'
+        'operator',
     ];
+
     protected $casts = [
         'paid_at' => 'datetime',
     ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
     public function classroom()
     {
         return $this->belongsTo(Classroom::class, 'class_id');

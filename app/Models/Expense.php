@@ -12,7 +12,7 @@ class Expense extends Model
         'amount',
         'type',
         'note',
-        'spent_at'
+        'spent_at',
     ];
 
     protected $casts = [
@@ -23,6 +23,7 @@ class Expense extends Model
     {
         return $this->belongsTo(User::class, 'staff_id');
     }
+
     public function classroom()
     {
         return $this->belongsTo(Classroom::class, 'class_id');

@@ -8,7 +8,7 @@
                     <h4 class="mb-0 text-primary fs-4">
                         <i class="bi bi-eye mr-2"></i>Chi tiết bài học
                     </h4>
-                    <p class="text-muted mb-0">Xem thông tin chi tiết bài học và tài nguyên</p>
+                    <p class="text-muted mb-0">{{ __('general.lesson_detail_description') }}</p>
                 </div>
                 <div>
                     <a href="{{ route('teacher.lessons.edit', $lesson->id) }}" class="btn btn-warning mr-2">
@@ -27,7 +27,7 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h6 class="mb-0">
-                            <i class="bi bi-file-earmark-text mr-2"></i>Thông tin bài học
+                            <i class="bi bi-file-earmark-text mr-2"></i>{{ __('general.lesson_info') }}
                         </h6>
                     </div>
                     <div class="card-body">
@@ -101,11 +101,11 @@
                             <div class="mt-3 d-flex gap-2">
                                 <a href="{{ asset('storage/' . $lesson->attachment) }}" target="_blank"
                                     class="btn btn-success flex-fill">
-                                    <i class="bi bi-download mr-1"></i>Tải xuống
+                                    <i class="bi bi-download mr-1"></i>{{ __('general.download') }}
                                 </a>
                                 <button class="btn btn-outline-primary flex-fill" type="button"
                                     onclick="openPreviewModal()">
-                                    <i class="bi bi-eye"></i> Xem trước tài liệu
+                                    <i class="bi bi-eye"></i> {{ __('general.preview_document') }}
                                 </button>
                             </div>
                             @php

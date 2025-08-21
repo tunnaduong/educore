@@ -11,8 +11,11 @@ class Index extends Component
     use WithPagination;
 
     public $search = '';
+
     public $filterRole = '';
+
     public $filterStatus = '';
+
     protected $queryString = ['search', 'filterRole', 'filterStatus'];
 
     // Reset pagination when search changes
@@ -35,10 +38,10 @@ class Index extends Component
     {
         $query = User::query();
         if ($this->search) {
-            $query->where(function($q) {
+            $query->where(function ($q) {
                 $q->where('name', 'like', "%{$this->search}%")
-                  ->orWhere('email', 'like', "%{$this->search}%")
-                  ->orWhere('phone', 'like', "%{$this->search}%");
+                    ->orWhere('email', 'like', "%{$this->search}%")
+                    ->orWhere('phone', 'like', "%{$this->search}%");
             });
         }
         if ($this->filterRole) {
@@ -48,6 +51,7 @@ class Index extends Component
             $query->where('is_active', $this->filterStatus == 'active' ? 1 : 0);
         }
         $users = $query->orderBy('created_at', 'desc')->paginate(10);
+
         return view('admin.users.index', compact('users'));
     }
 
@@ -58,21 +62,23 @@ class Index extends Component
     {
         try {
             $user = User::find($id);
-            if (!$user) {
+            if (! $user) {
                 session()->flash('error', 'Không tìm thấy người dùng!');
+
                 return;
             }
 
             // Check if trying to delete current user
             if ($user->id === auth()->id()) {
                 session()->flash('error', 'Không thể xóa tài khoản của chính bạn!');
+
                 return;
             }
 
             $user->delete();
             session()->flash('success', 'Xóa người dùng thành công!');
         } catch (\Exception $e) {
-            session()->flash('error', 'Không thể xóa người dùng: ' . $e->getMessage());
+            session()->flash('error', 'Không thể xóa người dùng: '.$e->getMessage());
         }
     }
 }

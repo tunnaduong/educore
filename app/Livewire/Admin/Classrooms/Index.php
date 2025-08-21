@@ -4,19 +4,23 @@ namespace App\Livewire\Admin\Classrooms;
 
 use App\Models\Classroom;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
 
 class Index extends Component
 {
     use WithPagination;
 
     public $search = '';
+
     public $filterTeacher = '';
+
     public $filterStatus = '';
+
     public $showTrashed = false;
+
     public $hideCompleted = false;
 
     protected $queryString = ['search', 'filterTeacher', 'filterStatus'];
@@ -46,6 +50,7 @@ class Index extends Component
             // Kiểm tra xem lớp có đang hoạt động không
             if ($classroom->status === 'active') {
                 session()->flash('error', 'Không thể xóa lớp học đang hoạt động. Vui lòng chuyển trạng thái sang không hoạt động trước.');
+
                 return;
             }
 
@@ -56,6 +61,7 @@ class Index extends Component
                     session()->flash('error', 'Không thể xóa lớp học có sinh viên. Lớp sẽ được ẩn khỏi danh sách.');
                     $classroom->delete(); // Soft delete
                     $this->dispatch('refresh');
+
                     return;
                 }
 
@@ -64,6 +70,7 @@ class Index extends Component
                     session()->flash('error', 'Không thể xóa lớp học có dữ liệu. Lớp sẽ được ẩn khỏi danh sách.');
                     $classroom->delete(); // Soft delete
                     $this->dispatch('refresh');
+
                     return;
                 }
 
@@ -71,6 +78,7 @@ class Index extends Component
                 $classroom->forceDelete();
                 session()->flash('success', 'Xóa lớp học nháp thành công!');
                 $this->dispatch('refresh');
+
                 return;
             }
 
@@ -79,6 +87,7 @@ class Index extends Component
                 session()->flash('error', 'Không thể xóa lớp học có sinh viên. Lớp sẽ được ẩn khỏi danh sách.');
                 $classroom->delete(); // Soft delete
                 $this->dispatch('refresh');
+
                 return;
             }
 
@@ -87,6 +96,7 @@ class Index extends Component
                 session()->flash('error', 'Không thể xóa lớp học có dữ liệu. Lớp sẽ được ẩn khỏi danh sách.');
                 $classroom->delete(); // Soft delete
                 $this->dispatch('refresh');
+
                 return;
             }
 
@@ -97,16 +107,16 @@ class Index extends Component
 
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             session()->flash('error', 'Không tìm thấy lớp học cần xóa.');
-            Log::error('Delete Classroom - Not Found: ' . $e->getMessage(), [
+            Log::error('Delete Classroom - Not Found: '.$e->getMessage(), [
                 'classroom_id' => $classroomId,
-                'user_id' => Auth::id()
+                'user_id' => Auth::id(),
             ]);
         } catch (\Exception $e) {
             session()->flash('error', 'Không thể xóa lớp học này. Vui lòng thử lại sau.');
-            Log::error('Delete Classroom Error: ' . $e->getMessage(), [
+            Log::error('Delete Classroom Error: '.$e->getMessage(), [
                 'classroom_id' => $classroomId,
                 'user_id' => Auth::id(),
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
         }
     }
@@ -124,10 +134,10 @@ class Index extends Component
             }
         } catch (\Exception $e) {
             session()->flash('error', 'Không thể khôi phục lớp học. Vui lòng thử lại sau.');
-            Log::error('Restore Classroom Error: ' . $e->getMessage(), [
+            Log::error('Restore Classroom Error: '.$e->getMessage(), [
                 'classroom_id' => $classroomId,
                 'user_id' => Auth::id(),
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
         }
     }
@@ -144,10 +154,10 @@ class Index extends Component
             }
         } catch (\Exception $e) {
             session()->flash('error', 'Không thể xóa vĩnh viễn lớp học. Vui lòng thử lại sau.');
-            Log::error('Force Delete Classroom Error: ' . $e->getMessage(), [
+            Log::error('Force Delete Classroom Error: '.$e->getMessage(), [
                 'classroom_id' => $classroomId,
                 'user_id' => Auth::id(),
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
         }
     }
@@ -170,9 +180,9 @@ class Index extends Component
         $query = $query
             ->when($this->search, function ($query) {
                 $query->where(function ($query) {
-                    $query->where('name', 'like', '%' . $this->search . '%')
+                    $query->where('name', 'like', '%'.$this->search.'%')
                         ->orWhereHas('teachers', function ($query) {
-                            $query->where('name', 'like', '%' . $this->search . '%');
+                            $query->where('name', 'like', '%'.$this->search.'%');
                         });
                 });
             })
@@ -197,7 +207,7 @@ class Index extends Component
 
         return view('admin.classrooms.index', [
             'classrooms' => $classrooms,
-            'teachers' => $teachers
+            'teachers' => $teachers,
         ]);
     }
 }

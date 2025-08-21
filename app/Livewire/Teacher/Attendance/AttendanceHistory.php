@@ -4,30 +4,32 @@ namespace App\Livewire\Teacher\Attendance;
 
 use App\Models\Attendance;
 use App\Models\Classroom;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
-use Carbon\Carbon;
 
 class AttendanceHistory extends Component
 {
     public Classroom $classroom;
+
     public $selectedMonth;
+
     public $selectedYear;
+
     public $monthlyStats = [];
+
     public $attendanceHistory = [];
 
     public function mount($classroom)
     {
         $teacher = Auth::user();
-        
+
         // Kiểm tra xem teacher có quyền xem lịch sử điểm danh lớp này không
         $hasPermission = $classroom->users()
             ->where('user_id', $teacher->id)
             ->where('class_user.role', 'teacher')
             ->exists();
 
-        if (!$hasPermission) {
+        if (! $hasPermission) {
             abort(403, 'Bạn không có quyền xem lịch sử điểm danh lớp học này.');
         }
 
@@ -79,7 +81,7 @@ class AttendanceHistory extends Component
                     'present_days' => $presentDays,
                     'absent_days' => $absentDays,
                     'attendance_rate' => $attendanceRate,
-                ]
+                ],
             ];
         }
     }
@@ -98,7 +100,7 @@ class AttendanceHistory extends Component
 
     public function getMonthName($month)
     {
-        return 'Tháng ' . (int) $month;
+        return 'Tháng '.(int) $month;
     }
 
     public function render()

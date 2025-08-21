@@ -36,6 +36,7 @@ class SendScheduledNotifications extends Command
 
         if ($scheduledNotifications->isEmpty()) {
             $this->info('No scheduled notifications to send.');
+
             return 0;
         }
 
@@ -52,16 +53,16 @@ class SendScheduledNotifications extends Command
                 ]);
 
                 $this->line("✓ Sent: {$notification->title}");
-                
+
                 // You can add additional logic here like:
                 // - Sending email notifications
                 // - Sending push notifications
                 // - Broadcasting to WebSocket
                 // - etc.
-                
+
             } catch (\Exception $e) {
                 $this->error("Failed to send notification {$notification->id}: {$e->getMessage()}");
-                Log::error("Failed to send scheduled notification", [
+                Log::error('Failed to send scheduled notification', [
                     'notification_id' => $notification->id,
                     'error' => $e->getMessage(),
                 ]);
@@ -69,6 +70,7 @@ class SendScheduledNotifications extends Command
         }
 
         $this->info('Scheduled notifications processing completed.');
+
         return 0;
     }
 }

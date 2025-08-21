@@ -2,23 +2,31 @@
 
 namespace App\Livewire\Student\Quiz;
 
-use Livewire\Component;
 use App\Models\QuizResult;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Livewire\Component;
 
 class DoQuiz extends Component
 {
     public $quizId;
+
     public $quiz;
+
     public $questions = [];
+
     public $currentQuestionIndex = 0;
+
     public $answers = [];
+
     public $startedAt;
+
     public $timeRemaining;
+
     public $isFinished = false;
+
     public $result = null;
+
     public $accessDenied = null;
 
     protected $listeners = ['timerTick' => 'updateTimer'];
@@ -35,7 +43,7 @@ class DoQuiz extends Component
 
         // Đảm bảo timeRemaining luôn là số nguyên sau khi khởi tạo
         if ($this->timeRemaining !== null) {
-            $this->timeRemaining = (int)$this->timeRemaining;
+            $this->timeRemaining = (int) $this->timeRemaining;
         }
     }
 
@@ -55,8 +63,9 @@ class DoQuiz extends Component
     public function startQuiz()
     {
         $student = Auth::user()->studentProfile;
-        if (!$student) {
+        if (! $student) {
             $this->accessDenied = 'Không tìm thấy hồ sơ học viên cho tài khoản này!';
+
             return;
         }
         $studentId = $student->id;
@@ -65,18 +74,21 @@ class DoQuiz extends Component
         $classroom = $this->quiz->classroom;
         $user = Auth::user();
         $isStudentInClass = $classroom && $classroom->students()->where('users.id', $user->id)->exists();
-        if (!$isStudentInClass) {
+        if (! $isStudentInClass) {
             $this->accessDenied = 'Bạn không thuộc lớp học này nên không thể làm bài kiểm tra!';
+
             return;
         }
         if ($classroom && $classroom->status === 'completed') {
             $this->accessDenied = 'Lớp học đã kết thúc, bạn không thể làm bài kiểm tra này!';
+
             return;
         }
 
         // Chặn làm quiz nếu quiz đã hết hạn
         if (method_exists($this->quiz, 'isExpired') && $this->quiz->isExpired()) {
             $this->accessDenied = 'Bài kiểm tra này đã hết hạn, bạn không thể làm nữa!';
+
             return;
         }
 
@@ -94,8 +106,9 @@ class DoQuiz extends Component
             $this->calculateTimeRemaining();
             // Đảm bảo timeRemaining luôn là số nguyên
             if ($this->timeRemaining !== null) {
-                $this->timeRemaining = (int)$this->timeRemaining;
+                $this->timeRemaining = (int) $this->timeRemaining;
             }
+
             return;
         }
 
@@ -108,6 +121,7 @@ class DoQuiz extends Component
         if ($submittedResult) {
             $this->result = $submittedResult;
             $this->isFinished = true;
+
             return;
         }
 
@@ -126,7 +140,7 @@ class DoQuiz extends Component
         $this->calculateTimeRemaining();
         // Đảm bảo timeRemaining luôn là số nguyên
         if ($this->timeRemaining !== null) {
-            $this->timeRemaining = (int)$this->timeRemaining;
+            $this->timeRemaining = (int) $this->timeRemaining;
         }
     }
 
@@ -134,7 +148,7 @@ class DoQuiz extends Component
     {
         Log::info('nextQuestion called', [
             'current_index' => $this->currentQuestionIndex,
-            'total_questions' => count($this->questions)
+            'total_questions' => count($this->questions),
         ]);
 
         if ($this->currentQuestionIndex < count($this->questions) - 1) {
@@ -161,7 +175,7 @@ class DoQuiz extends Component
 
     public function saveAnswer()
     {
-        if ($this->result && !$this->isFinished) {
+        if ($this->result && ! $this->isFinished) {
             $this->result->update([
                 'answers' => $this->answers,
             ]);
@@ -209,6 +223,7 @@ class DoQuiz extends Component
 
             case 'fill_blank':
                 $correctAnswers = is_array($question['correct_answer']) ? $question['correct_answer'] : [$question['correct_answer']];
+
                 return in_array(strtolower(trim($answer)), array_map('strtolower', $correctAnswers)) ? ($question['score'] ?? 1) : 0;
 
             case 'drag_drop':
@@ -241,8 +256,9 @@ class DoQuiz extends Component
 
     public function calculateTimeRemaining()
     {
-        if (!$this->quiz->time_limit || $this->isFinished) {
+        if (! $this->quiz->time_limit || $this->isFinished) {
             $this->timeRemaining = null;
+
             return ['timeRemaining' => null];
         }
 
@@ -250,10 +266,10 @@ class DoQuiz extends Component
             ? $this->startedAt
             : \Carbon\Carbon::parse($this->startedAt);
 
-        $timeLimitInSeconds = (int)($this->quiz->time_limit * 60); // Convert minutes to seconds
-        $elapsedTime = $startedAt ? (int)$startedAt->diffInSeconds(now(), false) : 0;
+        $timeLimitInSeconds = (int) ($this->quiz->time_limit * 60); // Convert minutes to seconds
+        $elapsedTime = $startedAt ? (int) $startedAt->diffInSeconds(now(), false) : 0;
 
-        $this->timeRemaining = (int)max(0, $timeLimitInSeconds - $elapsedTime);
+        $this->timeRemaining = (int) max(0, $timeLimitInSeconds - $elapsedTime);
 
         // Nếu hết thời gian thì tự động nộp bài
         if ($this->timeRemaining <= 0) {
@@ -267,8 +283,8 @@ class DoQuiz extends Component
     {
         if ($this->timeRemaining && $this->timeRemaining > 0) {
             // Đảm bảo timeRemaining luôn là số nguyên trước khi trừ
-            $this->timeRemaining = (int)$this->timeRemaining;
-            $this->timeRemaining = (int)($this->timeRemaining - 1);
+            $this->timeRemaining = (int) $this->timeRemaining;
+            $this->timeRemaining = (int) ($this->timeRemaining - 1);
 
             if ($this->timeRemaining <= 0) {
                 $this->submitQuiz();
@@ -281,16 +297,16 @@ class DoQuiz extends Component
      */
     public function getFormattedTimeRemaining()
     {
-        if (!$this->timeRemaining || $this->timeRemaining <= 0) {
+        if (! $this->timeRemaining || $this->timeRemaining <= 0) {
             return null;
         }
 
         // Đảm bảo timeRemaining luôn là số nguyên
-        $timeRemaining = (int)$this->timeRemaining;
+        $timeRemaining = (int) $this->timeRemaining;
         $minutes = floor($timeRemaining / 60);
-        $minutes = (int)$minutes;
+        $minutes = (int) $minutes;
         $seconds = $timeRemaining % 60;
-        $seconds = (int)$seconds;
+        $seconds = (int) $seconds;
 
         // Luôn hiển thị định dạng MM:SS
         return sprintf('%02d:%02d', $minutes, $seconds);
@@ -301,12 +317,12 @@ class DoQuiz extends Component
      */
     public function getTimerClass()
     {
-        if (!$this->timeRemaining || $this->timeRemaining <= 0) {
+        if (! $this->timeRemaining || $this->timeRemaining <= 0) {
             return 'bg-secondary text-white';
         }
 
         // Đảm bảo timeRemaining luôn là số nguyên
-        $timeRemaining = (int)$this->timeRemaining;
+        $timeRemaining = (int) $this->timeRemaining;
 
         if ($timeRemaining <= 300) { // 5 phút cuối
             return 'bg-danger text-white animate__animated animate__pulse';
@@ -322,12 +338,13 @@ class DoQuiz extends Component
      */
     public function shouldShowWarning()
     {
-        if (!$this->timeRemaining || $this->timeRemaining <= 0) {
+        if (! $this->timeRemaining || $this->timeRemaining <= 0) {
             return false;
         }
 
         // Đảm bảo timeRemaining luôn là số nguyên
-        $timeRemaining = (int)$this->timeRemaining;
+        $timeRemaining = (int) $this->timeRemaining;
+
         return $timeRemaining <= 300; // Cảnh báo khi còn 5 phút
     }
 
@@ -336,12 +353,13 @@ class DoQuiz extends Component
      */
     public function shouldShowUrgentWarning()
     {
-        if (!$this->timeRemaining || $this->timeRemaining <= 0) {
+        if (! $this->timeRemaining || $this->timeRemaining <= 0) {
             return false;
         }
 
         // Đảm bảo timeRemaining luôn là số nguyên
-        $timeRemaining = (int)$this->timeRemaining;
+        $timeRemaining = (int) $this->timeRemaining;
+
         return $timeRemaining <= 60; // Cảnh báo khẩn cấp khi còn 1 phút
     }
 
@@ -350,11 +368,11 @@ class DoQuiz extends Component
      */
     public function refreshTimer()
     {
-        if (!$this->isFinished) {
+        if (! $this->isFinished) {
             $this->calculateTimeRemaining();
             // Đảm bảo timeRemaining luôn là số nguyên
             if ($this->timeRemaining !== null) {
-                $this->timeRemaining = (int)$this->timeRemaining;
+                $this->timeRemaining = (int) $this->timeRemaining;
             }
         }
     }
@@ -364,25 +382,25 @@ class DoQuiz extends Component
      */
     public function getTimerInfo()
     {
-        if (!$this->timeRemaining || $this->timeRemaining <= 0) {
+        if (! $this->timeRemaining || $this->timeRemaining <= 0) {
             return [
                 'time_remaining' => null,
                 'formatted_time' => null,
                 'timer_class' => 'bg-secondary text-white',
                 'show_warning' => false,
-                'show_urgent_warning' => false
+                'show_urgent_warning' => false,
             ];
         }
 
         // Đảm bảo timeRemaining luôn là số nguyên
-        $timeRemaining = (int)$this->timeRemaining;
+        $timeRemaining = (int) $this->timeRemaining;
 
         return [
             'time_remaining' => $timeRemaining,
             'formatted_time' => $this->getFormattedTimeRemaining(),
             'timer_class' => $this->getTimerClass(),
             'show_warning' => $this->shouldShowWarning(),
-            'show_urgent_warning' => $this->shouldShowUrgentWarning()
+            'show_urgent_warning' => $this->shouldShowUrgentWarning(),
         ];
     }
 

@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\AssignmentSubmission;
 use App\Models\Assignment;
-use App\Models\Student;
-use Illuminate\Database\Seeder;
+use App\Models\AssignmentSubmission;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class AssignmentSubmissionSeeder extends Seeder
 {
@@ -85,11 +84,11 @@ class AssignmentSubmissionSeeder extends Seeder
         if (strpos($title, 'viết') !== false || strpos($title, 'Viết') !== false) {
             return $faker->paragraphs(rand(2, 4), true);
         } elseif (strpos($title, 'nghe') !== false || strpos($title, 'Nghe') !== false) {
-            return "Đã hoàn thành bài tập nghe hiểu. Ghi âm phần trả lời đã được đính kèm.";
+            return 'Đã hoàn thành bài tập nghe hiểu. Ghi âm phần trả lời đã được đính kèm.';
         } elseif (strpos($title, 'đọc') !== false || strpos($title, 'Đọc') !== false) {
-            return "Đã đọc và hiểu nội dung. Trả lời các câu hỏi trong file đính kèm.";
+            return 'Đã đọc và hiểu nội dung. Trả lời các câu hỏi trong file đính kèm.';
         } elseif (strpos($title, 'phát âm') !== false || strpos($title, 'Phát âm') !== false) {
-            return "Đã ghi âm phát âm các từ vựng theo yêu cầu. File âm thanh đã đính kèm.";
+            return 'Đã ghi âm phát âm các từ vựng theo yêu cầu. File âm thanh đã đính kèm.';
         } else {
             return $faker->paragraphs(rand(1, 3), true);
         }

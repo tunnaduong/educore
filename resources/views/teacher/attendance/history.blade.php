@@ -1,4 +1,5 @@
 <x-layouts.dash-teacher active="attendances">
+    @include('components.language')
     <div class="container-fluid">
         <div class="mb-4">
             <a href="{{ route('teacher.attendance.overview') }}" class="btn btn-light mb-2">

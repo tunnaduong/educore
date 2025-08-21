@@ -2,18 +2,23 @@
 
 namespace App\Livewire\Teacher\Grading;
 
-use Livewire\Component;
 use App\Models\Assignment;
 use App\Models\AssignmentSubmission;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class GradeAssignment extends Component
 {
     public $assignment;
+
     public $submissions;
+
     public $grading = [];
+
     public $assignmentId;
+
     public $selectedSubmission = null;
+
     public $showModal = false;
 
     public function mount($assignment)
@@ -24,7 +29,7 @@ class GradeAssignment extends Component
         // Kiểm tra quyền: chỉ giáo viên dạy lớp này mới được chấm
         $user = Auth::user();
         $userClassIds = $user->teachingClassrooms->pluck('id');
-        if (!in_array($this->assignment->class_id, $userClassIds->toArray())) {
+        if (! in_array($this->assignment->class_id, $userClassIds->toArray())) {
             abort(403, 'Bạn không có quyền chấm bài tập này.');
         }
 
@@ -60,8 +65,9 @@ class GradeAssignment extends Component
         // Validation cho điểm
         if ($score !== null && $score !== '') {
             // Kiểm tra xem có phải là số hợp lệ không
-            if (!is_numeric($score) || !is_finite($score)) {
+            if (! is_numeric($score) || ! is_finite($score)) {
                 session()->flash('error', 'Điểm phải là số hợp lệ!');
+
                 return;
             }
 
@@ -70,19 +76,22 @@ class GradeAssignment extends Component
 
             if ($score < 0) {
                 session()->flash('error', 'Điểm không được nhỏ hơn 0!');
+
                 return;
             }
 
             if ($score > 10) {
                 session()->flash('error', 'Điểm không được vượt quá 10!');
+
                 return;
             }
 
             // Kiểm tra số thập phân (chỉ cho phép tối đa 1 chữ số thập phân)
             if (strpos((string) $score, '.') !== false) {
-                $decimalPlaces = strlen(substr(strrchr((string) $score, "."), 1));
+                $decimalPlaces = strlen(substr(strrchr((string) $score, '.'), 1));
                 if ($decimalPlaces > 1) {
                     session()->flash('error', 'Điểm chỉ được có tối đa 1 chữ số thập phân!');
+
                     return;
                 }
             }

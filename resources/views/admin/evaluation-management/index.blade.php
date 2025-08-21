@@ -1,4 +1,5 @@
 <x-layouts.dash-admin active="evaluation-management">
+    @include('components.language')
     <div class="container-fluid py-4">
         <!-- Header -->
         <div class="mb-4">

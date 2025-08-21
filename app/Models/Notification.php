@@ -17,7 +17,7 @@ class Notification extends Model
         'type',
         'is_read',
         'scheduled_at',
-        'expires_at'
+        'expires_at',
     ];
 
     protected $casts = [
@@ -54,14 +54,14 @@ class Notification extends Model
     public function scopeScheduled($query)
     {
         return $query->whereNotNull('scheduled_at')
-                    ->where('scheduled_at', '<=', now());
+            ->where('scheduled_at', '<=', now());
     }
 
     public function scopeActive($query)
     {
-        return $query->where(function($q) {
+        return $query->where(function ($q) {
             $q->whereNull('expires_at')
-              ->orWhere('expires_at', '>', now());
+                ->orWhere('expires_at', '>', now());
         });
     }
 
@@ -74,4 +74,4 @@ class Notification extends Model
     {
         $this->update(['is_read' => false]);
     }
-} 
+}

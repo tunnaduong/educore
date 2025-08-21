@@ -3,7 +3,7 @@
         <div class="row align-items-center">
             <div class="col-md-6">
                 <h5 class="mb-0 text-primary">
-                    <i class="bi bi-calendar-check mr-2"></i>Thống kê điểm danh
+                    <i class="bi bi-calendar-check mr-2"></i>{{ __('general.attendance_statistics') }}
                 </h5>
             </div>
             <div class="col-md-6">
@@ -30,7 +30,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">Tổng buổi học</h6>
+                                <h6 class="card-title mb-0">{{ __('general.total_sessions') }}</h6>
                                 <h3 class="mb-0">{{ $totalStats['total_days'] }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -45,7 +45,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">Có mặt</h6>
+                                <h6 class="card-title mb-0">{{ __('general.present') }}</h6>
                                 <h3 class="mb-0">{{ $totalStats['present_days'] }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -60,7 +60,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">Vắng</h6>
+                                <h6 class="card-title mb-0">{{ __('general.absent') }}</h6>
                                 <h3 class="mb-0">{{ $totalStats['absent_days'] }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -75,7 +75,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">Tỷ lệ có mặt</h6>
+                                <h6 class="card-title mb-0">{{ __('general.attendance_rate') }}</h6>
                                 <h3 class="mb-0">{{ $totalStats['attendance_rate'] }}%</h3>
                             </div>
                             <div class="align-self-center">
@@ -91,21 +91,20 @@
         @if (empty($attendanceStats))
             <div class="text-center py-4">
                 <i class="bi bi-calendar-x fs-1 text-muted mb-3"></i>
-                <h6 class="text-muted">Chưa có dữ liệu điểm danh</h6>
-                <p class="text-muted small">Chưa có dữ liệu điểm danh cho tháng
-                    {{ $this->getMonthName($selectedMonth) }} {{ $selectedYear }}.</p>
+                <h6 class="text-muted">{{ __('general.no_attendance_data') }}</h6>
+                <p class="text-muted small">{{ __('general.no_attendance_data_month', ['month' => $this->getMonthName($selectedMonth), 'year' => $selectedYear]) }}</p>
             </div>
         @else
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead class="table-light">
                         <tr>
-                            <th>Lớp học</th>
-                            <th class="text-center">Tổng số</th>
-                            <th class="text-center">Có mặt</th>
-                            <th class="text-center">Vắng</th>
-                            <th class="text-center">Tỷ lệ</th>
-                            <th class="text-center">Trạng thái</th>
+                            <th>{{ __('general.classroom') }}</th>
+                            <th class="text-center">{{ __('general.total_count') }}</th>
+                            <th class="text-center">{{ __('general.present') }}</th>
+                            <th class="text-center">{{ __('general.absent') }}</th>
+                            <th class="text-center">{{ __('general.rate') }}</th>
+                            <th class="text-center">{{ __('general.status') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -135,11 +134,11 @@
                                 </td>
                                 <td class="text-center">
                                     @if ($stat['attendance_rate'] >= 90)
-                                        <span class="badge bg-success">Tốt</span>
+                                        <span class="badge bg-success">{{ __('general.good') }}</span>
                                     @elseif ($stat['attendance_rate'] >= 70)
-                                        <span class="badge bg-warning">Khá</span>
+                                        <span class="badge bg-warning">{{ __('general.fair') }}</span>
                                     @else
-                                        <span class="badge bg-danger">Cần cải thiện</span>
+                                        <span class="badge bg-danger">{{ __('general.needs_improvement') }}</span>
                                     @endif
                                 </td>
                             </tr>
@@ -151,7 +150,7 @@
             <!-- Chi tiết điểm danh -->
             <div class="mt-4">
                 <h6 class="text-primary mb-3">
-                    <i class="bi bi-list-ul mr-2"></i>Chi tiết điểm danh
+                    <i class="bi bi-list-ul mr-2"></i>{{ __('general.attendance_details') }}
                 </h6>
                 @foreach ($attendanceStats as $stat)
                     <div class="card mb-3">
@@ -163,9 +162,9 @@
                                 <table class="table table-sm">
                                     <thead>
                                         <tr>
-                                            <th>Ngày</th>
-                                            <th>Trạng thái</th>
-                                            <th>Lý do nghỉ</th>
+                                            <th>{{ __('general.date') }}</th>
+                                            <th>{{ __('general.status') }}</th>
+                                            <th>{{ __('general.absence_reason') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -179,9 +178,9 @@
                                                 </td>
                                                 <td>
                                                     @if ($attendance->present)
-                                                        <span class="badge bg-success">Có mặt</span>
+                                                        <span class="badge bg-success">{{ __('general.present') }}</span>
                                                     @else
-                                                        <span class="badge bg-danger">Vắng</span>
+                                                        <span class="badge bg-danger">{{ __('general.absent') }}</span>
                                                     @endif
                                                 </td>
                                                 <td>
@@ -195,7 +194,7 @@
                                         @empty
                                             <tr>
                                                 <td colspan="3" class="text-center text-muted">
-                                                    Chưa có dữ liệu điểm danh
+                                                    {{ __('general.no_attendance_records') }}
                                                 </td>
                                             </tr>
                                         @endforelse

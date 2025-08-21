@@ -1,4 +1,5 @@
 <div class="container-fluid">
+    @include('components.language')
     <!-- Bộ lọc ngày tháng -->
     <div class="card shadow-sm mb-4">
         <div class="card-header bg-light">

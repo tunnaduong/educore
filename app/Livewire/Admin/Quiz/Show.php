@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Admin\Quiz;
 
-use Livewire\Component;
 use App\Models\Quiz;
-use App\Models\QuizResult;
+use Livewire\Component;
 
 class Show extends Component
 {
     public Quiz $quiz;
+
     public $results;
 
     public function mount($quiz)
@@ -28,9 +28,9 @@ class Show extends Component
     public function deleteQuiz()
     {
         $this->quiz->delete();
-        
+
         session()->flash('message', 'Bài kiểm tra đã được xóa thành công.');
-        
+
         return redirect()->route('quizzes.index');
     }
 
@@ -38,7 +38,7 @@ class Show extends Component
     {
         $classroom = $this->quiz->classroom;
         $students = $classroom ? $classroom->students : collect();
-        
+
         return view('admin.quiz.show', [
             'classroom' => $classroom,
             'students' => $students,

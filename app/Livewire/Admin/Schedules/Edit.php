@@ -10,8 +10,11 @@ class Edit extends Component
     public Classroom $classroom;
 
     public $selectedDays = [];
+
     public $startTime = '';
+
     public $endTime = '';
+
     public $notes = '';
 
     protected $rules = [
@@ -58,7 +61,7 @@ class Edit extends Component
 
         $schedule = [
             'days' => $this->selectedDays,
-            'time' => $this->startTime . ' - ' . $this->endTime,
+            'time' => $this->startTime.' - '.$this->endTime,
         ];
 
         $this->classroom->update([
@@ -80,7 +83,7 @@ class Edit extends Component
             'Thursday' => 'Thứ 5',
             'Friday' => 'Thứ 6',
             'Saturday' => 'Thứ 7',
-            'Sunday' => 'Chủ nhật'
+            'Sunday' => 'Chủ nhật',
         ];
 
         return view('admin.schedules.edit', [

@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Route;
 use App\Models\Lesson;
 use App\Models\User;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Route;
 
 class TestTeacherRoutes extends Command
 {
@@ -45,7 +45,7 @@ class TestTeacherRoutes extends Command
     private function testRoutes()
     {
         $this->info('🔗 Testing routes...');
-        
+
         $routes = [
             'teacher.lessons.index' => '/teacher/lessons',
             'teacher.lessons.create' => '/teacher/lessons/create',
@@ -66,14 +66,14 @@ class TestTeacherRoutes extends Command
     private function testLessons()
     {
         $this->info('📚 Testing lessons...');
-        
+
         $lessons = Lesson::all();
         $this->info("Found {$lessons->count()} lessons");
-        
+
         if ($lessons->isNotEmpty()) {
             $lesson = $lessons->first();
             $this->info("Sample lesson: ID={$lesson->id}, Title='{$lesson->title}'");
-            
+
             // Test route generation
             try {
                 $showUrl = route('teacher.lessons.show', $lesson);
@@ -81,36 +81,36 @@ class TestTeacherRoutes extends Command
                 $this->info("✅ Show URL: {$showUrl}");
                 $this->info("✅ Edit URL: {$editUrl}");
             } catch (\Exception $e) {
-                $this->error("❌ Route generation failed: " . $e->getMessage());
+                $this->error('❌ Route generation failed: '.$e->getMessage());
             }
         } else {
-            $this->warn("⚠️  No lessons found in database");
+            $this->warn('⚠️  No lessons found in database');
         }
     }
 
     private function testTeacherPermissions()
     {
         $this->info('👨‍🏫 Testing teacher permissions...');
-        
+
         $teachers = User::where('role', 'teacher')->get();
         $this->info("Found {$teachers->count()} teachers");
-        
+
         if ($teachers->isNotEmpty()) {
             $teacher = $teachers->first();
             $this->info("Sample teacher: ID={$teacher->id}, Name='{$teacher->name}'");
-            
+
             $teachingClassrooms = $teacher->teachingClassrooms;
             $this->info("Teacher has {$teachingClassrooms->count()} teaching classrooms");
-            
+
             if ($teachingClassrooms->isNotEmpty()) {
                 foreach ($teachingClassrooms as $classroom) {
                     $this->info("   - {$classroom->name} (ID: {$classroom->id})");
                 }
             } else {
-                $this->warn("⚠️  Teacher has no teaching classrooms assigned");
+                $this->warn('⚠️  Teacher has no teaching classrooms assigned');
             }
         } else {
-            $this->warn("⚠️  No teachers found in database");
+            $this->warn('⚠️  No teachers found in database');
         }
     }
-} 
+}

@@ -2,10 +2,10 @@
 
 namespace App\Livewire\Teacher\Assignments;
 
-use Livewire\Component;
 use App\Models\Assignment;
 use App\Models\Classroom;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 use Livewire\WithFileUploads;
 
 class Create extends Component
@@ -13,10 +13,15 @@ class Create extends Component
     use WithFileUploads;
 
     public $title;
+
     public $description;
+
     public $class_id;
+
     public $deadline;
+
     public $types = [];
+
     public $allTypes = [
         'text' => 'Điền từ',
         'essay' => 'Tự luận',
@@ -26,9 +31,12 @@ class Create extends Component
     ];
 
     public $classrooms = [];
+
     public $attachment;
+
     public $video;
-    public $score;
+
+    public $max_score;
 
     public function mount()
     {
@@ -53,7 +61,7 @@ class Create extends Component
             'types' => 'required|array|min:1',
             'attachment' => 'nullable|file|mimes:doc,docx,pdf,zip,rar,txt|max:10240',
             'video' => 'nullable|mimetypes:video/mp4,video/avi,video/mpeg,video/quicktime|max:102400',
-            'score' => 'nullable|numeric|min:0',
+            'max_score' => 'nullable|numeric|min:0|max:10',
         ], [
             'title.required' => 'Vui lòng nhập tiêu đề bài tập',
             'class_id.required' => 'Vui lòng chọn lớp',
@@ -64,8 +72,9 @@ class Create extends Component
             'attachment.mimes' => 'Chỉ chấp nhận file doc, docx, pdf, zip, rar, txt',
             'video.max' => 'Video tối đa 100MB',
             'video.mimetypes' => 'Chỉ chấp nhận video mp4, avi, mpeg, mov',
-            'score.numeric' => 'Điểm tối đa phải là số',
-            'score.min' => 'Điểm tối đa phải lớn hơn hoặc bằng 0',
+            'max_score.numeric' => 'Điểm tối đa phải là số',
+            'max_score.min' => 'Điểm tối đa phải lớn hơn hoặc bằng 0',
+            'max_score.max' => 'Điểm tối đa không được vượt quá 10',
         ]);
 
         $attachmentPath = null;
@@ -85,17 +94,17 @@ class Create extends Component
             'types' => $this->types,
             'attachment_path' => $attachmentPath,
             'video_path' => $videoPath,
-            'score' => $this->score,
+            'max_score' => $this->max_score,
         ]);
 
         session()->flash('success', 'Tạo bài tập thành công!');
-        $this->reset(['title', 'description', 'class_id', 'deadline', 'types', 'attachment', 'video', 'score']);
+        $this->reset(['title', 'description', 'class_id', 'deadline', 'types', 'attachment', 'video', 'max_score']);
     }
 
     public function render()
     {
         return view('teacher.assignments.create', [
-            'classrooms' => $this->classrooms
+            'classrooms' => $this->classrooms,
         ]);
     }
 }

@@ -2,22 +2,27 @@
 
 namespace App\Livewire\Admin\Attendance;
 
-use App\Models\Classroom;
 use App\Models\Attendance;
+use App\Models\Classroom;
 use App\Models\Student;
-use App\Models\User;
 use Livewire\Component;
-use Carbon\Carbon;
 
 class TakeAttendance extends Component
 {
     public Classroom $classroom;
+
     public $selectedDate;
+
     public $attendanceData = [];
+
     public $showReasonModal = false;
+
     public $selectedStudentId;
+
     public $absenceReason = '';
+
     public $canTakeAttendance = true;
+
     public $attendanceMessage = '';
 
     protected function rules()
@@ -90,13 +95,14 @@ class TakeAttendance extends Component
 
     public function toggleAttendance($studentId)
     {
-        if (!$this->canTakeAttendance) {
+        if (! $this->canTakeAttendance) {
             session()->flash('error', $this->attendanceMessage);
+
             return;
         }
 
         if (isset($this->attendanceData[$studentId])) {
-            $this->attendanceData[$studentId]['present'] = !$this->attendanceData[$studentId]['present'];
+            $this->attendanceData[$studentId]['present'] = ! $this->attendanceData[$studentId]['present'];
 
             // Nếu chuyển từ vắng sang có mặt, xóa lý do nghỉ
             if ($this->attendanceData[$studentId]['present']) {
@@ -108,8 +114,9 @@ class TakeAttendance extends Component
 
     public function openReasonModal($studentId)
     {
-        if (!$this->canTakeAttendance) {
+        if (! $this->canTakeAttendance) {
             session()->flash('error', $this->attendanceMessage);
+
             return;
         }
 
@@ -135,8 +142,9 @@ class TakeAttendance extends Component
 
     public function saveAttendance()
     {
-        if (!$this->canTakeAttendance) {
+        if (! $this->canTakeAttendance) {
             session()->flash('error', $this->attendanceMessage);
+
             return;
         }
 

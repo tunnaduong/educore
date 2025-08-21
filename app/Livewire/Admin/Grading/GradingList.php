@@ -2,21 +2,24 @@
 
 namespace App\Livewire\Admin\Grading;
 
-use Livewire\Component;
-use Livewire\WithPagination;
 use App\Models\Assignment;
-use App\Models\AssignmentSubmission;
 use App\Models\Classroom;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 class GradingList extends Component
 {
     use WithPagination;
 
     public $search = '';
+
     public $filterClassroom = '';
+
     public $filterStatus = 'all'; // all, has_submissions, no_submissions
+
     public $sortBy = 'submissions_count'; // submissions_count, created_at, deadline
+
     public $sortDirection = 'desc';
 
     protected $queryString = [
@@ -60,7 +63,7 @@ class GradingList extends Component
         if ($user->role === 'admin') {
             $query = Assignment::withCount('submissions')
                 ->with(['classroom.teachers']);
-        } else if ($user->role === 'teacher') {
+        } elseif ($user->role === 'teacher') {
             $classIds = $user->teachingClassrooms->pluck('id');
             $query = Assignment::withCount('submissions')
                 ->with(['classroom.teachers'])
@@ -71,8 +74,8 @@ class GradingList extends Component
 
         // Filter by search
         if ($this->search) {
-            $query->where('title', 'like', '%' . $this->search . '%')
-                ->orWhere('description', 'like', '%' . $this->search . '%');
+            $query->where('title', 'like', '%'.$this->search.'%')
+                ->orWhere('description', 'like', '%'.$this->search.'%');
         }
 
         // Filter by classroom
@@ -111,7 +114,7 @@ class GradingList extends Component
 
         if ($user->role === 'admin') {
             return Classroom::with('teachers')->get();
-        } else if ($user->role === 'teacher') {
+        } elseif ($user->role === 'teacher') {
             return $user->teachingClassrooms;
         }
 

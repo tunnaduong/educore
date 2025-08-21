@@ -11,7 +11,7 @@ class AIHelper
 
     public function __construct()
     {
-        $this->geminiService = new GeminiService();
+        $this->geminiService = new GeminiService;
     }
 
     /**
@@ -38,7 +38,7 @@ class AIHelper
         } catch (\Exception $e) {
             Log::error('AI correction error', [
                 'submission_id' => $submission->id,
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
         }
 
@@ -80,7 +80,7 @@ class AIHelper
         } catch (\Exception $e) {
             Log::error('AI grading error', [
                 'submission_id' => $submission->id,
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
         }
 
@@ -99,7 +99,7 @@ class AIHelper
 
             $result = $this->geminiService->validateAndFixQuiz($quiz->questions);
 
-            if ($result && !empty($result['fixed_questions'])) {
+            if ($result && ! empty($result['fixed_questions'])) {
                 // Cập nhật quiz với câu hỏi đã sửa và lưu vào database
                 $quiz->questions = $result['fixed_questions'];
                 $quiz->ai_validation_errors = $result['errors_found'] ?? [];
@@ -112,7 +112,7 @@ class AIHelper
         } catch (\Exception $e) {
             Log::error('AI saved quiz validation error', [
                 'quiz_id' => $quiz->id ?? 'unknown',
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
         }
 
@@ -131,7 +131,7 @@ class AIHelper
 
             $result = $this->geminiService->validateAndFixQuiz($quiz->questions);
 
-            if ($result && !empty($result['fixed_questions'])) {
+            if ($result && ! empty($result['fixed_questions'])) {
                 // Chỉ cập nhật questions trong object, không save
                 $quiz->questions = $result['fixed_questions'];
 
@@ -139,7 +139,7 @@ class AIHelper
                 $result['validation_info'] = [
                     'errors_found' => $result['errors_found'] ?? [],
                     'suggestions' => $result['suggestions'] ?? [],
-                    'validated_at' => now()->toDateTimeString()
+                    'validated_at' => now()->toDateTimeString(),
                 ];
 
                 return $result;
@@ -147,7 +147,7 @@ class AIHelper
         } catch (\Exception $e) {
             Log::error('AI quiz validation error', [
                 'quiz_type' => get_class($quiz),
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
         }
 
@@ -171,13 +171,13 @@ class AIHelper
                 $questionCount
             );
 
-            if ($result && !empty($result['questions'])) {
+            if ($result && ! empty($result['questions'])) {
                 return $result;
             }
         } catch (\Exception $e) {
             Log::error('AI quiz generation error', [
                 'lesson_id' => $lesson->id,
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
         }
 
@@ -193,35 +193,37 @@ class AIHelper
             Log::info('Starting question bank generation', [
                 'topic' => $topic,
                 'subject' => $subject,
-                'maxQuestions' => $maxQuestions
+                'maxQuestions' => $maxQuestions,
             ]);
 
             // Kiểm tra API key
-            if (!$this->isAIAvailable()) {
+            if (! $this->isAIAvailable()) {
                 Log::error('AI not available - missing API key');
+
                 return null;
             }
 
             $result = $this->geminiService->generateQuestionBank($topic, $subject, $maxQuestions);
 
             Log::info('Question bank generation result', [
-                'has_result' => !empty($result),
-                'has_questions' => !empty($result['questions']),
-                'question_count' => count($result['questions'] ?? [])
+                'has_result' => ! empty($result),
+                'has_questions' => ! empty($result['questions']),
+                'question_count' => count($result['questions'] ?? []),
             ]);
 
-            if ($result && !empty($result['questions'])) {
+            if ($result && ! empty($result['questions'])) {
                 return $result;
             }
 
             Log::error('Question bank generation failed - no questions returned');
+
             return null;
         } catch (\Exception $e) {
             Log::error('AI question bank generation error', [
                 'topic' => $topic,
                 'subject' => $subject,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
         }
 
@@ -257,7 +259,7 @@ class AIHelper
         } catch (\Exception $e) {
             Log::error('AI assignment analysis error', [
                 'submission_id' => $submission->id,
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
         }
 
@@ -273,11 +275,11 @@ class AIHelper
             'Nội dung (40%): Độ chính xác, đầy đủ và sâu sắc của nội dung',
             'Cấu trúc (25%): Tính logic, mạch lạc và tổ chức của bài viết',
             'Ngữ pháp (20%): Độ chính xác về ngữ pháp và chính tả',
-            'Sáng tạo (15%): Tính độc đáo và sáng tạo trong cách trình bày'
+            'Sáng tạo (15%): Tính độc đáo và sáng tạo trong cách trình bày',
         ];
 
         // Nếu assignment có tiêu chí riêng thì sử dụng
-        if (!empty($assignment->grading_criteria)) {
+        if (! empty($assignment->grading_criteria)) {
             $criteria = json_decode($assignment->grading_criteria, true) ?: $criteria;
         }
 
@@ -289,7 +291,7 @@ class AIHelper
      */
     public function isAIAvailable()
     {
-        return !empty(config('services.gemini.api_key'));
+        return ! empty(config('services.gemini.api_key'));
     }
 
     /**
@@ -304,7 +306,7 @@ class AIHelper
             'total_quiz_validations' => 0,
             'total_quiz_generations' => 0,
             'total_question_banks' => 0,
-            'total_analyses' => 0
+            'total_analyses' => 0,
         ];
     }
 }

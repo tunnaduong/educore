@@ -2,18 +2,18 @@
 
 namespace App\Livewire\Teacher\Schedules;
 
-use Livewire\Component;
-use App\Models\Lesson;
 use App\Models\Assignment;
 use App\Models\Quiz;
-use App\Models\Classroom;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class Index extends Component
 {
     public $events = [];
+
     public $selectedDate = null;
+
     public $selectedEvents = [];
 
     public function mount()
@@ -47,12 +47,12 @@ class Index extends Component
                         for ($week = 0; $week < 4; $week++) {
                             foreach ($days as $day) {
                                 $startDate = now()->startOfWeek()->addWeeks($week)->addDays($this->getDayNumber($day));
-                                $startDateTime = $startDate->format('Y-m-d') . 'T' . $startTime;
-                                $endDateTime = $startDate->format('Y-m-d') . 'T' . $endTime;
+                                $startDateTime = $startDate->format('Y-m-d').'T'.$startTime;
+                                $endDateTime = $startDate->format('Y-m-d').'T'.$endTime;
 
                                 $events[] = [
-                                    'id' => 'schedule_' . $classroom->id . '_' . $day . '_' . $week,
-                                    'title' => 'Lịch học - ' . $classroom->name,
+                                    'id' => 'schedule_'.$classroom->id.'_'.$day.'_'.$week,
+                                    'title' => 'Lịch học - '.$classroom->name,
                                     'start' => $startDateTime,
                                     'end' => $endDateTime,
                                     'backgroundColor' => '#0d6efd',
@@ -63,8 +63,8 @@ class Index extends Component
                                         'description' => 'Lịch học định kỳ',
                                         'location' => 'Chưa cập nhật',
                                         'day' => $day,
-                                        'time' => $time
-                                    ]
+                                        'time' => $time,
+                                    ],
                                 ];
                             }
                         }
@@ -82,8 +82,8 @@ class Index extends Component
         foreach ($assignments as $assignment) {
             $classroom = $classrooms->where('id', $assignment->class_id)->first();
             $events[] = [
-                'id' => 'assignment_' . $assignment->id,
-                'title' => $assignment->title . ' (Bài tập) - ' . $classroom->name,
+                'id' => 'assignment_'.$assignment->id,
+                'title' => $assignment->title.' (Bài tập) - '.$classroom->name,
                 'start' => $assignment->deadline,
                 'end' => $assignment->deadline,
                 'allDay' => true,
@@ -93,8 +93,8 @@ class Index extends Component
                     'type' => 'assignment',
                     'classroom' => $classroom->name,
                     'description' => $assignment->description,
-                    'deadline' => $assignment->deadline
-                ]
+                    'deadline' => $assignment->deadline,
+                ],
             ];
         }
 
@@ -107,8 +107,8 @@ class Index extends Component
         foreach ($quizzes as $quiz) {
             $classroom = $classrooms->where('id', $quiz->class_id)->first();
             $events[] = [
-                'id' => 'quiz_' . $quiz->id,
-                'title' => $quiz->title . ' (Kiểm tra) - ' . $classroom->name,
+                'id' => 'quiz_'.$quiz->id,
+                'title' => $quiz->title.' (Kiểm tra) - '.$classroom->name,
                 'start' => $quiz->deadline,
                 'end' => $quiz->deadline,
                 'allDay' => true,
@@ -118,8 +118,8 @@ class Index extends Component
                     'type' => 'quiz',
                     'classroom' => $classroom->name,
                     'description' => $quiz->description,
-                    'deadline' => $quiz->deadline
-                ]
+                    'deadline' => $quiz->deadline,
+                ],
             ];
         }
 
@@ -129,8 +129,10 @@ class Index extends Component
     public function getEventsForDate($date)
     {
         $dateStr = Carbon::parse($date)->format('Y-m-d');
+
         return collect($this->events)->filter(function ($event) use ($dateStr) {
             $eventDate = Carbon::parse($event['start'])->format('Y-m-d');
+
             return $eventDate === $dateStr;
         })->values()->toArray();
     }
@@ -144,7 +146,7 @@ class Index extends Component
             'Thursday' => 4,
             'Friday' => 5,
             'Saturday' => 6,
-            'Sunday' => 0
+            'Sunday' => 0,
         ];
 
         return $days[$day] ?? 0;

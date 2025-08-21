@@ -14,40 +14,44 @@ class ScheduleConflictHelper
     public static function checkStudentScheduleConflict(User $student, Classroom $newClassroom): array
     {
         $conflicts = [];
-        
+
         // Lấy tất cả lớp học hiện tại của học sinh
         $currentClassrooms = $student->enrolledClassrooms()
             ->where('classrooms.id', '!=', $newClassroom->id)
             ->get();
-        
+
         if ($currentClassrooms->isEmpty()) {
             return ['hasConflict' => false, 'conflicts' => []];
         }
-        
+
         $newSchedule = $newClassroom->schedule;
-        if (!$newSchedule || !isset($newSchedule['days']) || !isset($newSchedule['time'])) {
+        if (! $newSchedule || ! isset($newSchedule['days']) || ! isset($newSchedule['time'])) {
             return ['hasConflict' => false, 'conflicts' => []];
         }
-        
+
         $newDays = $newSchedule['days'];
         $newTimeRange = $newSchedule['time'];
-        
+
         foreach ($currentClassrooms as $currentClassroom) {
-            $currentSchedule = $currentClassroom->schedule;
-            if (!$currentSchedule || !isset($currentSchedule['days']) || !isset($currentSchedule['time'])) {
+            // Loại trừ chính lớp đang xét nếu vì lý do nào đó vẫn lọt qua filter truy vấn
+            if ($newClassroom->id && $currentClassroom->id == $newClassroom->id) {
                 continue;
             }
-            
+            $currentSchedule = $currentClassroom->schedule;
+            if (! $currentSchedule || ! isset($currentSchedule['days']) || ! isset($currentSchedule['time'])) {
+                continue;
+            }
+
             $currentDays = $currentSchedule['days'];
             $currentTimeRange = $currentSchedule['time'];
-            
+
             // Kiểm tra trùng ngày
             $conflictingDays = array_intersect($newDays, $currentDays);
-            
-            if (!empty($conflictingDays)) {
+
+            if (! empty($conflictingDays)) {
                 // Kiểm tra trùng thời gian
                 $timeConflict = self::checkTimeConflict($newTimeRange, $currentTimeRange);
-                
+
                 if ($timeConflict['hasConflict']) {
                     $conflicts[] = [
                         'classroom' => $currentClassroom,
@@ -61,15 +65,15 @@ class ScheduleConflictHelper
                             $newTimeRange,
                             $currentTimeRange,
                             $timeConflict['overlapTime'] ?? null
-                        )
+                        ),
                     ];
                 }
             }
         }
-        
+
         return [
-            'hasConflict' => !empty($conflicts),
-            'conflicts' => $conflicts
+            'hasConflict' => ! empty($conflicts),
+            'conflicts' => $conflicts,
         ];
     }
 
@@ -79,40 +83,44 @@ class ScheduleConflictHelper
     public static function checkTeacherScheduleConflict(User $teacher, Classroom $newClassroom): array
     {
         $conflicts = [];
-        
+
         // Lấy tất cả lớp học hiện tại của giáo viên
         $currentClassrooms = $teacher->teachingClassrooms()
             ->where('classrooms.id', '!=', $newClassroom->id)
             ->get();
-        
+
         if ($currentClassrooms->isEmpty()) {
             return ['hasConflict' => false, 'conflicts' => []];
         }
-        
+
         $newSchedule = $newClassroom->schedule;
-        if (!$newSchedule || !isset($newSchedule['days']) || !isset($newSchedule['time'])) {
+        if (! $newSchedule || ! isset($newSchedule['days']) || ! isset($newSchedule['time'])) {
             return ['hasConflict' => false, 'conflicts' => []];
         }
-        
+
         $newDays = $newSchedule['days'];
         $newTimeRange = $newSchedule['time'];
-        
+
         foreach ($currentClassrooms as $currentClassroom) {
-            $currentSchedule = $currentClassroom->schedule;
-            if (!$currentSchedule || !isset($currentSchedule['days']) || !isset($currentSchedule['time'])) {
+            // Loại trừ chính lớp đang xét nếu vì lý do nào đó vẫn lọt qua filter truy vấn
+            if ($newClassroom->id && $currentClassroom->id == $newClassroom->id) {
                 continue;
             }
-            
+            $currentSchedule = $currentClassroom->schedule;
+            if (! $currentSchedule || ! isset($currentSchedule['days']) || ! isset($currentSchedule['time'])) {
+                continue;
+            }
+
             $currentDays = $currentSchedule['days'];
             $currentTimeRange = $currentSchedule['time'];
-            
+
             // Kiểm tra trùng ngày
             $conflictingDays = array_intersect($newDays, $currentDays);
-            
-            if (!empty($conflictingDays)) {
+
+            if (! empty($conflictingDays)) {
                 // Kiểm tra trùng thời gian
                 $timeConflict = self::checkTimeConflict($newTimeRange, $currentTimeRange);
-                
+
                 if ($timeConflict['hasConflict']) {
                     $conflicts[] = [
                         'classroom' => $currentClassroom,
@@ -126,15 +134,15 @@ class ScheduleConflictHelper
                             $newTimeRange,
                             $currentTimeRange,
                             $timeConflict['overlapTime'] ?? null
-                        )
+                        ),
                     ];
                 }
             }
         }
-        
+
         return [
-            'hasConflict' => !empty($conflicts),
-            'conflicts' => $conflicts
+            'hasConflict' => ! empty($conflicts),
+            'conflicts' => $conflicts,
         ];
     }
 
@@ -144,26 +152,38 @@ class ScheduleConflictHelper
     public static function checkMultipleTeachersScheduleConflict(array $teacherIds, Classroom $classroom): array
     {
         $allConflicts = [];
-        
+
         foreach ($teacherIds as $teacherId) {
             $teacher = User::find($teacherId);
-            if (!$teacher) continue;
-            
+            if (! $teacher) {
+                continue;
+            }
+
             $conflict = self::checkTeacherScheduleConflict($teacher, $classroom);
-            if ($conflict['hasConflict']) {
-                $allConflicts[$teacherId] = [
-                    'teacher' => $teacher,
-                    'conflicts' => $conflict['conflicts']
-                ];
+
+            // Loại bỏ mọi xung đột trùng với chính lớp hiện tại theo id
+            if (! empty($conflict['conflicts'])) {
+                $filtered = array_values(array_filter($conflict['conflicts'], function ($item) use ($classroom) {
+                    return isset($item['classroom']) && $classroom->id
+                        ? $item['classroom']->id !== $classroom->id
+                        : true;
+                }));
+
+                if (! empty($filtered)) {
+                    $allConflicts[$teacherId] = [
+                        'teacher' => $teacher,
+                        'conflicts' => $filtered,
+                    ];
+                }
             }
         }
-        
+
         return [
-            'hasConflict' => !empty($allConflicts),
-            'conflicts' => $allConflicts
+            'hasConflict' => ! empty($allConflicts),
+            'conflicts' => $allConflicts,
         ];
     }
-    
+
     /**
      * Kiểm tra trùng thời gian giữa hai khoảng thời gian
      */
@@ -171,32 +191,32 @@ class ScheduleConflictHelper
     {
         $time1Parts = explode(' - ', $time1);
         $time2Parts = explode(' - ', $time2);
-        
+
         if (count($time1Parts) !== 2 || count($time2Parts) !== 2) {
             return ['hasConflict' => false];
         }
-        
+
         $start1 = Carbon::createFromFormat('H:i', trim($time1Parts[0]));
         $end1 = Carbon::createFromFormat('H:i', trim($time1Parts[1]));
         $start2 = Carbon::createFromFormat('H:i', trim($time2Parts[0]));
         $end2 = Carbon::createFromFormat('H:i', trim($time2Parts[1]));
-        
+
         // Kiểm tra xem có trùng thời gian không
         if ($start1 < $end2 && $start2 < $end1) {
             // Tính thời gian trùng
             $overlapStart = $start1->copy()->max($start2);
             $overlapEnd = $end1->copy()->min($end2);
-            $overlapTime = $overlapStart->format('H:i') . ' - ' . $overlapEnd->format('H:i');
-            
+            $overlapTime = $overlapStart->format('H:i').' - '.$overlapEnd->format('H:i');
+
             return [
                 'hasConflict' => true,
-                'overlapTime' => $overlapTime
+                'overlapTime' => $overlapTime,
             ];
         }
-        
+
         return ['hasConflict' => false];
     }
-    
+
     /**
      * Tạo thông báo trùng lịch cho học sinh
      */
@@ -204,21 +224,21 @@ class ScheduleConflictHelper
     {
         $dayNames = [
             'Monday' => 'Thứ 2',
-            'Tuesday' => 'Thứ 3', 
+            'Tuesday' => 'Thứ 3',
             'Wednesday' => 'Thứ 4',
             'Thursday' => 'Thứ 5',
             'Friday' => 'Thứ 6',
             'Saturday' => 'Thứ 7',
-            'Sunday' => 'Chủ nhật'
+            'Sunday' => 'Chủ nhật',
         ];
-        
+
         $conflictingDayNames = [];
         foreach ($conflictingDays as $day) {
             $conflictingDayNames[] = $dayNames[$day] ?? $day;
         }
-        
+
         $conflictingDaysText = implode(', ', $conflictingDayNames);
-        
+
         if ($overlapTime) {
             return "Trùng lịch với lớp {$classroomName} vào {$conflictingDaysText} từ {$overlapTime}";
         } else {
@@ -233,51 +253,53 @@ class ScheduleConflictHelper
     {
         $dayNames = [
             'Monday' => 'Thứ 2',
-            'Tuesday' => 'Thứ 3', 
+            'Tuesday' => 'Thứ 3',
             'Wednesday' => 'Thứ 4',
             'Thursday' => 'Thứ 5',
             'Friday' => 'Thứ 6',
             'Saturday' => 'Thứ 7',
-            'Sunday' => 'Chủ nhật'
+            'Sunday' => 'Chủ nhật',
         ];
-        
+
         $conflictingDayNames = [];
         foreach ($conflictingDays as $day) {
             $conflictingDayNames[] = $dayNames[$day] ?? $day;
         }
-        
+
         $conflictingDaysText = implode(', ', $conflictingDayNames);
-        
+
         if ($overlapTime) {
             return "Giáo viên bị trùng lịch với lớp {$classroomName} vào {$conflictingDaysText} từ {$overlapTime}";
         } else {
             return "Giáo viên bị trùng lịch với lớp {$classroomName} vào {$conflictingDaysText}";
         }
     }
-    
+
     /**
      * Kiểm tra trùng lịch cho nhiều học sinh cùng lúc
      */
     public static function checkMultipleStudentsScheduleConflict(array $studentIds, Classroom $classroom): array
     {
         $allConflicts = [];
-        
+
         foreach ($studentIds as $studentId) {
             $student = User::find($studentId);
-            if (!$student) continue;
-            
+            if (! $student) {
+                continue;
+            }
+
             $conflict = self::checkStudentScheduleConflict($student, $classroom);
             if ($conflict['hasConflict']) {
                 $allConflicts[$studentId] = [
                     'student' => $student,
-                    'conflicts' => $conflict['conflicts']
+                    'conflicts' => $conflict['conflicts'],
                 ];
             }
         }
-        
+
         return [
-            'hasConflict' => !empty($allConflicts),
-            'conflicts' => $allConflicts
+            'hasConflict' => ! empty($allConflicts),
+            'conflicts' => $allConflicts,
         ];
     }
 }

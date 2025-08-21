@@ -2,20 +2,23 @@
 
 namespace App\Livewire\Student\Assignments;
 
+use App\Models\Assignment;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Assignment;
-use App\Models\AssignmentSubmission;
-use Illuminate\Support\Facades\Auth;
 
 class Index extends Component
 {
     use WithPagination;
 
     public $filterStatus = 'all'; // all, upcoming, overdue, completed
+
     public $filterClassroom = '';
+
     public $filterTeacher = '';
+
     public $filterType = ''; // text, essay, image, audio, video
+
     public $search = '';
 
     protected $queryString = [
@@ -61,7 +64,7 @@ class Index extends Component
     {
         $student = Auth::user()->student;
 
-        if (!$student) {
+        if (! $student) {
             return collect();
         }
 
@@ -73,7 +76,7 @@ class Index extends Component
                 'submissions' => function ($q) use ($student) {
                     $q->where('student_id', $student->id);
                 },
-                'classroom'
+                'classroom',
             ]); // Thêm classroom để dùng status
 
         // Lọc assignment theo trạng thái lớp
@@ -125,8 +128,8 @@ class Index extends Component
         // Search
         if ($this->search) {
             $query->where(function ($q) {
-                $q->where('title', 'like', '%' . $this->search . '%')
-                    ->orWhere('description', 'like', '%' . $this->search . '%');
+                $q->where('title', 'like', '%'.$this->search.'%')
+                    ->orWhere('description', 'like', '%'.$this->search.'%');
             });
         }
 
@@ -137,7 +140,7 @@ class Index extends Component
     {
         $student = Auth::user()->student;
 
-        if (!$student) {
+        if (! $student) {
             return collect();
         }
 
@@ -148,7 +151,7 @@ class Index extends Component
     {
         $student = Auth::user()->student;
 
-        if (!$student) {
+        if (! $student) {
             return collect();
         }
 
@@ -172,7 +175,7 @@ class Index extends Component
 
     public function canSubmit($assignment)
     {
-        return !$this->isOverdue($assignment) && !$this->isCompleted($assignment);
+        return ! $this->isOverdue($assignment) && ! $this->isCompleted($assignment);
     }
 
     public function render()

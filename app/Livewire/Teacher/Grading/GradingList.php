@@ -2,21 +2,24 @@
 
 namespace App\Livewire\Teacher\Grading;
 
-use Livewire\Component;
-use Livewire\WithPagination;
 use App\Models\Assignment;
-use App\Models\AssignmentSubmission;
 use App\Models\Classroom;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 class GradingList extends Component
 {
     use WithPagination;
 
     public $search = '';
+
     public $filterClassroom = '';
+
     public $filterStatus = 'all'; // all, has_submissions, no_submissions
+
     public $sortBy = 'submissions_count'; // submissions_count, created_at, deadline
+
     public $sortDirection = 'desc';
 
     protected $queryString = [
@@ -60,14 +63,14 @@ class GradingList extends Component
         $query = Assignment::withCount('submissions')
             ->with([
                 'classroom.teachers',
-                'submissions.student.user'
+                'submissions.student.user',
             ])
             ->whereIn('class_id', $classIds);
 
         // Filter by search
         if ($this->search) {
-            $query->where('title', 'like', '%' . $this->search . '%')
-                ->orWhere('description', 'like', '%' . $this->search . '%');
+            $query->where('title', 'like', '%'.$this->search.'%')
+                ->orWhere('description', 'like', '%'.$this->search.'%');
         }
 
         // Filter by classroom
@@ -103,6 +106,7 @@ class GradingList extends Component
     public function getClassroomsProperty()
     {
         $user = Auth::user();
+
         return $user->teachingClassrooms;
     }
 

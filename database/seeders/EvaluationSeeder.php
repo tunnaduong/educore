@@ -2,11 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\Evaluation;
 use App\Models\Student;
-use App\Models\EvaluationQuestion;
+use Illuminate\Database\Seeder;
 
 class EvaluationSeeder extends Seeder
 {
@@ -20,13 +18,14 @@ class EvaluationSeeder extends Seeder
 
         if ($students->count() == 0) {
             $this->command->info('Không có học viên nào để tạo đánh giá!');
+
             return;
         }
 
         // Tạo đánh giá cho mỗi học viên
         foreach ($students as $student) {
             // Kiểm tra xem học viên đã có đánh giá chưa
-            if (!$student->evaluations()->exists()) {
+            if (! $student->evaluations()->exists()) {
                 Evaluation::create([
                     'student_id' => $student->id,
                     'teacher_ratings' => [
@@ -49,6 +48,6 @@ class EvaluationSeeder extends Seeder
             }
         }
 
-        $this->command->info('Đã tạo đánh giá cho ' . $students->count() . ' học viên!');
+        $this->command->info('Đã tạo đánh giá cho '.$students->count().' học viên!');
     }
 }

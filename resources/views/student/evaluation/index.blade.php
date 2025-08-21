@@ -1,4 +1,5 @@
 <div class="p-4">
+    @include('components.language')
     <!-- Header -->
     <div class="text-center mb-4">
         <h4 class="text-primary fw-bold">

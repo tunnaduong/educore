@@ -3,13 +3,14 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Message;
-use Livewire\Component;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class Home extends Component
 {
     public $unreadCount = 0;
+
     public $unreadNotification = 0;
 
     public function mount()

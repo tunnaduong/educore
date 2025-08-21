@@ -1,4 +1,5 @@
 <div class="container-fluid">
+    @include('components.language')
     <!-- Thống kê theo khóa học -->
     <div class="card shadow-sm">
         <div class="card-header bg-gradient-success text-white">
@@ -52,13 +53,18 @@
                                 </span>
                             </td>
                             <td class="text-center">
-                                @php 
-                                    $completion_rate = $course['total_students'] > 0 ? ($course['students_paid'] / $course['total_students']) * 100 : 0;
+                                @php
+                                    $completion_rate =
+                                        $course['total_students'] > 0
+                                            ? ($course['students_paid'] / $course['total_students']) * 100
+                                            : 0;
                                 @endphp
                                 <div class="d-flex flex-column align-items-center">
-                                    <span class="badge bg-success mb-1">{{ $course['students_paid'] }}/{{ $course['total_students'] }}</span>
+                                    <span
+                                        class="badge bg-success mb-1">{{ $course['students_paid'] }}/{{ $course['total_students'] }}</span>
                                     <div class="progress" style="width: 60px; height: 4px;">
-                                        <div class="progress-bar bg-success" style="width: {{ $completion_rate }}%"></div>
+                                        <div class="progress-bar bg-success" style="width: {{ $completion_rate }}%">
+                                        </div>
                                     </div>
                                     <small class="text-muted">{{ number_format($completion_rate, 1) }}%</small>
                                 </div>
@@ -75,7 +81,7 @@
                                     {{ $course['profit'] >= 0 ? '+' : '' }}{{ number_format($course['profit']) }}₫
                                 </span>
                                 <div class="mt-1">
-                                    @if($course['profit'] >= 0)
+                                    @if ($course['profit'] >= 0)
                                         <i class="bi bi-trending-up text-success"></i>
                                     @else
                                         <i class="bi bi-trending-down text-danger"></i>
@@ -99,7 +105,7 @@
 </div>
 
 <style>
-.bg-gradient-success {
-    background: linear-gradient(135deg, #198754 0%, #20c997 100%) !important;
-}
+    .bg-gradient-success {
+        background: linear-gradient(135deg, #198754 0%, #20c997 100%) !important;
+    }
 </style>

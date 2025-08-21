@@ -2,20 +2,28 @@
 
 namespace App\Livewire\Admin\Quiz;
 
-use Livewire\Component;
-use App\Models\Quiz;
 use App\Models\Classroom;
+use App\Models\Quiz;
+use Livewire\Component;
 
 class Edit extends Component
 {
     public Quiz $quiz;
+
     public $title = '';
+
     public $description = '';
+
     public $class_id = '';
+
     public $deadline = '';
+
     public $time_limit = '';
+
     public $questions = [];
+
     public $editingIndex = null; // Index của câu hỏi đang được sửa
+
     public $currentQuestion = [
         'question' => '',
         'type' => 'multiple_choice',
@@ -180,7 +188,7 @@ class Edit extends Component
             'description' => $this->description,
             'class_id' => $this->class_id,
             'deadline' => $this->deadline ? now()->parse($this->deadline) : null,
-            'time_limit' => $this->time_limit ? (int)$this->time_limit : null,
+            'time_limit' => $this->time_limit ? (int) $this->time_limit : null,
             'questions' => $this->questions,
         ]);
 

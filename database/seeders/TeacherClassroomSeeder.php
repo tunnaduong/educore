@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-use App\Models\User;
 use App\Models\Classroom;
+use App\Models\User;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class TeacherClassroomSeeder extends Seeder
@@ -23,11 +22,13 @@ class TeacherClassroomSeeder extends Seeder
 
         if ($teachers->isEmpty()) {
             $this->command->warn('⚠️  Không có teacher nào trong hệ thống!');
+
             return;
         }
 
         if ($classrooms->isEmpty()) {
             $this->command->warn('⚠️  Không có lớp học nào trong hệ thống!');
+
             return;
         }
 
@@ -41,7 +42,7 @@ class TeacherClassroomSeeder extends Seeder
         foreach ($teachers as $index => $teacher) {
             // Gán teacher vào lớp học tương ứng hoặc lớp đầu tiên
             $classroom = $classrooms->get($index, $classrooms->first());
-            
+
             DB::table('class_user')->insert([
                 'class_id' => $classroom->id,
                 'user_id' => $teacher->id,
@@ -55,4 +56,4 @@ class TeacherClassroomSeeder extends Seeder
 
         $this->command->info('🎉 Hoàn thành việc gán teacher vào lớp học!');
     }
-} 
+}

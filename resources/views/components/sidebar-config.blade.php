@@ -73,14 +73,14 @@
         ],
         [
             'key' => 'finance',
-            'label' => 'Thống kê thu chi',
+            'label' => __('general.financial_statistics'),
             'route' => route('admin.finance.index'),
             'icon' => 'fas fa-coins',
             'visible' => true,
         ],
         [
             'key' => 'evaluation-management',
-            'label' => 'Quản lý đánh giá',
+            'label' => __('general.evaluation_management'),
             'route' => route('evaluation-management'),
             'icon' => 'fas fa-star',
             'visible' => true,

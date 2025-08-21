@@ -11,8 +11,11 @@ class Index extends Component
     use WithPagination;
 
     public $search = '';
+
     public $filterType = '';
+
     public $filterStatus = '';
+
     public $selectedNotification = null;
 
     public function markAsRead($id)
@@ -90,8 +93,8 @@ class Index extends Component
             })
             ->when($this->search, function ($query) {
                 $query->where(function ($q) {
-                    $q->where('title', 'like', '%' . $this->search . '%')
-                        ->orWhere('message', 'like', '%' . $this->search . '%');
+                    $q->where('title', 'like', '%'.$this->search.'%')
+                        ->orWhere('message', 'like', '%'.$this->search.'%');
                 });
             })
             ->when($this->filterType, function ($query) {

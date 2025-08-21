@@ -87,6 +87,7 @@ class QuestionBank extends Model
         return collect($this->questions ?? [])
             ->filter(function ($question) use ($tag) {
                 $tags = $question['tags'] ?? [];
+
                 return in_array($tag, $tags);
             })
             ->toArray();
