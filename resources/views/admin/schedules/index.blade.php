@@ -94,9 +94,10 @@
                                         </td>
                                         <td>
                                             @if ($classroom->status === 'active')
-                                                <span class="badge bg-success">Đang hoạt động</span>
+                                                <span class="badge bg-success">{{ __('general.active_status') }}</span>
                                             @elseif($classroom->status === 'inactive')
-                                                <span class="badge bg-warning">Tạm dừng</span>
+                                                <span
+                                                    class="badge bg-warning">{{ __('general.inactive_status') }}</span>
                                             @else
                                                 <span class="badge bg-secondary">{{ $classroom->status }}</span>
                                             @endif
@@ -104,11 +105,13 @@
                                         <td>
                                             <div class="d-flex gap-x-2">
                                                 <a href="{{ route('schedules.show', $classroom) }}"
-                                                    class="btn btn-sm btn-outline-primary" title="Xem chi tiết">
+                                                    class="btn btn-sm btn-outline-primary"
+                                                    title="{{ __('general.view_details') }}">
                                                     <i class="bi bi-eye"></i>
                                                 </a>
                                                 <a href="{{ route('schedules.edit', $classroom) }}"
-                                                    class="btn btn-sm btn-outline-warning" title="Chỉnh sửa">
+                                                    class="btn btn-sm btn-outline-warning"
+                                                    title="{{ __('general.edit') }}">
                                                     <i class="bi bi-pencil"></i>
                                                 </a>
                                             </div>
@@ -126,8 +129,8 @@
                 @else
                     <div class="text-center py-5">
                         <i class="bi bi-calendar-x" style="font-size: 3rem; color: #6c757d;"></i>
-                        <h5 class="mt-3 text-muted">Không tìm thấy lịch học nào</h5>
-                        <p class="text-muted">Hãy thử thay đổi bộ lọc hoặc tạo lịch học mới</p>
+                        <h5 class="mt-3 text-muted">{{ __('general.no_schedules_found') }}</h5>
+                        <p class="text-muted">{{ __('general.try_changing_filters') }}</p>
                     </div>
                 @endif
             </div>
