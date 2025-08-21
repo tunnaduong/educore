@@ -441,4 +441,20 @@ return [
     'no_quizzes' => '暂无测验',
     'no_quizzes_filter' => '未找到符合当前筛选条件的测验。',
     'no_quizzes_yet' => '您还没有需要做的测验。',
+    // Admin Sidebar translations
+    'financial_statistics' => '财务统计',
+    'evaluation_management' => '评估管理',
+    // Evaluation Component translations
+    'evaluation_required' => '需要学习质量评估',
+    'function_locked' => '功能已锁定',
+    'complete_evaluation_first' => '您需要完成学习质量评估才能使用系统。',
+    // Video Embed Component translations
+    'lesson_video' => '课程视频',
+    'youtube_video' => 'YouTube视频',
+    'google_drive_video' => 'Google Drive视频',
+    'vimeo_video' => 'Vimeo视频',
+    'video' => '视频',
+    'open_in_new_tab' => '在新标签页中打开',
+    'cannot_embed_video' => '无法嵌入此视频。',
+    'watch_video' => '观看视频',
 ];

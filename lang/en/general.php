@@ -441,4 +441,20 @@ return [
     'no_quizzes' => 'No quizzes',
     'no_quizzes_filter' => 'No quizzes found matching current filter.',
     'no_quizzes_yet' => 'You don\'t have any quizzes to do yet.',
+    // Admin Sidebar translations
+    'financial_statistics' => 'Financial Statistics',
+    'evaluation_management' => 'Evaluation Management',
+    // Evaluation Component translations
+    'evaluation_required' => 'Learning Quality Evaluation Required',
+    'function_locked' => 'Function Locked',
+    'complete_evaluation_first' => 'You need to complete the learning quality evaluation before you can use the system.',
+    // Video Embed Component translations
+    'lesson_video' => 'Lesson Video',
+    'youtube_video' => 'YouTube Video',
+    'google_drive_video' => 'Google Drive Video',
+    'vimeo_video' => 'Vimeo Video',
+    'video' => 'Video',
+    'open_in_new_tab' => 'Open in new tab',
+    'cannot_embed_video' => 'Cannot embed this video.',
+    'watch_video' => 'Watch video',
 ];

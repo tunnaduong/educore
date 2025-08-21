@@ -464,4 +464,20 @@ return [
     'no_quizzes' => 'Không có bài kiểm tra nào',
     'no_quizzes_filter' => 'Không tìm thấy bài kiểm tra nào phù hợp với bộ lọc hiện tại.',
     'no_quizzes_yet' => 'Bạn chưa có bài kiểm tra nào cần làm.',
+    // Admin Sidebar translations
+    'financial_statistics' => 'Thống kê thu chi',
+    'evaluation_management' => 'Quản lý đánh giá',
+    // Evaluation Component translations
+    'evaluation_required' => 'Yêu cầu đánh giá chất lượng học tập',
+    'function_locked' => 'Chức năng đã bị khóa',
+    'complete_evaluation_first' => 'Bạn cần hoàn thành đánh giá chất lượng học tập trước khi có thể sử dụng hệ thống.',
+    // Video Embed Component translations
+    'lesson_video' => 'Video bài học',
+    'youtube_video' => 'YouTube Video',
+    'google_drive_video' => 'Google Drive Video',
+    'vimeo_video' => 'Vimeo Video',
+    'video' => 'Video',
+    'open_in_new_tab' => 'Mở trong tab mới',
+    'cannot_embed_video' => 'Không thể nhúng video này.',
+    'watch_video' => 'Xem video',
 ];
