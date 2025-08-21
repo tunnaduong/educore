@@ -219,8 +219,8 @@
                     </div>
                 </div>
 
-                <h3 class="mb-3 typing-animation">AI đang xử lý...</h3>
-                <p class="mb-4">Đang phân tích và xử lý dữ liệu với trí tuệ nhân tạo</p>
+                <h3 class="mb-3 typing-animation">{{ __('general.ai_processing') }}</h3>
+                <p class="mb-4">{{ __('general.ai_processing_description') }}</p>
 
                 <div class="progress mb-3" style="height: 8px;">
                     <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%"></div>
@@ -228,13 +228,13 @@
 
                 <div class="loading-steps">
                     <div class="loading-step active">
-                        <i class="fas fa-search"></i> Phân tích nội dung
+                        <i class="fas fa-search"></i> {{ __('general.analyzing_content') }}
                     </div>
                     <div class="loading-step">
-                        <i class="fas fa-cogs"></i> Xử lý AI
+                        <i class="fas fa-cogs"></i> {{ __('general.ai_processing_step') }}
                     </div>
                     <div class="loading-step">
-                        <i class="fas fa-check"></i> Hoàn thành
+                        <i class="fas fa-check"></i> {{ __('general.completing') }}
                     </div>
                 </div>
             </div>
@@ -246,9 +246,9 @@
                     <div class="card-header">
                         <h4 class="card-title">
                             <i class="fas fa-robot text-primary"></i>
-                            Chấm bài Tiếng Trung bằng AI
+                            {{ __('general.grade_chinese_with_ai') }}
                         </h4>
-                        <p class="text-muted">Sử dụng AI để sửa lỗi ngữ pháp, chấm điểm và phân tích bài nộp</p>
+                        <p class="text-muted">{{ __('general.ai_usage_description') }}</p>
                     </div>
                     <div class="card-body">
                         @if (session()->has('success'))
@@ -278,8 +278,8 @@
                                         <div class="particle"></div>
                                         <div class="particle"></div>
                                     </div>
-                                    <h3 class="mb-3">AI đang chấm bài...</h3>
-                                    <p class="mb-4">Đang phân tích ngữ pháp, chấm điểm và đưa ra gợi ý cải thiện</p>
+                                    <h3 class="mb-3">{{ __('general.ai_processing') }}</h3>
+                                    <p class="mb-4">{{ __('general.ai_processing_description') }}</p>
                                     <div class="progress" style="height: 8px;">
                                         <div class="progress-bar progress-bar-striped progress-bar-animated"
                                             style="width: 100%"></div>
@@ -292,11 +292,11 @@
                                 <div class="col-md-6">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h5 class="card-title">Bài nộp của học sinh</h5>
+                                            <h5 class="card-title">{{ __('general.student_submission') }}</h5>
                                         </div>
                                         <div class="card-body">
                                             <div class="mb-3">
-                                                <strong>Nội dung:</strong>
+                                                <strong>{{ __('general.content') }}:</strong>
                                                 <div class="border rounded p-3 mt-2 bg-light">
                                                     {!! nl2br(e($submission->content)) !!}
                                                 </div>

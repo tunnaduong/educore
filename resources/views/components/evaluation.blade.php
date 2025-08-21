@@ -24,7 +24,7 @@
                 <div class="modal-header bg-warning text-dark">
                     <h5 class="modal-title">
                         <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                        Yêu cầu đánh giá chất lượng học tập
+                        {{ __('general.evaluation_required') }}
                     </h5>
                 </div>
                 <div class="modal-body p-0" style="max-height: 80vh; overflow-y: auto;">
@@ -39,8 +39,8 @@
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <i class="bi bi-lock-fill fs-1 text-muted mb-3"></i>
-                <h4 class="text-muted">Chức năng đã bị khóa</h4>
-                <p class="text-muted">Bạn cần hoàn thành đánh giá chất lượng học tập trước khi có thể sử dụng hệ thống.
+                <h4 class="text-muted">{{ __('general.function_locked') }}</h4>
+                <p class="text-muted">{{ __('general.complete_evaluation_first') }}
                 </p>
             </div>
         </div>

@@ -10,9 +10,7 @@
                 </div>
                 <div class="card-body">
                     <p class="text-muted">
-                        Khám phá các công cụ AI mạnh mẽ để hỗ trợ công việc giảng dạy của bạn.
-                        Từ chấm điểm tự động đến tạo bài kiểm tra, AI sẽ giúp bạn tiết kiệm thời gian và nâng cao chất
-                        lượng giảng dạy.
+                        {{ __('general.ai_intro_text') }}
                     </p>
                 </div>
             </div>
@@ -31,8 +29,7 @@
                 </div>
                 <div class="card-body">
                     <p class="text-muted mb-3">
-                        Sử dụng AI để chấm điểm các bài tập một cách nhanh chóng và chính xác.
-                        AI sẽ phân tích nội dung và đưa ra đánh giá chi tiết.
+                        {{ __('general.ai_grading_intro') }}
                     </p>
 
                     @if ($recentSubmissions->count() > 0)
@@ -40,12 +37,12 @@
                             <table class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Học sinh</th>
-                                        <th>Bài tập</th>
-                                        <th>Loại nộp</th>
-                                        <th>Ngày nộp</th>
-                                        <th>Trạng thái</th>
-                                        <th>Thao tác</th>
+                                        <th>{{ __('general.student') }}</th>
+                                        <th>{{ __('general.assignment') }}</th>
+                                        <th>{{ __('general.submission_type') }}</th>
+                                        <th>{{ __('general.submission_date') }}</th>
+                                        <th>{{ __('general.status') }}</th>
+                                        <th>{{ __('general.actions') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -55,15 +52,15 @@
                                             <td>{{ $submission->assignment->title }}</td>
                                             <td>
                                                 @if ($submission->submission_type === 'text')
-                                                    <span class="badge badge-info">Văn bản</span>
+                                                    <span class="badge badge-info">{{ __('general.text_type') }}</span>
                                                 @elseif ($submission->submission_type === 'file')
-                                                    <span class="badge badge-secondary">File</span>
+                                                    <span class="badge badge-secondary">{{ __('general.file_type') }}</span>
                                                 @elseif ($submission->submission_type === 'image')
-                                                    <span class="badge badge-warning">Hình ảnh</span>
+                                                    <span class="badge badge-warning">{{ __('general.image_type') }}</span>
                                                 @elseif ($submission->submission_type === 'audio')
-                                                    <span class="badge badge-danger">Âm thanh</span>
+                                                    <span class="badge badge-danger">{{ __('general.audio_type') }}</span>
                                                 @elseif ($submission->submission_type === 'video')
-                                                    <span class="badge badge-dark">Video</span>
+                                                    <span class="badge badge-dark">{{ __('general.video_type') }}</span>
                                                 @else
                                                     <span class="badge badge-light">{{ ucfirst($submission->submission_type) }}</span>
                                                 @endif
@@ -72,9 +69,9 @@
                                             </td>
                                             <td>
                                                 @if ($submission->score || $submission->ai_score)
-                                                    <span class="badge badge-success">Đã chấm</span>
+                                                    <span class="badge badge-success">{{ __('general.graded') }}</span>
                                                 @else
-                                                    <span class="badge badge-warning">Chưa chấm</span>
+                                                    <span class="badge badge-warning">{{ __('general.not_graded') }}</span>
                                                 @endif
                                             </td>
                                             <td>
@@ -82,10 +79,10 @@
                                                     <a href="{{ route('teacher.ai.grading', $submission->id) }}"
                                                         class="btn btn-sm btn-primary">
                                                         <i class="bi bi-robot"></i>
-                                                        Chấm điểm bằng AI
+                                                        {{ __('general.grade_with_ai') }}
                                                     </a>
                                                 @else
-                                                    <span class="text-muted">Đã chấm</span>
+                                                    <span class="text-muted">{{ __('general.already_graded') }}</span>
                                                 @endif
                                             </td>
                                         </tr>
@@ -96,7 +93,7 @@
                     @else
                         <div class="alert alert-info">
                             <i class="bi bi-info-circle"></i>
-                            Hiện tại không có bài nộp nào cần chấm điểm.
+                            {{ __('general.no_submissions_to_grade') }}
                         </div>
                     @endif
                 </div>
@@ -116,8 +113,7 @@
                 </div>
                 <div class="card-body">
                     <p class="text-muted mb-3">
-                        Tạo các bài kiểm tra chất lượng cao dựa trên nội dung bài giảng hoặc bài tập.
-                        AI sẽ tạo ra các câu hỏi đa dạng và phù hợp với mức độ học sinh.
+                        {{ __('general.quiz_creation_intro') }}
                     </p>
 
                     <div class="row">
@@ -125,11 +121,11 @@
                             <div class="card bg-light">
                                 <div class="card-body text-center">
                                     <i class="bi bi-file-text text-primary" style="font-size: 3rem;"></i>
-                                    <h5 class="mt-3">Tạo Quiz từ bài tập</h5>
-                                    <p class="text-muted">Tạo quiz dựa trên nội dung bài tập hiện có</p>
+                                    <h5 class="mt-3">{{ __('general.create_quiz_from_assignment') }}</h5>
+                                    <p class="text-muted">{{ __('general.create_quiz_from_assignment_desc') }}</p>
                                     <a href="{{ route('teacher.ai.quiz-generator') }}" class="btn btn-primary">
                                         <i class="bi bi-robot"></i>
-                                        Tạo Quiz từ bài tập
+                                        {{ __('general.create_quiz_from_assignment_btn') }}
                                     </a>
                                 </div>
                             </div>
@@ -138,11 +134,11 @@
                             <div class="card bg-light">
                                 <div class="card-body text-center">
                                     <i class="bi bi-collection text-success" style="font-size: 3rem;"></i>
-                                    <h5 class="mt-3">Tạo ngân hàng câu hỏi</h5>
-                                    <p class="text-muted">Tạo bộ câu hỏi đa dạng cho nhiều bài kiểm tra</p>
+                                    <h5 class="mt-3">{{ __('general.create_question_bank') }}</h5>
+                                    <p class="text-muted">{{ __('general.create_question_bank_desc') }}</p>
                                     <a href="{{ route('teacher.ai.question-bank-generator') }}" class="btn btn-success">
                                         <i class="bi bi-robot"></i>
-                                        Tạo ngân hàng câu hỏi
+                                        {{ __('general.create_question_bank_btn') }}
                                     </a>
                                 </div>
                             </div>
@@ -217,25 +213,22 @@
                         <div class="col-md-4">
                             <div class="text-center mb-3">
                                 <i class="bi bi-1-circle text-primary" style="font-size: 2rem;"></i>
-                                <h5 class="mt-2">Chấm điểm tự động</h5>
-                                <p class="text-muted">Chọn bài nộp cần chấm và để AI phân tích nội dung, đưa ra điểm số
-                                    và nhận xét</p>
+                                <h5 class="mt-2">{{ __('general.auto_grading_guide_title') }}</h5>
+                                <p class="text-muted">{{ __('general.auto_grading_guide_desc') }}</p>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="text-center mb-3">
                                 <i class="bi bi-2-circle text-success" style="font-size: 2rem;"></i>
-                                <h5 class="mt-2">Tạo Quiz</h5>
-                                <p class="text-muted">Nhập nội dung bài giảng hoặc chọn bài tập để AI tạo ra các câu hỏi
-                                    kiểm tra phù hợp</p>
+                                <h5 class="mt-2">{{ __('general.create_quiz_guide_title') }}</h5>
+                                <p class="text-muted">{{ __('general.create_quiz_guide_desc') }}</p>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="text-center mb-3">
                                 <i class="bi bi-3-circle text-info" style="font-size: 2rem;"></i>
-                                <h5 class="mt-2">Ngân hàng câu hỏi</h5>
-                                <p class="text-muted">Tạo bộ câu hỏi đa dạng để sử dụng cho nhiều bài kiểm tra khác
-                                    nhau</p>
+                                <h5 class="mt-2">{{ __('general.question_bank_guide_title') }}</h5>
+                                <p class="text-muted">{{ __('general.question_bank_guide_desc') }}</p>
                             </div>
                         </div>
                     </div>
