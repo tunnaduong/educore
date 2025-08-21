@@ -1,7 +1,7 @@
 <x-layouts.dash-admin active="reports">
     <div class="mb-4">
         <a href="{{ route('reports.index') }}" class="btn btn-outline-secondary">
-            <i class="bi bi-arrow-left"></i> Quay lại báo cáo tổng hợp
+            <i class="bi bi-arrow-left"></i> {{ __('general.back_to_summary_report') }}
         </a>
     </div>
     <div class="card mb-4">
@@ -62,7 +62,8 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center py-4 text-muted">{{ __('views.no_data_available') }}</td>
+                                <td colspan="7" class="text-center py-4 text-muted">
+                                    {{ __('views.no_data_available') }}</td>
                             </tr>
                         @endforelse
                     </tbody>
