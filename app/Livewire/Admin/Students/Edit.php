@@ -33,7 +33,7 @@ class Edit extends Component
             'phone' => 'required|string|max:20',
             'date_of_birth' => 'nullable|date|before:today',
             'joined_at' => 'nullable|date',
-            'status' => 'required|in:active,paused,dropped',
+            'status' => 'required|in:new,active,paused,dropped',
             'level' => 'nullable|string|max:50',
             'notes' => 'nullable|string|max:500',
         ];
