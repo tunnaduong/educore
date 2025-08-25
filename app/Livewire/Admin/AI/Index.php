@@ -25,6 +25,7 @@ class Index extends Component
             $this->recentSubmissions = collect();
             $this->availableAssignments = collect();
             $this->classrooms = collect();
+
             return;
         }
         /** @var UserModel $user */
