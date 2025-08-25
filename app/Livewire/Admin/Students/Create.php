@@ -21,7 +21,7 @@ class Create extends Component
 
     public $joined_at = '';
 
-    public $status = 'active';
+    public $status = 'new';
 
     public $level = '';
 
@@ -36,7 +36,7 @@ class Create extends Component
             'password' => ['required', 'min:6'],
             'date_of_birth' => 'nullable|date|before:today',
             'joined_at' => 'nullable|date',
-            'status' => 'required|in:active,paused,dropped',
+            'status' => 'required|in:new,active,paused,dropped',
             'level' => 'nullable|string|max:50',
             'notes' => 'nullable|string|max:500',
         ];
