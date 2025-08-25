@@ -78,7 +78,7 @@
                                             <i class="fas fa-check-circle mr-1"></i>Kiểm tra AI
                                         </div>
                                         <div wire:loading class="loading-overlay">
-                                            <div class="spinner-border spinner-border-sm text-light me-2"
+                                            <div class="spinner-border spinner-border-sm text-light mr-2"
                                                 role="status">
                                                 <span class="visually-hidden">Loading...</span>
                                             </div>

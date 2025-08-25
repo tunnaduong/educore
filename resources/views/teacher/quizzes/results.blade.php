@@ -6,16 +6,16 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-graph-up me-2"></i>Kết quả bài kiểm tra
+                        <i class="bi bi-graph-up mr-2"></i>Kết quả bài kiểm tra
                     </h4>
                     <p class="text-muted mb-0">{{ $quiz->title }} - {{ $quiz->classroom->name ?? 'N/A' }}</p>
                 </div>
                 <div class="btn-group">
                     <a href="{{ route('teacher.quizzes.show', $quiz) }}" class="btn btn-outline-primary">
-                        <i class="bi bi-eye me-2"></i>Xem chi tiết
+                        <i class="bi bi-eye mr-2"></i>Xem chi tiết
                     </a>
                     <a href="{{ route('teacher.quizzes.index') }}" class="btn btn-outline-secondary">
-                        <i class="bi bi-arrow-left me-2"></i>Quay lại
+                        <i class="bi bi-arrow-left mr-2"></i>Quay lại
                     </a>
                 </div>
             </div>
@@ -57,7 +57,7 @@
                 <div class="card bg-info text-white">
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
-                            <div>
+                            <div class="flex-fill d-flex flex-column">
                                 <h6 class="card-title">Tỷ lệ đạt</h6>
                                 <h3 class="mb-0">{{ number_format($passRate, 1) }}%</h3>
                             </div>
@@ -106,7 +106,7 @@
                     </div>
                     <div class="col-md-2 d-flex align-items-end">
                         <button class="btn btn-outline-secondary w-100" wire:click="$set('search', '')">
-                            <i class="bi bi-arrow-clockwise me-2"></i>Reset
+                            <i class="bi bi-arrow-clockwise mr-2"></i>Reset
                         </button>
                     </div>
                 </div>
@@ -117,7 +117,7 @@
         <div class="card shadow-sm">
             <div class="card-header bg-light">
                 <h6 class="mb-0">
-                    <i class="bi bi-list-ul me-2"></i>Danh sách kết quả ({{ $totalResults }})
+                    <i class="bi bi-list-ul mr-2"></i>Danh sách kết quả ({{ $totalResults }})
                 </h6>
             </div>
             <div class="card-body">
@@ -210,7 +210,7 @@
         <!-- Flash Message -->
         @if (session()->has('message'))
             <div class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3" role="alert">
-                <i class="bi bi-check-circle me-2"></i>{{ session('message') }}
+                <i class="bi bi-check-circle mr-2"></i>{{ session('message') }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -219,7 +219,7 @@
 
         @if (session()->has('error'))
             <div class="alert alert-danger alert-dismissible fade show position-fixed top-0 end-0 m-3" role="alert">
-                <i class="bi bi-exclamation-triangle me-2"></i>{{ session('error') }}
+                <i class="bi bi-exclamation-triangle mr-2"></i>{{ session('error') }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

@@ -7,7 +7,7 @@
                 <div class="card h-100">
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0">
-                            <i class="fas fa-comments me-2"></i>
+                            <i class="fas fa-comments mr-2"></i>
                             {{ __('general.chat') }}
                         </h5>
                     </div>
@@ -18,17 +18,17 @@
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link {{ $activeTab === 'classes' ? 'active' : '' }}"
                                     wire:click="setActiveTab('classes')" type="button" role="tab">
-                                    <i class="fas fa-users me-1"></i>
+                                    <i class="fas fa-users mr-1"></i>
                                     {{ __('general.classes') }}
                                     @if ($unreadCount > 0)
-                                        <span class="badge bg-danger ms-1">{{ $unreadCount }}</span>
+                                        <span class="badge bg-danger ml-1">{{ $unreadCount }}</span>
                                     @endif
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link {{ $activeTab === 'users' ? 'active' : '' }}"
                                     wire:click="setActiveTab('users')" type="button" role="tab">
-                                    <i class="fas fa-user me-1"></i>
+                                    <i class="fas fa-user mr-1"></i>
                                     {{ __('general.users') }}
                                 </button>
                             </li>
@@ -56,7 +56,7 @@
                                             wire:click="selectClass({{ $class->id }})" style="cursor: pointer;">
                                             <div class="d-flex align-items-center">
                                                 <div
-                                                    class="avatar-sm bg-primary rounded-circle d-flex align-items-center justify-content-center me-3">
+                                                    class="avatar-sm bg-primary rounded-circle d-flex align-items-center justify-content-center mr-3">
                                                     <i class="fas fa-users text-white"></i>
                                                 </div>
                                                 <div>
@@ -94,7 +94,7 @@
                                             wire:click="selectUser({{ $user->id }})" style="cursor: pointer;">
                                             <div class="d-flex align-items-center">
                                                 <div
-                                                    class="avatar-sm bg-secondary rounded-circle d-flex align-items-center justify-content-center me-3">
+                                                    class="avatar-sm bg-secondary rounded-circle d-flex align-items-center justify-content-center mr-3">
                                                     <i class="fas fa-user text-white"></i>
                                                 </div>
                                                 <div>
@@ -132,7 +132,7 @@
                                 <div class="d-flex align-items-center">
                                     @if ($selectedUser)
                                         <div
-                                            class="avatar-sm bg-secondary rounded-circle d-flex align-items-center justify-content-center me-3">
+                                            class="avatar-sm bg-secondary rounded-circle d-flex align-items-center justify-content-center mr-3">
                                             <i class="fas fa-user text-white"></i>
                                         </div>
                                         <div>
@@ -141,7 +141,7 @@
                                         </div>
                                     @elseif($selectedClass)
                                         <div
-                                            class="avatar-sm bg-primary rounded-circle d-flex align-items-center justify-content-center me-3">
+                                            class="avatar-sm bg-primary rounded-circle d-flex align-items-center justify-content-center mr-3">
                                             <i class="fas fa-users text-white"></i>
                                         </div>
                                         <div>
@@ -156,7 +156,7 @@
                                 @if (count($typingUsers) > 0)
                                     <div class="text-muted">
                                         <small>
-                                            <i class="fas fa-circle text-success me-1"></i>
+                                            <i class="fas fa-circle text-success mr-1"></i>
                                             {{ implode(', ', $typingUsers) }} đang nhập...
                                         </small>
                                     </div>
@@ -187,7 +187,7 @@
                                                 <div class="mt-2">
                                                     <a href="{{ route('chat.download', $message->id) }}"
                                                         class="btn btn-sm {{ $message->sender_id === auth()->id() ? 'btn-light' : 'btn-outline-primary' }}">
-                                                        <i class="fas fa-paperclip me-1"></i>
+                                                        <i class="fas fa-paperclip mr-1"></i>
                                                         Tải file đính kèm
                                                     </a>
                                                 </div>
@@ -235,10 +235,10 @@
                                         @if ($attachment)
                                             <div class="mt-2 p-2 bg-light rounded">
                                                 <small class="text-muted">
-                                                    <i class="fas fa-file me-1"></i>
+                                                    <i class="fas fa-file mr-1"></i>
                                                     {{ $attachment->getClientOriginalName() }}
                                                 </small>
-                                                <button type="button" class="btn btn-sm btn-outline-danger ms-2"
+                                                <button type="button" class="btn btn-sm btn-outline-danger ml-2"
                                                     wire:click="$set('attachment', null)">
                                                     <i class="fas fa-times"></i>
                                                 </button>

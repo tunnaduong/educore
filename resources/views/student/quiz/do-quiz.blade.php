@@ -199,13 +199,13 @@
                                             </span>
                                             @if ($this->shouldShowWarning())
                                                 <span
-                                                    class="badge bg-warning text-dark ms-2 animate__animated animate__pulse">
+                                                    class="badge bg-warning text-dark ml-2 animate__animated animate__pulse">
                                                     <i class="bi bi-exclamation-triangle"></i> Cảnh báo
                                                 </span>
                                             @endif
                                             @if ($this->shouldShowUrgentWarning())
                                                 <span
-                                                    class="badge bg-danger text-white ms-2 animate__animated animate__pulse">
+                                                    class="badge bg-danger text-white ml-2 animate__animated animate__pulse">
                                                     <i class="bi bi-exclamation-triangle-fill"></i> Khẩn cấp
                                                 </span>
                                             @endif
@@ -265,17 +265,17 @@
                             <!-- Legend -->
                             <div class="mt-3 pt-3 border-top">
                                 <div class="d-flex align-items-center mb-1">
-                                    <div class="btn btn-sm btn-outline-secondary me-2"
+                                    <div class="btn btn-sm btn-outline-secondary mr-2"
                                         style="width: 20px; height: 20px; padding: 0;"></div>
                                     <small class="text-muted">Chưa trả lời</small>
                                 </div>
                                 <div class="d-flex align-items-center mb-1">
-                                    <div class="btn btn-sm btn-success me-2"
+                                    <div class="btn btn-sm btn-success mr-2"
                                         style="width: 20px; height: 20px; padding: 0;"></div>
                                     <small class="text-muted">Đã trả lời</small>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <div class="btn btn-sm btn-primary me-2"
+                                    <div class="btn btn-sm btn-primary mr-2"
                                         style="width: 20px; height: 20px; padding: 0;"></div>
                                     <small class="text-muted">Câu hiện tại</small>
                                 </div>

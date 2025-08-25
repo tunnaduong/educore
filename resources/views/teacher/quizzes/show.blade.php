@@ -107,7 +107,7 @@
                                         </div>
                                     </div>
                                     <div class="fw-medium mb-2">{{ $question['question'] }}</div>
-                                    <div class="ms-3">
+                                    <div class="ml-3">
                                         @foreach ($question['options'] as $optionIndex => $option)
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" disabled
