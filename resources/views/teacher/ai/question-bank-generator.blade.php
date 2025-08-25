@@ -317,14 +317,14 @@
                                                 {{ $isProcessing ? 'disabled' : '' }}>
                                                 @if ($isProcessing)
                                                     <div class="loading-overlay">
-                                                        <div class="spinner-border spinner-border-sm text-light me-2"
+                                                        <div class="spinner-border spinner-border-sm text-light mr-2"
                                                             role="status">
                                                             <span class="visually-hidden">Loading...</span>
                                                         </div>
                                                         <span class="loading-text">Đang tạo ngân hàng câu hỏi...</span>
                                                     </div>
                                                 @else
-                                                    <i class="fas fa-magic me-2"></i>
+                                                    <i class="fas fa-magic mr-2"></i>
                                                     Tạo Ngân hàng Câu hỏi Tiếng Trung
                                                 @endif
                                             </button>

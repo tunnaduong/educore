@@ -3,7 +3,7 @@
     <!-- Header -->
     <div class="text-center mb-4">
         <h4 class="text-primary fw-bold">
-            <i class="bi bi-star-fill text-warning me-2"></i>
+            <i class="bi bi-star-fill text-warning mr-2"></i>
             Đánh giá chất lượng học tập
         </h4>
         @php
@@ -54,7 +54,7 @@
 
         @if ($currentRound)
             <div class="alert alert-primary">
-                <i class="bi bi-calendar-event me-2"></i>
+                <i class="bi bi-calendar-event mr-2"></i>
                 <strong>Đợt đánh giá:</strong> {{ $currentRound->name }}
                 @if ($currentRound->description)
                     <br><small class="text-white">{{ $currentRound->description }}</small>
@@ -63,21 +63,21 @@
         @endif
 
         <div class="alert alert-info">
-            <i class="bi bi-info-circle me-2"></i>
+            <i class="bi bi-info-circle mr-2"></i>
             <strong>Lưu ý:</strong> Bạn cần hoàn thành đánh giá này để có thể tiếp tục sử dụng các tính năng của hệ
             thống.
         </div>
 
         @if (session()->has('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
+                <i class="bi bi-check-circle mr-2"></i>{{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif
 
         @if (session()->has('error'))
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-triangle me-2"></i>{{ session('error') }}
+                <i class="bi bi-exclamation-triangle mr-2"></i>{{ session('error') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif
@@ -102,11 +102,11 @@
 
         @if ($isSubmitted && $remainingCountView === 0)
             <div class="alert alert-success">
-                <i class="bi bi-check2-circle me-2"></i>
+                <i class="bi bi-check2-circle mr-2"></i>
                 <strong>Cảm ơn bạn!</strong> Bạn đã hoàn thành đánh giá cho tất cả đợt hiện tại.
                 <div class="mt-3">
                     <button type="button" class="btn btn-success" onclick="location.reload()">
-                        <i class="bi bi-arrow-right me-2"></i>Tiếp tục sử dụng hệ thống
+                        <i class="bi bi-arrow-right mr-2"></i>Tiếp tục sử dụng hệ thống
                     </button>
                 </div>
             </div>
@@ -116,9 +116,9 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0">
-                            <i class="bi bi-person-workspace me-2"></i>
+                            <i class="bi bi-person-workspace mr-2"></i>
                             Nhóm 1: Đánh giá về giáo viên
-                            <span class="badge bg-light text-primary ms-2">{{ count($teacherQuestions) }} câu
+                            <span class="badge bg-light text-primary ml-2">{{ count($teacherQuestions) }} câu
                                 hỏi</span>
                         </h5>
                     </div>
@@ -157,9 +157,9 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-success text-white">
                         <h5 class="mb-0">
-                            <i class="bi bi-book me-2"></i>
+                            <i class="bi bi-book mr-2"></i>
                             Nhóm 2: Đánh giá về chất lượng khóa học
-                            <span class="badge bg-light text-success ms-2">{{ count($courseQuestions) }} câu
+                            <span class="badge bg-light text-success ml-2">{{ count($courseQuestions) }} câu
                                 hỏi</span>
                         </h5>
                     </div>
@@ -198,9 +198,9 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-warning text-dark">
                         <h5 class="mb-0">
-                            <i class="bi bi-emoji-smile me-2"></i>
+                            <i class="bi bi-emoji-smile mr-2"></i>
                             Nhóm 3: Cảm nhận cá nhân
-                            <span class="badge bg-light text-warning ms-2">{{ count($personalQuestions) }} câu
+                            <span class="badge bg-light text-warning ml-2">{{ count($personalQuestions) }} câu
                                 hỏi</span>
                         </h5>
                     </div>
@@ -250,7 +250,7 @@
                 <!-- Buttons -->
                 <div class="d-flex justify-content-between">
                     <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-save me-2"></i>Lưu đánh giá
+                        <i class="bi bi-save mr-2"></i>Lưu đánh giá
                     </button>
                     @php
                         $teacherAnswered = count($teacher_ratings) >= count($teacherQuestions);
@@ -261,13 +261,13 @@
                     <button type="button" wire:click="submitEvaluation"
                         class="btn btn-success {{ !$allAnswered ? 'disabled' : '' }}"
                         {{ !$allAnswered ? 'disabled' : '' }}>
-                        <i class="bi bi-send me-2"></i>Gửi đánh giá
+                        <i class="bi bi-send mr-2"></i>Gửi đánh giá
                     </button>
                 </div>
 
                 @if (!$allAnswered)
                     <div class="alert alert-warning mt-3">
-                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        <i class="bi bi-exclamation-triangle mr-2"></i>
                         <strong>Lưu ý:</strong> Bạn cần trả lời đầy đủ tất cả câu hỏi bắt buộc trước khi có thể
                         gửi đánh giá.
                         @if (!$teacherAnswered)

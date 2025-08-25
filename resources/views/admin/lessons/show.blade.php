@@ -102,7 +102,7 @@
                             @if ($lesson->attachment)
                                 <a href="{{ asset('storage/' . $lesson->attachment) }}" target="_blank"
                                     class="btn btn-outline-success mb-2"><i class="bi bi-download"></i> Tải tài liệu</a>
-                                <button class="btn btn-outline-primary mb-2 ms-2" type="button"
+                                <button class="btn btn-outline-primary mb-2 ml-2" type="button"
                                     onclick="openPreviewModal()">
                                     <i class="bi bi-eye"></i> Xem trước tài liệu
                                 </button>
