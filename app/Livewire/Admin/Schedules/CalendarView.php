@@ -2,10 +2,9 @@
 
 namespace App\Livewire\Admin\Schedules;
 
-use App\Models\Classroom;
 use App\Models\Assignment;
+use App\Models\Classroom;
 use App\Models\Quiz;
-use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class CalendarView extends Component
@@ -23,17 +22,17 @@ class CalendarView extends Component
 
         // Lấy lịch học từ các lớp học
         $classrooms = Classroom::with(['teachers', 'students'])->get();
-        
+
         foreach ($classrooms as $classroom) {
             if ($classroom->schedule && is_array($classroom->schedule)) {
                 $days = $classroom->schedule['days'] ?? [];
                 $time = $classroom->schedule['time'] ?? '';
-                
-                if (!empty($days) && !empty($time)) {
+
+                if (! empty($days) && ! empty($time)) {
                     // Tạo events cho mỗi ngày trong tuần
                     foreach ($days as $day) {
                         $events[] = [
-                            'id' => 'schedule_' . $classroom->id . '_' . $day,
+                            'id' => 'schedule_'.$classroom->id.'_'.$day,
                             'title' => $classroom->name,
                             'start' => $this->getNextOccurrence($day, $time),
                             'end' => $this->getNextOccurrence($day, $time, 90), // 90 phút
@@ -45,8 +44,8 @@ class CalendarView extends Component
                                 'level' => $classroom->level,
                                 'teachers' => $classroom->teachers->pluck('name')->join(', '),
                                 'location' => 'Chưa có địa điểm',
-                                'studentCount' => $classroom->students->count()
-                            ]
+                                'studentCount' => $classroom->students->count(),
+                            ],
                         ];
                     }
                 }
@@ -58,8 +57,8 @@ class CalendarView extends Component
         foreach ($assignments as $assignment) {
             if ($assignment->deadline) {
                 $events[] = [
-                    'id' => 'assignment_' . $assignment->id,
-                    'title' => 'Bài tập: ' . $assignment->title,
+                    'id' => 'assignment_'.$assignment->id,
+                    'title' => 'Bài tập: '.$assignment->title,
                     'start' => $assignment->deadline->format('Y-m-d\TH:i:s'),
                     'backgroundColor' => '#fd7e14',
                     'borderColor' => '#fd7e14',
@@ -67,8 +66,8 @@ class CalendarView extends Component
                         'type' => 'assignment',
                         'classroom' => $assignment->classroom->name ?? 'N/A',
                         'description' => $assignment->description,
-                        'points' => $assignment->max_score
-                    ]
+                        'points' => $assignment->max_score,
+                    ],
                 ];
             }
         }
@@ -78,8 +77,8 @@ class CalendarView extends Component
         foreach ($quizzes as $quiz) {
             if ($quiz->deadline) {
                 $events[] = [
-                    'id' => 'quiz_' . $quiz->id,
-                    'title' => 'Bài kiểm tra: ' . $quiz->title,
+                    'id' => 'quiz_'.$quiz->id,
+                    'title' => 'Bài kiểm tra: '.$quiz->title,
                     'start' => $quiz->deadline->format('Y-m-d\TH:i:s'),
                     'backgroundColor' => '#20c997',
                     'borderColor' => '#20c997',
@@ -87,8 +86,8 @@ class CalendarView extends Component
                         'type' => 'quiz',
                         'classroom' => $quiz->classroom->name ?? 'N/A',
                         'description' => $quiz->description,
-                        'duration' => $quiz->time_limit ?? 0
-                    ]
+                        'duration' => $quiz->time_limit ?? 0,
+                    ],
                 ];
             }
         }
@@ -105,28 +104,28 @@ class CalendarView extends Component
             'Thursday' => 4,
             'Friday' => 5,
             'Saturday' => 6,
-            'Sunday' => 0
+            'Sunday' => 0,
         ];
 
         $dayNumber = $dayMap[$day] ?? 1;
         $currentDay = now()->dayOfWeek;
         $daysUntilNext = ($dayNumber - $currentDay + 7) % 7;
-        
+
         if ($daysUntilNext === 0) {
             $daysUntilNext = 7;
         }
 
         $nextDate = now()->addDays($daysUntilNext);
         $timeParts = explode(':', $time);
-        $hour = (int)$timeParts[0];
-        $minute = (int)$timeParts[1];
-        
+        $hour = (int) $timeParts[0];
+        $minute = (int) $timeParts[1];
+
         $dateTime = $nextDate->setTime($hour, $minute);
-        
+
         if ($addMinutes > 0) {
             $dateTime = $dateTime->addMinutes($addMinutes);
         }
-        
+
         return $dateTime->format('Y-m-d\TH:i:s');
     }
 
@@ -134,7 +133,7 @@ class CalendarView extends Component
     {
         // Xử lý hiển thị chi tiết sự kiện
         $event = collect($this->events)->firstWhere('id', $eventId);
-        
+
         if ($event) {
             $this->dispatch('showEventModal', [
                 'title' => $event['title'],
@@ -147,7 +146,7 @@ class CalendarView extends Component
                 'teachers' => $event['extendedProps']['teachers'] ?? '',
                 'studentCount' => $event['extendedProps']['studentCount'] ?? '',
                 'points' => $event['extendedProps']['points'] ?? '',
-                'duration' => $event['extendedProps']['duration'] ?? ''
+                'duration' => $event['extendedProps']['duration'] ?? '',
             ]);
         }
     }
