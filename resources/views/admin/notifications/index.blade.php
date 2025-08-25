@@ -8,15 +8,15 @@
             </h4>
             <p class="text-muted mb-0">{{ __('views.create_and_manage_notifications') }}</p>
         </div>
-        <div class="d-flex gap-2">
-            <button wire:click="markAllAsRead" class="btn btn-outline-secondary">
-                <i class="bi bi-check-all mr-2"></i>Đánh dấu tất cả đã đọc
+        <div class="d-flex">
+            <button wire:click="markAllAsRead" class="btn btn-outline-secondary mr-2">
+                <i class="bi bi-check-all mr-md-2"></i><span class="d-none d-md-inline">Đánh dấu tất cả đã đọc</span>
             </button>
-            <button wire:click="deleteExpired" class="btn btn-outline-warning">
-                <i class="bi bi-trash mr-2"></i>Xóa hết hạn
+            <button wire:click="deleteExpired" class="btn btn-outline-warning mr-2">
+                <i class="bi bi-trash mr-md-2"></i><span class="d-none d-md-inline">Xóa hết hạn</span>
             </button>
             <button wire:click="create" class="btn btn-primary">
-                <i class="bi bi-plus-circle mr-2"></i>Tạo thông báo mới
+                <i class="bi bi-plus-circle mr-md-2"></i><span class="d-none d-md-inline">Tạo thông báo mới</span>
             </button>
         </div>
     </div>
@@ -66,7 +66,7 @@
                     <table class="table table-hover mb-0">
                         <thead class="table-light">
                             <tr>
-                                <th>{{ __('views.notification_title') }}</th>
+                                <th style="min-width: 200px">{{ __('views.notification_title') }}</th>
                                 <th>{{ __('views.notification_type') }}</th>
                                 <th>{{ __('views.notification_recipients') }}</th>
                                 <th>{{ __('views.notification_class') }}</th>
@@ -189,7 +189,8 @@
                     <h5 class="mt-3 text-muted">{{ __('views.no_notifications_found') }}</h5>
                     <p class="text-muted">{{ __('views.create_first_notification') }}</p>
                     <button wire:click="create" class="btn btn-primary">
-                        <i class="bi bi-plus-circle mr-2"></i>Tạo thông báo mới
+                        <i class="bi bi-plus-circle me-2"></i><span class="d-none d-md-inline">Tạo thông báo
+                            mới</span>
                     </button>
                 </div>
             @endif
@@ -200,7 +201,7 @@
     @if ($showCreateModal)
         <div class="modal fade show" wire:ignore.self id="createModal" tabindex="-1"
             style="display: block; background-color: rgba(0,0,0,0.5);">
-            <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">{{ __('views.create_notification') }}</h5>
@@ -279,7 +280,7 @@
 
                                 <div class="col-md-6">
                                     <label class="form-label">Lịch gửi</label>
-                                    <input wire:model="scheduled_at" type="datetimr-local"
+                                    <input wire:model="scheduled_at" type="datetime-local"
                                         class="form-control @error('scheduled_at') is-invalid @enderror">
                                     @error('scheduled_at')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -289,7 +290,7 @@
 
                                 <div class="col-md-6">
                                     <label class="form-label">Hết hạn</label>
-                                    <input wire:model="expires_at" type="datetimr-local"
+                                    <input wire:model="expires_at" type="datetime-local"
                                         class="form-control @error('expires_at') is-invalid @enderror">
                                     @error('expires_at')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -302,7 +303,8 @@
                             <button type="button" class="btn btn-secondary"
                                 wire:click="$set('showCreateModal', false)">{{ __('views.cancel') }}</button>
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-check-circle mr-2"></i>Tạo thông báo
+                                <i class="bi bi-check-circle mr-2"></i><span class="d-none d-md-inline">Tạo thông
+                                    báo</span>
                             </button>
                         </div>
                     </form>
@@ -315,7 +317,7 @@
     @if ($showEditModal)
         <div class="modal fade show" wire:ignore.self id="editModal" tabindex="-1"
             style="display: block; background-color: rgba(0,0,0,0.5);">
-            <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">{{ __('views.edit_notification') }}</h5>
@@ -381,7 +383,7 @@
 
                                 <div class="col-md-6">
                                     <label class="form-label">Lịch gửi</label>
-                                    <input wire:model="scheduled_at" type="datetimr-local"
+                                    <input wire:model="scheduled_at" type="datetime-local"
                                         class="form-control @error('scheduled_at') is-invalid @enderror">
                                     @error('scheduled_at')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -391,7 +393,7 @@
 
                                 <div class="col-md-6">
                                     <label class="form-label">Hết hạn</label>
-                                    <input wire:model="expires_at" type="datetimr-local"
+                                    <input wire:model="expires_at" type="datetime-local"
                                         class="form-control @error('expires_at') is-invalid @enderror">
                                     @error('expires_at')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -404,7 +406,8 @@
                             <button type="button" class="btn btn-secondary"
                                 wire:click="$set('showEditModal', false)">{{ __('views.cancel') }}</button>
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-check-circle mr-2"></i>Cập nhật
+                                <i class="bi bi-check-circle mr-2"></i><span class="d-none d-md-inline">Cập
+                                    nhật</span>
                             </button>
                         </div>
                     </form>
@@ -436,7 +439,7 @@
                         <button type="button" class="btn btn-secondary"
                             wire:click="$set('showDeleteModal', false)">{{ __('views.cancel') }}</button>
                         <button type="button" class="btn btn-danger" wire:click="confirmDelete">
-                            <i class="bi bi-trash mr-2"></i>Xóa
+                            <i class="bi bi-trash mr-2"></i><span class="d-none d-md-inline">Xóa</span>
                         </button>
                     </div>
                 </div>
@@ -463,6 +466,20 @@
     <style>
         .modal.show {
             background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        /* Modal scrollable cho Bootstrap 4 */
+        .modal-dialog {
+            max-height: 90vh;
+        }
+        
+        .modal-content {
+            max-height: 90vh;
+        }
+        
+        .modal-body {
+            max-height: 60vh;
+            overflow-y: auto;
         }
 
         /* Màu sắc cho trạng thái gửi */

@@ -1,4 +1,4 @@
-<x-layouts.dash-admin>
+<x-layouts.dash-admin active="students">
     @include('components.language')
     <div class="container-fluid">
         <!-- Header -->
@@ -101,6 +101,7 @@
                                                 class="text-danger">*</span></label>
                                         <select wire:model="status"
                                             class="form-control @error('status') is-invalid @enderror" id="status">
+                                            <option value="new">{{ __('general.new_registration') }}</option>
                                             <option value="active">{{ __('general.studying') }}</option>
                                             <option value="paused">{{ __('general.paused') }}</option>
                                             <option value="dropped">{{ __('general.reserved') }}</option>

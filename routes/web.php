@@ -83,6 +83,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     // Schedules routes
     Route::get('/admin/schedules', SchedulesIndex::class)->name('schedules.index');
+    Route::get('/admin/schedules/calendar', \App\Livewire\Admin\Schedules\CalendarView::class)->name('schedules.calendar');
     Route::get('/admin/schedules/create', SchedulesCreate::class)->name('schedules.create');
     Route::get('/admin/schedules/{classroom}/edit', SchedulesEdit::class)->name('schedules.edit');
     Route::get('/admin/schedules/{classroom}', SchedulesShow::class)->name('schedules.show');

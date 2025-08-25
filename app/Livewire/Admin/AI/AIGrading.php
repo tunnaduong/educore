@@ -27,9 +27,11 @@ class AIGrading extends Component
 
         // Kiểm tra quyền: chỉ giáo viên dạy lớp này mới được chấm
         $user = Auth::user();
-        $userClassIds = $user->teachingClassrooms->pluck('id');
-        if (! in_array($this->assignment->class_id, $userClassIds->toArray())) {
-            abort(403, 'Bạn không có quyền chấm bài tập này.');
+        if ($user && $user->role !== 'admin') {
+            $userClassIds = $user->teachingClassrooms->pluck('id');
+            if (! in_array($this->assignment->class_id, $userClassIds->toArray())) {
+                abort(403, 'Bạn không có quyền chấm bài tập này.');
+            }
         }
 
         // Kiểm tra loại bài nộp: không cho phép chấm bài có submission_type = image, audio, video

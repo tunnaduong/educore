@@ -1,7 +1,7 @@
 <div class="dropdown position-relative" x-data="{ open: false }">
     <button class="btn btn-link font-weight-bold text-muted text-decoration-none dropdown-toggle" @click="open = !open"
         @click.away="open = false" type="button">
-        {{ auth()->user()->name }}
+        <span class="d-none d-md-inline">{{ auth()->user()->name }}</span>
         <i class="fas fa-user-circle ml-2"></i>
     </button>
 
