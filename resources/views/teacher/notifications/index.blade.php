@@ -10,15 +10,15 @@
                     </h4>
                     <p class="text-muted mb-0">Tạo và quản lý thông báo cho học viên</p>
                 </div>
-                <div class="d-flex gap-2">
-                    <button wire:click="markAllAsRead" class="btn btn-outline-secondary">
-                        <i class="bi bi-check-all mr-2"></i>Đánh dấu tất cả đã đọc
+                <div class="d-flex">
+                    <button wire:click="markAllAsRead" class="btn btn-outline-secondary mr-2">
+                        <i class="bi bi-check-all mr-2"></i><span class="d-none d-md-inline">Đánh dấu tất cả đã đọc</span>
                     </button>
-                    <button wire:click="deleteExpired" class="btn btn-outline-warning">
-                        <i class="bi bi-trash mr-2"></i>Xóa hết hạn
+                    <button wire:click="deleteExpired" class="btn btn-outline-warning mr-2">
+                        <i class="bi bi-trash mr-2"></i><span class="d-none d-md-inline">Xóa hết hạn</span>
                     </button>
                     <button wire:click="create" class="btn btn-primary">
-                        <i class="bi bi-plus-circle mr-2"></i>Tạo thông báo mới
+                        <i class="bi bi-plus-circle mr-2"></i><span class="d-none d-md-inline">Tạo thông báo mới</span>
                     </button>
                 </div>
             </div>
@@ -54,7 +54,7 @@
                     </div>
                     <div class="col-md-2 d-flex align-items-end">
                         <button wire:click="$set('search', '')" class="btn btn-outline-secondary w-100">
-                            <i class="bi bi-arrow-clockwise mr-1"></i>Reset
+                            <i class="bi bi-arrow-clockwise mr-1"></i><span class="d-none d-md-inline">Reset</span>
                         </button>
                     </div>
                 </div>
@@ -183,7 +183,7 @@
                         <h5 class="mt-3 text-muted">Không có thông báo nào</h5>
                         <p class="text-muted">Tạo thông báo đầu tiên để bắt đầu</p>
                         <button wire:click="create" class="btn btn-primary">
-                            <i class="bi bi-plus-circle mr-2"></i>Tạo thông báo mới
+                            <i class="bi bi-plus-circle mr-2"></i><span class="d-none d-md-inline">Tạo thông báo mới</span>
                         </button>
                     </div>
                 @endif
@@ -195,7 +195,7 @@
     @if ($showCreateModal)
         <div class="modal fade show" wire:ignore.self id="createModal" tabindex="-1"
             style="display: block; background-color: rgba(0,0,0,0.5);">
-            <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Tạo thông báo mới</h5>
@@ -251,7 +251,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Lịch gửi</label>
-                                    <input type="datetimr-local"
+                                    <input type="datetime-local"
                                         class="form-control @error('scheduled_at') is-invalid @enderror"
                                         wire:model="scheduled_at">
                                     @error('scheduled_at')
@@ -273,7 +273,9 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary"
                                 wire:click="$set('showCreateModal', false)">Huỷ</button>
-                            <button type="submit" class="btn btn-primary">Tạo thông báo</button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle mr-2"></i><span class="d-none d-md-inline">Tạo thông báo</span>
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -285,7 +287,7 @@
     @if ($showEditModal)
         <div class="modal fade show" wire:ignore.self id="editModal" tabindex="-1"
             style="display: block; background-color: rgba(0,0,0,0.5);">
-            <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Chỉnh sửa thông báo</h5>
@@ -340,7 +342,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Lịch gửi</label>
-                                    <input type="datetimr-local"
+                                    <input type="datetime-local"
                                         class="form-control @error('scheduled_at') is-invalid @enderror"
                                         wire:model="scheduled_at">
                                     @error('scheduled_at')
@@ -362,11 +364,29 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary"
                                 wire:click="$set('showEditModal', false)">Huỷ</button>
-                            <button type="submit" class="btn btn-primary">Cập nhật thông báo</button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle mr-2"></i><span class="d-none d-md-inline">Cập nhật thông báo</span>
+                            </button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     @endif
+
+    <style>
+        /* Modal scrollable cho Bootstrap 4 */
+        .modal-dialog {
+            max-height: 90vh;
+        }
+        
+        .modal-content {
+            max-height: 90vh;
+        }
+        
+        .modal-body {
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+    </style>
 </x-layouts.dash-teacher>
