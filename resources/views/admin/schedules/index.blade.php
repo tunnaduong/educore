@@ -7,9 +7,14 @@
                 <i class="bi bi-calendar3 mr-2 text-primary"></i>
                 {{ __('general.schedule_management') }}
             </h2>
-            <a href="{{ route('schedules.create') }}" class="btn btn-primary">
-                <i class="bi bi-plus-circle mr-2"></i>{{ __('general.add_schedule') }}
-            </a>
+            <div class="d-flex gap-2">
+                <a href="{{ route('schedules.calendar') }}" class="btn btn-success">
+                    <i class="bi bi-calendar-week mr-2"></i>Xem lịch dạy
+                </a>
+                <a href="{{ route('schedules.create') }}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle mr-2"></i>{{ __('general.add_schedule') }}
+                </a>
+            </div>
         </div>
 
         <!-- Bộ lọc -->

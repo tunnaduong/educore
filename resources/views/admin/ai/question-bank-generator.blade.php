@@ -1,4 +1,4 @@
-<x-layouts.dash-teacher active="ai">
+<x-layouts.dash-admin active="ai">
     @include('components.language')
     <div class="container-fluid">
         <style>
@@ -557,4 +557,4 @@
             </div>
         </div>
     </div>
-</x-layouts.dash-teacher>
+</x-layouts.dash-admin>
