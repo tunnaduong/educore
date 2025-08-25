@@ -3,10 +3,9 @@
 namespace App\Livewire\Admin\AI;
 
 use App\Helpers\AIHelper;
+use App\Models\Classroom;
 use App\Models\Lesson;
 use App\Models\Quiz;
-use App\Models\Classroom;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
