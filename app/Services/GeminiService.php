@@ -146,8 +146,22 @@ class GeminiService
             $jsonText = $matches[1];
         }
 
+        // Cố gắng cắt lấy phần JSON thuần giữa dấu { ... } lớn nhất
+        $firstBrace = strpos($jsonText, '{');
+        $lastBrace = strrpos($jsonText, '}');
+        if ($firstBrace !== false && $lastBrace !== false && $lastBrace > $firstBrace) {
+            $jsonText = substr($jsonText, $firstBrace, $lastBrace - $firstBrace + 1);
+        }
+
         // Loại bỏ whitespace thừa
         $jsonText = trim($jsonText);
+
+        // Loại bỏ comment kiểu // ... và /* ... */ mà mô hình có thể chèn vào
+        $jsonText = preg_replace('/\/\/.*$/m', '', $jsonText); // line comments
+        $jsonText = preg_replace('/\/\*.*?\*\//s', '', $jsonText); // block comments
+
+        // Loại bỏ dấu phẩy thừa trước ] hoặc }
+        $jsonText = preg_replace('/,\s*([}\]])/m', '$1', $jsonText);
 
         Log::info('GeminiService: Parsing JSON response', [
             'original_length' => strlen($response),
@@ -159,6 +173,8 @@ class GeminiService
             $decoded = json_decode($jsonText, true);
 
             if (json_last_error() === JSON_ERROR_NONE) {
+                // Chuẩn hoá cấu trúc nếu có danh sách câu hỏi
+                $decoded = $this->normalizeQuestionPayload($decoded);
                 Log::info('GeminiService: JSON parse successful', [
                     'decoded_type' => gettype($decoded),
                     'is_array' => is_array($decoded),
@@ -181,6 +197,51 @@ class GeminiService
 
             return null;
         }
+    }
+
+    /**
+     * Chuẩn hoá dữ liệu câu hỏi để tránh khác biệt khoá tên từ mô hình
+     */
+    protected function normalizeQuestionPayload(array $decoded): array
+    {
+        if (! isset($decoded['questions']) || ! is_array($decoded['questions'])) {
+            return $decoded;
+        }
+
+        foreach ($decoded['questions'] as $index => $question) {
+            if (! is_array($question)) {
+                continue;
+            }
+
+            // Đảm bảo có mảng options
+            if (! isset($question['options']) || ! is_array($question['options'])) {
+                $question['options'] = [];
+            }
+
+            // Map các khoá đáp án thay thế về correct_answer nếu thiếu
+            if (! isset($question['correct_answer'])) {
+                $altKeys = ['correct', 'answer', 'correctAns', 'correct_option', 'correctOption', 'correctOptionLetter'];
+                foreach ($altKeys as $altKey) {
+                    if (isset($question[$altKey])) {
+                        $question['correct_answer'] = $question[$altKey];
+                        break;
+                    }
+                }
+                if (! isset($question['correct_answer'])) {
+                    foreach ($question as $key => $value) {
+                        if ($key !== 'correct_answer' && strpos($key, 'correct') === 0) {
+                            $question['correct_answer'] = $value;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // Gán lại câu hỏi đã chuẩn hoá
+            $decoded['questions'][$index] = $question;
+        }
+
+        return $decoded;
     }
 
     /**

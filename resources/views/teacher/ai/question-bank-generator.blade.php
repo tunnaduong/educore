@@ -468,7 +468,7 @@
                                             <h6>Một số câu hỏi mẫu:</h6>
                                             <div class="questions-preview"
                                                 style="max-height: 400px; overflow-y: auto;">
-                                                @foreach (array_slice($generatedBank['questions'], 0, 5) as $index => $question)
+                                                @foreach ($generatedBank['questions'] as $index => $question)
                                                     <div class="card mb-3">
                                                         <div
                                                             class="card-header d-flex justify-content-between align-items-center">
@@ -532,13 +532,7 @@
                                                 @endforeach
                                             </div>
 
-                                            @if (count($generatedBank['questions']) > 5)
-                                                <div class="text-center mt-3">
-                                                    <p class="text-muted">Và
-                                                        {{ count($generatedBank['questions']) - 5 }}
-                                                        câu hỏi khác...</p>
-                                                </div>
-                                            @endif
+                                            
                                         </div>
                                     </div>
                                 @else

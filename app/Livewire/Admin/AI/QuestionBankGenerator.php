@@ -15,7 +15,7 @@ class QuestionBankGenerator extends Component
 
     public $topic = '';
 
-    public $maxQuestions = 50;
+    public $maxQuestions = 15;
 
     public $generatedBank = null;
 
@@ -64,7 +64,7 @@ class QuestionBankGenerator extends Component
                 session()->flash('error', 'Không thể tạo ngân hàng câu hỏi. Vui lòng kiểm tra API key và thử lại. Xem log trong storage/logs/laravel.log để biết chi tiết.');
             }
         } catch (\Exception $e) {
-            session()->flash('error', 'Có lỗi xảy ra: '.$e->getMessage().'. Vui lòng kiểm tra log trong storage/logs/laravel.log');
+            session()->flash('error', 'Có lỗi xảy ra: ' . $e->getMessage() . '. Vui lòng kiểm tra log trong storage/logs/laravel.log');
         }
 
         $this->isProcessing = false;
@@ -102,9 +102,8 @@ class QuestionBankGenerator extends Component
 
             // Reset form
             $this->reset(['name', 'description', 'topic', 'maxQuestions']);
-
         } catch (\Exception $e) {
-            session()->flash('error', 'Có lỗi xảy ra khi lưu ngân hàng câu hỏi: '.$e->getMessage());
+            session()->flash('error', 'Có lỗi xảy ra khi lưu ngân hàng câu hỏi: ' . $e->getMessage());
         }
     }
 
@@ -130,7 +129,7 @@ class QuestionBankGenerator extends Component
             'statistics' => $this->generatedBank['statistics'],
         ]);
 
-        return redirect()->route('teacher.quizzes.create');
+        return redirect()->route('quizzes.create');
     }
 
     public function render()
