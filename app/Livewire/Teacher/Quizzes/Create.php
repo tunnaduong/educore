@@ -45,6 +45,8 @@ class Create extends Component
 
     public $questionTypeFilter = '';
 
+    public $editingIndex = null;
+
     protected $rules = [
         'title' => 'required|min:3|max:255',
         'description' => 'nullable|max:1000',
@@ -105,11 +107,15 @@ class Create extends Component
             ]);
         }
 
-        $this->questions[] = $this->currentQuestion;
-
-        $this->resetCurrentQuestion();
-
-        session()->flash('message', 'Câu hỏi đã được thêm thành công.');
+        if ($this->editingIndex !== null) {
+            $this->questions[$this->editingIndex] = $this->currentQuestion;
+            $this->resetCurrentQuestion();
+            session()->flash('message', 'Câu hỏi đã được cập nhật.');
+        } else {
+            $this->questions[] = $this->currentQuestion;
+            $this->resetCurrentQuestion();
+            session()->flash('message', 'Câu hỏi đã được thêm thành công.');
+        }
     }
 
     public function removeQuestion($index)
@@ -167,6 +173,27 @@ class Create extends Component
             'score' => 1,
             'audio' => null,
         ];
+        $this->editingIndex = null;
+    }
+
+    public function editQuestion($index)
+    {
+        if (! isset($this->questions[$index])) {
+            return;
+        }
+
+        $question = $this->questions[$index];
+
+        $this->currentQuestion = [
+            'question' => $question['question'] ?? '',
+            'type' => $question['type'] ?? 'multiple_choice',
+            'options' => $question['options'] ?? ['', '', '', ''],
+            'correct_answer' => $question['correct_answer'] ?? '',
+            'score' => $question['score'] ?? 1,
+            'audio' => $question['audio'] ?? null,
+        ];
+
+        $this->editingIndex = $index;
     }
 
     public function validateQuizWithAI()
