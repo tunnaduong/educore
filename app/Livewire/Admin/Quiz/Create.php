@@ -321,13 +321,13 @@ class Create extends Component
                 $suggestionCount = count($result['validation_info']['suggestions'] ?? []);
 
                 if ($errorCount > 0) {
-                    session()->flash('message', "AI đã sửa ".$errorCount." lỗi trong quiz.");
+                    session()->flash('message', 'AI đã sửa '.$errorCount.' lỗi trong quiz.');
                 } else {
                     session()->flash('message', 'Quiz đã được kiểm tra và không có lỗi nào.');
                 }
 
                 if ($suggestionCount > 0) {
-                    session()->flash('info', "AI đưa ra ".$suggestionCount." gợi ý cải thiện.");
+                    session()->flash('info', 'AI đưa ra '.$suggestionCount.' gợi ý cải thiện.');
                 }
             } else {
                 session()->flash('message', 'Quiz đã được kiểm tra và không có lỗi nào.');
