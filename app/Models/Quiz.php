@@ -31,6 +31,7 @@ class Quiz extends Model
         'questions' => 'array',
         'deadline' => 'datetime',
         'assigned_date' => 'datetime',
+        'time_limit' => 'integer',
         'ai_validated_at' => 'datetime',
         'ai_generated_at' => 'datetime',
         'ai_generated' => 'boolean',
