@@ -71,13 +71,20 @@
                         </div>
                         <div class="mb-3">
                             <strong class="text-muted">Mô tả:</strong>
-                            <div class="border rounded p-2 bg-light mt-1">
-                                {{ $lesson->description ?: 'Không có mô tả.' }}</div>
+                            <style>
+                                .description-content img {
+                                    max-width: 100% !important;
+                                    height: auto !important;
+                                }
+                            </style>
+                            <div class="border rounded p-2 bg-light mt-1 description-content">
+                                {!! $lesson->description ?: 'Không có mô tả.' !!}
+                            </div>
                         </div>
                         @if ($lesson->content)
                             <div class="mb-3">
                                 <strong class="text-muted">Nội dung chi tiết:</strong>
-                                <div class="border rounded p-3 bg-white mt-1">{!! nl2br(e($lesson->content)) !!}</div>
+                                <div class="border rounded p-3 bg-white mt-1">{!! $lesson->content !!}</div>
                             </div>
                         @endif
                         <div class="d-flex gap-2 mt-4">
