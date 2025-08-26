@@ -130,7 +130,8 @@
                             <div class="d-flex align-items-center p-3 border rounded">
                                 <i class="bi bi-file-earmark-text fs-2 text-primary mr-3"></i>
                                 <div class="flex-grow-1">
-                                    <h6 class="mb-1">{{ basename($lesson->attachment) }}</h6>
+                                    <h6 class="mb-1" style="word-break: break-word;">
+                                        {{ basename($lesson->attachment) }}</h6>
                                     <small class="text-muted">Tài liệu bài học</small>
                                 </div>
                             </div>
