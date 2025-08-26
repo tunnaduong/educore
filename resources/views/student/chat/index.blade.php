@@ -162,7 +162,7 @@
                                                         alt="Avatar" class="rounded-circle"
                                                         style="width: 35px; height: 35px; object-fit: cover;">
                                                 @else
-                                                    <div class="rounded-circle d-flex align-items-center justify-content-center {{ $isMine ? 'ms-3' : 'mr-3' }}"
+                                                    <div class="rounded-circle d-flex align-items-center justify-content-center {{ $isMine ? 'ml-3' : 'mr-3' }}"
                                                         style="width: 35px; height: 35px; background-color: {{ $isMine ? '#0d6efd' : '#6c757d' }};">
                                                         <span
                                                             class="text-white fw-bold">{{ strtoupper(substr($sender->name, 0, 1)) }}</span>

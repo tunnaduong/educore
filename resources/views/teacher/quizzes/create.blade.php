@@ -78,7 +78,7 @@
                                             <i class="fas fa-check-circle mr-1"></i>Kiểm tra AI
                                         </div>
                                         <div wire:loading class="loading-overlay">
-                                            <div class="spinner-border spinner-border-sm text-light me-2"
+                                            <div class="spinner-border spinner-border-sm text-light mr-2"
                                                 role="status">
                                                 <span class="visually-hidden">Loading...</span>
                                             </div>
@@ -293,9 +293,19 @@
                                     wire:click="$set('showQuestionBank', true)">
                                     <i class="bi bi-database mr-2"></i>Chèn từ ngân hàng câu hỏi
                                 </button>
-                                <button type="button" class="btn btn-primary" wire:click="addQuestion">
-                                    <i class="bi bi-plus-circle mr-2"></i>Thêm câu hỏi
-                                </button>
+                                @if ($editingIndex !== null)
+                                    <button type="button" class="btn btn-warning mr-2"
+                                        wire:click="resetCurrentQuestion">
+                                        <i class="bi bi-x-circle mr-2"></i>Hủy chỉnh sửa
+                                    </button>
+                                    <button type="button" class="btn btn-primary" wire:click="addQuestion">
+                                        <i class="bi bi-check-circle mr-2"></i>Cập nhật câu hỏi
+                                    </button>
+                                @else
+                                    <button type="button" class="btn btn-primary" wire:click="addQuestion">
+                                        <i class="bi bi-plus-circle mr-2"></i>Thêm câu hỏi
+                                    </button>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -319,6 +329,10 @@
                                                 <span class="badge bg-info">{{ $question['score'] }} điểm</span>
                                             </div>
                                             <div class="btn-group btn-group-sm">
+                                                <button type="button" class="btn btn-outline-warning"
+                                                    wire:click="editQuestion({{ $index }})" title="Sửa">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
                                                 @if ($index > 0)
                                                     <button type="button" class="btn btn-outline-secondary"
                                                         wire:click="moveQuestionUp({{ $index }})"
@@ -359,7 +373,7 @@
                 <div class="col-12">
                     <div class="card shadow-sm">
                         <div class="card-body text-end">
-                            <a href="{{ route('quizzes.index') }}" class="btn btn-secondary mr-2">
+                            <a href="{{ route('teacher.quizzes.index') }}" class="btn btn-secondary mr-2">
                                 <i class="bi bi-x-circle mr-2"></i>Hủy
                             </a>
                             <button type="submit" class="btn btn-primary"
@@ -526,4 +540,52 @@
             </div>
         @endif
     </div>
+
+    <script>
+        (function() {
+            let isDirty = false;
+
+            // Đánh dấu có thay đổi trên toàn trang
+            document.addEventListener('input', () => {
+                isDirty = true;
+            }, {
+                passive: true
+            });
+            document.addEventListener('change', () => {
+                isDirty = true;
+            }, {
+                passive: true
+            });
+
+            // Xác định form lưu để reset cờ khi submit
+            const form = document.querySelector('form[wire\\:submit="save"], form[wire\\:submit]') || document
+                .querySelector('form');
+            if (form) {
+                form.addEventListener('submit', () => {
+                    isDirty = false;
+                });
+            }
+
+            // Cảnh báo trước khi rời/trang reload (full reload)
+            window.addEventListener('beforeunload', function(e) {
+                if (!isDirty) return;
+                e.preventDefault();
+                e.returnValue = '';
+                return '';
+            });
+
+            // Chặn click vào link nếu có thay đổi, hiển thị confirm
+            document.addEventListener('click', function(e) {
+                const anchor = e.target.closest('a[href]');
+                if (!anchor) return;
+                if (anchor.hasAttribute('data-bypass-leave-confirm')) return;
+                if (!isDirty) return;
+                const proceed = confirm('Bạn có thay đổi chưa lưu. Bạn có chắc muốn rời trang?');
+                if (!proceed) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                }
+            }, true);
+        })();
+    </script>
 </x-layouts.dash-teacher>

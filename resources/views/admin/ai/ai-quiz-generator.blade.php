@@ -344,7 +344,7 @@
 
                                             <button type="submit" class="btn btn-primary w-100 position-relative"
                                                 wire:loading.attr="disabled" wire:loading.class="disabled">
-                                                <i class="fas fa-magic me-2"></i>
+                                                <i class="fas fa-magic mr-2"></i>
                                                 {{ __('general.create_chinese_quiz_with_ai_button') }}
                                             </button>
                                         </form>
@@ -367,7 +367,7 @@
                                                         {{ __('general.check_errors') }}
                                                     </div>
                                                     <div wire:loading class="loading-overlay">
-                                                        <div class="spinner-border spinner-border-sm text-light me-2"
+                                                        <div class="spinner-border spinner-border-sm text-light mr-2"
                                                             role="status">
                                                             <span class="visually-hidden">Loading...</span>
                                                         </div>
