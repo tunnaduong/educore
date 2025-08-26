@@ -31,7 +31,7 @@
                     @endif
 
                     <div class="d-flex justify-content-between align-items-center mt-3">
-                        <button type="button" class="btn btn-sm btn-outline-warning" wire:click="toggleConflicts">
+                        <button type="button" class="btn btn-sm text-muted" wire:click="toggleConflicts">
                             <i class="bi bi-{{ $showConflicts ? 'chevron-up' : 'chevron-down' }} mr-1"></i>
                             {{ $showConflicts ? 'Ẩn chi tiết' : 'Xem chi tiết' }}
                         </button>

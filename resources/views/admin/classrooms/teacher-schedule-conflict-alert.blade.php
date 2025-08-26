@@ -38,7 +38,7 @@
                     @endif
 
                     <div class="mt-3">
-                        <button type="button" class="btn btn-sm btn-outline-warning" wire:click="toggleConflicts">
+                        <button type="button" class="btn btn-sm text-muted" wire:click="toggleConflicts">
                             @if ($showConflicts)
                                 <i class="bi bi-eye-slash mr-1"></i>Ẩn chi tiết
                             @else
