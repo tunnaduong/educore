@@ -72,8 +72,7 @@
                                         <td><span class="badge bg-info">{{ $lesson->number ?? '-' }}</span></td>
                                         <td>
                                             <div class="fw-medium">{{ $lesson->title }}</div>
-                                            <small
-                                                class="text-muted">{{ Str::limit($lesson->description, 50) }}</small>
+                                            <small class="text-muted">{!! Str::limit(strip_tags($lesson->description), 50) !!}</small>
                                         </td>
                                         <td>
                                             <span

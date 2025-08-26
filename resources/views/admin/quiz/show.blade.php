@@ -155,7 +155,7 @@
                                     <div class="fw-medium mb-2">{{ $question['question'] }}</div>
 
                                     @if ($question['type'] === 'multiple_choice' && isset($question['options']))
-                                        <div class="ms-3">
+                                        <div class="ml-3">
                                             @foreach ($question['options'] as $optionIndex => $option)
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="radio" disabled
@@ -171,13 +171,13 @@
                                             @endforeach
                                         </div>
                                     @elseif($question['type'] === 'fill_blank')
-                                        <div class="ms-3">
+                                        <div class="ml-3">
                                             <div class="alert alert-success mb-0">
                                                 <strong>Đáp án:</strong> {{ $question['correct_answer'] }}
                                             </div>
                                         </div>
                                     @elseif($question['type'] === 'essay')
-                                        <div class="ms-3">
+                                        <div class="ml-3">
                                             <div class="alert alert-info mb-0">
                                                 <strong>Loại câu hỏi:</strong> Tự luận (cần chấm thủ công)
                                             </div>
