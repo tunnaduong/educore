@@ -23,7 +23,7 @@
             <div class="modal-content">
                 <div class="modal-header bg-warning text-dark">
                     <h5 class="modal-title">
-                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        <i class="bi bi-exclamation-triangle-fill mr-2"></i>
                         {{ __('general.evaluation_required') }}
                     </h5>
                 </div>

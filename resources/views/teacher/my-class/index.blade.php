@@ -129,7 +129,7 @@
 
         <!-- Pagination -->
         @if ($classrooms->hasPages())
-            <div class="d-flex justify-content-center mt-4">
+            <div>
                 {{ $classrooms->links() }}
             </div>
         @endif

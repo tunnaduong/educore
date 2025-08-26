@@ -189,7 +189,7 @@
                     <h5 class="mt-3 text-muted">{{ __('views.no_notifications_found') }}</h5>
                     <p class="text-muted">{{ __('views.create_first_notification') }}</p>
                     <button wire:click="create" class="btn btn-primary">
-                        <i class="bi bi-plus-circle me-2"></i><span class="d-none d-md-inline">Tạo thông báo
+                        <i class="bi bi-plus-circle mr-2"></i><span class="d-none d-md-inline">Tạo thông báo
                             mới</span>
                     </button>
                 </div>

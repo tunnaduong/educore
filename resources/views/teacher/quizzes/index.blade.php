@@ -145,7 +145,7 @@
                     </div>
 
                     <!-- Pagination -->
-                    <div class="d-flex justify-content-center mt-4">
+                    <div>
                         {{ $quizzes->links('vendor.pagination.bootstrap-5') }}
                     </div>
                 @else

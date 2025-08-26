@@ -15,7 +15,7 @@ class QuestionBankGenerator extends Component
 
     public $topic = '';
 
-    public $maxQuestions = 50;
+    public $maxQuestions = 15;
 
     public $generatedBank = null;
 
@@ -102,7 +102,6 @@ class QuestionBankGenerator extends Component
 
             // Reset form
             $this->reset(['name', 'description', 'topic', 'maxQuestions']);
-
         } catch (\Exception $e) {
             session()->flash('error', 'Có lỗi xảy ra khi lưu ngân hàng câu hỏi: '.$e->getMessage());
         }
@@ -130,7 +129,7 @@ class QuestionBankGenerator extends Component
             'statistics' => $this->generatedBank['statistics'],
         ]);
 
-        return redirect()->route('teacher.quizzes.create');
+        return redirect()->route('quizzes.create');
     }
 
     public function render()

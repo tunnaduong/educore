@@ -161,7 +161,7 @@
 
                 <!-- Pagination -->
                 @if ($assignments->hasPages())
-                    <div class="d-flex justify-content-center mt-4">
+                    <div>
                         {{ $assignments->links() }}
                     </div>
                 @endif

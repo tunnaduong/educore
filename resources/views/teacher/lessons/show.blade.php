@@ -1,5 +1,41 @@
 <x-layouts.dash-teacher active="lessons">
     @include('components.language')
+
+    @push('styles')
+        <style>
+            .description-content {
+                line-height: 1.6;
+            }
+
+            .description-content img {
+                max-width: 100% !important;
+                height: auto !important;
+            }
+
+            .description-content table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 10px 0;
+            }
+
+            .description-content table,
+            .description-content th,
+            .description-content td {
+                border: 1px solid #ddd;
+            }
+
+            .description-content th,
+            .description-content td {
+                padding: 8px;
+                text-align: left;
+            }
+
+            .description-content th {
+                background-color: #f8f9fa;
+            }
+        </style>
+    @endpush
+
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
@@ -54,13 +90,13 @@
                             </div>
                             <div class="col-12">
                                 <label class="form-label fw-bold">Mô tả</label>
-                                <p class="mb-0">
+                                <div class="mb-0">
                                     @if ($lesson->description)
-                                        {!! nl2br(e($lesson->description)) !!}
+                                        <div class="description-content">{!! $lesson->description !!}</div>
                                     @else
                                         <span class="text-muted">Không có mô tả</span>
                                     @endif
-                                </p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -94,7 +130,8 @@
                             <div class="d-flex align-items-center p-3 border rounded">
                                 <i class="bi bi-file-earmark-text fs-2 text-primary mr-3"></i>
                                 <div class="flex-grow-1">
-                                    <h6 class="mb-1">{{ basename($lesson->attachment) }}</h6>
+                                    <h6 class="mb-1" style="word-break: break-word;">
+                                        {{ basename($lesson->attachment) }}</h6>
                                     <small class="text-muted">Tài liệu bài học</small>
                                 </div>
                             </div>
