@@ -149,6 +149,8 @@ class ErrorHandlingTest extends DuskTestCase
                 unlink($invalidFile);
             }
         }
+    }
+
     /**
      * Test duplicate email validation
      */
