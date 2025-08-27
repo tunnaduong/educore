@@ -34,7 +34,7 @@ class GeminiService
                     'max_attempts' => $retryCount,
                     'prompt_length' => strlen($prompt),
                     'max_tokens' => $maxTokens,
-                    'api_key_exists' => !empty($this->apiKey),
+                    'api_key_exists' => ! empty($this->apiKey),
                     'base_url' => $this->baseUrl,
                 ]);
 
@@ -58,7 +58,7 @@ class GeminiService
 
                 $response = Http::timeout(60)->withHeaders([
                     'Content-Type' => 'application/json',
-                ])->post($this->baseUrl . '?key=' . $this->apiKey, $requestData);
+                ])->post($this->baseUrl.'?key='.$this->apiKey, $requestData);
 
                 Log::info('GeminiService: API response received', [
                     'attempt' => $attempt,
@@ -73,7 +73,7 @@ class GeminiService
 
                     Log::info('GeminiService: Successful response parsed', [
                         'attempt' => $attempt,
-                        'has_result' => !empty($result),
+                        'has_result' => ! empty($result),
                         'result_length' => strlen($result ?? ''),
                         'result_preview' => substr($result ?? '', 0, 200),
                     ]);
@@ -93,7 +93,7 @@ class GeminiService
                 ]);
 
                 // Nếu không thể retry hoặc đã hết lần thử, trả về null
-                if (!$shouldRetry || $attempt >= $retryCount) {
+                if (! $shouldRetry || $attempt >= $retryCount) {
                     return null;
                 }
 
@@ -204,22 +204,22 @@ class GeminiService
      */
     protected function normalizeQuestionPayload(array $decoded): array
     {
-        if (!isset($decoded['questions']) || !is_array($decoded['questions'])) {
+        if (! isset($decoded['questions']) || ! is_array($decoded['questions'])) {
             return $decoded;
         }
 
         foreach ($decoded['questions'] as $index => $question) {
-            if (!is_array($question)) {
+            if (! is_array($question)) {
                 continue;
             }
 
             // Đảm bảo có mảng options
-            if (!isset($question['options']) || !is_array($question['options'])) {
+            if (! isset($question['options']) || ! is_array($question['options'])) {
                 $question['options'] = [];
             }
 
             // Map các khoá đáp án thay thế về correct_answer nếu thiếu
-            if (!isset($question['correct_answer'])) {
+            if (! isset($question['correct_answer'])) {
                 $altKeys = ['correct', 'answer', 'correctAns', 'correct_option', 'correctOption', 'correctOptionLetter'];
                 foreach ($altKeys as $altKey) {
                     if (isset($question[$altKey])) {
@@ -227,7 +227,7 @@ class GeminiService
                         break;
                     }
                 }
-                if (!isset($question['correct_answer'])) {
+                if (! isset($question['correct_answer'])) {
                     foreach ($question as $key => $value) {
                         if ($key !== 'correct_answer' && strpos($key, 'correct') === 0) {
                             $question['correct_answer'] = $value;
@@ -429,7 +429,7 @@ class GeminiService
             'topic' => $topic,
             'subject' => $subject,
             'maxQuestions' => $maxQuestions,
-            'api_key_exists' => !empty($this->apiKey),
+            'api_key_exists' => ! empty($this->apiKey),
             'base_url' => $this->baseUrl,
         ]);
 
@@ -462,7 +462,7 @@ class GeminiService
         $result = $this->makeRequest($prompt, 8000);
 
         Log::info('GeminiService: API response received', [
-            'has_result' => !empty($result),
+            'has_result' => ! empty($result),
             'result_length' => strlen($result ?? ''),
             'result_preview' => substr($result ?? '', 0, 200),
         ]);
@@ -470,17 +470,17 @@ class GeminiService
         if ($result) {
             $decoded = $this->parseJsonResponse($result);
 
-            if ($decoded && !empty($decoded['questions'])) {
+            if ($decoded && ! empty($decoded['questions'])) {
                 Log::info('GeminiService: Question bank generation successful', [
                     'question_count' => count($decoded['questions']),
-                    'has_statistics' => !empty($decoded['statistics']),
+                    'has_statistics' => ! empty($decoded['statistics']),
                 ]);
 
                 return $decoded;
             } else {
                 Log::error('GeminiService: Question bank generation failed - invalid structure', [
-                    'has_decoded' => !empty($decoded),
-                    'has_questions' => !empty($decoded['questions']),
+                    'has_decoded' => ! empty($decoded),
+                    'has_questions' => ! empty($decoded['questions']),
                     'decoded_keys' => $decoded ? array_keys($decoded) : [],
                 ]);
             }

@@ -28,8 +28,8 @@ class TeacherSeeder extends Seeder
         foreach ($teacherNames as $index => $name) {
             $teacher = User::create([
                 'name' => $name,
-                'email' => strtolower(str_replace(' ', '', $name)) . '@educore.test',
-                'phone' => '09' . str_pad(rand(10000000, 99999999), 8, '0', STR_PAD_LEFT),
+                'email' => strtolower(str_replace(' ', '', $name)).'@educore.test',
+                'phone' => '09'.str_pad(rand(10000000, 99999999), 8, '0', STR_PAD_LEFT),
                 'password' => bcrypt('password'),
                 'role' => 'teacher',
                 'is_active' => true,

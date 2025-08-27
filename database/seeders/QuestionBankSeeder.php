@@ -161,12 +161,12 @@ class QuestionBankSeeder extends Seeder
                 // Tạo thống kê mẫu
                 $statistics = [
                     'total_questions' => count($bank['questions']),
-                    'multiple_choice' => count(array_filter($bank['questions'], fn($q) => $q['type'] === 'multiple_choice')),
-                    'true_false' => count(array_filter($bank['questions'], fn($q) => $q['type'] === 'true_false')),
-                    'essay' => count(array_filter($bank['questions'], fn($q) => $q['type'] === 'essay')),
-                    'easy' => count(array_filter($bank['questions'], fn($q) => $q['difficulty'] === 'easy')),
-                    'medium' => count(array_filter($bank['questions'], fn($q) => $q['difficulty'] === 'medium')),
-                    'hard' => count(array_filter($bank['questions'], fn($q) => $q['difficulty'] === 'hard')),
+                    'multiple_choice' => count(array_filter($bank['questions'], fn ($q) => $q['type'] === 'multiple_choice')),
+                    'true_false' => count(array_filter($bank['questions'], fn ($q) => $q['type'] === 'true_false')),
+                    'essay' => count(array_filter($bank['questions'], fn ($q) => $q['type'] === 'essay')),
+                    'easy' => count(array_filter($bank['questions'], fn ($q) => $q['difficulty'] === 'easy')),
+                    'medium' => count(array_filter($bank['questions'], fn ($q) => $q['difficulty'] === 'medium')),
+                    'hard' => count(array_filter($bank['questions'], fn ($q) => $q['difficulty'] === 'hard')),
                 ];
 
                 QuestionBank::create([
@@ -179,7 +179,7 @@ class QuestionBankSeeder extends Seeder
                     'ai_generated' => $faker->boolean(20), // 20% được tạo bởi AI
                     'ai_generation_params' => $faker->boolean(20) ? [
                         'model' => 'gpt-3.5-turbo',
-                        'prompt' => 'Tạo câu hỏi tiếng Trung cho ' . $level,
+                        'prompt' => 'Tạo câu hỏi tiếng Trung cho '.$level,
                         'temperature' => 0.7,
                     ] : null,
                     'ai_generated_at' => $faker->boolean(20) ? $faker->dateTimeBetween('-1 month', 'now') : null,
