@@ -308,11 +308,7 @@ class Index extends Component
         if (! $this->selectedClass) {
             return;
         }
-<<<<<<< Updated upstream
         if (Auth::user()->role !== 'admin') {
-=======
-        if (auth()->user()->role !== 'admin') {
->>>>>>> Stashed changes
             $this->dispatch('showToast', ['type' => 'error', 'message' => 'Chỉ admin mới được thêm giáo viên!']);
 
             return;
