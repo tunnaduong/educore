@@ -17,7 +17,7 @@ class ChatController extends Controller
     {
         try {
             $request->validate([
-                'file' => 'required|file|max:' . self::MAX_FILE_SIZE_KB, // 100MB
+                'file' => 'required|file|max:'.self::MAX_FILE_SIZE_KB, // 100MB
                 'message_text' => 'nullable|string|max:1000',
                 'receiver_id' => 'nullable|integer|exists:users,id',
                 'class_id' => 'nullable|integer|exists:classrooms,id',
