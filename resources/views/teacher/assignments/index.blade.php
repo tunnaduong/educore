@@ -1,17 +1,23 @@
 <x-layouts.dash-teacher active="assignments">
     @include('components.language')
+    @php
+        $t = function ($vi, $en, $zh) {
+            $l = app()->getLocale();
+            return $l === 'vi' ? $vi : ($l === 'zh' ? $zh : $en);
+        };
+    @endphp
     <div class="container-fluid">
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h4 class="mb-0 text-primary fs-4">
-                    <i class="bi bi-journal-text mr-2"></i>Tổng quan giao bài tập
+                    <i class="bi bi-journal-text mr-2"></i>{{ $t('Tổng quan giao bài tập', 'Assignments overview', '作业总览') }}
                 </h4>
-                <p class="text-muted mb-0">Quản lý và theo dõi tình hình giao - nộp bài tập</p>
+                <p class="text-muted mb-0">{{ $t('Quản lý và theo dõi tình hình giao - nộp bài tập', 'Manage and track assignment creation and submissions', '管理与跟踪布置与提交作业情况') }}</p>
             </div>
             <div class="d-flex gap-2">
                 <a href="{{ route('teacher.assignments.create') }}" class="btn btn-outline-primary">
-                    <i class="bi bi-plus-circle mr-2"></i>Giao bài tập mới
+                    <i class="bi bi-plus-circle mr-2"></i>{{ $t('Giao bài tập mới', 'Create new assignment', '新增作业') }}
                 </a>
             </div>
         </div>
@@ -22,14 +28,14 @@
                 <div class="row align-items-center">
                     <div class="col-md-6">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-funnel mr-2"></i>Lọc theo tháng
+                            <i class="bi bi-funnel mr-2"></i>{{ $t('Lọc theo tháng', 'Filter by month', '按月份筛选') }}
                         </h5>
                     </div>
                     <div class="col-md-6">
                         <div class="d-flex gap-2 justify-content-end">
                             <select wire:model.live="selectedMonth" class="form-control" style="max-width: 150px;">
                                 @for ($month = 1; $month <= 12; $month++)
-                                    <option value="{{ $month }}">Tháng {{ $month }}</option>
+                                    <option value="{{ $month }}">{{ $t('Tháng', 'Month', '月') }} {{ $month }}</option>
                                 @endfor
                             </select>
                             <select wire:model.live="selectedYear" class="form-control" style="max-width: 120px;">
@@ -50,7 +56,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">Tổng bài tập</h6>
+                                <h6 class="card-title mb-0">{{ $t('Tổng bài tập', 'Total assignments', '作业总数') }}</h6>
                                 <h3 class="mb-0">{{ $overviewStats['total_assignments'] ?? 0 }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -65,7 +71,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">Lớp có bài tập</h6>
+                                <h6 class="card-title mb-0">{{ $t('Lớp có bài tập', 'Classes with assignments', '有作业的班级') }}</h6>
                                 <h3 class="mb-0">{{ $overviewStats['total_classes'] ?? 0 }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -80,7 +86,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">Tổng lượt nộp</h6>
+                                <h6 class="card-title mb-0">{{ $t('Tổng lượt nộp', 'Total submissions', '提交总数') }}</h6>
                                 <h3 class="mb-0">{{ $overviewStats['total_submissions'] ?? 0 }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -95,7 +101,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">Tỷ lệ nộp bài</h6>
+                                <h6 class="card-title mb-0">{{ $t('Tỷ lệ nộp bài', 'Submission rate', '提交率') }}</h6>
                                 <h3 class="mb-0">{{ $overviewStats['submission_rate'] ?? 0 }}%</h3>
                             </div>
                             <div class="align-self-center">
@@ -113,7 +119,7 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-trophy mr-2"></i>Top 5 lớp có nhiều bài tập nhất
+                            <i class="bi bi-trophy mr-2"></i>{{ $t('Top 5 lớp có nhiều bài tập nhất', 'Top 5 classes with most assignments', '作业最多的前5个班级') }}
                         </h5>
                     </div>
                     <div class="card-body">
@@ -122,8 +128,8 @@
                                 <table class="table table-hover">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>Lớp học</th>
-                                            <th class="text-center">Tổng bài tập</th>
+                                            <th>{{ $t('Lớp học', 'Classroom', '班级') }}</th>
+                                            <th class="text-center">{{ $t('Tổng bài tập', 'Total assignments', '作业总数') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -154,7 +160,7 @@
                         @else
                             <div class="text-center py-4">
                                 <i class="bi bi-journal-x fs-1 text-muted mb-3"></i>
-                                <h5 class="text-muted">Chưa có dữ liệu bài tập</h5>
+                                <h5 class="text-muted">{{ $t('Chưa có dữ liệu bài tập', 'No assignment data yet', '暂无作业数据') }}</h5>
                             </div>
                         @endif
                     </div>
@@ -165,7 +171,7 @@
                     <div class="card-header bg-light">
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="mb-0 text-primary">
-                                <i class="bi bi-clock-history mr-2"></i>Bài tập gần đây
+                                <i class="bi bi-clock-history mr-2"></i>{{ $t('Bài tập gần đây', 'Recent assignments', '最近作业') }}
                             </h5>
                         </div>
                     </div>
@@ -175,10 +181,10 @@
                                 <table class="table table-hover">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>Tiêu đề</th>
-                                            <th>Lớp học</th>
-                                            <th>Hạn nộp</th>
-                                            <th>Ngày giao</th>
+                                            <th>{{ $t('Tiêu đề', 'Title', '标题') }}</th>
+                                            <th>{{ $t('Lớp học', 'Classroom', '班级') }}</th>
+                                            <th>{{ $t('Hạn nộp', 'Deadline', '截止时间') }}</th>
+                                            <th>{{ $t('Ngày giao', 'Assigned at', '布置时间') }}</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -218,21 +224,20 @@
                                                         <div class="modal-header">
                                                             <h5 class="modal-title"
                                                                 id="deleteAssignmentModalLabel{{ $assignment->id }}">
-                                                                Xác nhận xóa bài tập</h5>
+                                                                {{ $t('Xác nhận xóa bài tập', 'Confirm delete assignment', '确认删除作业') }}</h5>
                                                             <button type="button" class="btn-close"
                                                                 data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            Bạn có chắc chắn muốn xóa bài tập
-                                                            "{{ $assignment->title }}"? Hành động này không thể hoàn
-                                                            tác.
+                                                            {{ $t('Bạn có chắc chắn muốn xóa bài tập', 'Are you sure you want to delete assignment', '您确定要删除作业') }}
+                                                            "{{ $assignment->title }}"? {{ $t('Hành động này không thể hoàn tác.', 'This action cannot be undone.', '此操作无法撤销。') }}
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">Hủy</button>
+                                                                data-bs-dismiss="modal">{{ $t('Hủy', 'Cancel', '取消') }}</button>
                                                             <button type="button" class="btn btn-danger"
                                                                 wire:click="deleteAssignment({{ $assignment->id }})"
-                                                                data-bs-dismiss="modal">Xóa</button>
+                                                                data-bs-dismiss="modal">{{ $t('Xóa', 'Delete', '删除') }}</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -244,7 +249,7 @@
                         @else
                             <div class="text-center py-4">
                                 <i class="bi bi-journal-x fs-1 text-muted mb-3"></i>
-                                <h5 class="text-muted">Chưa có bài tập nào</h5>
+                                <h5 class="text-muted">{{ $t('Chưa có bài tập nào', 'No assignments yet', '暂无作业') }}</h5>
                             </div>
                         @endif
                     </div>
@@ -256,7 +261,7 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-star mr-2"></i>Top 5 học viên nộp bài đúng hạn
+                            <i class="bi bi-star mr-2"></i>{{ $t('Top 5 học viên nộp bài đúng hạn', 'Top 5 on-time students', '前5名按时提交的学员') }}
                         </h5>
                     </div>
                     <div class="card-body">
@@ -285,7 +290,7 @@
                         @else
                             <div class="text-center py-3">
                                 <i class="bi bi-people fs-1 text-muted mb-2"></i>
-                                <p class="text-muted mb-0">Chưa có dữ liệu học viên</p>
+                                <p class="text-muted mb-0">{{ $t('Chưa có dữ liệu học viên', 'No student data', '暂无学员数据') }}</p>
                             </div>
                         @endif
                     </div>

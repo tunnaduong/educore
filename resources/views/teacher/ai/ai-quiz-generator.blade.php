@@ -453,8 +453,9 @@
                                     <div class="card">
                                         <div class="card-body text-center text-muted">
                                             <i class="fas fa-robot fa-5x mb-4"></i>
-                                            <h5>Chưa có quiz tiếng Trung được tạo</h5>
-                                            <p>Hãy chọn lớp học, bài học và cấu hình để tạo quiz tiếng Trung bằng AI</p>
+                                            <?php $t=function($vi,$en,$zh){$l=app()->getLocale();return $l==='zh'?$zh:($l==='en'?$en:$vi);}; ?>
+                                            <h5>{{ $t('Chưa có quiz tiếng Trung được tạo','No Chinese quiz created yet','尚未创建中文测验') }}</h5>
+                                            <p>{{ $t('Hãy chọn lớp học, bài học và cấu hình để tạo quiz tiếng Trung bằng AI','Select class, lesson and configure to create Chinese quiz with AI','请选择班级、课程并配置以通过AI创建中文测验') }}</p>
                                         </div>
                                     </div>
                                 @endif

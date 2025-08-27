@@ -1,5 +1,6 @@
 <x-layouts.dash-teacher active="evaluations-report">
     @include('components.language')
+    <?php $t=function($vi,$en,$zh){$l=app()->getLocale();return $l==='zh'?$zh:($l==='en'?$en:$vi);}; ?>
     <div class="container py-4">
         <!-- Header -->
         <div class="mb-4">
@@ -174,7 +175,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title fw-bold text-primary fs-4">{{ __('general.evaluation_details') }}
-                                của
+                                {{ $t('của','of','的') }}
                                 {{ $selectedEvaluation->student->user->name ?? __('general.student') }}</h5>
                             <button type="button" class="btn-close" wire:click="closeEvaluationDetail">
                                 <i class="bi bi-x-lg"></i>

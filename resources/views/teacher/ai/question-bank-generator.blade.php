@@ -1,5 +1,6 @@
 <x-layouts.dash-teacher active="ai">
     @include('components.language')
+    <?php $t=function($vi,$en,$zh){$l=app()->getLocale();return $l==='zh'?$zh:($l==='en'?$en:$vi);}; ?>
     <div class="container-fluid">
         <style>
             /* AI Loading Modal */
@@ -220,8 +221,8 @@
                     </div>
                 </div>
 
-                <h3 class="mb-3 typing-animation">AI đang xử lý...</h3>
-                <p class="mb-4">Đang phân tích và xử lý dữ liệu với trí tuệ nhân tạo</p>
+                <h3 class="mb-3 typing-animation">{{ $t('AI đang xử lý...','AI is processing...','AI正在处理...') }}</h3>
+                <p class="mb-4">{{ $t('Đang phân tích và xử lý dữ liệu với trí tuệ nhân tạo','Analyzing and processing data with AI','正在使用人工智能分析并处理数据') }}</p>
 
                 <div class="progress mb-3" style="height: 8px;">
                     <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%"></div>
@@ -229,13 +230,13 @@
 
                 <div class="loading-steps">
                     <div class="loading-step active">
-                        <i class="fas fa-search"></i> Phân tích nội dung
+                        <i class="fas fa-search"></i> {{ $t('Phân tích nội dung','Analyzing content','分析内容') }}
                     </div>
                     <div class="loading-step">
-                        <i class="fas fa-cogs"></i> Xử lý AI
+                        <i class="fas fa-cogs"></i> {{ $t('Xử lý AI','AI processing','AI处理') }}
                     </div>
                     <div class="loading-step">
-                        <i class="fas fa-check"></i> Hoàn thành
+                        <i class="fas fa-check"></i> {{ $t('Hoàn thành','Completed','已完成') }}
                     </div>
                 </div>
             </div>
@@ -247,9 +248,9 @@
                     <div class="card-header">
                         <h4 class="card-title">
                             <i class="fas fa-robot text-primary"></i>
-                            Tạo Ngân hàng Câu hỏi Tiếng Trung bằng AI
+                            {{ $t('Tạo Ngân hàng Câu hỏi Tiếng Trung bằng AI','Create Chinese Question Bank with AI','使用AI创建中文题库') }}
                         </h4><br>
-                        <p class="text-muted">Tự động tạo ngân hàng câu hỏi tiếng Trung với tối đa 100 câu hỏi</p>
+                        <p class="text-muted">{{ $t('Tự động tạo ngân hàng câu hỏi tiếng Trung với tối đa 100 câu hỏi','Automatically generate a Chinese question bank with up to 100 questions','自动生成最多100题的中文题库') }}</p>
                     </div>
                     <div class="card-body">
                         <!-- Thông báo -->
@@ -272,40 +273,40 @@
                             <div class="col-md-4">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5 class="card-title">Cấu hình Ngân hàng Câu hỏi</h5>
+                                        <h5 class="card-title">{{ $t('Cấu hình Ngân hàng Câu hỏi','Question Bank Configuration','题库配置') }}</h5>
                                     </div>
                                     <div class="card-body">
                                         <form wire:submit.prevent="generateQuestionBank">
                                             <div class="mb-3">
-                                                <label for="name" class="form-label">Tên ngân hàng câu hỏi</label>
+                                                <label for="name" class="form-label">{{ $t('Tên ngân hàng câu hỏi','Question bank name','题库名称') }}</label>
                                                 <input type="text" wire:model="name" id="name"
-                                                    class="form-control" placeholder="Nhập tên ngân hàng câu hỏi">
+                                                    class="form-control" placeholder="{{ $t('Nhập tên ngân hàng câu hỏi','Enter question bank name','输入题库名称') }}">
                                                 @error('name')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
 
                                             <div class="mb-3">
-                                                <label for="description" class="form-label">Mô tả</label>
+                                                <label for="description" class="form-label">{{ $t('Mô tả','Description','描述') }}</label>
                                                 <textarea wire:model="description" id="description" class="form-control" rows="3"
-                                                    placeholder="Mô tả ngân hàng câu hỏi"></textarea>
+                                                    placeholder="{{ $t('Mô tả ngân hàng câu hỏi','Describe the question bank','描述题库') }}"></textarea>
                                                 @error('description')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
 
                                             <div class="mb-3">
-                                                <label for="topic" class="form-label">Chủ đề tiếng Trung</label>
+                                                <label for="topic" class="form-label">{{ $t('Chủ đề tiếng Trung','Chinese topic','中文主题') }}</label>
                                                 <input type="text" wire:model="topic" id="topic"
                                                     class="form-control"
-                                                    placeholder="Ví dụ: Giao tiếp cơ bản, Ngữ pháp HSK 1, Từ vựng chủ đề gia đình...">
+                                                    placeholder="{{ $t('Ví dụ: Giao tiếp cơ bản, Ngữ pháp HSK 1, Từ vựng chủ đề gia đình...','Eg: Basic communication, HSK 1 grammar, Family vocabulary...','例如：基础交流、HSK1语法、家庭主题词汇…') }}">
                                                 @error('topic')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
 
                                             <div class="mb-3">
-                                                <label for="maxQuestions" class="form-label">Số câu hỏi tối đa</label>
+                                                <label for="maxQuestions" class="form-label">{{ $t('Số câu hỏi tối đa','Maximum questions','最多题数') }}</label>
                                                 <input type="number" wire:model="maxQuestions" id="maxQuestions"
                                                     class="form-control" min="10" max="100">
                                                 @error('maxQuestions')
@@ -319,13 +320,13 @@
                                                     <div class="loading-overlay">
                                                         <div class="spinner-border spinner-border-sm text-light me-2"
                                                             role="status">
-                                                            <span class="visually-hidden">Loading...</span>
+                                                            <span class="visually-hidden">{{ $t('Đang tải...','Loading...','加载中...') }}</span>
                                                         </div>
-                                                        <span class="loading-text">Đang tạo ngân hàng câu hỏi...</span>
+                                                        <span class="loading-text">{{ $t('Đang tạo ngân hàng câu hỏi...','Creating question bank...','正在创建题库...') }}</span>
                                                     </div>
                                                 @else
                                                     <i class="fas fa-magic me-2"></i>
-                                                    Tạo Ngân hàng Câu hỏi Tiếng Trung
+                                                    {{ $t('Tạo Ngân hàng Câu hỏi Tiếng Trung','Create Chinese Question Bank','创建中文题库') }}
                                                 @endif
                                             </button>
                                         </form>
@@ -349,8 +350,8 @@
                                                     <div class="particle"></div>
                                                     <div class="particle"></div>
                                                 </div>
-                                                <h5 class="mt-4 text-primary">AI đang tạo ngân hàng câu hỏi...</h5>
-                                                <p class="text-muted">Vui lòng chờ trong giây lát</p>
+                                                <h5 class="mt-4 text-primary">{{ $t('AI đang tạo ngân hàng câu hỏi...','AI is generating the question bank...','AI正在生成题库...') }}</h5>
+                                                <p class="text-muted">{{ $t('Vui lòng chờ trong giây lát','Please wait a moment','请稍候') }}</p>
                                                 <div class="progress mt-3" style="height: 6px;">
                                                     <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
                                                         style="width: 100%"></div>
@@ -361,14 +362,14 @@
                                 @elseif ($showPreview && $generatedBank)
                                     <div class="card">
                                         <div class="card-header d-flex justify-content-between align-items-center">
-                                            <h5 class="card-title">Preview Ngân hàng Câu hỏi Tiếng Trung</h5>
+                                            <h5 class="card-title">{{ $t('Preview Ngân hàng Câu hỏi Tiếng Trung','Chinese Question Bank Preview','中文题库预览') }}</h5>
                                             <div class="btn-group">
                                                 <button wire:click="createQuizFromBank"
                                                     class="btn btn-outline-info btn-sm">
-                                                    <i class="fas fa-plus"></i> Tạo Quiz
+                                                    <i class="fas fa-plus"></i> {{ $t('Tạo Quiz','Create Quiz','创建测验') }}
                                                 </button>
                                                 <button wire:click="saveQuestionBank" class="btn btn-success btn-sm">
-                                                    <i class="fas fa-save"></i> Lưu Ngân hàng
+                                                    <i class="fas fa-save"></i> {{ $t('Lưu Ngân hàng','Save Bank','保存题库') }}
                                                 </button>
                                             </div>
                                         </div>
@@ -380,7 +381,7 @@
                                                         <div class="card-body text-center">
                                                             <h4>{{ $generatedBank['statistics']['total_questions'] ?? 0 }}
                                                             </h4>
-                                                            <small>Tổng câu hỏi</small>
+                                                            <small>{{ $t('Tổng câu hỏi','Total questions','总题数') }}</small>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -389,7 +390,7 @@
                                                         <div class="card-body text-center">
                                                             <h4>{{ $generatedBank['statistics']['easy_count'] ?? 0 }}
                                                             </h4>
-                                                            <small>Câu dễ</small>
+                                                            <small>{{ $t('Câu dễ','Easy','容易') }}</small>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -398,7 +399,7 @@
                                                         <div class="card-body text-center">
                                                             <h4>{{ $generatedBank['statistics']['medium_count'] ?? 0 }}
                                                             </h4>
-                                                            <small>Câu trung bình</small>
+                                                            <small>{{ $t('Câu trung bình','Medium','中等') }}</small>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -407,7 +408,7 @@
                                                         <div class="card-body text-center">
                                                             <h4>{{ $generatedBank['statistics']['hard_count'] ?? 0 }}
                                                             </h4>
-                                                            <small>Câu khó</small>
+                                                            <small>{{ $t('Câu khó','Hard','困难') }}</small>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -416,63 +417,62 @@
                                             <!-- Thống kê theo loại -->
                                             <div class="row mb-4">
                                                 <div class="col-md-6">
-                                                    <h6>Phân bố theo loại câu hỏi:</h6>
+                                                    <h6>{{ $t('Phân bố theo loại câu hỏi:','Distribution by question type:','按题型分布：') }}</h6>
                                                     <ul class="list-group">
                                                         <li class="list-group-item d-flex justify-content-between">
-                                                            <span>Trắc nghiệm</span>
+                                                            <span>{{ $t('Trắc nghiệm','Multiple choice','单选/多选') }}</span>
                                                             <span
                                                                 class="badge bg-primary">{{ $generatedBank['statistics']['multiple_choice_count'] ?? 0 }}</span>
                                                         </li>
                                                         <li class="list-group-item d-flex justify-content-between">
-                                                            <span>Điền khuyết</span>
+                                                            <span>{{ $t('Điền khuyết','Fill in the blanks','填空') }}</span>
                                                             <span
                                                                 class="badge bg-info">{{ $generatedBank['statistics']['fill_blank_count'] ?? 0 }}</span>
                                                         </li>
                                                         <li class="list-group-item d-flex justify-content-between">
-                                                            <span>Tự luận</span>
+                                                            <span>{{ $t('Tự luận','Essay','问答') }}</span>
                                                             <span
                                                                 class="badge bg-warning">{{ $generatedBank['statistics']['essay_count'] ?? 0 }}</span>
                                                         </li>
                                                         <li class="list-group-item d-flex justify-content-between">
-                                                            <span>Đúng/Sai</span>
+                                                            <span>{{ $t('Đúng/Sai','True/False','判断') }}</span>
                                                             <span
                                                                 class="badge bg-secondary">{{ $generatedBank['statistics']['true_false_count'] ?? 0 }}</span>
                                                         </li>
                                                     </ul>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <h6>Phân bố theo độ khó:</h6>
+                                                    <h6>{{ $t('Phân bố theo độ khó:','Distribution by difficulty:','按难度分布：') }}</h6>
                                                     <div class="progress mb-2" style="height: 25px;">
                                                         <div class="progress-bar bg-success"
                                                             style="width: {{ (($generatedBank['statistics']['easy_count'] ?? 0) / ($generatedBank['statistics']['total_questions'] ?? 1)) * 100 }}%">
-                                                            Dễ ({{ $generatedBank['statistics']['easy_count'] ?? 0 }})
+                                                            {{ $t('Dễ','Easy','容易') }} ({{ $generatedBank['statistics']['easy_count'] ?? 0 }})
                                                         </div>
                                                     </div>
                                                     <div class="progress mb-2" style="height: 25px;">
                                                         <div class="progress-bar bg-warning"
                                                             style="width: {{ (($generatedBank['statistics']['medium_count'] ?? 0) / ($generatedBank['statistics']['total_questions'] ?? 1)) * 100 }}%">
-                                                            TB
-                                                            ({{ $generatedBank['statistics']['medium_count'] ?? 0 }})
+                                                            {{ $t('Trung bình','Medium','中等') }} ({{ $generatedBank['statistics']['medium_count'] ?? 0 }})
                                                         </div>
                                                     </div>
                                                     <div class="progress mb-2" style="height: 25px;">
                                                         <div class="progress-bar bg-danger"
                                                             style="width: {{ (($generatedBank['statistics']['hard_count'] ?? 0) / ($generatedBank['statistics']['total_questions'] ?? 1)) * 100 }}%">
-                                                            Khó ({{ $generatedBank['statistics']['hard_count'] ?? 0 }})
+                                                            {{ $t('Khó','Hard','困难') }} ({{ $generatedBank['statistics']['hard_count'] ?? 0 }})
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <!-- Danh sách câu hỏi mẫu -->
-                                            <h6>Một số câu hỏi mẫu:</h6>
+                                            <h6>{{ $t('Một số câu hỏi mẫu:','Sample questions:','部分示例题：') }}</h6>
                                             <div class="questions-preview"
                                                 style="max-height: 400px; overflow-y: auto;">
                                                 @foreach (array_slice($generatedBank['questions'], 0, 5) as $index => $question)
                                                     <div class="card mb-3">
                                                         <div
                                                             class="card-header d-flex justify-content-between align-items-center">
-                                                            <strong>Câu {{ $index + 1 }}:</strong>
+                                                            <strong>{{ $t('Câu','Question','题') }} {{ $index + 1 }}:</strong>
                                                             <div>
                                                                 <span
                                                                     class="badge bg-{{ $question['difficulty'] === 'easy' ? 'success' : ($question['difficulty'] === 'medium' ? 'warning' : 'danger') }}">
@@ -501,14 +501,14 @@
                                                             @endif
 
                                                             <div class="mt-2">
-                                                                <strong>Đáp án:</strong>
+                                                                <strong>{{ $t('Đáp án:','Answer:','答案：') }}</strong>
                                                                 <span
                                                                     class="text-success">{{ $question['correct_answer'] }}</span>
                                                             </div>
 
                                                             @if (!empty($question['explanation']))
                                                                 <div class="mt-2">
-                                                                    <strong>Giải thích:</strong>
+                                                                    <strong>{{ $t('Giải thích:','Explanation:','解析：') }}</strong>
                                                                     <p class="text-muted mb-0">
                                                                         {{ $question['explanation'] }}</p>
                                                                 </div>
@@ -516,7 +516,7 @@
 
                                                             @if (!empty($question['tags']))
                                                                 <div class="mt-2">
-                                                                    <strong>Tags:</strong>
+                                                                    <strong>{{ $t('Thẻ:','Tags:','标签：') }}</strong>
                                                                     @foreach ($question['tags'] as $tag)
                                                                         <span
                                                                             class="badge bg-light text-dark">{{ $tag }}</span>
@@ -525,7 +525,7 @@
                                                             @endif
 
                                                             <div class="mt-2">
-                                                                <strong>Điểm:</strong> {{ $question['score'] ?? 1 }}
+                                                                <strong>{{ $t('Điểm:','Score:','分值：') }}</strong> {{ $question['score'] ?? 1 }}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -534,9 +534,9 @@
 
                                             @if (count($generatedBank['questions']) > 5)
                                                 <div class="text-center mt-3">
-                                                    <p class="text-muted">Và
+                                                    <p class="text-muted">{{ $t('Và','And','以及') }}
                                                         {{ count($generatedBank['questions']) - 5 }}
-                                                        câu hỏi khác...</p>
+                                                        {{ $t('câu hỏi khác...','more questions...','个其他问题…') }}</p>
                                                 </div>
                                             @endif
                                         </div>
@@ -545,8 +545,8 @@
                                     <div class="card">
                                         <div class="card-body text-center text-muted">
                                             <i class="fas fa-database fa-5x mb-4"></i>
-                                            <h5>Chưa có ngân hàng câu hỏi được tạo</h5>
-                                            <p>Hãy điền thông tin và tạo ngân hàng câu hỏi tiếng Trung bằng AI</p>
+                                            <h5>{{ $t('Chưa có ngân hàng câu hỏi được tạo','No question bank has been created','尚未创建任何题库') }}</h5>
+                                            <p>{{ $t('Hãy điền thông tin và tạo ngân hàng câu hỏi tiếng Trung bằng AI','Please fill in the information to create a Chinese question bank with AI','请填写信息并通过AI创建中文题库') }}</p>
                                         </div>
                                     </div>
                                 @endif

@@ -1,5 +1,11 @@
 <x-layouts.dash-teacher active="my-class">
     @include('components.language')
+    @php
+        $t = function ($vi, $en, $zh) {
+            $l = app()->getLocale();
+            return $l === 'vi' ? $vi : ($l === 'zh' ? $zh : $en);
+        };
+    @endphp
     <div class="container py-4">
         <!-- Header -->
         <div class="row mb-4">
@@ -9,7 +15,7 @@
                         <li class="breadcrumb-item">
                             <a href="{{ route('teacher.my-class.index') }}" class="text-decoration-none">
                                 <i class="bi bi-arrow-left mr-1"></i>
-                                Lớp học của tôi
+                                {{ $t('Lớp học của tôi', 'My Classes', '我的课堂') }}
                             </a>
                         </li>
                         <li class="breadcrumb-item active" aria-current="page">{{ $classroom->name }}</li>
@@ -25,17 +31,17 @@
                 <div class="d-flex justify-content-end gap-2">
                     <a href="{{ route('teacher.attendance.take', $classroom) }}" class="btn btn-primary btn-sm">
                         <i class="bi bi-calendar-check mr-1"></i>
-                        Điểm danh
+                        {{ $t('Điểm danh', 'Take Attendance', '点名') }}
                     </a>
                     <a href="{{ route('teacher.lessons.create', ['classroom_id' => $classroom->id]) }}"
                         class="btn btn-outline-primary btn-sm">
                         <i class="bi bi-plus-circle mr-1"></i>
-                        Thêm bài học
+                        {{ $t('Thêm bài học', 'Add Lesson', '新增课程') }}
                     </a>
                     <a href="{{ route('teacher.assignments.create', ['classroom_id' => $classroom->id]) }}"
                         class="btn btn-outline-success btn-sm">
                         <i class="bi bi-plus-circle mr-1"></i>
-                        Thêm bài tập
+                        {{ $t('Thêm bài tập', 'Add Assignment', '新增作业') }}
                     </a>
                 </div>
             </div>
@@ -48,7 +54,7 @@
                     <div class="card-body text-center">
                         <i class="bi bi-people-fill text-success" style="font-size: 2rem;"></i>
                         <h4 class="mt-2 mb-1">{{ $classroom->students->count() }}</h4>
-                        <p class="text-muted mb-0">Học sinh</p>
+                        <p class="text-muted mb-0">{{ $t('Học sinh', 'Students', '学生') }}</p>
                     </div>
                 </div>
             </div>
@@ -57,7 +63,7 @@
                     <div class="card-body text-center">
                         <i class="bi bi-book-fill text-info" style="font-size: 2rem;"></i>
                         <h4 class="mt-2 mb-1">{{ $classroom->lessons->count() }}</h4>
-                        <p class="text-muted mb-0">Bài học</p>
+                        <p class="text-muted mb-0">{{ $t('Bài học', 'Lessons', '课程') }}</p>
                     </div>
                 </div>
             </div>
@@ -66,7 +72,7 @@
                     <div class="card-body text-center">
                         <i class="bi bi-journal-text text-warning" style="font-size: 2rem;"></i>
                         <h4 class="mt-2 mb-1">{{ $classroom->assignments->count() }}</h4>
-                        <p class="text-muted mb-0">Bài tập</p>
+                        <p class="text-muted mb-0">{{ $t('Bài tập', 'Assignments', '作业') }}</p>
                     </div>
                 </div>
             </div>
@@ -75,7 +81,7 @@
                     <div class="card-body text-center">
                         <i class="bi bi-calendar-check text-primary" style="font-size: 2rem;"></i>
                         <h4 class="mt-2 mb-1">{{ $classroom->attendances->count() }}</h4>
-                        <p class="text-muted mb-0">Buổi học</p>
+                        <p class="text-muted mb-0">{{ $t('Buổi học', 'Sessions', '课次') }}</p>
                     </div>
                 </div>
             </div>
@@ -89,35 +95,35 @@
                         <button class="nav-link {{ $activeTab === 'overview' ? 'active' : '' }}"
                             wire:click="setActiveTab('overview')" type="button">
                             <i class="bi bi-house mr-1"></i>
-                            Tổng quan
+                            {{ $t('Tổng quan', 'Overview', '总览') }}
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link {{ $activeTab === 'students' ? 'active' : '' }}"
                             wire:click="setActiveTab('students')" type="button">
                             <i class="bi bi-people mr-1"></i>
-                            Học sinh
+                            {{ $t('Học sinh', 'Students', '学生') }}
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link {{ $activeTab === 'lessons' ? 'active' : '' }}"
                             wire:click="setActiveTab('lessons')" type="button">
                             <i class="bi bi-book mr-1"></i>
-                            Bài học
+                            {{ $t('Bài học', 'Lessons', '课程') }}
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link {{ $activeTab === 'assignments' ? 'active' : '' }}"
                             wire:click="setActiveTab('assignments')" type="button">
                             <i class="bi bi-journal-text mr-1"></i>
-                            Bài tập
+                            {{ $t('Bài tập', 'Assignments', '作业') }}
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link {{ $activeTab === 'attendance' ? 'active' : '' }}"
                             wire:click="setActiveTab('attendance')" type="button">
                             <i class="bi bi-calendar-check mr-1"></i>
-                            Điểm danh
+                            {{ $t('Điểm danh', 'Attendance', '点名') }}
                         </button>
                     </li>
                 </ul>
@@ -129,50 +135,50 @@
                         <div class="col-md-6">
                             <h6 class="text-primary mb-3">
                                 <i class="bi bi-info-circle mr-2"></i>
-                                Thông tin lớp học
+                                {{ $t('Thông tin lớp học', 'Class Information', '班级信息') }}
                             </h6>
                             <div class="mb-3">
-                                <strong>Tên lớp:</strong> {{ $classroom->name }}
+                                <strong>{{ $t('Tên lớp', 'Class name', '班级名称') }}:</strong> {{ $classroom->name }}
                             </div>
                             <div class="mb-3">
-                                <strong>Mô tả:</strong> {{ $classroom->description }}
+                                <strong>{{ $t('Mô tả', 'Description', '描述') }}:</strong> {{ $classroom->description }}
                             </div>
                             <div class="mb-3">
-                                <strong>Ngày tạo:</strong> {{ $classroom->created_at->format('d/m/Y H:i') }}
+                                <strong>{{ $t('Ngày tạo', 'Created at', '创建时间') }}:</strong> {{ $classroom->created_at->format('d/m/Y H:i') }}
                             </div>
                             <div class="mb-3">
-                                <strong>Trạng thái:</strong>
-                                <span class="badge bg-success">Hoạt động</span>
+                                <strong>{{ $t('Trạng thái', 'Status', '状态') }}:</strong>
+                                <span class="badge bg-success">{{ $t('Hoạt động', 'Active', '活跃') }}</span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <h6 class="text-success mb-3">
                                 <i class="bi bi-graph-up mr-2"></i>
-                                Thống kê nhanh
+                                {{ $t('Thống kê nhanh', 'Quick Stats', '快速统计') }}
                             </h6>
                             <div class="row">
                                 <div class="col-6 mb-3">
                                     <div class="border rounded p-3 text-center">
                                         <h4 class="text-primary mb-1">{{ $classroom->lessons->count() }}</h4>
-                                        <small class="text-muted">Bài học</small>
+                                        <small class="text-muted">{{ $t('Bài học', 'Lessons', '课程') }}</small>
                                     </div>
                                 </div>
                                 <div class="col-6 mb-3">
                                     <div class="border rounded p-3 text-center">
                                         <h4 class="text-success mb-1">{{ $classroom->assignments->count() }}</h4>
-                                        <small class="text-muted">Bài tập</small>
+                                        <small class="text-muted">{{ $t('Bài tập', 'Assignments', '作业') }}</small>
                                     </div>
                                 </div>
                                 <div class="col-6 mb-3">
                                     <div class="border rounded p-3 text-center">
                                         <h4 class="text-info mb-1">{{ $classroom->students->count() }}</h4>
-                                        <small class="text-muted">Học sinh</small>
+                                        <small class="text-muted">{{ $t('Học sinh', 'Students', '学生') }}</small>
                                     </div>
                                 </div>
                                 <div class="col-6 mb-3">
                                     <div class="border rounded p-3 text-center">
                                         <h4 class="text-warning mb-1">{{ $classroom->attendances->count() }}</h4>
-                                        <small class="text-muted">Buổi học</small>
+                                        <small class="text-muted">{{ $t('Buổi học', 'Sessions', '课次') }}</small>
                                     </div>
                                 </div>
                             </div>
@@ -182,11 +188,11 @@
                     <div class="mt-4">
                         <h6 class="text-info mb-3">
                             <i class="bi bi-clock-history mr-2"></i>
-                            Hoạt động gần đây
+                            {{ $t('Hoạt động gần đây', 'Recent Activities', '最近活动') }}
                         </h6>
                         <div class="row">
                             <div class="col-md-6">
-                                <h6 class="text-warning mb-2">Bài học mới nhất</h6>
+                                <h6 class="text-warning mb-2">{{ $t('Bài học mới nhất', 'Latest Lessons', '最新课程') }}</h6>
                                 @forelse($classroom->lessons->take(3) as $lesson)
                                     <div class="card mb-2">
                                         <div class="card-body py-2">
@@ -202,11 +208,11 @@
                                         </div>
                                     </div>
                                 @empty
-                                    <p class="text-muted">Chưa có bài học nào</p>
+                                    <p class="text-muted">{{ $t('Chưa có bài học nào', 'No lessons yet', '暂无课程') }}</p>
                                 @endforelse
                             </div>
                             <div class="col-md-6">
-                                <h6 class="text-success mb-2">Bài tập mới nhất</h6>
+                                <h6 class="text-success mb-2">{{ $t('Bài tập mới nhất', 'Latest Assignments', '最新作业') }}</h6>
                                 @forelse($classroom->assignments->take(3) as $assignment)
                                     <div class="card mb-2">
                                         <div class="card-body py-2">
@@ -222,7 +228,7 @@
                                         </div>
                                     </div>
                                 @empty
-                                    <p class="text-muted">Chưa có bài tập nào</p>
+                                    <p class="text-muted">{{ $t('Chưa có bài tập nào', 'No assignments yet', '暂无作业') }}</p>
                                 @endforelse
                             </div>
                         </div>
@@ -234,18 +240,18 @@
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h6 class="text-info mb-0">
                             <i class="bi bi-people mr-2"></i>
-                            Danh sách học sinh ({{ $classroom->students->count() }})
+                            {{ $t('Danh sách học sinh', 'Student List', '学生名单') }} ({{ $classroom->students->count() }})
                         </h6>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead class="table-light">
                                 <tr>
-                                    <th>STT</th>
-                                    <th>Họ tên</th>
+                                    <th>{{ $t('STT', 'No.', '序号') }}</th>
+                                    <th>{{ $t('Họ tên', 'Full name', '姓名') }}</th>
                                     <th>Email</th>
-                                    <th>Ngày tham gia</th>
-                                    <th>Trạng thái</th>
+                                    <th>{{ $t('Ngày tham gia', 'Joined at', '加入日期') }}</th>
+                                    <th>{{ $t('Trạng thái', 'Status', '状态') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -265,13 +271,13 @@
                                         <td>{{ $student->pivot->created_at->format('d/m/Y') }}</td>
                                         <td>
                                             @if ($student->status === 'active')
-                                                <span class="badge bg-success">Hoạt động</span>
+                                                <span class="badge bg-success">{{ $t('Hoạt động', 'Active', '活跃') }}</span>
                                             @elseif($student->status === 'paused')
-                                                <span class="badge bg-warning">Tạm dừng</span>
+                                                <span class="badge bg-warning">{{ $t('Tạm dừng', 'Paused', '暂停') }}</span>
                                             @elseif($student->status === 'dropped')
-                                                <span class="badge bg-danger">Đã rời lớp</span>
+                                                <span class="badge bg-danger">{{ $t('Đã rời lớp', 'Dropped', '已退课') }}</span>
                                             @else
-                                                <span class="badge bg-secondary">Không xác định</span>
+                                                <span class="badge bg-secondary">{{ $t('Không xác định', 'Unknown', '未知') }}</span>
                                             @endif
                                         </td>
                                     </tr>
@@ -279,7 +285,7 @@
                                     <tr>
                                         <td colspan="6" class="text-center text-muted py-4">
                                             <i class="bi bi-people text-muted" style="font-size: 2rem;"></i>
-                                            <p class="mt-2">Chưa có học sinh nào trong lớp</p>
+                                            <p class="mt-2">{{ $t('Chưa có học sinh nào trong lớp', 'No students in the class yet', '班级中尚无学生') }}</p>
                                         </td>
                                     </tr>
                                 @endforelse
@@ -293,12 +299,12 @@
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h6 class="text-warning mb-0">
                             <i class="bi bi-book mr-2"></i>
-                            Danh sách bài học ({{ $classroom->lessons->count() }})
+                            {{ $t('Danh sách bài học', 'Lesson List', '课程列表') }} ({{ $classroom->lessons->count() }})
                         </h6>
                         <a href="{{ route('teacher.lessons.create', ['classroom_id' => $classroom->id]) }}"
                             class="btn btn-warning btn-sm">
                             <i class="bi bi-plus-circle mr-1"></i>
-                            Thêm bài học
+                            {{ $t('Thêm bài học', 'Add Lesson', '新增课程') }}
                         </a>
                     </div>
                     <div class="row">
@@ -331,7 +337,7 @@
                             <div class="col-12">
                                 <div class="text-center py-4">
                                     <i class="bi bi-book text-muted" style="font-size: 3rem;"></i>
-                                    <p class="mt-2 text-muted">Chưa có bài học nào</p>
+                                    <p class="mt-2 text-muted">{{ $t('Chưa có bài học nào', 'No lessons yet', '暂无课程') }}</p>
                                 </div>
                             </div>
                         @endforelse
@@ -343,12 +349,12 @@
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h6 class="text-success mb-0">
                             <i class="bi bi-journal-text mr-2"></i>
-                            Danh sách bài tập ({{ $classroom->assignments->count() }})
+                            {{ $t('Danh sách bài tập', 'Assignment List', '作业列表') }} ({{ $classroom->assignments->count() }})
                         </h6>
                         <a href="{{ route('teacher.assignments.create', ['classroom_id' => $classroom->id]) }}"
                             class="btn btn-success btn-sm">
                             <i class="bi bi-plus-circle mr-1"></i>
-                            Thêm bài tập
+                            {{ $t('Thêm bài tập', 'Add Assignment', '新增作业') }}
                         </a>
                     </div>
                     <div class="row">
@@ -382,7 +388,7 @@
                             <div class="col-12">
                                 <div class="text-center py-4">
                                     <i class="bi bi-journal-text text-muted" style="font-size: 3rem;"></i>
-                                    <p class="mt-2 text-muted">Chưa có bài tập nào</p>
+                                    <p class="mt-2 text-muted">{{ $t('Chưa có bài tập nào', 'No assignments yet', '暂无作业') }}</p>
                                 </div>
                             </div>
                         @endforelse
@@ -394,30 +400,30 @@
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h6 class="text-primary mb-0">
                             <i class="bi bi-calendar-check mr-2"></i>
-                            Lịch sử điểm danh
+                            {{ $t('Lịch sử điểm danh', 'Attendance History', '点名历史') }}
                         </h6>
                         <a href="{{ route('teacher.attendance.take', $classroom) }}" class="btn btn-primary btn-sm">
                             <i class="bi bi-plus-circle mr-1"></i>
-                            Điểm danh mới
+                            {{ $t('Điểm danh mới', 'New Attendance', '新增点名') }}
                         </a>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Ngày</th>
-                                    <th>Buổi học</th>
-                                    <th>Số học sinh</th>
-                                    <th>Có mặt</th>
-                                    <th>Vắng</th>
-                                    <th>Thao tác</th>
+                                    <th>{{ $t('Ngày', 'Date', '日期') }}</th>
+                                    <th>{{ $t('Buổi học', 'Session', '课次') }}</th>
+                                    <th>{{ $t('Số học sinh', 'Students', '学生数') }}</th>
+                                    <th>{{ $t('Có mặt', 'Present', '到') }}</th>
+                                    <th>{{ $t('Vắng', 'Absent', '缺') }}</th>
+                                    <th>{{ $t('Thao tác', 'Actions', '操作') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse($classroom->attendances as $attendance)
                                     <tr>
                                         <td>{{ $attendance->created_at->format('d/m/Y') }}</td>
-                                        <td>Buổi {{ $attendance->session_number }}</td>
+                                        <td>{{ $t('Buổi', 'Session', '第') }} {{ $attendance->session_number }}</td>
                                         <td>{{ $classroom->students->count() }}</td>
                                         <td>
                                             <span
@@ -436,7 +442,7 @@
                                     <tr>
                                         <td colspan="6" class="text-center text-muted py-4">
                                             <i class="bi bi-calendar-check text-muted" style="font-size: 2rem;"></i>
-                                            <p class="mt-2">Chưa có lịch sử điểm danh</p>
+                                            <p class="mt-2">{{ $t('Chưa có lịch sử điểm danh', 'No attendance history yet', '暂无点名记录') }}</p>
                                         </td>
                                     </tr>
                                 @endforelse

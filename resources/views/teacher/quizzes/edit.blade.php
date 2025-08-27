@@ -1,5 +1,11 @@
 <x-layouts.dash-teacher active="quizzes">
     @include('components.language')
+    @php
+        $t = function ($vi, $en, $zh) {
+            $l = app()->getLocale();
+            return $l === 'vi' ? $vi : ($l === 'zh' ? $zh : $en);
+        };
+    @endphp
     <style>
         .bg-gradient-primary {
             background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
@@ -59,12 +65,12 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4 fw-bold">
-                        <i class="bi bi-pencil-square me-2"></i>Chỉnh sửa bài kiểm tra
+                        <i class="bi bi-pencil-square me-2"></i>{{ $t('Chỉnh sửa bài kiểm tra', 'Edit quiz', '编辑测验') }}
                     </h4>
-                    <p class="text-muted mb-0 fs-5">Cập nhật thông tin bài kiểm tra cho lớp học của bạn</p>
+                    <p class="text-muted mb-0 fs-5">{{ $t('Cập nhật thông tin bài kiểm tra cho lớp học của bạn', 'Update quiz information for your class', '为您的班级更新测验信息') }}</p>
                 </div>
                 <a href="{{ route('teacher.quizzes.index') }}" class="btn btn-outline-secondary">
-                    <i class="bi bi-arrow-left me-2"></i>Quay lại
+                    <i class="bi bi-arrow-left me-2"></i>{{ $t('Quay lại', 'Back', '返回') }}
                 </a>
             </div>
         </div>
@@ -73,45 +79,45 @@
                 <div class="col-12 col-lg-8">
                     <div class="card shadow-sm mb-4">
                         <div class="card-header bg-gradient-primary text-white rounded-top">
-                            <i class="bi bi-info-circle me-2"></i>Thông tin bài kiểm tra
+                            <i class="bi bi-info-circle me-2"></i>{{ $t('Thông tin bài kiểm tra', 'Quiz information', '测验信息') }}
                         </div>
                         <div class="card-body">
                             <div class="row g-4">
                                 <div class="col-12">
                                     <label class="form-label">
-                                        <i class="bi bi-file-text me-2 text-primary"></i>Tiêu đề bài kiểm tra
+                                        <i class="bi bi-file-text me-2 text-primary"></i>{{ $t('Tiêu đề bài kiểm tra', 'Quiz title', '测验标题') }}
                                     </label>
                                     <input type="text" class="form-control" value="{{ $title }}" readonly>
                                 </div>
                                 <div class="col-12">
                                     <label class="form-label">
-                                        <i class="bi bi-chat-quote me-2 text-primary"></i>Mô tả
+                                        <i class="bi bi-chat-quote me-2 text-primary"></i>{{ $t('Mô tả', 'Description', '描述') }}
                                     </label>
                                     <textarea class="form-control" rows="3" readonly>{{ $description }}</textarea>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">
-                                        <i class="bi bi-people me-2 text-primary"></i>Lớp học
+                                        <i class="bi bi-people me-2 text-primary"></i>{{ $t('Lớp học', 'Classroom', '班级') }}
                                     </label>
                                     <input type="text" class="form-control"
                                         value="{{ $classrooms->where('id', $class_id)->first()->name ?? '' }}" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">
-                                        <i class="bi bi-clock me-2 text-primary"></i>Thời gian làm bài (phút)
+                                        <i class="bi bi-clock me-2 text-primary"></i>{{ $t('Thời gian làm bài (phút)', 'Time limit (minutes)', '答题时长（分钟）') }}
                                     </label>
                                     <input type="text" class="form-control" value="{{ $time_limit }}" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">
-                                        <i class="bi bi-calendar-plus me-2 text-primary"></i>Ngày giao bài
+                                        <i class="bi bi-calendar-plus me-2 text-primary"></i>{{ $t('Ngày giao bài', 'Assigned at', '布置时间') }}
                                     </label>
                                     <input type="text" class="form-control" value="{{ $assigned_date ?? '' }}"
                                         readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">
-                                        <i class="bi bi-calendar-check me-2 text-primary"></i>Hạn nộp <span
+                                        <i class="bi bi-calendar-check me-2 text-primary"></i>{{ $t('Hạn nộp', 'Deadline', '截止时间') }} <span
                                             class="text-danger">*</span>
                                     </label>
                                     <input type="datetime-local"
@@ -127,7 +133,7 @@
                     <!-- Ẩn phần chỉnh sửa câu hỏi, chỉ hiển thị danh sách câu hỏi -->
                     <div class="card shadow-sm mb-4">
                         <div class="card-header bg-gradient-success text-white rounded-top">
-                            <i class="bi bi-question-circle me-2"></i>Danh sách câu hỏi
+                            <i class="bi bi-question-circle me-2"></i>{{ $t('Danh sách câu hỏi', 'Question list', '题目列表') }}
                         </div>
                         <div class="card-body">
                             @if (count($questions) > 0)
@@ -139,14 +145,13 @@
                                                     <div class="row g-4">
                                                         <div class="col-12">
                                                             <label class="form-label"><i
-                                                                    class="bi bi-chat-quote me-2 text-primary"></i>Nội
-                                                                dung câu hỏi <span class="text-danger">*</span></label>
+                                                                    class="bi bi-chat-quote me-2 text-primary"></i>{{ $t('Nội dung câu hỏi', 'Question content', '题目内容') }} <span class="text-danger">*</span></label>
                                                             <textarea class="form-control" wire:model="questions.{{ $index }}.question" rows="3"
                                                                 placeholder="Nhập nội dung câu hỏi..."></textarea>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <label class="form-label"><i
-                                                                    class="bi bi-star me-2 text-primary"></i>Điểm <span
+                                                                    class="bi bi-star me-2 text-primary"></i>{{ $t('Điểm', 'Score', '分数') }} <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="number" class="form-control"
                                                                 wire:model="questions.{{ $index }}.score"
@@ -154,8 +159,7 @@
                                                         </div>
                                                         <div class="col-12">
                                                             <label class="form-label"><i
-                                                                    class="bi bi-list-check me-2 text-primary"></i>Các
-                                                                lựa chọn <span class="text-danger">*</span></label>
+                                                                    class="bi bi-list-check me-2 text-primary"></i>{{ $t('Các lựa chọn', 'Options', '选项') }} <span class="text-danger">*</span></label>
                                                             <div class="row g-3">
                                                                 @foreach ($question['options'] as $optionIndex => $option)
                                                                     <div class="col-12">
@@ -165,7 +169,7 @@
                                                                                 style="min-width: 50px; justify-content: center;">{{ chr(65 + $optionIndex) }}</span>
                                                                             <input type="text" class="form-control"
                                                                                 wire:model="questions.{{ $index }}.options.{{ $optionIndex }}"
-                                                                                placeholder="Nhập lựa chọn {{ chr(65 + $optionIndex) }}...">
+                                                                                placeholder="{{ $t('Nhập lựa chọn', 'Enter option', '输入选项') }} {{ chr(65 + $optionIndex) }}...">
                                                                             @if (count($question['options']) > 2)
                                                                                 <button type="button"
                                                                                     class="btn btn-outline-danger"
@@ -179,13 +183,11 @@
                                                             <button type="button"
                                                                 class="btn btn-outline-primary btn-sm mt-3"
                                                                 wire:click="addOption({{ $index }})"><i
-                                                                    class="bi bi-plus-circle me-2"></i>Thêm lựa
-                                                                chọn</button>
+                                                                    class="bi bi-plus-circle me-2"></i>{{ $t('Thêm lựa chọn', 'Add option', '添加选项') }}</button>
                                                         </div>
                                                         <div class="col-12">
                                                             <label class="form-label"><i
-                                                                    class="bi bi-check-circle me-2 text-primary"></i>Đáp
-                                                                án đúng <span class="text-danger">*</span></label>
+                                                                    class="bi bi-check-circle me-2 text-primary"></i>{{ $t('Đáp án đúng', 'Correct answer', '正确答案') }} <span class="text-danger">*</span></label>
                                                             <div class="row g-3">
                                                                 @foreach ($question['options'] as $optionIndex => $option)
                                                                     <div class="col-md-6">
@@ -204,7 +206,7 @@
                                                                                         for="correct_{{ $index }}_{{ $optionIndex }}">
                                                                                         <span
                                                                                             class="badge bg-primary me-2">{{ chr(65 + $optionIndex) }}</span>
-                                                                                        {{ $option ?: 'Lựa chọn ' . chr(65 + $optionIndex) }}
+                                                                                        {{ $option ?: ($t('Lựa chọn', 'Option', '选项') . ' ' . chr(65 + $optionIndex)) }}
                                                                                     </label>
                                                                                 </div>
                                                                             </div>
@@ -217,22 +219,20 @@
                                                                             return !empty(trim($opt));
                                                                         })) < 2)
                                                                 <div class="alert alert-warning mt-3"><i
-                                                                        class="bi bi-exclamation-triangle me-2"></i>Cần
-                                                                    ít nhất 2 lựa chọn có nội dung để chọn đáp án</div>
+                                                                        class="bi bi-exclamation-triangle me-2"></i>{{ $t('Cần ít nhất 2 lựa chọn có nội dung để chọn đáp án', 'At least 2 non-empty options are required to select an answer', '至少需要2个有内容的选项才能选择正确答案') }}</div>
                                                             @endif
                                                         </div>
                                                         <div class="col-12">
                                                             <label class="form-label"><i
-                                                                    class="bi bi-lightbulb me-2 text-primary"></i>Giải
-                                                                thích (tùy chọn)</label>
+                                                                    class="bi bi-lightbulb me-2 text-primary"></i>{{ $t('Giải thích (tùy chọn)', 'Explanation (optional)', '说明（可选）') }}</label>
                                                             <textarea class="form-control" wire:model="questions.{{ $index }}.explanation" rows="2"
                                                                 placeholder="Giải thích đáp án..."></textarea>
                                                         </div>
                                                         <div class="col-12 d-flex justify-content-end gap-2 mt-3">
                                                             <button type="button" class="btn btn-success"
-                                                                wire:click="saveQuestion">Lưu câu hỏi</button>
+                                                                wire:click="saveQuestion">{{ $t('Lưu câu hỏi', 'Save question', '保存题目') }}</button>
                                                             <button type="button" class="btn btn-secondary"
-                                                                wire:click="editQuestion(null)">Hủy</button>
+                                                                wire:click="editQuestion(null)">{{ $t('Hủy', 'Cancel', '取消') }}</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -244,7 +244,7 @@
                                                     @foreach ($question['options'] as $optionIndex => $option)
                                                         <li>{{ chr(65 + $optionIndex) }}. {{ $option }}
                                                             @if ($question['correct_answer'] === chr(65 + $optionIndex))
-                                                                <span class="badge bg-success">Đáp án đúng</span>
+                                                                <span class="badge bg-success">{{ $t('Đáp án đúng', 'Correct answer', '正确答案') }}</span>
                                                             @endif
                                                         </li>
                                                     @endforeach
@@ -254,7 +254,7 @@
                                     @endforeach
                                 </ol>
                             @else
-                                <div class="text-center text-muted">Không có câu hỏi nào.</div>
+                                <div class="text-center text-muted">{{ $t('Không có câu hỏi nào.', 'No questions.', '暂无题目。') }}</div>
                             @endif
                         </div>
                     </div>
@@ -262,7 +262,7 @@
                 <div class="col-12 col-lg-4">
                     <div class="card shadow-sm mb-4">
                         <div class="card-header bg-gradient-info text-white rounded-top">
-                            <i class="bi bi-info-circle me-2"></i>Thông tin tổng quan
+                            <i class="bi bi-info-circle me-2"></i>{{ $t('Thông tin tổng quan', 'Overview', '概览信息') }}
                         </div>
                         <div class="card-body">
                             <div class="row g-3">
@@ -272,7 +272,7 @@
                                             style="width: 40px; height: 40px;"><i
                                                 class="bi bi-question-circle fs-5"></i></div>
                                         <div>
-                                            <small class="text-muted d-block">Số câu hỏi</small>
+                                            <small class="text-muted d-block">{{ $t('Số câu hỏi', 'Number of questions', '题目数量') }}</small>
                                             <strong class="text-dark fs-5">{{ count($questions) }}</strong>
                                         </div>
                                     </div>
@@ -282,7 +282,7 @@
                                         <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3"
                                             style="width: 40px; height: 40px;"><i class="bi bi-star fs-5"></i></div>
                                         <div>
-                                            <small class="text-muted d-block">Tổng điểm</small>
+                                            <small class="text-muted d-block">{{ $t('Tổng điểm', 'Total score', '总分') }}</small>
                                             <strong
                                                 class="text-dark fs-5">{{ array_sum(array_column($questions, 'score')) }}</strong>
                                         </div>
@@ -295,8 +295,8 @@
                                                 style="width: 40px; height: 40px;"><i class="bi bi-clock fs-5"></i>
                                             </div>
                                             <div>
-                                                <small class="text-muted d-block">Thời gian</small>
-                                                <strong class="text-dark fs-5">{{ $time_limit }} phút</strong>
+                                                <small class="text-muted d-block">{{ $t('Thời gian', 'Time', '时长') }}</small>
+                                                <strong class="text-dark fs-5">{{ $time_limit }} {{ $t('phút', 'minutes', '分钟') }}</strong>
                                             </div>
                                         </div>
                                     </div>
@@ -308,7 +308,7 @@
                                                 style="width: 40px; height: 40px;"><i
                                                     class="bi bi-calendar-check fs-5"></i></div>
                                             <div>
-                                                <small class="text-muted d-block">Hạn nộp</small>
+                                                <small class="text-muted d-block">{{ $t('Hạn nộp', 'Deadline', '截止时间') }}</small>
                                                 <strong
                                                     class="text-dark fs-5">{{ \Carbon\Carbon::parse($deadline)->format('d/m/Y H:i') }}</strong>
                                             </div>
@@ -322,9 +322,9 @@
                         <div class="card-body">
                             <div class="d-grid gap-3">
                                 <button type="submit" class="btn btn-primary btn-lg"><i
-                                        class="bi bi-check-circle me-2"></i>Lưu thay đổi</button>
+                                        class="bi bi-check-circle me-2"></i>{{ $t('Lưu thay đổi', 'Save changes', '保存更改') }}</button>
                                 <a href="{{ route('teacher.quizzes.index') }}" class="btn btn-outline-secondary"><i
-                                        class="bi bi-x-circle me-2"></i>Hủy bỏ</a>
+                                        class="bi bi-x-circle me-2"></i>{{ $t('Hủy bỏ', 'Cancel', '取消') }}</a>
                             </div>
                         </div>
                     </div>
