@@ -467,10 +467,28 @@
                 }
             });
 
-                // Auto refresh messages every 30 seconds as fallback
+                // Auto refresh chat messages every 30 seconds as fallback using AJAX
+                function fetchChatMessages() {
+                    // Replace '#chat-messages' with the actual id/class of your chat messages container
+                    fetch('/admin/chat/messages') // Adjust this URL to your actual endpoint
+                        .then(response => {
+                            if (!response.ok) throw new Error('Network response was not ok');
+                            return response.text();
+                        })
+                        .then(html => {
+                            const chatContainer = document.querySelector('#chat-messages');
+                            if (chatContainer) {
+                                chatContainer.innerHTML = html;
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Failed to fetch chat messages:', error);
+                        });
+                }
+
                 setInterval(() => {
                     if (document.hasFocus()) {
-                        location.reload();
+                        fetchChatMessages();
                     }
                 }, 30000);
             </script>
