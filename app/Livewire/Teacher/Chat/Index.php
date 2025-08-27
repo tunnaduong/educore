@@ -132,7 +132,7 @@ class Index extends Component
                 }
 
                 // Kiểm tra kích thước
-                if ($this->attachment->getSize() > 102400 * 1024) { // 100MB
+                if ($this->attachment->getSize() > self::MAX_ATTACHMENT_SIZE) { // 100MB
                     $this->addError('attachment', 'File quá lớn. Kích thước tối đa là 100MB.');
 
                     return;
