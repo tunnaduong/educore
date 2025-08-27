@@ -401,7 +401,7 @@
                                                                 class="badge bg-secondary float-end">{{ ucfirst($question['type']) }}</span>
                                                         </div>
                                                         <div class="card-body">
-                                                            @if ($question['type'] === 'multiple_choice' && !empty($question['options']))
+                                                            @if (!empty($question['options']))
                                                                 <div class="options">
                                                                     @foreach ($question['options'] as $optionIndex => $option)
                                                                         <div class="form-check">
@@ -413,16 +413,6 @@
                                                                             </label>
                                                                         </div>
                                                                     @endforeach
-                                                                </div>
-                                                            @elseif($question['type'] === 'fill_blank')
-                                                                <div class="form-control"
-                                                                    style="background-color: #f8f9fa;">
-                                                                    <em>Chỗ trống để điền</em>
-                                                                </div>
-                                                            @elseif($question['type'] === 'essay')
-                                                                <div class="form-control"
-                                                                    style="background-color: #f8f9fa; min-height: 100px;">
-                                                                    <em>Vùng viết câu trả lời</em>
                                                                 </div>
                                                             @endif
 

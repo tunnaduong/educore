@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('quizzes', function (Blueprint $table) {
-            $table->integer('time_limit')->nullable()->after('deadline')->comment('Thời gian làm bài tính bằng phút');
+            if (! Schema::hasColumn('quizzes', 'time_limit')) {
+                $table->integer('time_limit')->nullable()->after('deadline')->comment('Thời gian làm bài tính bằng phút');
+            }
         });
     }
 
@@ -22,7 +24,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('quizzes', function (Blueprint $table) {
-            $table->dropColumn('time_limit');
+            if (Schema::hasColumn('quizzes', 'time_limit')) {
+                $table->dropColumn('time_limit');
+            }
         });
     }
 };
