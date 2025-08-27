@@ -7,13 +7,30 @@ use App\Models\Classroom;
 use App\Models\Lesson;
 use App\Models\Quiz;
 use App\Models\Student;
+use App\Models\User;
 use Tests\TestCase;
 
 class StudentRouteTest extends TestCase
 {
+    protected $user;
+
     protected function setUp(): void
     {
         parent::setUp();
+
+        // Tạo user student
+        $this->user = User::firstOrCreate(
+            ['phone' => 'student'],
+            [
+                'id' => 3,
+                'name' => 'Student',
+                'email' => 'student@educore.me',
+                'phone' => 'student',
+                'password' => bcrypt('Student@12'),
+                'role' => 'student',
+                'is_active' => true,
+            ]
+        );
 
         // Tạo classroom trước
         $classroom = Classroom::firstOrCreate(
@@ -53,13 +70,13 @@ class StudentRouteTest extends TestCase
                 'title' => 'Test Quiz',
                 'description' => 'Test Quiz Description',
                 'is_active' => true,
-                'classroom_id' => $classroom->id,
+                'class_id' => $classroom->id,
             ]
         );
 
         // Tạo student profile
         $student = Student::firstOrCreate(
-            ['user_id' => 3],
+            ['user_id' => $this->user->id],
             [
                 'student_id' => 'STU001',
                 'status' => 'active',
@@ -72,7 +89,7 @@ class StudentRouteTest extends TestCase
 
         // Gán student vào classroom
         $classroom->users()->syncWithoutDetaching([
-            3 => ['role' => 'student'],
+            $this->user->id => ['role' => 'student'],
         ]);
     }
 
@@ -112,6 +129,7 @@ class StudentRouteTest extends TestCase
         $response = $this->$method($uri);
         $this->assertTrue(
             in_array($response->status(), [200, 302]),
+            'Nội dung trả về: ' . mb_substr($response->getContent(), 0, 500) . "\n" . // chỉ lấy 500 ký tự đầu cho dễ đọc
             "Route [{$method} {$uri}] trả về status code {$response->status()} (mong đợi 200 hoặc 302)"
         );
     }

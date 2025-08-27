@@ -11,9 +11,25 @@ use Tests\TestCase;
 
 class TeacherRouteTest extends TestCase
 {
+    protected $teacher;
+
     protected function setUp(): void
     {
         parent::setUp();
+
+        // Tạo teacher user
+        $this->teacher = User::firstOrCreate(
+            ['phone' => 'teacher'],
+            [
+                'id' => 2,
+                'name' => 'Teacher',
+                'email' => 'teacher@educore.me',
+                'phone' => 'teacher',
+                'password' => bcrypt('Teacher@12'),
+                'role' => 'teacher',
+                'is_active' => true,
+            ]
+        );
 
         // Tạo dữ liệu test cơ bản
         $classroom = Classroom::firstOrCreate(
@@ -45,22 +61,8 @@ class TeacherRouteTest extends TestCase
         );
 
         // Gán teacher vào classroom
-        $teacher = User::firstOrCreate(
-            ['phone' => 'teacher'],
-            [
-                'id' => 2,
-                'name' => 'Teacher',
-                'email' => 'teacher@educore.me',
-                'phone' => 'teacher',
-                'password' => bcrypt('Teacher@12'),
-                'role' => 'teacher',
-                'is_active' => true,
-            ]
-        );
-
-        // Gán teacher vào classroom
         $classroom->users()->syncWithoutDetaching([
-            $teacher->id => ['role' => 'teacher'],
+            $this->teacher->id => ['role' => 'teacher'],
         ]);
 
         // Tạo quiz
@@ -70,6 +72,7 @@ class TeacherRouteTest extends TestCase
                 'title' => 'Test Quiz',
                 'description' => 'Test Quiz Description',
                 'is_active' => true,
+                'class_id' => $classroom->id,
             ]
         );
     }
@@ -130,6 +133,7 @@ class TeacherRouteTest extends TestCase
         $response = $this->$method($uri);
         $this->assertTrue(
             in_array($response->status(), [200, 302]),
+            'Nội dung trả về: ' . mb_substr($response->getContent(), 0, 500) . "\n" . // chỉ lấy 500 ký tự đầu cho dễ đọc
             "Route [{$method} {$uri}] trả về status code {$response->status()} (mong đợi 200 hoặc 302)"
         );
     }
