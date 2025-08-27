@@ -103,24 +103,30 @@
                                     <div class="d-flex justify-content-between align-items-start mb-2">
                                         <div>
                                             <span class="badge bg-primary mr-2">Câu {{ $index + 1 }}</span>
-                                            <span class="badge bg-info">{{ $question['score'] ?? $question['points'] ?? 1 }} điểm</span>
+                                            <span
+                                                class="badge bg-info">{{ $question['score'] ?? ($question['points'] ?? 1) }}
+                                                điểm</span>
                                         </div>
                                     </div>
                                     <div class="fw-medium mb-2">{{ $question['question'] }}</div>
                                     <div class="ml-3">
-                                        @foreach ($question['options'] as $optionIndex => $option)
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" disabled
-                                                    {{ $question['correct_answer'] === chr(65 + $optionIndex) ? 'checked' : '' }}>
-                                                <label
-                                                    class="form-check-label {{ $question['correct_answer'] === chr(65 + $optionIndex) ? 'fw-bold text-success' : '' }}">
-                                                    {{ $option }}
-                                                    @if ($question['correct_answer'] === chr(65 + $optionIndex))
-                                                        <i class="bi bi-check-circle-fill text-success ml-1"></i>
-                                                    @endif
-                                                </label>
-                                            </div>
-                                        @endforeach
+                                        @if (isset($question['options']) && is_array($question['options']))
+                                            @foreach ($question['options'] as $optionIndex => $option)
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" disabled
+                                                        {{ $question['correct_answer'] === chr(65 + $optionIndex) ? 'checked' : '' }}>
+                                                    <label
+                                                        class="form-check-label {{ $question['correct_answer'] === chr(65 + $optionIndex) ? 'fw-bold text-success' : '' }}">
+                                                        {{ $option }}
+                                                        @if ($question['correct_answer'] === chr(65 + $optionIndex))
+                                                            <i class="bi bi-check-circle-fill text-success ml-1"></i>
+                                                        @endif
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        @else
+                                            <div class="text-muted">Không có tùy chọn nào</div>
+                                        @endif
                                     </div>
                                 </div>
                             @endforeach
