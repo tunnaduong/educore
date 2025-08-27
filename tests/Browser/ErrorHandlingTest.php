@@ -129,16 +129,26 @@ class ErrorHandlingTest extends DuskTestCase
             'role' => 'student',
         ]);
 
-        $this->browse(function (Browser $browser) use ($student) {
-            $browser->loginAs($student)
-                ->visit('/student/assignments/1/submit')
-                ->type('content', 'Test content')
-                ->attach('file', __DIR__.'/../../storage/app/public/assignments/invalid.exe')
-                ->press('Nộp bài')
-                ->assertSee('File không được hỗ trợ');
-        });
-    }
+        // Create a temporary invalid file for upload
+        $tmpFile = tempnam(sys_get_temp_dir(), 'invalid_');
+        $invalidFile = $tmpFile . '.exe';
+        rename($tmpFile, $invalidFile);
+        file_put_contents($invalidFile, 'dummy content');
 
+        try {
+            $this->browse(function (Browser $browser) use ($student, $invalidFile) {
+                $browser->loginAs($student)
+                    ->visit('/student/assignments/1/submit')
+                    ->type('content', 'Test content')
+                    ->attach('file', $invalidFile)
+                    ->press('Nộp bài')
+                    ->assertSee('File không được hỗ trợ');
+            });
+        } finally {
+            if (file_exists($invalidFile)) {
+                unlink($invalidFile);
+            }
+        }
     /**
      * Test duplicate email validation
      */
