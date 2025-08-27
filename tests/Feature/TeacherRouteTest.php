@@ -125,19 +125,7 @@ class TeacherRouteTest extends TestCase
      */
     public function test_teacher_routes_return_200($uri, $method)
     {
-        $user = User::firstOrCreate(
-            ['phone' => 'teacher'],
-            [
-                'id' => 2,
-                'name' => 'Teacher',
-                'email' => 'teacher@educore.me',
-                'phone' => 'teacher',
-                'password' => bcrypt('Teacher@12'),
-                'role' => 'teacher',
-                'is_active' => true,
-            ]
-        );
-        $this->actingAs($user);
+        $this->actingAs($this->teacher);
 
         $response = $this->$method($uri);
         $this->assertTrue(
