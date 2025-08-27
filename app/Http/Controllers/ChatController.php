@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Log;
 use App\Models\Message;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class ChatController extends Controller
 {
@@ -21,9 +21,9 @@ class ChatController extends Controller
             ]);
 
             $file = $request->file('file');
-            
+
             // Kiểm tra file
-            if (!$file->isValid()) {
+            if (! $file->isValid()) {
                 return response()->json(['error' => 'File không hợp lệ'], 400);
             }
 
@@ -35,13 +35,13 @@ class ChatController extends Controller
             // Kiểm tra MIME type
             $allowedMimes = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'zip', 'rar', '7z', 'mp3', 'm4a', 'wav', 'ogg', 'oga', 'flac', 'amr', 'webm', 'mp4'];
             $fileExtension = strtolower($file->getClientOriginalExtension());
-            if (!in_array($fileExtension, $allowedMimes)) {
+            if (! in_array($fileExtension, $allowedMimes)) {
                 return response()->json(['error' => 'Định dạng file không được hỗ trợ.'], 400);
             }
 
             // Lưu file
             $path = $file->store('chat-attachments', 'public');
-            
+
             // Tạo tin nhắn
             $messageData = [
                 'sender_id' => Auth::id(),
@@ -63,23 +63,23 @@ class ChatController extends Controller
             Log::info('File uploaded successfully', [
                 'path' => $path,
                 'message_id' => $message->id,
-                'file_name' => $file->getClientOriginalName()
+                'file_name' => $file->getClientOriginalName(),
             ]);
 
             return response()->json([
                 'success' => true,
                 'message' => $message,
                 'file_path' => $path,
-                'file_url' => Storage::url($path)
+                'file_url' => Storage::url($path),
             ]);
 
         } catch (\Exception $e) {
             Log::error('File upload failed', [
                 'error' => $e->getMessage(),
-                'file' => $request->file('file') ? $request->file('file')->getClientOriginalName() : 'unknown'
+                'file' => $request->file('file') ? $request->file('file')->getClientOriginalName() : 'unknown',
             ]);
 
-            return response()->json(['error' => 'Không thể tải lên file: ' . $e->getMessage()], 500);
+            return response()->json(['error' => 'Không thể tải lên file: '.$e->getMessage()], 500);
         }
     }
 }

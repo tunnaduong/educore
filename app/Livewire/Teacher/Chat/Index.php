@@ -125,26 +125,30 @@ class Index extends Component
         if ($this->attachment) {
             try {
                 // Kiểm tra file có hợp lệ không
-                if (!$this->attachment->isValid()) {
+                if (! $this->attachment->isValid()) {
                     $this->addError('attachment', 'File không hợp lệ hoặc bị hỏng.');
+
                     return;
                 }
 
                 // Kiểm tra kích thước
                 if ($this->attachment->getSize() > 102400 * 1024) { // 100MB
                     $this->addError('attachment', 'File quá lớn. Kích thước tối đa là 100MB.');
+
                     return;
                 }
 
                 // Kiểm tra MIME type
                 $allowedMimes = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'zip', 'rar', '7z', 'mp3', 'm4a', 'wav', 'ogg', 'oga', 'flac', 'amr', 'webm', 'mp4'];
                 $fileExtension = strtolower($this->attachment->getClientOriginalExtension());
-                if (!in_array($fileExtension, $allowedMimes)) {
+                if (! in_array($fileExtension, $allowedMimes)) {
                     $this->addError('attachment', 'Định dạng file không được hỗ trợ.');
+
                     return;
                 }
             } catch (\Exception $e) {
-                $this->addError('attachment', 'Không thể xử lý file: ' . $e->getMessage());
+                $this->addError('attachment', 'Không thể xử lý file: '.$e->getMessage());
+
                 return;
             }
         }
@@ -153,8 +157,9 @@ class Index extends Component
             'messageText' => 'nullable|string|max:1000',
         ]);
 
-        if ((trim($this->messageText) === '' || $this->messageText === null) && !$this->attachment) {
+        if ((trim($this->messageText) === '' || $this->messageText === null) && ! $this->attachment) {
             $this->addError('messageText', 'Vui lòng nhập nội dung hoặc chọn tệp đính kèm.');
+
             return;
         }
 
@@ -189,9 +194,10 @@ class Index extends Component
             } catch (\Exception $e) {
                 Log::error('Failed to upload attachment', [
                     'error' => $e->getMessage(),
-                    'file' => $this->attachment->getClientOriginalName()
+                    'file' => $this->attachment->getClientOriginalName(),
                 ]);
-                $this->addError('attachment', 'Không thể tải lên tệp: ' . $e->getMessage());
+                $this->addError('attachment', 'Không thể tải lên tệp: '.$e->getMessage());
+
                 return;
             }
         }
