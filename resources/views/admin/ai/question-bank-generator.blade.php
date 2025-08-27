@@ -423,21 +423,6 @@
                                                             <span
                                                                 class="badge bg-primary">{{ $generatedBank['statistics']['multiple_choice_count'] ?? 0 }}</span>
                                                         </li>
-                                                        <li class="list-group-item d-flex justify-content-between">
-                                                            <span>Điền khuyết</span>
-                                                            <span
-                                                                class="badge bg-info">{{ $generatedBank['statistics']['fill_blank_count'] ?? 0 }}</span>
-                                                        </li>
-                                                        <li class="list-group-item d-flex justify-content-between">
-                                                            <span>Tự luận</span>
-                                                            <span
-                                                                class="badge bg-warning">{{ $generatedBank['statistics']['essay_count'] ?? 0 }}</span>
-                                                        </li>
-                                                        <li class="list-group-item d-flex justify-content-between">
-                                                            <span>Đúng/Sai</span>
-                                                            <span
-                                                                class="badge bg-secondary">{{ $generatedBank['statistics']['true_false_count'] ?? 0 }}</span>
-                                                        </li>
                                                     </ul>
                                                 </div>
                                                 <div class="col-md-6">
@@ -532,7 +517,7 @@
                                                 @endforeach
                                             </div>
 
-                                            
+
                                         </div>
                                     </div>
                                 @else

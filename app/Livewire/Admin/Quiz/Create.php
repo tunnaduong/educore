@@ -53,7 +53,7 @@ class Create extends Component
         'time_limit' => 'nullable|integer|min:1|max:480',
         'questions' => 'required|array|min:1',
         'questions.*.question' => 'required|min:3',
-        'questions.*.type' => 'required|in:multiple_choice,fill_blank,drag_drop,essay',
+        'questions.*.type' => 'required|in:multiple_choice',
         'questions.*.score' => 'required|integer|min:1|max:10',
     ];
 
@@ -110,7 +110,7 @@ class Create extends Component
     {
         $this->validate([
             'currentQuestion.question' => 'required|min:3',
-            'currentQuestion.type' => 'required|in:multiple_choice,fill_blank,drag_drop,essay',
+            'currentQuestion.type' => 'required|in:multiple_choice',
             'currentQuestion.score' => 'required|integer|min:1|max:10',
         ]);
 
@@ -195,7 +195,7 @@ class Create extends Component
 
     public function editQuestion($index)
     {
-        if (! isset($this->questions[$index])) {
+        if (!isset($this->questions[$index])) {
             return;
         }
 
@@ -222,7 +222,7 @@ class Create extends Component
             $this->selectedQuestionBank = $bankId;
             $this->questionBankQuestions = $questionBank->questions ?? [];
             $this->showQuestionBank = true;
-            session()->flash('message', 'Đã tải ngân hàng câu hỏi: '.$questionBank->name);
+            session()->flash('message', 'Đã tải ngân hàng câu hỏi: ' . $questionBank->name);
         }
     }
 
@@ -281,7 +281,7 @@ class Create extends Component
 
         $addedCount = count($this->selectedQuestions);
         $this->selectedQuestions = [];
-        session()->flash('message', 'Đã thêm '.$addedCount.' câu hỏi từ ngân hàng câu hỏi.');
+        session()->flash('message', 'Đã thêm ' . $addedCount . ' câu hỏi từ ngân hàng câu hỏi.');
     }
 
     public function closeQuestionBank()
@@ -303,7 +303,7 @@ class Create extends Component
         try {
             $aiHelper = new \App\Helpers\AIHelper;
 
-            if (! $aiHelper->isAIAvailable()) {
+            if (!$aiHelper->isAIAvailable()) {
                 session()->flash('error', 'AI service không khả dụng. Vui lòng kiểm tra cấu hình API key.');
 
                 return;
@@ -315,25 +315,25 @@ class Create extends Component
 
             $result = $aiHelper->validateQuizWithAI($tempQuiz);
 
-            if ($result && ! empty($result['fixed_questions'])) {
+            if ($result && !empty($result['fixed_questions'])) {
                 $this->questions = $result['fixed_questions'];
                 $errorCount = count($result['validation_info']['errors_found'] ?? []);
                 $suggestionCount = count($result['validation_info']['suggestions'] ?? []);
 
                 if ($errorCount > 0) {
-                    session()->flash('message', 'AI đã sửa '.$errorCount.' lỗi trong quiz.');
+                    session()->flash('message', 'AI đã sửa ' . $errorCount . ' lỗi trong quiz.');
                 } else {
                     session()->flash('message', 'Quiz đã được kiểm tra và không có lỗi nào.');
                 }
 
                 if ($suggestionCount > 0) {
-                    session()->flash('info', 'AI đưa ra '.$suggestionCount.' gợi ý cải thiện.');
+                    session()->flash('info', 'AI đưa ra ' . $suggestionCount . ' gợi ý cải thiện.');
                 }
             } else {
                 session()->flash('message', 'Quiz đã được kiểm tra và không có lỗi nào.');
             }
         } catch (\Exception $e) {
-            session()->flash('error', 'Có lỗi xảy ra khi kiểm tra quiz: '.$e->getMessage());
+            session()->flash('error', 'Có lỗi xảy ra khi kiểm tra quiz: ' . $e->getMessage());
         }
     }
 

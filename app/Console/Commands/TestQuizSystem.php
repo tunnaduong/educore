@@ -67,7 +67,7 @@ class TestQuizSystem extends Command
         $this->info('📊 Checking database tables...');
 
         // Check quizzes table
-        if (! DB::getSchemaBuilder()->hasTable('quizzes')) {
+        if (!DB::getSchemaBuilder()->hasTable('quizzes')) {
             $issues[] = '❌ Quizzes table does not exist';
         } else {
             $this->info('✅ Quizzes table exists');
@@ -77,14 +77,14 @@ class TestQuizSystem extends Command
             $requiredColumns = ['id', 'class_id', 'title', 'description', 'questions', 'time_limit', 'deadline', 'created_at', 'updated_at'];
 
             foreach ($requiredColumns as $column) {
-                if (! in_array($column, $columns)) {
+                if (!in_array($column, $columns)) {
                     $issues[] = "❌ Quizzes table missing column: {$column}";
                 }
             }
         }
 
         // Check quiz_results table
-        if (! DB::getSchemaBuilder()->hasTable('quiz_results')) {
+        if (!DB::getSchemaBuilder()->hasTable('quiz_results')) {
             $issues[] = '❌ Quiz results table does not exist';
         } else {
             $this->info('✅ Quiz results table exists');
@@ -100,7 +100,7 @@ class TestQuizSystem extends Command
             $quiz = new Quiz;
             $this->info('✅ Quiz model works');
         } catch (\Exception $e) {
-            $issues[] = '❌ Quiz model error: '.$e->getMessage();
+            $issues[] = '❌ Quiz model error: ' . $e->getMessage();
         }
 
         // Check QuizResult model
@@ -108,7 +108,7 @@ class TestQuizSystem extends Command
             $result = new QuizResult;
             $this->info('✅ QuizResult model works');
         } catch (\Exception $e) {
-            $issues[] = '❌ QuizResult model error: '.$e->getMessage();
+            $issues[] = '❌ QuizResult model error: ' . $e->getMessage();
         }
     }
 
@@ -124,8 +124,8 @@ class TestQuizSystem extends Command
             foreach ($quizzes as $quiz) {
                 $this->info("  - Quiz: {$quiz->title} (ID: {$quiz->id})");
                 $this->info("    Time limit: {$quiz->time_limit} minutes");
-                $this->info('    Questions: '.count($quiz->questions ?? []));
-                $this->info('    Classroom: '.($quiz->classroom ? $quiz->classroom->name : 'N/A'));
+                $this->info('    Questions: ' . count($quiz->questions ?? []));
+                $this->info('    Classroom: ' . ($quiz->classroom ? $quiz->classroom->name : 'N/A'));
             }
         } else {
             $issues[] = '⚠️ No quizzes found. Run --create to create test quiz.';
@@ -139,7 +139,7 @@ class TestQuizSystem extends Command
         if (empty($issues)) {
             $this->info('🎉 All checks passed! Quiz system is working correctly.');
         } else {
-            $this->error('⚠️ Found '.count($issues).' issue(s):');
+            $this->error('⚠️ Found ' . count($issues) . ' issue(s):');
             foreach ($issues as $issue) {
                 $this->line($issue);
             }
@@ -152,7 +152,7 @@ class TestQuizSystem extends Command
 
         // Find a classroom
         $classroom = Classroom::first();
-        if (! $classroom) {
+        if (!$classroom) {
             $this->error('❌ No classroom found. Please create a classroom first.');
 
             return;
@@ -161,7 +161,7 @@ class TestQuizSystem extends Command
         // Create test quiz
         $quiz = Quiz::create([
             'class_id' => $classroom->id,
-            'title' => 'Bài kiểm tra mẫu - '.now()->format('Y-m-d H:i'),
+            'title' => 'Bài kiểm tra mẫu - ' . now()->format('Y-m-d H:i'),
             'description' => 'Bài kiểm tra mẫu để test chức năng quiz system',
             'time_limit' => 30, // 30 minutes
             'deadline' => now()->addDays(7),
@@ -174,8 +174,9 @@ class TestQuizSystem extends Command
                     'score' => 1,
                 ],
                 [
-                    'type' => 'fill_blank',
+                    'type' => 'multiple_choice',
                     'question' => 'Việt Nam có bao nhiêu tỉnh thành?',
+                    'options' => ['60', '61', '62', '63'],
                     'correct_answer' => '63',
                     'score' => 1,
                 ],
@@ -187,8 +188,10 @@ class TestQuizSystem extends Command
                     'score' => 1,
                 ],
                 [
-                    'type' => 'essay',
-                    'question' => 'Hãy viết một đoạn văn ngắn về quê hương của bạn.',
+                    'type' => 'multiple_choice',
+                    'question' => 'Thành phố nào là trung tâm kinh tế lớn nhất Việt Nam?',
+                    'options' => ['Hà Nội', 'Hồ Chí Minh', 'Đà Nẵng', 'Huế'],
+                    'correct_answer' => 'Hồ Chí Minh',
                     'score' => 2,
                 ],
             ],
@@ -197,7 +200,7 @@ class TestQuizSystem extends Command
         $this->info("✅ Created test quiz: {$quiz->title}");
         $this->info("   Quiz ID: {$quiz->id}");
         $this->info("   Time limit: {$quiz->time_limit} minutes");
-        $this->info('   Questions: '.count($quiz->questions));
+        $this->info('   Questions: ' . count($quiz->questions));
         $this->info("   Classroom: {$classroom->name}");
 
         $this->newLine();

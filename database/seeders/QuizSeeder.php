@@ -111,29 +111,43 @@ class QuizSeeder extends Seeder
                 $title = $titles[$i] ?? $faker->sentence(3);
                 $description = $faker->randomElement($quizDescriptions);
 
-                // Tạo thời gian làm bài ngẫu nhiên (15-60 phút)
-                $timeLimit = $faker->randomElement([15, 30, 45, 60]);
+                // Tạo deadline ngẫu nhiên (1-14 ngày từ hiện tại)
+                $deadline = now()->addDays(rand(1, 14));
 
-                // Tạo điểm tối đa ngẫu nhiên (10-100 điểm)
-                $maxScore = $faker->randomElement([10, 20, 50, 100]);
-
-                // Tạo thời gian bắt đầu và kết thúc
-                $startTime = now()->addDays(rand(1, 14));
-                $endTime = $startTime->copy()->addDays(rand(1, 7));
-
-                // Chọn loại bài kiểm tra
-                $quizType = $faker->randomElement(['multiple_choice', 'essay', 'mixed']);
+                // Tạo câu hỏi mẫu (JSON)
+                $questions = [
+                    [
+                        'id' => 1,
+                        'type' => 'multiple_choice',
+                        'question' => 'Chọn từ đúng nghĩa với từ "你好"',
+                        'options' => ['Xin chào', 'Tạm biệt', 'Cảm ơn', 'Xin lỗi'],
+                        'correct_answer' => 0,
+                        'points' => 10
+                    ],
+                    [
+                        'id' => 2,
+                        'type' => 'multiple_choice',
+                        'question' => 'Từ "谢谢" có nghĩa là gì?',
+                        'options' => ['Xin chào', 'Tạm biệt', 'Cảm ơn', 'Xin lỗi'],
+                        'correct_answer' => 2,
+                        'points' => 10
+                    ],
+                    [
+                        'id' => 3,
+                        'type' => 'multiple_choice',
+                        'question' => 'Từ "再见" có nghĩa là gì?',
+                        'options' => ['Xin chào', 'Tạm biệt', 'Cảm ơn', 'Xin lỗi'],
+                        'correct_answer' => 1,
+                        'points' => 10
+                    ]
+                ];
 
                 Quiz::create([
                     'class_id' => $classroom->id,
                     'title' => $title,
                     'description' => $description,
-                    'time_limit' => $timeLimit,
-                    'max_score' => $maxScore,
-                    'start_time' => $startTime,
-                    'end_time' => $endTime,
-                    'quiz_type' => $quizType,
-                    'is_active' => $faker->boolean(80), // 80% khả năng active
+                    'questions' => $questions,
+                    'deadline' => $deadline,
                 ]);
             }
         }
