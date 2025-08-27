@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Models\Assignment;
 use App\Models\Classroom;
+use App\Models\Lesson;
 use App\Models\Student;
 use App\Models\Teacher;
-use App\Models\Lesson;
-use App\Models\Assignment;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DuskTestSeeder extends Seeder
@@ -76,4 +76,4 @@ class DuskTestSeeder extends Seeder
         $this->command->info('- Teacher: teacher@educore.com / password');
         $this->command->info('- Student: student@educore.com / password');
     }
-} 
+}

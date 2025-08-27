@@ -100,9 +100,9 @@ class AdminRouteTest extends TestCase
         $response = $this->$method($uri);
         $this->assertTrue(
             in_array($response->status(), [200, 302]),
-            "Route [{$method} {$uri}] trả về status code {$response->status()} (mong đợi 200 hoặc 302)\n" .
-                'Nội dung trả về: ' . mb_substr($response->getContent(), 0, 500) . "\n" . // chỉ lấy 500 ký tự đầu cho dễ đọc
-                ($response->exception ? 'Exception: ' . $response->exception->getMessage() : '')
+            "Route [{$method} {$uri}] trả về status code {$response->status()} (mong đợi 200 hoặc 302)\n".
+                'Nội dung trả về: '.mb_substr($response->getContent(), 0, 500)."\n". // chỉ lấy 500 ký tự đầu cho dễ đọc
+                ($response->exception ? 'Exception: '.$response->exception->getMessage() : '')
         );
     }
 }

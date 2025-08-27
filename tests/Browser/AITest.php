@@ -17,18 +17,18 @@ class AITest extends DuskTestCase
     public function test_ai_grading(): void
     {
         $teacher = User::factory()->create([
-            'role' => 'teacher'
+            'role' => 'teacher',
         ]);
 
         $this->browse(function (Browser $browser) use ($teacher) {
             $browser->loginAs($teacher)
-                    ->visit('/teacher/ai/grading')
-                    ->assertSee('AI Chấm điểm')
-                    ->click('@select-assignment')
-                    ->select('assignment_id', '1')
-                    ->press('Bắt đầu chấm điểm')
-                    ->waitFor('@grading-result')
-                    ->assertSee('Kết quả chấm điểm');
+                ->visit('/teacher/ai/grading')
+                ->assertSee('AI Chấm điểm')
+                ->click('@select-assignment')
+                ->select('assignment_id', '1')
+                ->press('Bắt đầu chấm điểm')
+                ->waitFor('@grading-result')
+                ->assertSee('Kết quả chấm điểm');
         });
     }
 
@@ -38,20 +38,20 @@ class AITest extends DuskTestCase
     public function test_ai_quiz_generator(): void
     {
         $teacher = User::factory()->create([
-            'role' => 'teacher'
+            'role' => 'teacher',
         ]);
 
         $this->browse(function (Browser $browser) use ($teacher) {
             $browser->loginAs($teacher)
-                    ->visit('/teacher/ai/quiz-generator')
-                    ->assertSee('AI Tạo Quiz')
-                    ->type('topic', 'Toán học lớp 10')
-                    ->type('description', 'Tạo quiz về đại số và hình học')
-                    ->select('difficulty', 'medium')
-                    ->type('question_count', '10')
-                    ->press('Tạo Quiz')
-                    ->waitFor('@quiz-result')
-                    ->assertSee('Quiz đã được tạo');
+                ->visit('/teacher/ai/quiz-generator')
+                ->assertSee('AI Tạo Quiz')
+                ->type('topic', 'Toán học lớp 10')
+                ->type('description', 'Tạo quiz về đại số và hình học')
+                ->select('difficulty', 'medium')
+                ->type('question_count', '10')
+                ->press('Tạo Quiz')
+                ->waitFor('@quiz-result')
+                ->assertSee('Quiz đã được tạo');
         });
     }
 
@@ -61,17 +61,17 @@ class AITest extends DuskTestCase
     public function test_ai_chat(): void
     {
         $student = User::factory()->create([
-            'role' => 'student'
+            'role' => 'student',
         ]);
 
         $this->browse(function (Browser $browser) use ($student) {
             $browser->loginAs($student)
-                    ->visit('/student/ai/chat')
-                    ->assertSee('AI Trợ giúp')
-                    ->type('question', 'Giải thích về định lý Pythagoras')
-                    ->press('Gửi câu hỏi')
-                    ->waitFor('@ai-response')
-                    ->assertSee('Định lý Pythagoras');
+                ->visit('/student/ai/chat')
+                ->assertSee('AI Trợ giúp')
+                ->type('question', 'Giải thích về định lý Pythagoras')
+                ->press('Gửi câu hỏi')
+                ->waitFor('@ai-response')
+                ->assertSee('Định lý Pythagoras');
         });
     }
 
@@ -81,18 +81,18 @@ class AITest extends DuskTestCase
     public function test_ai_essay_analysis(): void
     {
         $teacher = User::factory()->create([
-            'role' => 'teacher'
+            'role' => 'teacher',
         ]);
 
         $this->browse(function (Browser $browser) use ($teacher) {
             $browser->loginAs($teacher)
-                    ->visit('/teacher/ai/essay-analysis')
-                    ->assertSee('AI Phân tích bài viết')
-                    ->type('essay_content', 'Đây là một bài viết mẫu để phân tích')
-                    ->select('analysis_type', 'grammar')
-                    ->press('Phân tích')
-                    ->waitFor('@analysis-result')
-                    ->assertSee('Kết quả phân tích');
+                ->visit('/teacher/ai/essay-analysis')
+                ->assertSee('AI Phân tích bài viết')
+                ->type('essay_content', 'Đây là một bài viết mẫu để phân tích')
+                ->select('analysis_type', 'grammar')
+                ->press('Phân tích')
+                ->waitFor('@analysis-result')
+                ->assertSee('Kết quả phân tích');
         });
     }
 
@@ -102,20 +102,20 @@ class AITest extends DuskTestCase
     public function test_ai_lesson_generator(): void
     {
         $teacher = User::factory()->create([
-            'role' => 'teacher'
+            'role' => 'teacher',
         ]);
 
         $this->browse(function (Browser $browser) use ($teacher) {
             $browser->loginAs($teacher)
-                    ->visit('/teacher/ai/lesson-generator')
-                    ->assertSee('AI Tạo bài học')
-                    ->type('subject', 'Vật lý')
-                    ->type('topic', 'Động học chất điểm')
-                    ->type('grade_level', '10')
-                    ->type('duration', '45')
-                    ->press('Tạo bài học')
-                    ->waitFor('@lesson-result')
-                    ->assertSee('Bài học đã được tạo');
+                ->visit('/teacher/ai/lesson-generator')
+                ->assertSee('AI Tạo bài học')
+                ->type('subject', 'Vật lý')
+                ->type('topic', 'Động học chất điểm')
+                ->type('grade_level', '10')
+                ->type('duration', '45')
+                ->press('Tạo bài học')
+                ->waitFor('@lesson-result')
+                ->assertSee('Bài học đã được tạo');
         });
     }
-} 
+}

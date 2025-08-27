@@ -2,11 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
-use App\Models\Classroom;
 use App\Models\Assignment;
+use App\Models\Classroom;
 use App\Models\Lesson;
 use App\Models\Quiz;
+use App\Models\User;
 use Tests\TestCase;
 
 class TeacherRouteTest extends TestCase
@@ -14,7 +14,7 @@ class TeacherRouteTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Tạo dữ liệu test cơ bản
         $classroom = Classroom::firstOrCreate(
             ['id' => 1],
@@ -24,7 +24,7 @@ class TeacherRouteTest extends TestCase
                 'is_active' => true,
             ]
         );
-        
+
         $assignment = Assignment::firstOrCreate(
             ['id' => 1],
             [
@@ -34,7 +34,7 @@ class TeacherRouteTest extends TestCase
                 'is_active' => true,
             ]
         );
-        
+
         $lesson = Lesson::firstOrCreate(
             ['id' => 1],
             [
@@ -43,7 +43,7 @@ class TeacherRouteTest extends TestCase
                 'is_active' => true,
             ]
         );
-        
+
         // Gán teacher vào classroom
         $teacher = User::firstOrCreate(
             ['phone' => 'teacher'],
@@ -57,12 +57,12 @@ class TeacherRouteTest extends TestCase
                 'is_active' => true,
             ]
         );
-        
+
         // Gán teacher vào classroom
         $classroom->users()->syncWithoutDetaching([
-            $teacher->id => ['role' => 'teacher']
+            $teacher->id => ['role' => 'teacher'],
         ]);
-        
+
         // Tạo quiz
         $quiz = Quiz::firstOrCreate(
             ['id' => 1],

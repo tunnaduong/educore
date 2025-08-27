@@ -21,13 +21,13 @@ class AuthTest extends DuskTestCase
             'password' => bcrypt('password'),
         ]);
 
-        $this->browse(function (Browser $browser) use ($admin) {
+        $this->browse(function (Browser $browser) {
             $browser->visit('/login')
-                    ->type('email', 'admin@educore.com')
-                    ->type('password', 'password')
-                    ->press('Đăng nhập')
-                    ->assertPathIs('/admin/dashboard')
-                    ->assertSee('Dashboard');
+                ->type('email', 'admin@educore.com')
+                ->type('password', 'password')
+                ->press('Đăng nhập')
+                ->assertPathIs('/admin/dashboard')
+                ->assertSee('Dashboard');
         });
     }
 
@@ -41,13 +41,13 @@ class AuthTest extends DuskTestCase
             'password' => bcrypt('password'),
         ]);
 
-        $this->browse(function (Browser $browser) use ($teacher) {
+        $this->browse(function (Browser $browser) {
             $browser->visit('/login')
-                    ->type('email', 'teacher@educore.com')
-                    ->type('password', 'password')
-                    ->press('Đăng nhập')
-                    ->assertPathIs('/teacher/dashboard')
-                    ->assertSee('Dashboard');
+                ->type('email', 'teacher@educore.com')
+                ->type('password', 'password')
+                ->press('Đăng nhập')
+                ->assertPathIs('/teacher/dashboard')
+                ->assertSee('Dashboard');
         });
     }
 
@@ -61,13 +61,13 @@ class AuthTest extends DuskTestCase
             'password' => bcrypt('password'),
         ]);
 
-        $this->browse(function (Browser $browser) use ($student) {
+        $this->browse(function (Browser $browser) {
             $browser->visit('/login')
-                    ->type('email', 'student@educore.com')
-                    ->type('password', 'password')
-                    ->press('Đăng nhập')
-                    ->assertPathIs('/student/dashboard')
-                    ->assertSee('Dashboard');
+                ->type('email', 'student@educore.com')
+                ->type('password', 'password')
+                ->press('Đăng nhập')
+                ->assertPathIs('/student/dashboard')
+                ->assertSee('Dashboard');
         });
     }
 
@@ -78,10 +78,10 @@ class AuthTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/login')
-                    ->type('input[name="email"]', 'wrong@email.com')
-                    ->type('input[name="password"]', 'wrongpassword')
-                    ->press('Đăng nhập')
-                    ->assertSee('Thông tin đăng nhập không chính xác');
+                ->type('input[name="email"]', 'wrong@email.com')
+                ->type('input[name="password"]', 'wrongpassword')
+                ->press('Đăng nhập')
+                ->assertSee('Thông tin đăng nhập không chính xác');
         });
     }
 
@@ -97,9 +97,9 @@ class AuthTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user)
-                    ->visit('/admin/dashboard')
-                    ->click('@logout-button')
-                    ->assertPathIs('/login');
+                ->visit('/admin/dashboard')
+                ->click('@logout-button')
+                ->assertPathIs('/login');
         });
     }
-} 
+}

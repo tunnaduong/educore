@@ -2,12 +2,12 @@
 
 namespace Tests\Browser;
 
-use App\Models\User;
 use App\Models\Assignment;
+use App\Models\Classroom;
 use App\Models\Lesson;
 use App\Models\Quiz;
 use App\Models\Student;
-use App\Models\Classroom;
+use App\Models\User;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
@@ -74,7 +74,7 @@ class StudentRouteDuskTest extends DuskTestCase
 
         // Gán student vào classroom
         $classroom->users()->syncWithoutDetaching([
-            3 => ['role' => 'student']
+            3 => ['role' => 'student'],
         ]);
     }
 

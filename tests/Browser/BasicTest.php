@@ -14,8 +14,8 @@ class BasicTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/')
-                    ->assertSee('EduCore')
-                    ->screenshot('home-page');
+                ->assertSee('EduCore')
+                ->screenshot('home-page');
         });
     }
 
@@ -30,16 +30,16 @@ class BasicTest extends DuskTestCase
                 'name' => 'Test User',
                 'email' => 'test@educore.com',
                 'password' => bcrypt('password'),
-                'role' => 'admin'
+                'role' => 'admin',
             ]);
 
             $this->assertDatabaseHas('users', [
                 'email' => 'test@educore.com',
-                'role' => 'admin'
+                'role' => 'admin',
             ]);
 
             $browser->visit('/')
-                    ->assertSee('EduCore');
+                ->assertSee('EduCore');
         });
     }
 
@@ -52,22 +52,22 @@ class BasicTest extends DuskTestCase
             // Kiểm tra dữ liệu từ seeder
             $this->assertDatabaseHas('users', [
                 'email' => 'admin@educore.com',
-                'role' => 'admin'
+                'role' => 'admin',
             ]);
 
             $this->assertDatabaseHas('users', [
                 'email' => 'teacher@educore.com',
-                'role' => 'teacher'
+                'role' => 'teacher',
             ]);
 
             $this->assertDatabaseHas('users', [
                 'email' => 'student@educore.com',
-                'role' => 'student'
+                'role' => 'student',
             ]);
 
             $browser->visit('/login')
-                    ->assertPresent('input[name="email"]')
-                    ->assertPresent('input[name="password"]');
+                ->assertPresent('input[name="email"]')
+                ->assertPresent('input[name="password"]');
         });
     }
 
@@ -78,9 +78,9 @@ class BasicTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/login')
-                    ->assertPresent('input[name="email"]')
-                    ->assertPresent('input[name="password"]')
-                    ->screenshot('login-page');
+                ->assertPresent('input[name="email"]')
+                ->assertPresent('input[name="password"]')
+                ->screenshot('login-page');
         });
     }
-} 
+}

@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             $this->call([
                 DuskTestSeeder::class,
             ]);
+
             return;
         }
 
