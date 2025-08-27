@@ -129,7 +129,7 @@ class StudentRouteTest extends TestCase
         $response = $this->$method($uri);
         $this->assertTrue(
             in_array($response->status(), [200, 302]),
-            'Nội dung trả về: ' . mb_substr($response->getContent(), 0, 500) . "\n" . // chỉ lấy 500 ký tự đầu cho dễ đọc
+            'Nội dung trả về: '.mb_substr($response->getContent(), 0, 500)."\n". // chỉ lấy 500 ký tự đầu cho dễ đọc
             "Route [{$method} {$uri}] trả về status code {$response->status()} (mong đợi 200 hoặc 302)"
         );
     }
