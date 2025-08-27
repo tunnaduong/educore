@@ -103,7 +103,7 @@
                                     <div class="d-flex justify-content-between align-items-start mb-2">
                                         <div>
                                             <span class="badge bg-primary mr-2">Câu {{ $index + 1 }}</span>
-                                            <span class="badge bg-info">{{ $question['score'] }} điểm</span>
+                                            <span class="badge bg-info">{{ $question['score'] ?? $question['points'] ?? 1 }} điểm</span>
                                         </div>
                                     </div>
                                     <div class="fw-medium mb-2">{{ $question['question'] }}</div>

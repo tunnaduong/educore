@@ -54,12 +54,12 @@ class AttendanceSeeder extends Seeder
 
                         if ($random <= $attendanceRate) {
                             // Có mặt
-                            $status = $faker->randomElement(['present', 'late']);
-                            $notes = $status === 'late' ? 'Đến muộn 10 phút' : null;
+                            $present = true;
+                            $reason = null;
                         } else {
                             // Vắng mặt
-                            $status = 'absent';
-                            $notes = $faker->optional(0.7)->randomElement([
+                            $present = false;
+                            $reason = $faker->optional(0.7)->randomElement([
                                 'Bị ốm',
                                 'Có việc gia đình',
                                 'Đi công tác',
@@ -69,22 +69,12 @@ class AttendanceSeeder extends Seeder
                             ]);
                         }
 
-                        // Tạo thời gian điểm danh
-                        $attendanceTime = $currentDate->copy();
-                        if ($status === 'late') {
-                            $attendanceTime->addMinutes($faker->numberBetween(5, 20));
-                        } else {
-                            $attendanceTime->addMinutes($faker->numberBetween(-10, 5));
-                        }
-
                         Attendance::create([
                             'class_id' => $classroom->id,
                             'student_id' => $student->studentProfile->id,
                             'date' => $currentDate->format('Y-m-d'),
-                            'status' => $status,
-                            'notes' => $notes,
-                            'recorded_at' => $attendanceTime,
-                            'recorded_by' => $classroom->getFirstTeacher()->id ?? 1,
+                            'present' => $present,
+                            'reason' => $reason,
                         ]);
                     }
                 }
