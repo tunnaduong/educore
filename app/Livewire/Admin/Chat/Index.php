@@ -331,17 +331,10 @@ class Index extends Component
         if (! $this->selectedClass) {
             return;
         }
-<<<<<<< Updated upstream
-        if (! in_array(Auth::user()->role, ['admin', 'teacher'])) {
-            return;
-        }
-        if ($userId == Auth::id()) {
-=======
         if (! in_array(auth()->user()->role, ['admin', 'teacher'])) {
             return;
         }
         if ($userId == auth()->id()) {
->>>>>>> Stashed changes
             return;
         }
         $user = User::find($userId);
