@@ -96,7 +96,7 @@ class QuizResult extends Model
      */
     public function isOnTime(): bool
     {
-        if (!$this->submitted_at || !$this->quiz->deadline) {
+        if (! $this->submitted_at || ! $this->quiz->deadline) {
             return true;
         }
 
@@ -108,7 +108,7 @@ class QuizResult extends Model
      */
     public function getDurationString(): string
     {
-        if (!$this->duration) {
+        if (! $this->duration) {
             return '-';
         }
 
@@ -131,7 +131,7 @@ class QuizResult extends Model
         $correctCount = 0;
 
         foreach ($this->getAnswersArray() as $index => $answer) {
-            if (!empty($answer)) {
+            if (! empty($answer)) {
                 $correctCount++;
             }
         }

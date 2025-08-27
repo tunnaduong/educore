@@ -117,7 +117,7 @@ class ExpenseSeeder extends Seeder
                 'class_id' => $classroom ? $classroom->id : null,
                 'amount' => $amount,
                 'type' => $expenseType,
-                'note' => $description . ($faker->optional(0.6)->sentence() ? ' - ' . $faker->sentence() : ''),
+                'note' => $description.($faker->optional(0.6)->sentence() ? ' - '.$faker->sentence() : ''),
                 'spent_at' => $spentAt,
             ]);
         }

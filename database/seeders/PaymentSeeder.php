@@ -103,7 +103,7 @@ class PaymentSeeder extends Seeder
             case 'tuition':
                 $notes = [
                     "Học phí khóa học {$classroom->name}",
-                    'Thanh toán học phí tháng ' . rand(1, 12),
+                    'Thanh toán học phí tháng '.rand(1, 12),
                     "Học phí khóa học {$classroom->level}",
                     "Thanh toán học phí cho học viên {$student->name}",
                 ];

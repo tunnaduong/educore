@@ -17,50 +17,50 @@ class DatabaseSeeder extends Seeder
 
         // Thứ tự chạy seeder theo dependency
         $this->call([
-                // 1. Tạo admin
+            // 1. Tạo admin
             AdminSeeder::class,
 
-                // 2. Tạo teachers
+            // 2. Tạo teachers
             TeacherSeeder::class,
 
-                // 3. Tạo students
+            // 3. Tạo students
             StudentSeeder::class,
 
-                // 4. Tạo classrooms và relationships
+            // 4. Tạo classrooms và relationships
             ClassroomSeeder::class,
 
-                // 5. Tạo assignments cho các lớp
+            // 5. Tạo assignments cho các lớp
             AssignmentSeeder::class,
 
-                // 6. Tạo attendance data
+            // 6. Tạo attendance data
             AttendanceSeeder::class,
 
-                // 7. Tạo lessons cho các lớp
+            // 7. Tạo lessons cho các lớp
             LessonSeeder::class,
 
-                // 8. Tạo quizzes cho các lớp
+            // 8. Tạo quizzes cho các lớp
             QuizSeeder::class,
 
-                // 9. Tạo question bank
+            // 9. Tạo question bank
             QuestionBankSeeder::class,
 
-                // 10. Tạo assignment submissions
+            // 10. Tạo assignment submissions
             AssignmentSubmissionSeeder::class,
 
-                // 11. Tạo quiz results
+            // 11. Tạo quiz results
             QuizResultSeeder::class,
 
-                // 12. Tạo payments
+            // 12. Tạo payments
             PaymentSeeder::class,
 
-                // 13. Tạo expenses
+            // 13. Tạo expenses
             ExpenseSeeder::class,
 
-                // 14. Tạo notifications (giữ nguyên seeder cũ)
+            // 14. Tạo notifications (giữ nguyên seeder cũ)
             NotificationSeeder::class,
             TeacherNotificationSeeder::class,
 
-                // 15. Tạo chat messages (giữ nguyên seeder cũ)
+            // 15. Tạo chat messages (giữ nguyên seeder cũ)
             ChatSeeder::class,
         ]);
     }

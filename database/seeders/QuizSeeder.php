@@ -122,7 +122,7 @@ class QuizSeeder extends Seeder
                         'question' => 'Chọn từ đúng nghĩa với từ "你好"',
                         'options' => ['Xin chào', 'Tạm biệt', 'Cảm ơn', 'Xin lỗi'],
                         'correct_answer' => 0,
-                        'points' => 10
+                        'points' => 10,
                     ],
                     [
                         'id' => 2,
@@ -130,7 +130,7 @@ class QuizSeeder extends Seeder
                         'question' => 'Từ "谢谢" có nghĩa là gì?',
                         'options' => ['Xin chào', 'Tạm biệt', 'Cảm ơn', 'Xin lỗi'],
                         'correct_answer' => 2,
-                        'points' => 10
+                        'points' => 10,
                     ],
                     [
                         'id' => 3,
@@ -138,8 +138,8 @@ class QuizSeeder extends Seeder
                         'question' => 'Từ "再见" có nghĩa là gì?',
                         'options' => ['Xin chào', 'Tạm biệt', 'Cảm ơn', 'Xin lỗi'],
                         'correct_answer' => 1,
-                        'points' => 10
-                    ]
+                        'points' => 10,
+                    ],
                 ];
 
                 Quiz::create([
