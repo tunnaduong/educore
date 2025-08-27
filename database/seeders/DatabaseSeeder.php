@@ -15,6 +15,15 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
+        // Nếu đang chạy trong môi trường testing, chỉ chạy DuskTestSeeder
+        if (app()->environment('testing') || config('app.env') === 'testing') {
+            $this->call([
+                DuskTestSeeder::class,
+            ]);
+
+            return;
+        }
+
         // Thứ tự chạy seeder theo dependency
         $this->call([
             // 1. Tạo admin

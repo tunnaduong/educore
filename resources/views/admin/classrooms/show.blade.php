@@ -170,11 +170,13 @@
                                                                 'active' => 'success',
                                                                 'paused' => 'warning',
                                                                 'dropped' => 'danger',
+                                                                'new' => 'info',
                                                             ];
                                                             $statusLabels = [
                                                                 'active' => 'Đang học',
                                                                 'paused' => 'Nghỉ',
                                                                 'dropped' => 'Bảo lưu',
+                                                                'new' => 'Mới',
                                                             ];
                                                             $color =
                                                                 $statusColors[$student->studentProfile->status] ??

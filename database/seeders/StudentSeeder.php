@@ -59,7 +59,7 @@ class StudentSeeder extends Seeder
             // Tạo profile học viên
             Student::create([
                 'user_id' => $student->id,
-                'status' => $faker->randomElement(['active', 'inactive', 'graduated']),
+                'status' => $faker->randomElement(['active', 'dropped', 'paused', 'new']),
                 'joined_at' => $faker->dateTimeBetween('-1 year', 'now'),
             ]);
 
