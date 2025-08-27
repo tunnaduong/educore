@@ -131,7 +131,7 @@ class ErrorHandlingTest extends DuskTestCase
 
         // Create a temporary invalid file for upload
         $tmpFile = tempnam(sys_get_temp_dir(), 'invalid_');
-        $invalidFile = $tmpFile . '.exe';
+        $invalidFile = $tmpFile.'.exe';
         rename($tmpFile, $invalidFile);
         file_put_contents($invalidFile, 'dummy content');
 

@@ -7,7 +7,6 @@ use App\Models\Classroom;
 use App\Models\Lesson;
 use App\Models\Quiz;
 use App\Models\Student;
-use App\Models\User;
 use Tests\TestCase;
 
 class StudentRouteTest extends TestCase
