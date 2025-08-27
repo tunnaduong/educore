@@ -49,8 +49,8 @@ class StudentSeeder extends Seeder
         foreach ($studentNames as $index => $name) {
             $student = User::create([
                 'name' => $name,
-                'email' => strtolower(str_replace(' ', '', $name)).'@educore.test',
-                'phone' => '09'.str_pad(rand(10000000, 99999999), 8, '0', STR_PAD_LEFT),
+                'email' => strtolower(str_replace(' ', '', $name)) . '@educore.test',
+                'phone' => '09' . str_pad(rand(10000000, 99999999), 8, '0', STR_PAD_LEFT),
                 'password' => bcrypt('password'),
                 'role' => 'student',
                 'is_active' => true,
@@ -59,7 +59,7 @@ class StudentSeeder extends Seeder
             // Tạo profile học viên
             Student::create([
                 'user_id' => $student->id,
-                'status' => $faker->randomElement(['active', 'inactive', 'graduated']),
+                'status' => $faker->randomElement(['active', 'dropped', 'paused', 'new']),
                 'joined_at' => $faker->dateTimeBetween('-1 year', 'now'),
             ]);
 
