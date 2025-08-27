@@ -100,7 +100,7 @@ class StudentRouteDuskTest extends DuskTestCase
     public function test_student_can_access_lessons()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(3))
+            $browser->loginAs(User::where('phone', 'student')->first())
                 ->visit('/student/lessons')
                 ->assertPathIs('/student/lessons')
                 ->assertSee('Bài học');
