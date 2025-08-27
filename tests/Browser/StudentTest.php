@@ -57,14 +57,27 @@ class StudentTest extends DuskTestCase
             'role' => 'student',
         ]);
 
-        $this->browse(function (Browser $browser) use ($student) {
-            $browser->loginAs($student)
-                ->visit('/student/assignments/1/submit')
-                ->type('content', 'Đây là bài làm của tôi')
-                ->attach('file', __DIR__.'/../../storage/app/public/assignments/test.pdf')
-                ->press('Nộp bài')
-                ->assertSee('Bài tập đã được nộp thành công');
-        });
+        // Create a temporary PDF file for upload
+        $tmpFile = tempnam(sys_get_temp_dir(), 'test_assignment_');
+        $pdfFile = $tmpFile . '.pdf';
+        rename($tmpFile, $pdfFile);
+        file_put_contents($pdfFile, '%PDF-1.4 test pdf content');
+
+        try {
+            $this->browse(function (Browser $browser) use ($student, $pdfFile) {
+                $browser->loginAs($student)
+                    ->visit('/student/assignments/1/submit')
+                    ->type('content', 'Đây là bài làm của tôi')
+                    ->attach('file', $pdfFile)
+                    ->press('Nộp bài')
+                    ->assertSee('Bài tập đã được nộp thành công');
+            });
+        } finally {
+            // Clean up the temporary file
+            if (file_exists($pdfFile)) {
+                unlink($pdfFile);
+            }
+        }
     }
 
     /**
