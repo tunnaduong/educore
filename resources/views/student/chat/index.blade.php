@@ -210,22 +210,23 @@
 
                             <!-- Message input with drag & drop -->
                             <div class="border-top pt-3">
-                                <form wire:submit="sendMessage">
+                                <form wire:submit.prevent="sendMessage" enctype="multipart/form-data">
                                     <div class="row g-2">
                                         <div class="col">
                                             <div class="input-group">
                                                 <input type="text" wire:model="messageText" class="form-control"
                                                     placeholder="Nhập tin nhắn..." maxlength="1000">
-                                                <button type="button" class="btn btn-outline-secondary"
-                                                    onclick="document.getElementById('attachment').click()">
+                                                <input type="file" wire:model="attachment" id="attachment" class="d-none" accept="image/*,audio/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar,.7z">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('attachment').click()">
                                                     <i class="bi bi-paperclip"></i>
                                                 </button>
                                                 <button type="submit" class="btn btn-primary">
                                                     <i class="bi bi-send"></i>
                                                 </button>
                                             </div>
-                                            <input type="file" wire:model="attachment" id="attachment"
-                                                class="d-none">
+                                            @error('attachment')
+                                                <small class="text-danger d-block mt-1">{{ $message }}</small>
+                                            @enderror
                                             @if ($attachment)
                                                 <small class="text-muted">
                                                     <i class="bi bi-paperclip"></i>
@@ -266,6 +267,21 @@
 
     @script
         <script>
+            // File upload handling
+            document.addEventListener('DOMContentLoaded', function() {
+                const fileInput = document.getElementById('attachment');
+                if (fileInput) {
+                    fileInput.addEventListener('change', function(e) {
+                        const file = e.target.files[0];
+                        if (file) {
+                            console.log('File selected:', file.name, file.size, file.type);
+                            // Gửi file qua Livewire
+                            @this.set('attachment', file);
+                        }
+                    });
+                }
+            });
+
             // Auto scroll to bottom when new messages arrive
             document.addEventListener('livewire:initialized', () => {
                 Livewire.on('messageSent', () => {

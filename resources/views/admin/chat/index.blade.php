@@ -178,17 +178,21 @@
                                                             <span class="fw-bold"
                                                                 style="font-size: 0.95rem;">{{ $sender->name }}</span>
                                                         </div>
-                                                        <p class="mb-1">{{ $message->message }}</p>
-                                                        @if ($message->attachment)
-                                                            <div class="mt-2">
-                                                                <a href="{{ Storage::url($message->attachment) }}"
-                                                                    target="_blank"
-                                                                    class="btn btn-sm {{ $isMine ? 'btn-light' : 'btn-outline-light' }}">
-                                                                    <i class="bi bi-paperclip mr-1"></i>
-                                                                    Tệp đính kèm
-                                                                </a>
-                                                            </div>
-                                                        @endif
+                                                        <div class="message-content">
+                                                            <div class="message-text">{{ $message->message }}</div>
+                                                            @if ($message->attachment)
+                                                                <div class="attachment mt-2">
+                                                                    <i class="bi bi-paperclip"></i>
+                                                                    <a href="{{ Storage::url($message->attachment) }}"
+                                                                        target="_blank" class="text-decoration-none">
+                                                                        {{ basename($message->attachment) }}
+                                                                    </a>
+                                                                    <small
+                                                                        class="text-muted d-block">{{ number_format(Storage::size($message->attachment) / 1024, 1) }}
+                                                                        KB</small>
+                                                                </div>
+                                                            @endif
+                                                        </div>
                                                         <small class="text-white d-block mt-1"
                                                             style="font-size: 0.85rem;">
                                                             {{ $message->created_at->format('H:i d/m/Y') }}
@@ -209,22 +213,26 @@
 
                             <!-- Message input -->
                             <div class="border-top pt-3">
-                                <form wire:submit="sendMessage">
+                                <form id="chatForm" enctype="multipart/form-data">
                                     <div class="row g-2">
                                         <div class="col">
                                             <div class="input-group">
-                                                <input type="text" wire:model="messageText" class="form-control"
+                                                <input type="text" id="messageText" class="form-control"
                                                     placeholder="Nhập tin nhắn..." maxlength="1000">
-                                                <button type="button" class="btn btn-outline-secondary"
+                                                <input type="file" id="attachment" class="d-none"
+                                                    accept="image/*,audio/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar,.7z">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm"
                                                     onclick="document.getElementById('attachment').click()">
-                                                    <i class="bi bi-paperclip"></i>
+                                                    <i class="fas fa-paperclip"></i>
                                                 </button>
-                                                <button type="submit" class="btn btn-primary">
+                                                <button type="button" onclick="sendMessage()"
+                                                    class="btn btn-primary">
                                                     <i class="bi bi-send"></i>
                                                 </button>
                                             </div>
-                                            <input type="file" wire:model="attachment" id="attachment"
-                                                class="d-none">
+                                            @error('attachment')
+                                                <small class="text-danger d-block mt-1">{{ $message }}</small>
+                                            @enderror
                                             @if ($attachment)
                                                 <small class="text-muted">
                                                     <i class="bi bi-paperclip"></i>
@@ -257,75 +265,234 @@
 
     @script
         <script>
-            // Auto scroll to bottom when new messages arrive
-            document.addEventListener('livewire:initialized', () => {
-                Livewire.on('messageSent', () => {
-                    setTimeout(() => {
-                        const container = document.getElementById('messagesContainer');
-                        if (container) {
-                            container.scrollTop = container.scrollHeight;
-                        }
-                    }, 100);
-                });
-
-                // Real-time message updates
-                Livewire.on('messageReceived', () => {
-                    // Show notification
-                    if (Notification.permission === 'granted') {
-                        new Notification('Tin nhắn mới', {
-                            body: 'Bạn có tin nhắn mới',
-                            icon: '/favicon.ico'
-                        });
-                    }
-
-                    // Auto scroll to bottom
-                    setTimeout(() => {
-                        const container = document.getElementById('messagesContainer');
-                        if (container) {
-                            container.scrollTop = container.scrollHeight;
-                        }
-                    }, 100);
-                });
-
-                // Listen to Pusher events
-                if (window.Echo) {
-                    // Listen to private user channels
-                    window.Echo.private(`chat-user-${@js(auth()->id())}`)
-                        .listen('.message.sent', (e) => {
-                            @this.call('handleNewMessage', e);
-                        });
-
-                    // Listen to class channels (nếu đang ở trong class chat)
-                    @if ($selectedClass)
-                        window.Echo.channel(`chat-class-${@js($selectedClass->id)}`)
-                            .listen('.message.sent', (e) => {
-                                @this.call('handleNewMessage', e);
-                            });
-                    @endif
-                }
-            });
-
             // Request notification permission
             if (Notification.permission === 'default') {
                 Notification.requestPermission();
             }
 
-            // Không cần auto refresh nữa vì đã dùng Pusher realtime
+            // File upload and message sending
+            function sendMessage() {
+                const messageText = document.getElementById('messageText').value;
+                const fileInput = document.getElementById('attachment');
+                const file = fileInput.files[0];
+                
+                if (!messageText.trim() && !file) {
+                    alert('Vui lòng nhập tin nhắn hoặc chọn file');
+                    return;
+                }
 
-            // Real-time typing indicator
-            let typingTimer;
-            const messageInput = document.querySelector('input[wire\\:model="messageText"]');
-            if (messageInput) {
-                messageInput.addEventListener('input', () => {
-                    clearTimeout(typingTimer);
-                    // You can add typing indicator logic here
-                    typingTimer = setTimeout(() => {
-                        // Stop typing indicator
-                    }, 1000);
+                const formData = new FormData();
+                if (file) {
+                    formData.append('file', file);
+                }
+                if (messageText.trim()) {
+                    formData.append('message_text', messageText);
+                }
+
+                // Add receiver or class info
+                @if($selectedUser)
+                    formData.append('receiver_id', {{ $selectedUser->id }});
+                @elseif($selectedClass)
+                    formData.append('class_id', {{ $selectedClass->id }});
+                @endif
+
+                // Show loading
+                const sendButton = document.querySelector('button[onclick="sendMessage()"]');
+                const originalText = sendButton.innerHTML;
+                sendButton.innerHTML = '<i class="bi bi-hourglass-split"></i>';
+                sendButton.disabled = true;
+
+                fetch('/chat/upload', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Clear form
+                        document.getElementById('messageText').value = '';
+                        fileInput.value = '';
+                        
+                        // Add message to UI
+                        addMessageToUI(data.message);
+                        
+                        // Show success notification
+                        showNotification('Tin nhắn đã gửi', 'success');
+                    } else {
+                        alert('Lỗi: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi gửi tin nhắn');
+                })
+                .finally(() => {
+                    // Restore button
+                    sendButton.innerHTML = originalText;
+                    sendButton.disabled = false;
                 });
             }
-        </script>
-    @endscript
+
+            // Add message to UI
+            function addMessageToUI(message) {
+                const messagesContainer = document.getElementById('messagesContainer');
+                if (!messagesContainer) return;
+
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message-item mb-3';
+                
+                const isMine = message.sender_id == {{ auth()->id() }};
+                const alignment = isMine ? 'text-end' : 'text-start';
+                
+                let attachmentHtml = '';
+                if (message.attachment) {
+                    attachmentHtml = `
+                        <div class="attachment mt-2">
+                            <i class="bi bi-paperclip"></i>
+                            <a href="/storage/${message.attachment}" target="_blank" class="text-decoration-none">
+                                ${message.attachment.split('/').pop()}
+                            </a>
+                        </div>
+                    `;
+                }
+
+                messageDiv.innerHTML = `
+                    <div class="${alignment}">
+                        <div class="d-inline-block">
+                            <div class="message-bubble ${isMine ? 'bg-primary text-white' : 'bg-light'} p-2 rounded">
+                                <div class="message-content">
+                                    <div class="message-text">${message.message || ''}</div>
+                                    ${attachmentHtml}
+                                </div>
+                                <small class="text-muted d-block mt-1">
+                                    ${new Date(message.created_at).toLocaleTimeString('vi-VN', {hour: '2-digit', minute: '2-digit'})}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                messagesContainer.appendChild(messageDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+
+            // Show browser notification
+            function showNotification(title, type = 'info') {
+                if (Notification.permission === 'granted') {
+                    new Notification(title, {
+                        body: type === 'success' ? 'Thành công!' : 'Có tin nhắn mới',
+                        icon: '/favicon.ico',
+                        badge: '/favicon.ico'
+                    });
+                }
+            }
+
+            // Real-time chat with Pusher
+            document.addEventListener('DOMContentLoaded', function() {
+                // Initialize Pusher if available
+                if (window.Echo) {
+                    console.log('Pusher initialized');
+                    
+                    // Listen to private user channels
+                    window.Echo.private(`chat-user-{{ auth()->id() }}`)
+                        .listen('.message.sent', (e) => {
+                            console.log('Received message:', e);
+                            
+                            // Add message to UI
+                            addMessageToUI(e.message);
+                            
+                            // Show notification if not focused
+                            if (!document.hasFocus()) {
+                                showNotification('Tin nhắn mới từ ' + e.message.sender.name);
+                            }
+                            
+                            // Auto scroll
+                            const container = document.getElementById('messagesContainer');
+                            if (container) {
+                                container.scrollTop = container.scrollHeight;
+                            }
+                        });
+
+                    // Listen to class channels
+                    @if($selectedClass)
+                        window.Echo.channel(`chat-class-{{ $selectedClass->id }}`)
+                            .listen('.message.sent', (e) => {
+                                console.log('Received class message:', e);
+                                
+                                // Add message to UI
+                                addMessageToUI(e.message);
+                                
+                                // Show notification if not focused
+                                if (!document.hasFocus()) {
+                                    showNotification('Tin nhắn mới trong lớp ' + '{{ $selectedClass->name }}');
+                                }
+                                
+                                // Auto scroll
+                                const container = document.getElementById('messagesContainer');
+                                if (container) {
+                                    container.scrollTop = container.scrollHeight;
+                                }
+                            });
+                    @endif
+                } else {
+                    console.log('Pusher not available');
+                }
+
+                // File input change handler
+                const fileInput = document.getElementById('attachment');
+                if (fileInput) {
+                    fileInput.addEventListener('change', function(e) {
+                        const file = e.target.files[0];
+                        if (file) {
+                            console.log('File selected:', file.name, file.size, file.type);
+                            // Show selected file info
+                            const fileInfo = document.createElement('div');
+                            fileInfo.className = 'alert alert-info alert-sm mt-2';
+                            fileInfo.innerHTML = `
+                                <i class="bi bi-paperclip"></i> 
+                                ${file.name} (${(file.size / 1024).toFixed(1)} KB)
+                            `;
+                            
+                            // Remove previous file info
+                            const prevInfo = document.querySelector('.alert-info');
+                            if (prevInfo) prevInfo.remove();
+                            
+                            // Add new file info
+                            fileInput.parentNode.parentNode.appendChild(fileInfo);
+                        }
+                    });
+                }
+            });
+
+                // Auto refresh chat messages every 30 seconds as fallback using AJAX
+                function fetchChatMessages() {
+                    // Replace '#chat-messages' with the actual id/class of your chat messages container
+                    fetch('/admin/chat/messages') // Adjust this URL to your actual endpoint
+                        .then(response => {
+                            if (!response.ok) throw new Error('Network response was not ok');
+                            return response.text();
+                        })
+                        .then(html => {
+                            const chatContainer = document.querySelector('#chat-messages');
+                            if (chatContainer) {
+                                chatContainer.innerHTML = html;
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Failed to fetch chat messages:', error);
+                        });
+                }
+
+                setInterval(() => {
+                    if (document.hasFocus()) {
+                        fetchChatMessages();
+                    }
+                }, 30000);
+            </script>
+        @endscript
 
     @push('scripts')
         <script>
