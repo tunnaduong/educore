@@ -7,10 +7,7 @@ use App\Models\Message;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
-<<<<<<< Updated upstream
-=======
 use Illuminate\Support\Facades\Auth;
->>>>>>> Stashed changes
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
