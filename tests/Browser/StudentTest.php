@@ -59,7 +59,7 @@ class StudentTest extends DuskTestCase
 
         // Create a temporary PDF file for upload
         $tmpFile = tempnam(sys_get_temp_dir(), 'test_assignment_');
-        $pdfFile = $tmpFile . '.pdf';
+        $pdfFile = $tmpFile.'.pdf';
         rename($tmpFile, $pdfFile);
         file_put_contents($pdfFile, '%PDF-1.4 test pdf content');
 
