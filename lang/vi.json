@@ -1,4 +1,7 @@
 {
+  "Đã qua thời gian học. Không thể điểm danh lại.": "Đã qua thời gian học. Không thể điểm danh lại."
+}
+{
     "(and :count more error)": "(và :count lỗi khác)",
     "(and :count more errors)": "(và :count lỗi khác)|(và :count lỗi khác)|(và :count lỗi khác)",
     "A decryption key is required.": "Khóa giải mã là bắt buộc.",

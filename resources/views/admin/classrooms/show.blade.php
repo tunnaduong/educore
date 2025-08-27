@@ -4,10 +4,10 @@
         <!-- Header -->
         <div class="mb-4">
             <a href="{{ route('classrooms.index') }}" class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left mr-2"></i>Quay lại danh sách lớp học
+                <i class="bi bi-arrow-left mr-2"></i>@lang('general.back_to_classrooms_list')
             </a>
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-mortarboard mr-2"></i>Chi tiết lớp học
+                <i class="bi bi-mortarboard mr-2"></i>@lang('general.classroom_details')
             </h4>
             <p class="text-muted mb-0">{{ $classroom->name }}</p>
         </div>
@@ -21,7 +21,7 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-info-circle mr-2"></i>Thông tin lớp học
+                            <i class="bi bi-info-circle mr-2"></i>@lang('general.classroom_information')
                         </h5>
                     </div>
                     <div class="card-body">
@@ -36,23 +36,23 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="mb-3">
-                                    <label class="form-label text-muted small">Giảng viên</label>
+                                    <label class="form-label text-muted small">@lang('general.teacher')</label>
                                     <div class="fw-medium">
                                         @if ($classroom->teachers->count())
                                             {{ $classroom->teachers->pluck('name')->join(', ') }}
                                         @else
-                                            Chưa có
+                                            @lang('general.not_available')
                                         @endif
                                     </div>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="mb-3">
-                                    <label class="form-label text-muted small">Trạng thái</label>
+                                    <label class="form-label text-muted small">@lang('general.status')</label>
                                     <div>
                                         <span
                                             class="badge bg-{{ $classroom->status == 'active' ? 'success' : 'secondary' }}">
-                                            {{ $classroom->status == 'active' ? 'Đang hoạt động' : 'Đã kết thúc' }}
+                                            {{ $classroom->status == 'active' ? __('general.active') : __('general.completed') }}
                                         </span>
                                     </div>
                                 </div>
@@ -62,13 +62,13 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="mb-3">
-                                    <label class="form-label text-muted small">Số học viên</label>
+                                    <label class="form-label text-muted small">@lang('general.student_count')</label>
                                     <div class="fw-medium">{{ $classroom->students->count() }}</div>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="mb-3">
-                                    <label class="form-label text-muted small">Ngày tạo</label>
+                                    <label class="form-label text-muted small">@lang('general.created_date')</label>
                                     <div class="fw-medium">{{ $classroom->created_at->format('d/m/Y') }}</div>
                                 </div>
                             </div>
@@ -76,7 +76,7 @@
 
                         @if ($classroom->schedule)
                             <div class="mb-3">
-                                <label class="form-label text-muted small">Lịch học</label>
+                                <label class="form-label text-muted small">@lang('general.schedule')</label>
                                 <div class="fw-medium">
                                     {{ $this->formatSchedule($classroom->schedule) }}
                                 </div>
@@ -85,7 +85,7 @@
 
                         @if ($classroom->notes)
                             <div class="mb-3">
-                                <label class="form-label text-muted small">Ghi chú</label>
+                                <label class="form-label text-muted small">@lang('general.notes')</label>
                                 <div class="fw-medium">{{ $classroom->notes }}</div>
                             </div>
                         @endif
@@ -96,7 +96,7 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-graph-up mr-2"></i>Thống kê nhanh
+                            <i class="bi bi-graph-up mr-2"></i>@lang('general.quick_statistics')
                         </h5>
                     </div>
                     <div class="card-body">
@@ -104,13 +104,13 @@
                             <div class="col-6 mb-3">
                                 <div class="border rounded p-3">
                                     <div class="fs-4 fw-bold text-primary">{{ $classroom->students->count() }}</div>
-                                    <div class="small text-muted">Học viên</div>
+                                    <div class="small text-muted">@lang('general.students')</div>
                                 </div>
                             </div>
                             <div class="col-6 mb-3">
                                 <div class="border rounded p-3">
                                     <div class="fs-4 fw-bold text-success">{{ $classroom->attendances->count() }}</div>
-                                    <div class="small text-muted">Tổng lượt điểm danh</div>
+                                    <div class="small text-muted">@lang('general.total_attendances')</div>
                                 </div>
                             </div>
                         </div>
@@ -124,11 +124,11 @@
                     <div class="card-header bg-light">
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="mb-0 text-primary">
-                                <i class="bi bi-people mr-2"></i>Danh sách học viên
+                                <i class="bi bi-people mr-2"></i>@lang('general.student_list')
                             </h5>
                             <a href="{{ route('classrooms.assign-students', $classroom) }}"
                                 class="btn btn-sm btn-primary">
-                                <i class="bi bi-person-plus mr-2"></i>Gán học viên
+                                <i class="bi bi-person-plus mr-2"></i>@lang('general.assign_students')
                             </a>
                         </div>
                     </div>
@@ -138,10 +138,10 @@
                                 <table class="table table-hover">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>Học viên</th>
-                                            <th>Email</th>
-                                            <th>Số điện thoại</th>
-                                            <th class="text-center">Trạng thái</th>
+                                            <th>@lang('general.student')</th>
+                                            <th>@lang('general.email')</th>
+                                            <th>@lang('general.phone_number')</th>
+                                            <th class="text-center">@lang('general.status')</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -155,14 +155,13 @@
                                                         <div>
                                                             <div class="fw-medium">{{ $student->name }}</div>
                                                             @if ($student->studentProfile)
-                                                                <small
-                                                                    class="text-muted">{{ $student->studentProfile->level ?? 'Chưa có trình độ' }}</small>
+                                                                <small class="text-muted">{{ $student->studentProfile->level ?? __('general.not_available') }}</small>
                                                             @endif
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>{{ $student->email ?? 'Chưa có' }}</td>
-                                                <td>{{ $student->phone ?? 'Chưa có' }}</td>
+                                                <td>{{ $student->email ?? __('general.not_available') }}</td>
+                                                <td>{{ $student->phone ?? __('general.not_available') }}</td>
                                                 <td class="text-center">
                                                     @if ($student->studentProfile)
                                                         @php
@@ -173,22 +172,22 @@
                                                                 'new' => 'info',
                                                             ];
                                                             $statusLabels = [
-                                                                'active' => 'Đang học',
-                                                                'paused' => 'Nghỉ',
-                                                                'dropped' => 'Bảo lưu',
-                                                                'new' => 'Mới',
+                                                                'active' => __('general.student_status_active'),
+                                                                'paused' => __('general.student_status_paused'),
+                                                                'dropped' => __('general.student_status_reserved'),
+                                                                'new' => __('general.student_status_new'),
                                                             ];
                                                             $color =
                                                                 $statusColors[$student->studentProfile->status] ??
                                                                 'secondary';
                                                             $label =
                                                                 $statusLabels[$student->studentProfile->status] ??
-                                                                'Không xác định';
+                                                                __('general.undefined');
                                                         @endphp
                                                         <span
                                                             class="badge bg-{{ $color }}">{{ $label }}</span>
                                                     @else
-                                                        <span class="badge bg-secondary">Chưa có</span>
+                                                        <span class="badge bg-secondary">@lang('general.not_available')</span>
                                                     @endif
                                                 </td>
                                             </tr>
@@ -199,11 +198,11 @@
                         @else
                             <div class="text-center py-4">
                                 <i class="bi bi-people fs-1 text-muted mb-3"></i>
-                                <h5 class="text-muted">Chưa có học viên nào</h5>
-                                <p class="text-muted">Vui lòng gán học viên vào lớp học.</p>
+                                <h5 class="text-muted">@lang('general.no_students_yet')</h5>
+                                <p class="text-muted">@lang('general.please_assign_students')</p>
                                 <a href="{{ route('classrooms.assign-students', $classroom) }}"
                                     class="btn btn-primary">
-                                    <i class="bi bi-person-plus mr-2"></i>Gán học viên
+                                    <i class="bi bi-person-plus mr-2"></i>@lang('general.assign_students')
                                 </a>
                             </div>
                         @endif
@@ -214,7 +213,7 @@
                 <div class="card shadow-sm">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-gear mr-2"></i>Hành động
+                            <i class="bi bi-gear mr-2"></i>@lang('general.actions')
                         </h5>
                     </div>
                     <div class="card-body">
@@ -222,25 +221,25 @@
                             <div class="col-md-6">
                                 <a href="{{ route('classrooms.attendance', $classroom) }}"
                                     class="btn btn-outline-primary w-100">
-                                    <i class="bi bi-calendar-check mr-2"></i>Điểm danh
+                                    <i class="bi bi-calendar-check mr-2"></i>@lang('general.take_attendance')
                                 </a>
                             </div>
                             <div class="col-md-6">
                                 <a href="{{ route('classrooms.attendance-history', $classroom) }}"
                                     class="btn btn-outline-info w-100">
-                                    <i class="bi bi-calendar-week mr-2"></i>Lịch sử điểm danh
+                                    <i class="bi bi-calendar-week mr-2"></i>@lang('general.attendance_history')
                                 </a>
                             </div>
                             <div class="col-md-6">
                                 <a href="{{ route('classrooms.assign-students', $classroom) }}"
                                     class="btn btn-outline-success w-100">
-                                    <i class="bi bi-person-plus mr-2"></i>Gán học viên
+                                    <i class="bi bi-person-plus mr-2"></i>@lang('general.assign_students')
                                 </a>
                             </div>
                             <div class="col-md-6">
                                 <a href="{{ route('classrooms.edit', $classroom) }}"
                                     class="btn btn-outline-warning w-100">
-                                    <i class="bi bi-pencil-square mr-2"></i>Chỉnh sửa
+                                    <i class="bi bi-pencil-square mr-2"></i>@lang('general.edit')
                                 </a>
                             </div>
                         </div>

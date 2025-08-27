@@ -4,10 +4,10 @@
         <!-- Header -->
         <div class="mb-4">
             <a href="{{ route('classrooms.index') }}" class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left mr-2"></i>Quay lại
+                <i class="bi bi-arrow-left mr-2"></i>@lang('general.back')
             </a>
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-people-fill mr-2"></i>Gán học viên cho lớp học
+                <i class="bi bi-people-fill mr-2"></i>@lang('general.assign_students_to_classroom')
             </h4>
             <p class="text-muted mb-0">{{ $classroom->name }}</p>
         </div>
@@ -28,14 +28,14 @@
                     <div class="card-header bg-light">
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="mb-0 text-primary">
-                                <i class="bi bi-person-plus mr-2"></i>Danh sách học viên có sẵn
+                                <i class="bi bi-person-plus mr-2"></i>@lang('general.available_students_list')
                             </h5>
                             <div class="d-flex gap-2">
                                 <button wire:click="selectAll" class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-check-all mr-1"></i>Chọn tất cả
+                                    <i class="bi bi-check-all mr-1"></i>@lang('general.select_all')
                                 </button>
                                 <button wire:click="deselectAll" class="btn btn-sm btn-outline-secondary">
-                                    <i class="bi bi-x-circle mr-1"></i>Bỏ chọn tất cả
+                                    <i class="bi bi-x-circle mr-1"></i>@lang('general.deselect_all')
                                 </button>
                             </div>
                         </div>
@@ -48,7 +48,7 @@
                                     <i class="bi bi-search"></i>
                                 </span>
                                 <input wire:model.live="search" type="text" class="form-control"
-                                    placeholder="Tìm kiếm học viên theo tên, email hoặc số điện thoại...">
+                                    placeholder="@lang('general.search_students_placeholder')">
                             </div>
                         </div>
 
@@ -71,10 +71,10 @@
                                                 wire:key="select-all-{{ count($selectedStudents) }}"
                                                 {{ $allSelected ? 'checked' : '' }}>
                                         </th>
-                                        <th>Học viên</th>
-                                        <th>Email</th>
-                                        <th>Số điện thoại</th>
-                                        <th class="text-center">Trạng thái</th>
+                                        <th>@lang('general.student')</th>
+                                        <th>@lang('general.email')</th>
+                                        <th>@lang('general.phone_number')</th>
+                                        <th class="text-center">@lang('general.status')</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -94,14 +94,13 @@
                                                     <div>
                                                         <div class="fw-medium">{{ $student->name }}</div>
                                                         @if ($student->studentProfile)
-                                                            <small
-                                                                class="text-muted">{{ $student->studentProfile->level ?? 'Chưa có trình độ' }}</small>
+                                                            <small class="text-muted">{{ $student->studentProfile->level ?? __('general.no_level_assigned') }}</small>
                                                         @endif
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>{{ $student->email }}</td>
-                                            <td>{{ $student->phone ?? 'Chưa có' }}</td>
+                                            <td>{{ $student->phone ?? __('general.not_available') }}</td>
                                             <td class="text-center">
                                                 @php
                                                     $statusColors = [
@@ -110,12 +109,12 @@
                                                         'dropped' => 'danger',
                                                     ];
                                                     $statusLabels = [
-                                                        'active' => 'Hoạt động',
-                                                        'paused' => 'Nghỉ',
-                                                        'dropped' => 'Bảo lưu',
+                                                        'active' => __('general.student_status_active'),
+                                                        'paused' => __('general.student_status_paused'),
+                                                        'dropped' => __('general.student_status_reserved'),
                                                     ];
                                                     $color = $statusColors[$student->status] ?? 'secondary';
-                                                    $label = $statusLabels[$student->status] ?? 'Không xác định';
+                                                    $label = $statusLabels[$student->status] ?? __('general.undefined');
                                                 @endphp
                                                 <span class="badge bg-{{ $color }}">{{ $label }}</span>
                                             </td>
@@ -125,7 +124,7 @@
                                             <td colspan="5" class="text-center py-4">
                                                 <div class="text-muted">
                                                     <i class="bi bi-people fs-1 d-block mb-2"></i>
-                                                    Không tìm thấy học viên nào
+                                                    @lang('general.no_students_found')
                                                 </div>
                                             </td>
                                         </tr>
@@ -149,7 +148,7 @@
                 <div class="card shadow-sm">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-people mr-2"></i>Tổng quan học viên
+                            <i class="bi bi-people mr-2"></i>@lang('general.students_overview')
                         </h5>
                     </div>
                     <div class="card-body">
@@ -164,7 +163,7 @@
 
                         @if ($enrolledStudentsToKeep->count() > 0)
                             <h6 class="text-success mb-3">
-                                <i class="bi bi-check-circle mr-2"></i>Học viên đã gán
+                                <i class="bi bi-check-circle mr-2"></i>@lang('general.assigned_students')
                                 ({{ $enrolledStudentsToKeep->count() }})
                             </h6>
                             <div class="list-group list-group-flush mb-4">
@@ -177,7 +176,7 @@
                                             <div class="fw-medium">{{ $student->name }}</div>
                                             <small class="text-muted">{{ $student->email }}</small>
                                         </div>
-                                        <span class="badge bg-success">Đã gán</span>
+                                        <span class="badge bg-success">@lang('general.assigned')</span>
                                     </div>
                                 @endforeach
                             </div>
@@ -195,7 +194,7 @@
 
                         @if ($selectedStudentsNotEnrolled->count() > 0)
                             <h6 class="text-primary mb-3">
-                                <i class="bi bi-plus-circle mr-2"></i>Học viên sẽ thêm mới
+                                <i class="bi bi-plus-circle mr-2"></i>@lang('general.students_to_add')
                                 ({{ $selectedStudentsNotEnrolled->count() }})
                             </h6>
                             <div class="list-group list-group-flush mb-4">
@@ -208,7 +207,7 @@
                                             <div class="fw-medium">{{ $student->name }}</div>
                                             <small class="text-muted">{{ $student->email }}</small>
                                         </div>
-                                        <span class="badge bg-primary">Sẽ thêm</span>
+                                        <span class="badge bg-primary">@lang('general.to_add')</span>
                                     </div>
                                 @endforeach
                             </div>
@@ -225,7 +224,7 @@
 
                         @if ($enrolledStudentsToRemove->count() > 0)
                             <h6 class="text-danger mb-3">
-                                <i class="bi bi-trash mr-2"></i>Học viên sẽ bị xóa
+                                <i class="bi bi-trash mr-2"></i>@lang('general.students_to_remove')
                                 ({{ $enrolledStudentsToRemove->count() }})
                             </h6>
                             <div class="list-group list-group-flush mb-4">
@@ -238,7 +237,7 @@
                                             <div class="fw-medium">{{ $student->name }}</div>
                                             <small class="text-muted">{{ $student->email }}</small>
                                         </div>
-                                        <span class="badge bg-danger">Sẽ xóa</span>
+                                        <span class="badge bg-danger">@lang('general.to_remove')</span>
                                     </div>
                                 @endforeach
                             </div>
@@ -252,7 +251,7 @@
                             <div class="text-center py-4">
                                 <div class="text-muted">
                                     <i class="bi bi-people fs-1 d-block mb-2"></i>
-                                    Chưa có học viên nào được gán
+                                    @lang('general.no_students_assigned_yet')
                                 </div>
                             </div>
                         @endif
@@ -262,7 +261,7 @@
                             <button wire:click="assignStudents" class="btn btn-primary w-100"
                                 {{ empty($selectedStudents) && $enrolledStudents->count() == 0 ? 'disabled' : '' }}>
                                 <i class="bi bi-check-circle mr-2"></i>
-                                Cập nhật danh sách học viên
+                                @lang('general.update_student_list')
                             </button>
                         </div>
                     </div>
@@ -279,22 +278,21 @@
                     <div class="modal-header bg-warning text-dark">
                         <h5 class="modal-title">
                             <i class="bi bi-exclamation-triangle-fill mr-2"></i>
-                            Phát hiện trùng lịch học!
+                            @lang('general.detected_schedule_conflicts_title')
                         </h5>
                         <button type="button" class="btn-close" wire:click="closeConflictModal"></button>
                     </div>
                     <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
                         <div class="alert alert-warning">
                             <i class="bi bi-exclamation-triangle-fill mr-2"></i>
-                            <strong>Cảnh báo:</strong> Một số học sinh đã được chọn có lịch học trùng với lớp này.
-                            Vui lòng xem xét lại trước khi tiếp tục.
+                            <strong>@lang('general.warning')</strong> @lang('general.selected_students_schedule_conflict_message')
                         </div>
 
                         <div class="row">
                             <div class="col-12">
                                 <h6 class="text-danger mb-3">
                                     <i class="bi bi-people-fill mr-2"></i>
-                                    Danh sách học sinh trùng lịch ({{ count($scheduleConflicts) }} học sinh)
+                                    @lang('general.conflicting_students_list', ['count' => count($scheduleConflicts)])
                                 </h6>
                             </div>
                         </div>
@@ -311,7 +309,7 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <strong class="text-primary">Lớp hiện tại:</strong>
+                                            <strong class="text-primary">@lang('general.current_classes')</strong>
                                             <div class="mt-2" style="max-height: 150px; overflow-y: auto;">
                                                 @foreach ($conflictData['conflicts'] as $conflict)
                                                     <div class="border-start border-primary ps-3 mb-2">
@@ -329,7 +327,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <strong class="text-success">Lớp mới:</strong>
+                                            <strong class="text-success">@lang('general.new_class')</strong>
                                             <div class="mt-2">
                                                 <div class="d-flex align-items-start">
                                                     <i class="bi bi-calendar-event text-success mr-2 mt-1"></i>
@@ -341,7 +339,7 @@
                                                                 -
                                                                 {{ $classroom->schedule['time'] ?? '' }}
                                                             @else
-                                                                Chưa có lịch học
+                                                                @lang('general.no_schedule')
                                                             @endif
                                                         </small>
                                                     </div>
@@ -356,19 +354,19 @@
                         @if (count($scheduleConflicts) > 5)
                             <div class="alert alert-info">
                                 <i class="bi bi-info-circle mr-2"></i>
-                                <strong>Lưu ý:</strong> Có {{ count($scheduleConflicts) }} học sinh trùng lịch.
-                                Bạn có thể scroll để xem tất cả chi tiết.
+                                <strong>@lang('general.note')</strong> @lang('general.conflicting_students_count', ['count' => count($scheduleConflicts)])
+                                @lang('general.scroll_to_view_all')
                             </div>
                         @endif
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" wire:click="closeConflictModal">
                             <i class="bi bi-x-circle mr-2"></i>
-                            Hủy bỏ
+                            @lang('general.cancel')
                         </button>
                         <button type="button" class="btn btn-warning" wire:click="forceAssignStudents">
                             <i class="bi bi-exclamation-triangle mr-2"></i>
-                            Gán bất chấp trùng lịch
+                            @lang('general.force_assign_despite_conflicts')
                         </button>
                     </div>
                 </div>
