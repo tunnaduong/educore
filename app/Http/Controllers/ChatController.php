@@ -10,11 +10,14 @@ use Illuminate\Support\Facades\Storage;
 
 class ChatController extends Controller
 {
+    // Maximum file size for attachments (in KB). 100MB = 102400 KB
+    private const MAX_FILE_SIZE_KB = 102400;
+
     public function uploadAttachment(Request $request)
     {
         try {
             $request->validate([
-                'file' => 'required|file|max:102400', // 100MB
+                'file' => 'required|file|max:' . self::MAX_FILE_SIZE_KB, // 100MB
                 'message_text' => 'nullable|string|max:1000',
                 'receiver_id' => 'nullable|integer|exists:users,id',
                 'class_id' => 'nullable|integer|exists:classrooms,id',
