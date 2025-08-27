@@ -408,9 +408,6 @@
                                             class="form-control @error('currentQuestion.type') is-invalid @enderror"
                                             wire:model="currentQuestion.type">
                                             <option value="multiple_choice">Trắc nghiệm</option>
-                                            <option value="fill_blank">Điền từ</option>
-                                            <option value="drag_drop">Kéo thả</option>
-                                            <option value="essay">Tự luận</option>
                                         </select>
                                         @error('currentQuestion.type')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -470,18 +467,7 @@
                                 </div>
                             @endif
 
-                            <!-- Tùy chọn cho câu hỏi điền từ -->
-                            @if ($currentQuestion['type'] === 'fill_blank')
-                                <div class="mb-3">
-                                    <label class="form-label">Đáp án đúng <span class="text-danger">*</span></label>
-                                    <input type="text"
-                                        class="form-control @error('currentQuestion.correct_answer') is-invalid @enderror"
-                                        wire:model="currentQuestion.correct_answer" placeholder="Nhập đáp án đúng...">
-                                    @error('currentQuestion.correct_answer')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            @endif
+
 
                             <div class="text-end">
                                 @if ($editingIndex !== null)
@@ -517,7 +503,7 @@
                                                 <span class="badge bg-primary mr-2">Câu {{ $index + 1 }}</span>
                                                 <span
                                                     class="badge bg-secondary">{{ ucfirst($question['type']) }}</span>
-                                                <span class="badge bg-info">{{ $question['score'] }} điểm</span>
+                                                <span class="badge bg-info">{{ $question['score'] ?? $question['points'] ?? 1 }} điểm</span>
                                             </div>
                                             <div class="btn-group btn-group-sm">
                                                 <button type="button" class="btn btn-outline-warning"
@@ -633,8 +619,6 @@
                                     <select class="form-control" wire:model.live="questionTypeFilter">
                                         <option value="">Tất cả</option>
                                         <option value="multiple_choice">Trắc nghiệm</option>
-                                        <option value="fill_blank">Điền từ</option>
-                                        <option value="essay">Tự luận</option>
                                     </select>
                                 </div>
                             </div>
