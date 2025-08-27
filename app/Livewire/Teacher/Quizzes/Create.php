@@ -95,7 +95,7 @@ class Create extends Component
     {
         $this->validate([
             'currentQuestion.question' => 'required|min:3',
-            'currentQuestion.type' => 'required|in:multiple_choice,fill_blank,drag_drop,essay',
+            'currentQuestion.type' => 'required|in:multiple_choice',
             'currentQuestion.score' => 'required|integer|min:1|max:10',
         ]);
 
@@ -402,13 +402,14 @@ class Create extends Component
                     return;
                 }
 
-                if (empty($question['type']) || ! in_array($question['type'], ['multiple_choice', 'fill_blank', 'drag_drop', 'essay'])) {
+                if (empty($question['type']) || ! in_array($question['type'], ['multiple_choice'])) {
                     session()->flash('error', 'Câu hỏi '.($index + 1).' có loại câu hỏi không hợp lệ.');
 
                     return;
                 }
 
-                if (empty($question['score']) || $question['score'] < 1 || $question['score'] > 10) {
+                $questionScore = $question['score'] ?? $question['points'] ?? 0;
+                if (empty($questionScore) || $questionScore < 1 || $questionScore > 10) {
                     session()->flash('error', 'Câu hỏi '.($index + 1).' phải có điểm từ 1-10.');
 
                     return;

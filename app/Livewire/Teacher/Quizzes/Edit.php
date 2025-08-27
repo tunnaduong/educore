@@ -41,7 +41,7 @@ class Edit extends Component
         'time_limit' => 'nullable|integer|min:1|max:480',
         'questions' => 'required|array|min:1',
         'questions.*.question' => 'required|min:3',
-        'questions.*.type' => 'required|in:multiple_choice,fill_blank,drag_drop,essay',
+        'questions.*.type' => 'required|in:multiple_choice',
         'questions.*.score' => 'required|integer|min:1|max:10',
     ];
 
@@ -97,7 +97,7 @@ class Edit extends Component
     {
         $this->validate([
             'currentQuestion.question' => 'required|min:3',
-            'currentQuestion.type' => 'required|in:multiple_choice,fill_blank,drag_drop,essay',
+            'currentQuestion.type' => 'required|in:multiple_choice',
             'currentQuestion.score' => 'required|integer|min:1|max:10',
         ]);
 

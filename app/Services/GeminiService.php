@@ -380,7 +380,7 @@ class GeminiService
      */
     public function generateQuiz($lessonContent, $topic, $difficulty = 'medium', $questionCount = 10)
     {
-        $prompt = "Hãy tạo {$questionCount} câu hỏi quiz về chủ đề '{$topic}' dựa trên nội dung bài học sau. 
+        $prompt = "Hãy tạo {$questionCount} câu hỏi quiz trắc nghiệm về chủ đề '{$topic}' dựa trên nội dung bài học sau. 
         Độ khó: {$difficulty}
         
         Trả về kết quả theo format JSON:
@@ -388,7 +388,7 @@ class GeminiService
             'questions': [
                 {
                     'question': 'câu hỏi',
-                    'type': 'multiple_choice|fill_blank|essay',
+                    'type': 'multiple_choice',
                     'options': ['lựa chọn A', 'lựa chọn B', 'lựa chọn C', 'lựa chọn D'],
                     'correct_answer': 'đáp án đúng',
                     'explanation': 'giải thích',
@@ -433,7 +433,7 @@ class GeminiService
             'base_url' => $this->baseUrl,
         ]);
 
-        $prompt = "Hãy tạo ngân hàng câu hỏi với tối đa {$maxQuestions} câu hỏi về chủ đề '{$topic}' thuộc môn học '{$subject}'.
+        $prompt = "Hãy tạo ngân hàng câu hỏi trắc nghiệm với tối đa {$maxQuestions} câu hỏi về chủ đề '{$topic}' thuộc môn học '{$subject}'.
         
         Trả về kết quả theo format JSON:
         {
@@ -441,7 +441,7 @@ class GeminiService
                 {
                     'id': số_thứ_tự,
                     'question': 'câu hỏi',
-                    'type': 'multiple_choice|fill_blank|essay|true_false',
+                    'type': 'multiple_choice',
                     'difficulty': 'easy|medium|hard',
                     'options': ['lựa chọn A', 'lựa chọn B', 'lựa chọn C', 'lựa chọn D'],
                     'correct_answer': 'đáp án đúng',
@@ -455,9 +455,7 @@ class GeminiService
                 'easy_count': số_câu_dễ,
                 'medium_count': số_câu_trung_bình,
                 'hard_count': số_câu_khó,
-                'multiple_choice_count': số_câu_trắc_nghiệm,
-                'fill_blank_count': số_câu_điền_khuyết,
-                'essay_count': số_câu_tự_luận
+                'multiple_choice_count': số_câu_trắc_nghiệm
             }
         }";
 
@@ -501,8 +499,6 @@ class GeminiService
                 'medium_count' => 0,
                 'hard_count' => 0,
                 'multiple_choice_count' => 0,
-                'fill_blank_count' => 0,
-                'essay_count' => 0,
             ],
         ];
     }
