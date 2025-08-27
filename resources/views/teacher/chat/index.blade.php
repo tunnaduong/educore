@@ -1,6 +1,6 @@
 <x-layouts.dash-teacher active="chat">
     @include('components.language')
-    <?php $t=function($vi,$en,$zh){$l=app()->getLocale();return $l==='zh'?$zh:($l==='en'?$en:$vi);}; ?>
+    
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
@@ -80,7 +80,7 @@
                                     @empty
                                         <div class="text-center p-4">
                                             <i class="fas fa-inbox fa-2x text-muted mb-2"></i>
-                                            <p class="text-muted">{{ __('general.no_classes') }}</p>
+                                            <p class="text-muted">{{ __('general.no_classes_found') }}</p>
                                         </div>
                                     @endforelse
                                 </div>
@@ -113,7 +113,7 @@
                                     @empty
                                         <div class="text-center p-4">
                                             <i class="fas fa-users fa-2x text-muted mb-2"></i>
-                                            <p class="text-muted">{{ __('views.no_users') }}</p>
+                                            <p class="text-muted">{{ __('general.no_users_found') }}</p>
                                         </div>
                                     @endforelse
                                 </div>
@@ -148,7 +148,7 @@
                                         <div>
                                             <h6 class="mb-0">{{ $selectedClass->name }}</h6>
                                             <small class="text-muted">{{ $selectedClass->users->count() }}
-                                                {{ __('views.members') }}</small>
+                                                {{ __('general.members') }}</small>
                                         </div>
                                     @endif
                                 </div>
@@ -158,7 +158,7 @@
                                     <div class="text-muted">
                                         <small>
                                             <i class="fas fa-circle text-success me-1"></i>
-                                            {{ implode(', ', $typingUsers) }} {{ $t('đang nhập...','is typing...','正在输入...') }}
+                                            {{ implode(', ', $typingUsers) }} {{ __('general.typing_indicator') }}
                                         </small>
                                     </div>
                                 @endif
@@ -189,7 +189,7 @@
                                                     <a href="{{ route('chat.download', $message->id) }}"
                                                         class="btn btn-sm {{ $message->sender_id === auth()->id() ? 'btn-light' : 'btn-outline-primary' }}">
                                                         <i class="fas fa-paperclip me-1"></i>
-                                                        {{ $t('Tải file đính kèm','Download attachment','下载附件') }}
+                                                        {{ __('general.download_attachment') }}
                                                     </a>
                                                 </div>
                                             @endif
@@ -202,7 +202,7 @@
                                 @empty
                                     <div class="text-center text-muted">
                                         <i class="fas fa-comments fa-2x mb-2"></i>
-                                        <p>{{ $t('Chưa có tin nhắn nào','No messages yet','暂无消息') }}</p>
+                                        <p>{{ __('general.no_messages_yet') }}</p>
                                     </div>
                                 @endforelse
                             </div>
@@ -214,7 +214,7 @@
                                 <div class="row g-2">
                                     <div class="col">
                                         <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="{{ $t('Nhập tin nhắn...','Type a message...','输入消息…') }}"
+                                            <input type="text" class="form-control" placeholder="{{ __('general.type_your_message') }}"
                                                 wire:model="messageText" wire:keydown="startTyping"
                                                 wire:keyup.debounce.1000ms="stopTyping">
 
@@ -255,8 +255,8 @@
                             style="height: 400px;">
                             <div class="text-center text-muted">
                                 <i class="fas fa-comments fa-3x mb-3"></i>
-                                <h5>{{ $t('Chọn một cuộc trò chuyện để bắt đầu','Select a conversation to start','选择一个会话开始聊天') }}</h5>
-                                <p>{{ $t('Chọn một lớp học hoặc người dùng từ danh sách bên trái','Choose a class or user from the list on the left','请从左侧列表选择班级或用户') }}</p>
+                                <h5>{{ __('general.start_conversation') }}</h5>
+                                <p>{{ __('general.select_class_or_user_from_left') }}</p>
                             </div>
                         </div>
                     @endif
@@ -271,7 +271,7 @@
         <div class="d-flex align-items-center justify-content-center h-100">
             <div class="text-center bg-white p-4 rounded shadow">
                 <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
-                <h5>{{ $t('Thả file để đính kèm','Drop files to attach','拖拽文件到此处以添加附件') }}</h5>
+                <h5>{{ __('general.drop_file_to_attach') }}</h5>
             </div>
         </div>
     </div>

@@ -375,19 +375,19 @@
                                                     </div>
                                                 </button>
                                                 <button wire:click="saveQuiz" class="btn btn-success btn-sm">
-                                                    <i class="fas fa-save"></i> Lưu Quiz
+                                                    <i class="fas fa-save"></i> {{ __('general.save_quiz') }}
                                                 </button>
                                             </div>
                                         </div>
                                         <div class="card-body">
                                             <div class="row mb-3">
                                                 <div class="col-md-6">
-                                                    <strong>Tổng điểm:</strong>
+                                                    <strong>{{ __('general.total_score') }}:</strong>
                                                     {{ $generatedQuiz['total_score'] ?? 0 }}
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <strong>Thời gian ước tính:</strong>
-                                                    {{ $generatedQuiz['estimated_time'] ?? 30 }} phút
+                                                    <strong>{{ __('general.estimated_time') }}:</strong>
+                                                    {{ $generatedQuiz['estimated_time'] ?? 30 }} {{ __('general.minutes') }}
                                                 </div>
                                             </div>
 
@@ -395,7 +395,7 @@
                                                 @foreach ($generatedQuiz['questions'] as $index => $question)
                                                     <div class="card mb-3">
                                                         <div class="card-header">
-                                                            <strong>Câu {{ $index + 1 }}:</strong>
+                                                            <strong>{{ __('general.question') }} {{ $index + 1 }}:</strong>
                                                             {{ $question['question'] }}
                                                             <span
                                                                 class="badge bg-secondary float-end">{{ ucfirst($question['type']) }}</span>
@@ -417,31 +417,31 @@
                                                             @elseif($question['type'] === 'fill_blank')
                                                                 <div class="form-control"
                                                                     style="background-color: #f8f9fa;">
-                                                                    <em>Chỗ trống để điền</em>
+                                                                    <em>{{ __('general.fill_in_blank_placeholder') }}</em>
                                                                 </div>
                                                             @elseif($question['type'] === 'essay')
                                                                 <div class="form-control"
                                                                     style="background-color: #f8f9fa; min-height: 100px;">
-                                                                    <em>Vùng viết câu trả lời</em>
+                                                                    <em>{{ __('general.essay_area_placeholder') }}</em>
                                                                 </div>
                                                             @endif
 
                                                             <div class="mt-3">
-                                                                <strong>Đáp án:</strong>
+                                                                <strong>{{ __('general.answer') }}:</strong>
                                                                 <span
                                                                     class="text-success">{{ $question['correct_answer'] }}</span>
                                                             </div>
 
                                                             @if (!empty($question['explanation']))
                                                                 <div class="mt-2">
-                                                                    <strong>Giải thích:</strong>
+                                                                    <strong>{{ __('general.explanation') }}:</strong>
                                                                     <p class="text-muted mb-0">
                                                                         {{ $question['explanation'] }}</p>
                                                                 </div>
                                                             @endif
 
                                                             <div class="mt-2">
-                                                                <strong>Điểm:</strong> {{ $question['score'] ?? 1 }}
+                                                                <strong>{{ __('general.score') }}:</strong> {{ $question['score'] ?? 1 }}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -453,9 +453,8 @@
                                     <div class="card">
                                         <div class="card-body text-center text-muted">
                                             <i class="fas fa-robot fa-5x mb-4"></i>
-                                            <?php $t=function($vi,$en,$zh){$l=app()->getLocale();return $l==='zh'?$zh:($l==='en'?$en:$vi);}; ?>
-                                            <h5>{{ $t('Chưa có quiz tiếng Trung được tạo','No Chinese quiz created yet','尚未创建中文测验') }}</h5>
-                                            <p>{{ $t('Hãy chọn lớp học, bài học và cấu hình để tạo quiz tiếng Trung bằng AI','Select class, lesson and configure to create Chinese quiz with AI','请选择班级、课程并配置以通过AI创建中文测验') }}</p>
+                                            <h5>{{ __('general.no_chinese_quiz_created') }}</h5>
+                                            <p>{{ __('general.select_class_lesson_configure_to_create_chinese_quiz') }}</p>
                                         </div>
                                     </div>
                                 @endif

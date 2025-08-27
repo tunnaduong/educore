@@ -1,20 +1,15 @@
 <x-layouts.dash-teacher active="assignments">
     @include('components.language')
-    @php
-        $t = function ($vi, $en, $zh) {
-            $l = app()->getLocale();
-            return $l === 'vi' ? $vi : ($l === 'zh' ? $zh : $en);
-        };
-    @endphp
+    
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
             <a href="{{ route('teacher.assignments.index') }}"
                 class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left mr-2"></i>{{ $t('Quay lại danh sách bài tập', 'Back to assignment list', '返回作业列表') }}
+                <i class="bi bi-arrow-left mr-2"></i>{{ __('general.back_to_assignment_list') }}
             </a>
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-journal-text mr-2"></i>{{ $t('Chi tiết bài tập', 'Assignment Details', '作业详情') }}
+                <i class="bi bi-journal-text mr-2"></i>{{ __('general.assignment_details') }}
             </h4>
             <p class="text-muted mb-0">{{ $assignment->title }}</p>
         </div>
@@ -24,33 +19,33 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-info-circle mr-2"></i>{{ $t('Thông tin bài tập', 'Assignment Information', '作业信息') }}
+                            <i class="bi bi-info-circle mr-2"></i>{{ __('general.assignment_info') }}
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <label class="form-label text-muted small">{{ $t('Tiêu đề', 'Title', '标题') }}</label>
+                            <label class="form-label text-muted small">{{ __('general.title') }}</label>
                             <div class="fw-medium">{{ $assignment->title }}</div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small">{{ $t('Lớp học', 'Classroom', '班级') }}</label>
+                            <label class="form-label text-muted small">{{ __('general.classroom') }}</label>
                             <div class="fw-medium">{{ $classroom->name ?? '-' }}</div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small">{{ $t('Hạn nộp', 'Deadline', '截止时间') }}</label>
+                            <label class="form-label text-muted small">{{ __('general.deadline') }}</label>
                             <div class="fw-medium">
                                 {{ $assignment->deadline ? $assignment->deadline->format('d/m/Y H:i') : '-' }}</div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small">{{ $t('Ngày giao', 'Assigned at', '布置时间') }}</label>
+                            <label class="form-label text-muted small">{{ __('general.assigned_at') }}</label>
                             <div class="fw-medium">{{ $assignment->created_at->format('d/m/Y H:i') }}</div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small">{{ $t('Mô tả', 'Description', '描述') }}</label>
+                            <label class="form-label text-muted small">{{ __('general.description') }}</label>
                             <div class="fw-medium">{!! nl2br(e($assignment->description)) !!}</div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small">{{ $t('Loại bài tập yêu cầu', 'Required assignment types', '要求的作业类型') }}</label>
+                            <label class="form-label text-muted small">{{ __('general.required_assignment_types') }}</label>
                             <div class="fw-medium">
                                 @if ($assignment->types && count($assignment->types) > 0)
                                     <div class="d-flex flex-wrap gap-1">
@@ -64,12 +59,12 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small">{{ $t('File đính kèm', 'Attachment', '附件') }}</label>
+                            <label class="form-label text-muted small">{{ __('general.attachment') }}</label>
                             <div class="fw-medium">
                                 @if ($assignment->attachment_path)
                                     <a href="{{ asset('storage/' . $assignment->attachment_path) }}" target="_blank"
                                         class="btn btn-sm btn-outline-success">
-                                        <i class="bi bi-file-earmark-arrow-down"></i> {{ $t('Tải file', 'Download file', '下载文件') }}
+                                        <i class="bi bi-file-earmark-arrow-down"></i> {{ __('general.download_file') }}
                                     </a>
                                 @else
                                     -
@@ -77,13 +72,13 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small">{{ $t('Video giao', 'Assigned video', '布置的视频') }}</label>
+                            <label class="form-label text-muted small">{{ __('general.assigned_video') }}</label>
                             <div class="fw-medium">
                                 @if ($assignment->video_path)
                                     <video width="240" height="135" controls>
                                         <source src="{{ asset('storage/' . $assignment->video_path) }}"
                                             type="video/mp4">
-                                        {{ $t('Trình duyệt không hỗ trợ video.', 'Browser does not support video.', '浏览器不支持视频。') }}
+                                        {{ __('general.browser_not_support') }}
                                     </video>
                                 @else
                                     -
@@ -98,7 +93,7 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-people mr-2"></i>{{ $t('Danh sách học viên & tình trạng nộp bài', 'Student list & submission status', '学员列表与提交状态') }}
+                            <i class="bi bi-people mr-2"></i>{{ __('general.student_list_and_submission_status') }}
                         </h5>
                     </div>
                     <div class="card-body">
@@ -107,9 +102,9 @@
                                 <table class="table table-hover">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>{{ $t('Học viên', 'Student', '学员') }}</th>
-                                            <th>{{ $t('Email', 'Email', '邮箱') }}</th>
-                                            <th>{{ $t('Trạng thái nộp', 'Submission status', '提交状态') }}</th>
+                                            <th>{{ __('general.student') }}</th>
+                                            <th>{{ __('general.email') }}</th>
+                                            <th>{{ __('general.submission_status') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -126,7 +121,7 @@
                                                     @if ($status['status'] !== 'not_submitted')
                                                         <div class="small text-muted mt-1">
                                                             {{ $status['submitted_count'] }}/{{ $status['required_count'] }}
-                                                            {{ $t('loại', 'types', '类型') }}
+                                                            {{ __('general.types') }}
                                                         </div>
                                                     @endif
                                                 </td>
@@ -137,7 +132,7 @@
                             </div>
                         @else
                             <div class="alert alert-info mb-0">
-                                <i class="bi bi-info-circle mr-2"></i>{{ $t('Chưa có học viên nào trong lớp này.', 'No students in this class yet.', '该班级暂无学员。') }}
+                                <i class="bi bi-info-circle mr-2"></i>{{ __('general.no_students_in_class_yet') }}
                             </div>
                         @endif
                     </div>

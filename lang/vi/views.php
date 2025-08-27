@@ -147,4 +147,54 @@ return [
     'to' => 'tới',
     'in' => 'trong',
     'results' => 'kết quả',
+
+    // Question Bank Generator (QBG)
+    'qbg' => [
+        'ai_processing' => 'AI đang xử lý...',
+        'ai_processing_description' => 'Đang phân tích và xử lý dữ liệu với trí tuệ nhân tạo',
+        'analyzing_content' => 'Phân tích nội dung',
+        'ai_processing_step' => 'Xử lý AI',
+        'completing' => 'Hoàn thành',
+
+        'create_chinese_question_bank_with_ai' => 'Tạo Ngân hàng Câu hỏi Tiếng Trung bằng AI',
+        'auto_create_chinese_question_bank_max_100' => 'Tự động tạo ngân hàng câu hỏi tiếng Trung với tối đa 100 câu hỏi',
+
+        'question_bank_configuration' => 'Cấu hình Ngân hàng Câu hỏi',
+        'question_bank_name' => 'Tên ngân hàng câu hỏi',
+        'enter_question_bank_name' => 'Nhập tên ngân hàng câu hỏi',
+        'describe_question_bank' => 'Mô tả ngân hàng câu hỏi',
+        'chinese_topic' => 'Chủ đề tiếng Trung',
+        'topic_placeholder_examples' => 'Ví dụ: Giao tiếp cơ bản, Ngữ pháp HSK 1, Từ vựng chủ đề gia đình...',
+        'max_questions' => 'Số câu hỏi tối đa',
+
+        'creating_question_bank' => 'Đang tạo ngân hàng câu hỏi...',
+        'ai_generating_question_bank' => 'AI đang tạo ngân hàng câu hỏi...',
+        'please_wait' => 'Vui lòng chờ trong giây lát',
+        'create_chinese_question_bank_button' => 'Tạo Ngân hàng Câu hỏi Tiếng Trung',
+
+        'preview_chinese_question_bank' => 'Xem trước Ngân hàng Câu hỏi Tiếng Trung',
+        'create_quiz' => 'Tạo Quiz',
+        'save_question_bank' => 'Lưu Ngân hàng',
+
+        'total_questions' => 'Tổng câu hỏi',
+        'easy_questions' => 'Câu dễ',
+        'medium_questions' => 'Câu trung bình',
+        'hard_questions' => 'Câu khó',
+
+        'distribution_by_question_type' => 'Phân bố theo loại câu hỏi:',
+        'distribution_by_difficulty' => 'Phân bố theo độ khó:',
+        'easy_label' => 'Dễ',
+        'medium_label' => 'Trung bình',
+        'hard_label' => 'Khó',
+
+        'sample_questions' => 'Một số câu hỏi mẫu:',
+        'question_label' => 'Câu',
+        'answer' => 'Đáp án',
+        'explanation' => 'Giải thích',
+        'tags' => 'Thẻ',
+        'and_other_questions' => 'Và :count câu hỏi khác...',
+
+        'no_question_bank_created_yet' => 'Chưa có ngân hàng câu hỏi được tạo',
+        'fill_info_and_create_question_bank_ai' => 'Hãy điền thông tin và tạo ngân hàng câu hỏi tiếng Trung bằng AI',
+    ],
 ];

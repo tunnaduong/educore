@@ -1,6 +1,6 @@
 <x-layouts.dash-teacher active="ai">
     @include('components.language')
-    <?php $t=function($vi,$en,$zh){$l=app()->getLocale();return $l==='zh'?$zh:($l==='en'?$en:$vi);}; ?>
+    
     <div class="container-fluid">
         <style>
             /* AI Loading Modal */
@@ -319,7 +319,7 @@
                                                 <button wire:click="correctGrammarWithAI"
                                                     class="btn btn-outline-primary btn-sm" wire:loading.attr="disabled">
                                                     <i class="fas fa-magic"></i>
-                                                    {{ $t('Sửa lỗi ngữ pháp','Fix grammar with AI','AI语法纠错') }}
+                                                    {{ __('general.fix_grammar_with_ai') }}
                                                 </button>
                                             </div>
                                         </div>
@@ -330,18 +330,18 @@
                                 <div class="col-md-6">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h5 class="card-title">{{ $t('Kết quả AI','AI Results','AI评分结果') }}</h5>
+                                            <h5 class="card-title">{{ __('general.ai_results') }}</h5>
                                         </div>
                                         <div class="card-body">
                                             @if ($submission->hasAIGrading())
                                                 <div class="mb-3">
-                                                    <strong>{{ $t('Điểm AI:','AI Score:','AI得分：') }}</strong>
+                                                    <strong>{{ __('general.ai_score_label') }}</strong>
                                                     <span
                                                         class="badge bg-primary fs-6">{{ $submission->ai_score }}/10</span>
                                                 </div>
 
                                                 <div class="mb-3">
-                                                    <strong>{{ $t('Nhận xét AI:','AI Feedback:','AI评语：') }}</strong>
+                                                    <strong>{{ __('general.ai_feedback_label') }}</strong>
                                                     <div class="border rounded p-3 mt-2 bg-info bg-opacity-10">
                                                         {!! nl2br(e($submission->ai_feedback)) !!}
                                                     </div>
@@ -356,7 +356,7 @@
                                                 @endphp
                                                 @if (!empty($criteriaScores))
                                                     <div class="mb-3">
-                                                        <strong>{{ $t('Điểm chi tiết:','Detailed scores:','各项得分：') }}</strong>
+                                                        <strong>{{ __('general.detailed_scores') }}</strong>
                                                         <div class="row">
                                                             @foreach ($criteriaScores as $criteria => $score)
                                                                 <div class="col-6">
@@ -382,7 +382,7 @@
                                                 @endphp
                                                 @if (!empty($strengths))
                                                     <div class="mb-3">
-                                                        <strong>{{ $t('Điểm mạnh:','Strengths:','优点：') }}</strong>
+                                                        <strong>{{ __('general.strengths') }}</strong>
                                                         <ul class="list-group list-group-flush mt-2">
                                                             @foreach ($strengths as $strength)
                                                                 <li class="list-group-item text-success">
@@ -401,7 +401,7 @@
                                                 @endphp
                                                 @if (!empty($weaknesses))
                                                     <div class="mb-3">
-                                                        <strong>{{ $t('Điểm yếu:','Weaknesses:','不足：') }}</strong>
+                                                        <strong>{{ __('general.weaknesses') }}</strong>
                                                         <ul class="list-group list-group-flush mt-2">
                                                             @foreach ($weaknesses as $weakness)
                                                                 <li class="list-group-item text-warning">
@@ -415,11 +415,11 @@
                                             @else
                                                 <div class="text-center text-muted">
                                                     <i class="fas fa-robot fa-3x mb-3"></i>
-                                                    <p>{{ $t('Chưa có kết quả chấm từ AI','No AI grading result yet','尚无AI评分结果') }}</p>
+                                                    <p>{{ __('general.no_ai_grading_result') }}</p>
                                                     <button wire:click="gradeWithAI" class="btn btn-primary"
                                                         wire:loading.attr="disabled">
                                                         <i class="fas fa-magic"></i>
-                                                        {{ $t('Chấm bài bằng AI','Grade with AI','使用AI评分') }}
+                                                        {{ __('general.grade_with_ai') }}
                                                     </button>
                                                 </div>
                                             @endif
@@ -427,7 +427,7 @@
                                             @if ($showAIFeedback && $aiResult)
                                                 <div class="mt-3">
                                                     <button wire:click="applyAIScore" class="btn btn-success">
-                                                        <i class="fas fa-check"></i> {{ $t('Áp dụng điểm từ AI','Apply AI score','应用AI得分') }}
+                                                        <i class="fas fa-check"></i> {{ __('general.apply_ai_score') }}
                                                     </button>
                                                 </div>
                                             @endif
@@ -442,7 +442,7 @@
                                     <div class="col-12">
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5 class="card-title">{{ $t('Phân tích chi tiết từ AI','Detailed analysis from AI','AI详细分析') }}</h5>
+                                                <h5 class="card-title">{{ __('general.detailed_analysis_from_ai') }}</h5>
                                             </div>
                                             <div class="card-body">
                                                 @php
@@ -471,7 +471,7 @@
                                                 @endphp
                                                 @if (!empty($improvementSuggestions))
                                                     <div class="mb-3">
-                                                        <strong>{{ $t('Gợi ý cải thiện:','Improvement suggestions:','改进建议：') }}</strong>
+                                                        <strong>{{ __('general.improvement_suggestions') }}</strong>
                                                         <ul class="list-group mt-2">
                                                             @foreach ($improvementSuggestions as $suggestion)
                                                                 <li class="list-group-item">
@@ -501,7 +501,7 @@
                                                 @endphp
                                                 @if (!empty($learningResources))
                                                     <div class="mb-3">
-                                                        <strong>{{ $t('Tài liệu học tập:','Learning resources:','学习资料：') }}</strong>
+                                                        <strong>{{ __('general.learning_resources') }}</strong>
                                                         <div class="row mt-2">
                                                             @foreach ($learningResources as $resource)
                                                                 <div class="col-md-6 mb-2">
@@ -518,7 +518,7 @@
                                                                                 class="btn btn-sm btn-outline-primary">
                                                                                 <i
                                                                                     class="fas fa-external-link-alt"></i>
-                                                                                {{ $t('Xem tài liệu','View resource','查看资料') }}
+                                                                                {{ __('general.view_resource') }}
                                                                             </a>
                                                                         </div>
                                                                     </div>
@@ -539,7 +539,7 @@
                                                 <button wire:click="analyzeWithAI" class="btn btn-outline-info"
                                                     wire:loading.attr="disabled">
                                                     <i class="fas fa-chart-line"></i>
-                                                    Phân tích chi tiết bằng AI
+                                                    {{ __('general.analyze_in_detail_with_ai') }}
                                                 </button>
                                             </div>
                                         </div>

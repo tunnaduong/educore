@@ -1,6 +1,6 @@
 <x-layouts.dash-teacher active="evaluations-report">
     @include('components.language')
-    <?php $t=function($vi,$en,$zh){$l=app()->getLocale();return $l==='zh'?$zh:($l==='en'?$en:$vi);}; ?>
+    
     <div class="container py-4">
         <!-- Header -->
         <div class="mb-4">
@@ -135,7 +135,7 @@
                             @forelse ($evaluations as $eva)
                                 <tr>
                                     <td>
-                                        <span class="fw-bold">{{ $eva->student->user->name ?? 'N/A' }}</span><br>
+                                        <span class="fw-bold">{{ $eva->student->user->name ?? __('general.not_available') }}</span><br>
                                         <small class="text-muted">ID: {{ $eva->student_id }}</small>
                                     </td>
                                     <td>{{ number_format($eva->getTeacherAverageRating(), 1) }}</td>
@@ -175,7 +175,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title fw-bold text-primary fs-4">{{ __('general.evaluation_details') }}
-                                {{ $t('của','of','的') }}
+                                {{ __('general.of') }}
                                 {{ $selectedEvaluation->student->user->name ?? __('general.student') }}</h5>
                             <button type="button" class="btn-close" wire:click="closeEvaluationDetail">
                                 <i class="bi bi-x-lg"></i>

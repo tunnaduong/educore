@@ -147,4 +147,54 @@ return [
     'to' => 'to',
     'in' => 'in',
     'results' => 'results',
+
+    // Question Bank Generator (QBG)
+    'qbg' => [
+        'ai_processing' => 'AI is processing...',
+        'ai_processing_description' => 'Analyzing and processing data with artificial intelligence',
+        'analyzing_content' => 'Analyzing content',
+        'ai_processing_step' => 'AI Processing',
+        'completing' => 'Completing',
+
+        'create_chinese_question_bank_with_ai' => 'Create Chinese Question Bank with AI',
+        'auto_create_chinese_question_bank_max_100' => 'Automatically create a Chinese question bank with up to 100 questions',
+
+        'question_bank_configuration' => 'Question Bank Configuration',
+        'question_bank_name' => 'Question Bank Name',
+        'enter_question_bank_name' => 'Enter question bank name',
+        'describe_question_bank' => 'Describe the question bank',
+        'chinese_topic' => 'Chinese Topic',
+        'topic_placeholder_examples' => 'E.g., Basic communication, HSK 1 grammar, Family vocabulary...',
+        'max_questions' => 'Maximum questions',
+
+        'creating_question_bank' => 'Creating question bank...',
+        'ai_generating_question_bank' => 'AI is generating the question bank...',
+        'please_wait' => 'Please wait a moment',
+        'create_chinese_question_bank_button' => 'Create Chinese Question Bank',
+
+        'preview_chinese_question_bank' => 'Preview Chinese Question Bank',
+        'create_quiz' => 'Create Quiz',
+        'save_question_bank' => 'Save Question Bank',
+
+        'total_questions' => 'Total questions',
+        'easy_questions' => 'Easy questions',
+        'medium_questions' => 'Medium questions',
+        'hard_questions' => 'Hard questions',
+
+        'distribution_by_question_type' => 'Distribution by question type:',
+        'distribution_by_difficulty' => 'Distribution by difficulty:',
+        'easy_label' => 'Easy',
+        'medium_label' => 'Medium',
+        'hard_label' => 'Hard',
+
+        'sample_questions' => 'Sample questions:',
+        'question_label' => 'Question',
+        'answer' => 'Answer',
+        'explanation' => 'Explanation',
+        'tags' => 'Tags',
+        'and_other_questions' => 'And :count other questions...',
+
+        'no_question_bank_created_yet' => 'No question bank has been created',
+        'fill_info_and_create_question_bank_ai' => 'Fill in the information and create a Chinese question bank with AI',
+    ],
 ];

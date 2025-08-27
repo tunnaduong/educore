@@ -1,10 +1,6 @@
 <x-layouts.dash-teacher active="schedules">
     @include('components.language')
     @php
-        $t = function ($vi, $en, $zh) {
-            $l = app()->getLocale();
-            return $l === 'vi' ? $vi : ($l === 'zh' ? $zh : $en);
-        };
         $fcLocale = app()->getLocale() === 'zh' ? 'zh-cn' : app()->getLocale();
     @endphp
     <div class="container-fluid">
@@ -13,9 +9,9 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-calendar3 mr-2"></i>{{ $t('Lịch giảng dạy', 'Teaching Schedule', '教学日程') }}
+                        <i class="bi bi-calendar3 mr-2"></i>{{ __('general.teaching_schedule') }}
                     </h4>
-                    <p class="text-muted mb-0">{{ $t('Xem lịch giảng dạy', 'View teaching schedule', '查看教学日程') }}</p>
+                    <p class="text-muted mb-0">{{ __('general.view_teaching_schedule') }}</p>
                 </div>
             </div>
         </div>
@@ -25,15 +21,15 @@
             <div class="d-flex align-items-center gap-4 flex-wrap">
                 <div><span
                         style="display:inline-block;width:18px;height:18px;background:#0d6efd;border-radius:4px;margin-right:6px;"></span>
-                    <b>{{ $t('Lịch giảng dạy', 'Teaching schedule', '教学日程') }}</b>
+                    <b>{{ __('general.teaching_schedule') }}</b>
                 </div>
                 <div><span
                         style="display:inline-block;width:18px;height:18px;background:#fd7e14;border-radius:4px;margin-right:6px;"></span>
-                    <b>{{ $t('Bài tập', 'Assignments', '作业') }}</b>
+                    <b>{{ __('general.assignments') }}</b>
                 </div>
                 <div><span
                         style="display:inline-block;width:18px;height:18px;background:#20c997;border-radius:4px;margin-right:6px;"></span>
-                    <b>{{ $t('Bài kiểm tra', 'Quizzes', '测验') }}</b>
+                    <b>{{ __('general.quizzes') }}</b>
                 </div>
             </div>
         </div>
@@ -76,20 +72,20 @@
             var calendarEl = document.getElementById('calendar');
             var events = @json($events);
             var i18n = {
-                today: "{{ $t('Hôm nay', 'Today', '今天') }}",
-                month: "{{ $t('Tháng', 'Month', '月') }}",
-                week: "{{ $t('Tuần', 'Week', '周') }}",
-                day: "{{ $t('Ngày', 'Day', '日') }}",
-                list: "{{ $t('Danh sách', 'List', '列表') }}",
-                allDayText: "{{ $t('Cả ngày', 'All day', '全天') }}",
-                noEventsText: "{{ $t('Không có sự kiện để hiển thị', 'No events to display', '没有可显示的事件') }}",
-                noEventsOnDay: "{{ $t('Không có sự kiện nào trong ngày này.', 'No events on this day.', '这一天没有任何事件。') }}",
-                classLabel: "{{ $t('Lớp', 'Class', '班级') }}",
-                timeLabel: "{{ $t('Thời gian', 'Time', '时间') }}",
-                allDay: "{{ $t('Cả ngày', 'All day', '全天') }}",
-                locationLabel: "{{ $t('Địa điểm', 'Location', '地点') }}",
-                dayScheduleTitle: "{{ $t('Lịch giảng dạy trong ngày', 'Day schedule', '当日教学日程') }}",
-                eventDetailTitle: "{{ $t('Chi tiết sự kiện', 'Event details', '事件详情') }}",
+                today: "{{ __('general.today') }}",
+                month: "{{ __('general.month') }}",
+                week: "{{ __('general.week') }}",
+                day: "{{ __('general.day') }}",
+                list: "{{ __('general.list') }}",
+                allDayText: "{{ __('general.all_day') }}",
+                noEventsText: "{{ __('general.no_events_to_display') }}",
+                noEventsOnDay: "{{ __('general.no_events_on_day') }}",
+                classLabel: "{{ __('general.class') }}",
+                timeLabel: "{{ __('general.time') }}",
+                allDay: "{{ __('general.all_day') }}",
+                locationLabel: "{{ __('general.location') }}",
+                dayScheduleTitle: "{{ __('general.schedule_for_day') }}",
+                eventDetailTitle: "{{ __('general.event_details') }}",
             };
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'listWeek',
@@ -199,7 +195,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalScheduleLabel">{{ $t('Lịch giảng dạy trong ngày', 'Day schedule', '当日教学日程') }}</h5>
+                    <h5 class="modal-title" id="modalScheduleLabel">{{ __('general.schedule_for_day') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="modalScheduleBody">
@@ -214,7 +210,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalEventLabel">{{ $t('Chi tiết sự kiện', 'Event details', '事件详情') }}</h5>
+                    <h5 class="modal-title" id="modalEventLabel">{{ __('general.event_details') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="modalEventBody">
