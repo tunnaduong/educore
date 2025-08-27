@@ -66,7 +66,7 @@ class AuthTest extends DuskTestCase
                 ->type('email', 'student@educore.com')
                 ->type('password', 'password')
                 ->press('Đăng nhập')
-                ->assertPathIs('/student/dashboard')
+                ->assertPathIs('/dashboard')
                 ->assertSee('Dashboard');
         });
     }
