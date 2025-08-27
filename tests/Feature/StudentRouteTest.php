@@ -108,20 +108,7 @@ class StudentRouteTest extends TestCase
      */
     public function test_student_routes_return_200($uri, $method)
     {
-        $user = User::firstOrCreate(
-            ['phone' => 'student'],
-            [
-                'id' => 3,
-                'name' => 'Student',
-                'email' => 'student@educore.me',
-                'phone' => 'student',
-                'password' => bcrypt('Student@12'),
-                'role' => 'student',
-                'is_active' => true,
-                'email_verified_at' => now(), // Thêm email verification
-            ]
-        );
-        $this->actingAs($user);
+        $this->actingAs($this->user);
 
         $response = $this->$method($uri);
         $this->assertTrue(
