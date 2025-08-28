@@ -158,10 +158,10 @@
         <!-- Header -->
         <div class="mb-4">
             <a href="{{ route('classrooms.index') }}" class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left mr-2"></i>@lang('general.back')
+                <i class="bi bi-arrow-left mr-2"></i>{{ __('general.back') }}
             </a>
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-book mr-2"></i>@lang('general.create_new_classroom')
+                <i class="bi bi-book mr-2"></i>{{ __('general.create_new_classroom') }}
             </h4>
         </div>
 
@@ -189,42 +189,42 @@
                     <form wire:submit="save">
                         <!-- Thông tin cơ bản -->
                         <div class="mb-4">
-                            <h5 class="text-primary mb-3">@lang('general.classroom_information')</h5>
+                            <h5 class="text-primary mb-3">{{ __('general.classroom_information') }}</h5>
                             <div class="mb-3">
-                                <label for="name" class="form-label">@lang('general.classroom_name') <span
+                                <label for="name" class="form-label">{{ __('general.classroom_name') }} <span
                                         class="text-danger">*</span></label>
                                 <input wire:model="name" type="text"
                                     class="form-control @error('name') is-invalid @enderror" id="name"
-                                    placeholder="@lang('general.example_class_name')">
+                                    placeholder="{{ __('general.example_class_name') }}">
                                 @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="level" class="form-label">@lang('general.level') <span
+                                <label for="level" class="form-label">{{ __('general.level') }} <span
                                         class="text-danger">*</span></label>
                                 <select wire:model="level" class="form-control @error('level') is-invalid @enderror"
                                     id="level">
-                                    <option value="">@lang('general.choose_level')</option>
-                                    <option value="HSK1">HSK 1</option>
-                                    <option value="HSK2">HSK 2</option>
-                                    <option value="HSK3">HSK 3</option>
-                                    <option value="HSK4">HSK 4</option>
-                                    <option value="HSK5">HSK 5</option>
-                                    <option value="HSK6">HSK 6</option>
-                                    <option value="Sơ cấp 1">@lang('general.basic1')</option>
-                                    <option value="Sơ cấp 2">@lang('general.basic2')</option>
-                                    <option value="Trung cấp 1">@lang('general.intermediate1')</option>
-                                    <option value="Trung cấp 2">@lang('general.intermediate2')</option>
-                                    <option value="Cao cấp 1">@lang('general.advanced1')</option>
-                                    <option value="Cao cấp 2">@lang('general.advanced2')</option>
+                                    <option value="">{{ __('general.choose_level') }}</option>
+                                    <option value="HSK1">{{ __('general.hsk1') }}</option>
+                                    <option value="HSK2">{{ __('general.hsk2') }}</option>
+                                    <option value="HSK3">{{ __('general.hsk3') }}</option>
+                                    <option value="HSK4">{{ __('general.hsk4') }}</option>
+                                    <option value="HSK5">{{ __('general.hsk5') }}</option>
+                                    <option value="HSK6">{{ __('general.hsk6') }}</option>
+                                    <option value="Sơ cấp 1">{{ __('general.basic1') }}</option>
+                                    <option value="Sơ cấp 2">{{ __('general.basic2') }}</option>
+                                    <option value="Trung cấp 1">{{ __('general.intermediate1') }}</option>
+                                    <option value="Trung cấp 2">{{ __('general.intermediate2') }}</option>
+                                    <option value="Cao cấp 1">{{ __('general.advanced1') }}</option>
+                                    <option value="Cao cấp 2">{{ __('general.advanced2') }}</option>
                                 </select>
                                 @error('level')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="teacher_ids" class="form-label">@lang('general.teacher') <span
+                                <label for="teacher_ids" class="form-label">{{ __('general.teacher') }} <span
                                         class="text-danger">*</span></label>
                                 <div class="dropdown" x-data="{ open: false }" @click.away="open = false">
                                     <button
@@ -234,7 +234,7 @@
                                             @if (count($teacher_ids))
                                                 {{ collect($teachers)->whereIn('id', $teacher_ids)->pluck('name')->join(', ') }}
                                             @else
-                                                @lang('general.select_teacher')
+                                                {{ __('general.select_teacher') }}
                                             @endif
                                         </span>
                                         <span class="ml-2"><i class="fas fa-chevron-down"
@@ -256,21 +256,21 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="status" class="form-label">@lang('general.status') <span
+                                <label for="status" class="form-label">{{ __('general.status') }} <span
                                         class="text-danger">*</span></label>
                                 <select wire:model="status" class="form-control @error('status') is-invalid @enderror"
                                     id="status">
-                                    <option value="draft">@lang('general.draft')</option>
-                                    <option value="active">@lang('general.active')</option>
-                                    <option value="inactive">@lang('general.inactive')</option>
-                                    <option value="completed">@lang('general.completed')</option>
+                                    <option value="draft">{{ __('general.draft') }}</option>
+                                    <option value="active">{{ __('general.active') }}</option>
+                                    <option value="inactive">{{ __('general.inactive') }}</option>
+                                    <option value="completed">{{ __('general.completed') }}</option>
                                 </select>
                                 @error('status')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">@lang('general.study_days') <span class="text-danger">*</span></label>
+                                <label class="form-label">{{ __('general.study_days') }} <span class="text-danger">*</span></label>
                                 <div class="days-selector">
                                     @foreach ([
         'Monday' => __('general.monday'),
@@ -298,7 +298,7 @@
                             <!-- Thời gian học -->
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <label for="startTime" class="form-label">@lang('general.start_time') <span
+                                    <label for="startTime" class="form-label">{{ __('general.start_time') }} <span
                                             class="text-danger">*</span></label>
                                     <input type="time" wire:model="startTime"
                                         class="form-control @error('startTime') is-invalid @enderror" id="startTime">
@@ -307,7 +307,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="endTime" class="form-label">@lang('general.end_time') <span
+                                    <label for="endTime" class="form-label">{{ __('general.end_time') }} <span
                                             class="text-danger">*</span></label>
                                     <input type="time" wire:model="endTime"
                                         class="form-control @error('endTime') is-invalid @enderror" id="endTime">
@@ -324,9 +324,9 @@
                                         <div class="d-flex align-items-start">
                                             <i class="bi bi-exclamation-triangle-fill text-warning mr-2 mt-1"></i>
                                             <div>
-                                                <strong>@lang('general.schedule_conflict_warning')</strong>
+                                                <strong>{{ __('general.schedule_conflict_warning') }}</strong>
                                                 <div class="small mt-1">
-                                                    @lang('general.conflict_detected_message')
+                                                    {{ __('general.conflict_detected_message') }}
                                                 </div>
                                                 <div class="mt-2">
                                                     @foreach($teacherConflicts as $teacherId => $conflictData)
@@ -335,7 +335,7 @@
                                                             @foreach($conflictData['conflicts'] as $conflict)
                                                                 {{ $conflict['message'] }}
                                                                 @if($conflict['overlapTime'])
-                                                                    (@lang('general.overlap_time'): {{ $conflict['overlapTime'] }})
+                                                                    ({{ __('general.overlap_time') }}: {{ $conflict['overlapTime'] }})
                                                                 @endif
                                                             @endforeach
                                                         </div>
@@ -348,9 +348,9 @@
                             @endif
 
                             <div class="mb-3">
-                                <label for="notes" class="form-label">@lang('general.description')</label>
+                                <label for="notes" class="form-label">{{ __('general.description') }}</label>
                                 <textarea wire:model="notes" class="form-control @error('notes') is-invalid @enderror" id="notes" rows="3"
-                                    placeholder="@lang('general.enter_classroom_description')"></textarea>
+                                    placeholder="{{ __('general.enter_classroom_description') }}"></textarea>
                                 @error('notes')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -358,19 +358,19 @@
                         </div>
                         <!-- Submit Buttons -->
                         <div class="d-flex justify-content-end gap-2">
-                            <a href="{{ route('classrooms.index') }}" class="btn btn-light">@lang('general.cancel')</a>
+                            <a href="{{ route('classrooms.index') }}" class="btn btn-light">{{ __('general.cancel') }}</a>
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-book mr-2"></i>@lang('general.create_classroom')
+                                <i class="bi bi-book mr-2"></i>{{ __('general.create_classroom') }}
                             </button>
                         </div>
                     </form>
                 </div>
                 <div
                     class="col-md-5 d-flex flex-column justify-content-center align-items-center bg-light border-start rounded-end p-4">
-                    <img src="/educore-logo.png" alt="@lang('general.create_new_classroom')" class="mb-3" style="max-width: 90px;">
+                    <img src="/educore-logo.png" alt="{{ __('general.create_new_classroom') }}" class="mb-3" style="max-width: 90px;">
                     <div class="text-center">
-                        <h6 class="text-primary fw-bold mb-2">@lang('general.create_new_classroom')</h6>
-                        <p class="text-muted small mb-0">@lang('general.create_classroom_description')</p>
+                        <h6 class="text-primary fw-bold mb-2">{{ __('general.create_new_classroom') }}</h6>
+                        <p class="text-muted small mb-0">{{ __('general.create_classroom_description') }}</p>
                     </div>
                 </div>
             </div>
@@ -385,13 +385,13 @@
                 <div class="modal-header bg-warning text-dark">
                     <h5 class="modal-title">
                         <i class="bi bi-exclamation-triangle-fill mr-2"></i>
-                        @lang('general.teacher_conflict_warning_title')
+                        {{ __('general.teacher_conflict_warning_title') }}
                     </h5>
                     <button type="button" class="btn-close" wire:click="closeConflictModal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="alert alert-warning">
-                        <strong>@lang('general.detected_teacher_conflicts_title')</strong> @lang('general.detected_teacher_conflicts_desc')
+                        <strong>{{ __('general.detected_teacher_conflicts_title') }}</strong> {{ __('general.detected_teacher_conflicts_desc') }}
                     </div>
 
                     <div class="conflicts-list" style="max-height: 400px; overflow-y: auto;">
@@ -401,11 +401,11 @@
                                     <div class="d-flex align-items-center">
                                         <i class="bi bi-person-circle text-warning mr-2"></i>
                                         <strong>{{ $conflictData['teacher']->name }}</strong>
-                                        <span class="badge bg-warning text-dark ml-auto">@lang('general.teacher')</span>
+                                        <span class="badge bg-warning text-dark ml-auto">{{ __('general.teacher') }}</span>
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <h6 class="text-danger mb-2">@lang('general.conflicting_classes')</h6>
+                                    <h6 class="text-danger mb-2">{{ __('general.conflicting_classes') }}</h6>
                                     @foreach($conflictData['conflicts'] as $conflict)
                                         <div class="alert alert-danger py-2 mb-2">
                                             <div class="d-flex align-items-start">
@@ -419,7 +419,7 @@
                                                     @if($conflict['overlapTime'])
                                                         <div class="small text-danger mt-1">
                                                             <i class="bi bi-exclamation-circle mr-1"></i>
-                                                            @lang('general.overlap_time'): {{ $conflict['overlapTime'] }}
+                                                            {{ __('general.overlap_time') }}: {{ $conflict['overlapTime'] }}
                                                         </div>
                                                     @endif
                                                 </div>
@@ -433,15 +433,15 @@
 
                     <div class="alert alert-info">
                         <i class="bi bi-info-circle mr-2"></i>
-                        <strong>@lang('general.note')</strong> @lang('general.you_may_force_create_warning')
+                        <strong>{{ __('general.note') }}</strong> {{ __('general.you_may_force_create_warning') }}
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" wire:click="closeConflictModal">
-                        <i class="bi bi-x-circle mr-2"></i>@lang('general.cancel')
+                        <i class="bi bi-x-circle mr-2"></i>{{ __('general.cancel') }}
                     </button>
                     <button type="button" class="btn btn-warning" wire:click="forceCreate">
-                        <i class="bi bi-exclamation-triangle mr-2"></i>@lang('general.force_create_classroom')
+                        <i class="bi bi-exclamation-triangle mr-2"></i>{{ __('general.force_create_classroom') }}
                     </button>
                 </div>
             </div>
