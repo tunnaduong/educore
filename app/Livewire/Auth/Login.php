@@ -16,7 +16,6 @@ class Login extends Component
 
     protected $messages = [
         'phone.required' => 'Vui lòng nhập số điện thoại',
-        'phone.min' => 'Tối thiểu :min ký tự',
         'phone.max' => 'Tối đa :max ký tự',
         'password.required' => 'Vui lòng nhập mật khẩu',
         'password.min' => 'Mật khẩu phải có ít nhất :min ký tự',
