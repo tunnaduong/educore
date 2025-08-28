@@ -146,8 +146,22 @@ class GeminiService
             $jsonText = $matches[1];
         }
 
+        // Cố gắng cắt lấy phần JSON thuần giữa dấu { ... } lớn nhất
+        $firstBrace = strpos($jsonText, '{');
+        $lastBrace = strrpos($jsonText, '}');
+        if ($firstBrace !== false && $lastBrace !== false && $lastBrace > $firstBrace) {
+            $jsonText = substr($jsonText, $firstBrace, $lastBrace - $firstBrace + 1);
+        }
+
         // Loại bỏ whitespace thừa
         $jsonText = trim($jsonText);
+
+        // Loại bỏ comment kiểu // ... và /* ... */ mà mô hình có thể chèn vào
+        $jsonText = preg_replace('/\/\/.*$/m', '', $jsonText); // line comments
+        $jsonText = preg_replace('/\/\*.*?\*\//s', '', $jsonText); // block comments
+
+        // Loại bỏ dấu phẩy thừa trước ] hoặc }
+        $jsonText = preg_replace('/,\s*([}\]])/m', '$1', $jsonText);
 
         Log::info('GeminiService: Parsing JSON response', [
             'original_length' => strlen($response),
@@ -159,6 +173,8 @@ class GeminiService
             $decoded = json_decode($jsonText, true);
 
             if (json_last_error() === JSON_ERROR_NONE) {
+                // Chuẩn hoá cấu trúc nếu có danh sách câu hỏi
+                $decoded = $this->normalizeQuestionPayload($decoded);
                 Log::info('GeminiService: JSON parse successful', [
                     'decoded_type' => gettype($decoded),
                     'is_array' => is_array($decoded),
@@ -181,6 +197,51 @@ class GeminiService
 
             return null;
         }
+    }
+
+    /**
+     * Chuẩn hoá dữ liệu câu hỏi để tránh khác biệt khoá tên từ mô hình
+     */
+    protected function normalizeQuestionPayload(array $decoded): array
+    {
+        if (! isset($decoded['questions']) || ! is_array($decoded['questions'])) {
+            return $decoded;
+        }
+
+        foreach ($decoded['questions'] as $index => $question) {
+            if (! is_array($question)) {
+                continue;
+            }
+
+            // Đảm bảo có mảng options
+            if (! isset($question['options']) || ! is_array($question['options'])) {
+                $question['options'] = [];
+            }
+
+            // Map các khoá đáp án thay thế về correct_answer nếu thiếu
+            if (! isset($question['correct_answer'])) {
+                $altKeys = ['correct', 'answer', 'correctAns', 'correct_option', 'correctOption', 'correctOptionLetter'];
+                foreach ($altKeys as $altKey) {
+                    if (isset($question[$altKey])) {
+                        $question['correct_answer'] = $question[$altKey];
+                        break;
+                    }
+                }
+                if (! isset($question['correct_answer'])) {
+                    foreach ($question as $key => $value) {
+                        if ($key !== 'correct_answer' && strpos($key, 'correct') === 0) {
+                            $question['correct_answer'] = $value;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // Gán lại câu hỏi đã chuẩn hoá
+            $decoded['questions'][$index] = $question;
+        }
+
+        return $decoded;
     }
 
     /**
@@ -319,7 +380,7 @@ class GeminiService
      */
     public function generateQuiz($lessonContent, $topic, $difficulty = 'medium', $questionCount = 10)
     {
-        $prompt = "Hãy tạo {$questionCount} câu hỏi quiz về chủ đề '{$topic}' dựa trên nội dung bài học sau. 
+        $prompt = "Hãy tạo {$questionCount} câu hỏi quiz trắc nghiệm về chủ đề '{$topic}' dựa trên nội dung bài học sau. 
         Độ khó: {$difficulty}
         
         Trả về kết quả theo format JSON:
@@ -327,7 +388,7 @@ class GeminiService
             'questions': [
                 {
                     'question': 'câu hỏi',
-                    'type': 'multiple_choice|fill_blank|essay',
+                    'type': 'multiple_choice',
                     'options': ['lựa chọn A', 'lựa chọn B', 'lựa chọn C', 'lựa chọn D'],
                     'correct_answer': 'đáp án đúng',
                     'explanation': 'giải thích',
@@ -372,7 +433,7 @@ class GeminiService
             'base_url' => $this->baseUrl,
         ]);
 
-        $prompt = "Hãy tạo ngân hàng câu hỏi với tối đa {$maxQuestions} câu hỏi về chủ đề '{$topic}' thuộc môn học '{$subject}'.
+        $prompt = "Hãy tạo ngân hàng câu hỏi trắc nghiệm với tối đa {$maxQuestions} câu hỏi về chủ đề '{$topic}' thuộc môn học '{$subject}'.
         
         Trả về kết quả theo format JSON:
         {
@@ -380,7 +441,7 @@ class GeminiService
                 {
                     'id': số_thứ_tự,
                     'question': 'câu hỏi',
-                    'type': 'multiple_choice|fill_blank|essay|true_false',
+                    'type': 'multiple_choice',
                     'difficulty': 'easy|medium|hard',
                     'options': ['lựa chọn A', 'lựa chọn B', 'lựa chọn C', 'lựa chọn D'],
                     'correct_answer': 'đáp án đúng',
@@ -394,9 +455,7 @@ class GeminiService
                 'easy_count': số_câu_dễ,
                 'medium_count': số_câu_trung_bình,
                 'hard_count': số_câu_khó,
-                'multiple_choice_count': số_câu_trắc_nghiệm,
-                'fill_blank_count': số_câu_điền_khuyết,
-                'essay_count': số_câu_tự_luận
+                'multiple_choice_count': số_câu_trắc_nghiệm
             }
         }";
 
@@ -440,8 +499,6 @@ class GeminiService
                 'medium_count' => 0,
                 'hard_count' => 0,
                 'multiple_choice_count' => 0,
-                'fill_blank_count' => 0,
-                'essay_count' => 0,
             ],
         ];
     }

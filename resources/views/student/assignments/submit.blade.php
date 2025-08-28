@@ -153,7 +153,7 @@
                             <strong>Đã nộp:</strong>
                             @if (count($status['submitted_types']) > 0)
                                 @foreach ($status['submitted_types'] as $type)
-                                    <span class="badge bg-success me-1">{{ $this->getTypeLabel($type) }}</span>
+                                    <span class="badge bg-success mr-1">{{ $this->getTypeLabel($type) }}</span>
                                 @endforeach
                             @else
                                 <span class="text-white">Chưa nộp loại nào</span>
@@ -163,7 +163,7 @@
                             <strong>Còn thiếu:</strong>
                             @if (count($status['missing_types']) > 0)
                                 @foreach ($status['missing_types'] as $type)
-                                    <span class="badge bg-warning me-1">{{ $this->getTypeLabel($type) }}</span>
+                                    <span class="badge bg-warning mr-1">{{ $this->getTypeLabel($type) }}</span>
                                 @endforeach
                             @else
                                 <span class="text-success">Đã nộp đủ tất cả loại bài tập!</span>

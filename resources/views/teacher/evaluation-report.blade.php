@@ -1,6 +1,5 @@
 <x-layouts.dash-teacher active="evaluations-report">
     @include('components.language')
-    
     <div class="container py-4">
         <!-- Header -->
         <div class="mb-4">
@@ -135,7 +134,7 @@
                             @forelse ($evaluations as $eva)
                                 <tr>
                                     <td>
-                                        <span class="fw-bold">{{ $eva->student->user->name ?? __('general.not_available') }}</span><br>
+                                        <span class="fw-bold">{{ $eva->student->user->name ?? 'N/A' }}</span><br>
                                         <small class="text-muted">ID: {{ $eva->student_id }}</small>
                                     </td>
                                     <td>{{ number_format($eva->getTeacherAverageRating(), 1) }}</td>
@@ -175,7 +174,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title fw-bold text-primary fs-4">{{ __('general.evaluation_details') }}
-                                {{ __('general.of') }}
+                                của
                                 {{ $selectedEvaluation->student->user->name ?? __('general.student') }}</h5>
                             <button type="button" class="btn-close" wire:click="closeEvaluationDetail">
                                 <i class="bi bi-x-lg"></i>
@@ -245,7 +244,7 @@
     @if (session()->has('success'))
         <div class="position-fixed top-0 end-0 p-3" style="z-index: 1060;">
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle me-2"></i>
+                <i class="bi bi-check-circle mr-2"></i>
                 {{ session('success') }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -257,7 +256,7 @@
     @if (session()->has('error'))
         <div class="position-fixed top-0 end-0 p-3" style="z-index: 1060;">
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-triangle me-2"></i>
+                <i class="bi bi-exclamation-triangle mr-2"></i>
                 {{ session('error') }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>

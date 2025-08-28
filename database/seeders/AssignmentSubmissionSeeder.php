@@ -53,21 +53,16 @@ class AssignmentSubmissionSeeder extends Seeder
                 // Tạo nội dung bài nộp
                 $content = $this->generateSubmissionContent($assignment, $faker);
 
-                // Tạo file đính kèm (có thể null)
-                $attachmentPath = $faker->optional(0.6)->filePath();
-
                 // Tạo ghi chú của giáo viên
-                $teacherNotes = $isGraded ? $this->generateTeacherNotes($score, $faker) : null;
+                $feedback = $isGraded ? $this->generateTeacherNotes($score, $faker) : null;
 
                 AssignmentSubmission::create([
                     'assignment_id' => $assignment->id,
                     'student_id' => $student->studentProfile->id,
                     'content' => $content,
-                    'attachment_path' => $attachmentPath,
                     'submitted_at' => $submittedAt,
                     'score' => $score,
-                    'teacher_notes' => $teacherNotes,
-                    'status' => $isGraded ? 'graded' : 'submitted',
+                    'feedback' => $feedback,
                 ]);
             }
         }
