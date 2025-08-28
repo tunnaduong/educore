@@ -114,9 +114,6 @@
                                             wire:model="currentQuestion.type">
                                             <option value="multiple_choice">{{ __('general.multiple_choice') }}
                                             </option>
-                                            <option value="fill_blank">{{ __('general.fill_blank') }}</option>
-                                            <option value="drag_drop">{{ __('general.drag_drop') }}</option>
-                                            <option value="essay">{{ __('general.essay') }}</option>
                                         </select>
                                         @error('currentQuestion.type')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -180,20 +177,7 @@
                                 </div>
                             @endif
 
-                            <!-- Tùy chọn cho câu hỏi điền từ -->
-                            @if ($currentQuestion['type'] === 'fill_blank')
-                                <div class="mb-3">
-                                    <label class="form-label">{{ __('general.correct_answer') }} <span
-                                            class="text-danger">*</span></label>
-                                    <input type="text"
-                                        class="form-control @error('currentQuestion.correct_answer') is-invalid @enderror"
-                                        wire:model="currentQuestion.correct_answer"
-                                        placeholder="{{ __('general.enter_correct_answer') }}">
-                                    @error('currentQuestion.correct_answer')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            @endif
+
 
                             <div class="text-end">
                                 @if ($editingIndex !== null)

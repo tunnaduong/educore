@@ -27,28 +27,18 @@ class PaymentSeeder extends Seeder
 
         // Danh sách loại thanh toán
         $paymentTypes = [
-            'course_fee' => 'Học phí khóa học',
-            'material_fee' => 'Phí tài liệu',
-            'exam_fee' => 'Phí thi',
-            'certificate_fee' => 'Phí chứng chỉ',
+            'tuition' => 'Học phí khóa học',
+            'material' => 'Phí tài liệu',
+            'exam' => 'Phí thi',
+            'certificate' => 'Phí chứng chỉ',
             'other' => 'Phí khác',
-        ];
-
-        // Danh sách phương thức thanh toán
-        $paymentMethods = [
-            'bank_transfer' => 'Chuyển khoản ngân hàng',
-            'cash' => 'Tiền mặt',
-            'momo' => 'Ví MoMo',
-            'vnpay' => 'VNPay',
-            'zalopay' => 'ZaloPay',
         ];
 
         // Danh sách trạng thái thanh toán
         $paymentStatuses = [
-            'pending' => 'Chờ xử lý',
-            'completed' => 'Hoàn thành',
-            'failed' => 'Thất bại',
-            'cancelled' => 'Đã hủy',
+            'unpaid' => 'Chưa thanh toán',
+            'partial' => 'Thanh toán một phần',
+            'paid' => 'Đã thanh toán',
         ];
 
         // Tạo 30-40 giao dịch thanh toán
@@ -58,32 +48,25 @@ class PaymentSeeder extends Seeder
             $student = $students->random();
             $classroom = $classrooms->random();
             $paymentType = $faker->randomElement(array_keys($paymentTypes));
-            $paymentMethod = $faker->randomElement(array_keys($paymentMethods));
             $paymentStatus = $faker->randomElement(array_keys($paymentStatuses));
 
             // Tạo số tiền hợp lý theo loại thanh toán
             $amount = $this->generateAmount($paymentType);
 
-            // Tạo thời gian thanh toán
-            $paymentDate = $faker->dateTimeBetween('-6 months', 'now');
-
-            // Tạo thông tin giao dịch
-            $transactionId = 'TXN'.strtoupper($faker->bothify('??????'));
+            // Tạo thời gian thanh toán (nếu đã thanh toán)
+            $paidAt = $paymentStatus === 'paid' ? $faker->dateTimeBetween('-6 months', 'now') : null;
 
             // Tạo ghi chú
-            $notes = $this->generateNotes($paymentType, $classroom, $student, $faker);
+            $note = $this->generateNotes($paymentType, $classroom, $student, $faker);
 
             Payment::create([
                 'user_id' => $student->id,
                 'class_id' => $classroom->id,
                 'amount' => $amount,
-                'payment_type' => $paymentType,
-                'payment_method' => $paymentMethod,
+                'type' => $paymentType,
                 'status' => $paymentStatus,
-                'transaction_id' => $transactionId,
-                'payment_date' => $paymentDate,
-                'notes' => $notes,
-                'proof_path' => $faker->optional(0.7)->filePath(), // 70% có file chứng minh
+                'note' => $note,
+                'paid_at' => $paidAt,
             ]);
         }
     }
@@ -94,13 +77,13 @@ class PaymentSeeder extends Seeder
     private function generateAmount($paymentType)
     {
         switch ($paymentType) {
-            case 'course_fee':
+            case 'tuition':
                 return rand(2000000, 5000000); // 2-5 triệu VND
-            case 'material_fee':
+            case 'material':
                 return rand(200000, 500000); // 200-500k VND
-            case 'exam_fee':
+            case 'exam':
                 return rand(500000, 1000000); // 500k-1 triệu VND
-            case 'certificate_fee':
+            case 'certificate':
                 return rand(300000, 800000); // 300-800k VND
             case 'other':
                 return rand(100000, 1000000); // 100k-1 triệu VND
@@ -117,7 +100,7 @@ class PaymentSeeder extends Seeder
         $notes = [];
 
         switch ($paymentType) {
-            case 'course_fee':
+            case 'tuition':
                 $notes = [
                     "Học phí khóa học {$classroom->name}",
                     'Thanh toán học phí tháng '.rand(1, 12),
@@ -125,7 +108,7 @@ class PaymentSeeder extends Seeder
                     "Thanh toán học phí cho học viên {$student->name}",
                 ];
                 break;
-            case 'material_fee':
+            case 'material':
                 $notes = [
                     'Phí tài liệu học tập',
                     'Phí sách giáo khoa và tài liệu bổ trợ',
@@ -133,7 +116,7 @@ class PaymentSeeder extends Seeder
                     'Phí in ấn tài liệu học tập',
                 ];
                 break;
-            case 'exam_fee':
+            case 'exam':
                 $notes = [
                     "Phí thi HSK {$classroom->level}",
                     'Phí thi cuối khóa',
@@ -141,7 +124,7 @@ class PaymentSeeder extends Seeder
                     'Phí thi đánh giá năng lực',
                 ];
                 break;
-            case 'certificate_fee':
+            case 'certificate':
                 $notes = [
                     'Phí cấp chứng chỉ hoàn thành khóa học',
                     "Phí chứng chỉ HSK {$classroom->level}",

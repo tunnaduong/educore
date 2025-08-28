@@ -1,5 +1,41 @@
 <x-layouts.dash-student active="lessons">
     @include('components.language')
+
+    @push('styles')
+        <style>
+            .description-content {
+                line-height: 1.6;
+            }
+
+            .description-content img {
+                max-width: 100% !important;
+                height: auto !important;
+            }
+
+            .description-content table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 10px 0;
+            }
+
+            .description-content table,
+            .description-content th,
+            .description-content td {
+                border: 1px solid #ddd;
+            }
+
+            .description-content th,
+            .description-content td {
+                padding: 8px;
+                text-align: left;
+            }
+
+            .description-content th {
+                background-color: #f8f9fa;
+            }
+        </style>
+    @endpush
+
     <div class="row">
         <div class="container-fluid">
             <div class="mb-4">
@@ -22,7 +58,7 @@
                 <div class="card-body">
                     <div class="mb-3">
                         <strong class="text-muted">Mô tả:</strong>
-                        <div class="mt-1">{!! nl2br(e($lesson->description)) !!}</div>
+                        <div class="mt-1 description-content">{!! $lesson->description !!}</div>
                     </div>
 
                     @php
@@ -74,7 +110,7 @@
                                 class="btn btn-outline-success mb-2">
                                 <i class="bi bi-download"></i> Tải tài liệu
                             </a>
-                            <button class="btn btn-outline-primary mb-2 ms-2" type="button"
+                            <button class="btn btn-outline-primary mb-2 ml-2" type="button"
                                 onclick="openPreviewModal()">
                                 <i class="bi bi-eye"></i> Xem trước tài liệu
                             </button>

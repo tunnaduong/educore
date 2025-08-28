@@ -16,14 +16,14 @@
         <!-- Alerts on top -->
         @if (session()->has('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle me-2"></i>
+                <i class="bi bi-check-circle mr-2"></i>
                 {{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif
         @if (session()->has('error'))
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-triangle me-2"></i>
+                <i class="bi bi-exclamation-triangle mr-2"></i>
                 {{ session('error') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
@@ -218,7 +218,7 @@
                                             <tr>
                                                 <td>
                                                     <div class="d-flex align-items-center gap-2">
-                                                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-2"
+                                                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center mr-2"
                                                             style="width: 40px; height: 40px;">
                                                             <span
                                                                 class="text-white fw-bold">{{ substr($evaluation->student->user->name ?? 'N/A', 0, 1) }}</span>
@@ -235,7 +235,7 @@
                                                     @if ($evaluation->student->user->enrolledClassrooms->count() > 0)
                                                         @foreach ($evaluation->student->user->enrolledClassrooms as $classroom)
                                                             <span
-                                                                class="badge bg-info me-1">{{ $classroom->name }}</span>
+                                                                class="badge bg-info mr-1">{{ $classroom->name }}</span>
                                                         @endforeach
                                                     @else
                                                         <span class="text-muted">{{ __('views.not_assigned') }}</span>
@@ -706,7 +706,7 @@
                             <div class="modal-body">
                                 @if (session()->has('error'))
                                     <div class="alert alert-danger d-flex align-items-center" role="alert">
-                                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                        <i class="bi bi-exclamation-triangle-fill mr-2"></i>
                                         <div>{{ session('error') }}</div>
                                     </div>
                                 @endif
@@ -781,7 +781,7 @@
     @if (session()->has('success'))
         <div class="position-fixed top-0 end-0 p-3" style="z-index: 1060;">
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle me-2"></i>
+                <i class="bi bi-check-circle mr-2"></i>
                 {{ session('success') }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -793,7 +793,7 @@
     @if (session()->has('error'))
         <div class="position-fixed top-0 end-0 p-3" style="z-index: 1060;">
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-triangle me-2"></i>
+                <i class="bi bi-exclamation-triangle mr-2"></i>
                 {{ session('error') }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>

@@ -112,9 +112,6 @@ class QuestionBank extends Model
     {
         return [
             'multiple_choice' => $this->statistics['multiple_choice_count'] ?? 0,
-            'fill_blank' => $this->statistics['fill_blank_count'] ?? 0,
-            'essay' => $this->statistics['essay_count'] ?? 0,
-            'true_false' => $this->statistics['true_false_count'] ?? 0,
         ];
     }
 

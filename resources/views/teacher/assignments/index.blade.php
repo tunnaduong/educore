@@ -1,18 +1,17 @@
 <x-layouts.dash-teacher active="assignments">
     @include('components.language')
-    
     <div class="container-fluid">
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h4 class="mb-0 text-primary fs-4">
-                    <i class="bi bi-journal-text mr-2"></i>{{ __('general.assignments_overview') }}
+                    <i class="bi bi-journal-text mr-2"></i>Tổng quan giao bài tập
                 </h4>
-                <p class="text-muted mb-0">{{ __('general.manage_track_assignments') }}</p>
+                <p class="text-muted mb-0">Quản lý và theo dõi tình hình giao - nộp bài tập</p>
             </div>
             <div class="d-flex gap-2">
                 <a href="{{ route('teacher.assignments.create') }}" class="btn btn-outline-primary">
-                    <i class="bi bi-plus-circle mr-2"></i>{{ __('general.create_new_assignment') }}
+                    <i class="bi bi-plus-circle mr-2"></i>Giao bài tập mới
                 </a>
             </div>
         </div>
@@ -23,14 +22,14 @@
                 <div class="row align-items-center">
                     <div class="col-md-6">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-funnel mr-2"></i>{{ __('general.filter_by_month') }}
+                            <i class="bi bi-funnel mr-2"></i>Lọc theo tháng
                         </h5>
                     </div>
                     <div class="col-md-6">
                         <div class="d-flex gap-2 justify-content-end">
                             <select wire:model.live="selectedMonth" class="form-control" style="max-width: 150px;">
                                 @for ($month = 1; $month <= 12; $month++)
-                                    <option value="{{ $month }}">{{ __('general.month') }} {{ $month }}</option>
+                                    <option value="{{ $month }}">Tháng {{ $month }}</option>
                                 @endfor
                             </select>
                             <select wire:model.live="selectedYear" class="form-control" style="max-width: 120px;">
@@ -51,7 +50,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">{{ __('general.total_assignments') }}</h6>
+                                <h6 class="card-title mb-0">Tổng bài tập</h6>
                                 <h3 class="mb-0">{{ $overviewStats['total_assignments'] ?? 0 }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -66,7 +65,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">{{ __('general.classes_with_assignments') }}</h6>
+                                <h6 class="card-title mb-0">Lớp có bài tập</h6>
                                 <h3 class="mb-0">{{ $overviewStats['total_classes'] ?? 0 }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -81,7 +80,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">{{ __('general.total_submissions') }}</h6>
+                                <h6 class="card-title mb-0">Tổng lượt nộp</h6>
                                 <h3 class="mb-0">{{ $overviewStats['total_submissions'] ?? 0 }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -96,7 +95,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">{{ __('general.submission_rate') }}</h6>
+                                <h6 class="card-title mb-0">Tỷ lệ nộp bài</h6>
                                 <h3 class="mb-0">{{ $overviewStats['submission_rate'] ?? 0 }}%</h3>
                             </div>
                             <div class="align-self-center">
@@ -114,7 +113,7 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-trophy mr-2"></i>{{ __('general.top_5_classes_most_assignments') }}
+                            <i class="bi bi-trophy mr-2"></i>Top 5 lớp có nhiều bài tập nhất
                         </h5>
                     </div>
                     <div class="card-body">
@@ -123,8 +122,8 @@
                                 <table class="table table-hover">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>{{ __('general.classroom') }}</th>
-                                            <th class="text-center">{{ __('general.total_assignments') }}</th>
+                                            <th>Lớp học</th>
+                                            <th class="text-center">Tổng bài tập</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -155,7 +154,7 @@
                         @else
                             <div class="text-center py-4">
                                 <i class="bi bi-journal-x fs-1 text-muted mb-3"></i>
-                                <h5 class="text-muted">{{ __('general.no_assignment_data_yet') }}</h5>
+                                <h5 class="text-muted">Chưa có dữ liệu bài tập</h5>
                             </div>
                         @endif
                     </div>
@@ -166,7 +165,7 @@
                     <div class="card-header bg-light">
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="mb-0 text-primary">
-                                <i class="bi bi-clock-history mr-2"></i>{{ __('general.recent_assignments') }}
+                                <i class="bi bi-clock-history mr-2"></i>Bài tập gần đây
                             </h5>
                         </div>
                     </div>
@@ -176,10 +175,10 @@
                                 <table class="table table-hover">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>{{ __('general.title') }}</th>
-                                            <th>{{ __('general.classroom') }}</th>
-                                            <th>{{ __('general.deadline') }}</th>
-                                            <th>{{ __('general.assigned_at') }}</th>
+                                            <th>Tiêu đề</th>
+                                            <th>Lớp học</th>
+                                            <th>Hạn nộp</th>
+                                            <th>Ngày giao</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -219,20 +218,21 @@
                                                         <div class="modal-header">
                                                             <h5 class="modal-title"
                                                                 id="deleteAssignmentModalLabel{{ $assignment->id }}">
-                                                                {{ __('general.confirm_delete_assignment') }}</h5>
+                                                                Xác nhận xóa bài tập</h5>
                                                             <button type="button" class="btn-close"
                                                                 data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            {{ __('general.are_you_sure_delete_assignment') }}
-                                                            "{{ $assignment->title }}"? {{ __('general.warning_action_irreversible') }}
+                                                            Bạn có chắc chắn muốn xóa bài tập
+                                                            "{{ $assignment->title }}"? Hành động này không thể hoàn
+                                                            tác.
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">{{ __('general.cancel') }}</button>
+                                                                data-bs-dismiss="modal">Hủy</button>
                                                             <button type="button" class="btn btn-danger"
                                                                 wire:click="deleteAssignment({{ $assignment->id }})"
-                                                                data-bs-dismiss="modal">{{ __('general.delete') }}</button>
+                                                                data-bs-dismiss="modal">Xóa</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -244,7 +244,7 @@
                         @else
                             <div class="text-center py-4">
                                 <i class="bi bi-journal-x fs-1 text-muted mb-3"></i>
-                                <h5 class="text-muted">{{ __('general.no_assignments') }}</h5>
+                                <h5 class="text-muted">Chưa có bài tập nào</h5>
                             </div>
                         @endif
                     </div>
@@ -256,7 +256,7 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-star mr-2"></i>{{ __('general.top_5_on_time_students') }}
+                            <i class="bi bi-star mr-2"></i>Top 5 học viên nộp bài đúng hạn
                         </h5>
                     </div>
                     <div class="card-body">
@@ -285,7 +285,7 @@
                         @else
                             <div class="text-center py-3">
                                 <i class="bi bi-people fs-1 text-muted mb-2"></i>
-                                <p class="text-muted mb-0">{{ __('general.no_student_data') }}</p>
+                                <p class="text-muted mb-0">Chưa có dữ liệu học viên</p>
                             </div>
                         @endif
                     </div>

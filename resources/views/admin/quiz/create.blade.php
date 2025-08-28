@@ -78,13 +78,12 @@
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="text-center position-relative">
+                                <div class="text-center">
                                     <i class="fas fa-check-circle fa-3x text-warning mb-3"></i>
                                     <h6>{{ __('views.quiz_check_title') }}</h6>
                                     <p class="text-muted small">{{ __('views.quiz_check_desc') }}</p>
-                                    <button type="button" class="btn btn-warning position-relative"
-                                        wire:click="validateQuizWithAI" wire:loading.attr="disabled"
-                                        wire:loading.class="disabled">
+                                    <button type="button" class="btn btn-warning" wire:click="validateQuizWithAI">
+                                        <i class="fas fa-check-circle mr-1"></i>{{ __('views.quiz_check_button') }}
                                         <div wire:loading.remove>
                                             <i class="fas fa-check-circle mr-1"></i>{{ __('views.quiz_check_button') }}
                                         </div>
@@ -93,7 +92,7 @@
                                                 role="status">
                                                 <span class="visually-hidden">Loading...</span>
                                             </div>
-                                            <span class="loading-text">{{ __('views.checking') }}</span>
+                                            <span class="loading-text">Đang kiểm tra...</span>
                                         </div>
                                     </button>
                                 </div>
@@ -195,20 +194,6 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="mb-3">
-                                        <label class="form-label">{{ __('general.question_type') }} <span
-                                                class="text-danger">*</span></label>
-                                        <select
-                                            class="form-control @error('currentQuestion.type') is-invalid @enderror"
-                                            wire:model="currentQuestion.type">
-                                            <option value="multiple_choice">{{ __('general.multiple_choice') }}
-                                            </option>
-                                        </select>
-                                        @error('currentQuestion.type')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <div class="mb-3">
                                         <label class="form-label">{{ __('general.score') }} <span
                                                 class="text-danger">*</span></label>
                                         <input type="number"
@@ -265,6 +250,19 @@
                                 </div>
                             @endif
 
+                            <!-- Tùy chọn cho câu hỏi điền từ -->
+                            @if ($currentQuestion['type'] === 'fill_blank')
+                                <div class="mb-3">
+                                    <label class="form-label">Đáp án đúng <span class="text-danger">*</span></label>
+                                    <input type="text"
+                                        class="form-control @error('currentQuestion.correct_answer') is-invalid @enderror"
+                                        wire:model="currentQuestion.correct_answer" placeholder="Nhập đáp án đúng...">
+                                    @error('currentQuestion.correct_answer')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            @endif
+
                             <div class="text-end">
                                 @if ($editingIndex !== null)
                                     <button type="button" class="btn btn-warning mr-2"
@@ -279,6 +277,10 @@
                                         <i class="bi bi-plus-circle mr-2"></i>{{ __('general.add_question_btn') }}
                                     </button>
                                 @endif
+                                =======
+                                <button type="button" class="btn btn-primary" wire:click="addQuestion">
+                                    <i class="bi bi-plus-circle mr-2"></i>Thêm câu hỏi
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -301,8 +303,8 @@
                                                     class="badge bg-primary mr-2">{{ __('views.question_number', ['number' => $index + 1]) }}</span>
                                                 <span
                                                     class="badge bg-secondary">{{ ucfirst($question['type']) }}</span>
-                                                <span
-                                                    class="badge bg-info">{{ $question['score'] ?? ($question['points'] ?? 1) }}
+                                                <span class="badge bg-info">
+                                                    {{ $question['score'] ?? ($question['points'] ?? 1) }}
                                                     {{ __('views.points') }}</span>
                                             </div>
                                             <div class="btn-group btn-group-sm">
@@ -311,6 +313,8 @@
                                                     title="{{ __('general.edit') }}">
                                                     <i class="bi bi-pencil"></i>
                                                 </button>
+                                            </div>
+                                            <div class="btn-group btn-group-sm">
                                                 @if ($index > 0)
                                                     <button type="button" class="btn btn-outline-secondary"
                                                         wire:click="moveQuestionUp({{ $index }})"
@@ -421,7 +425,8 @@
                                     <label class="form-label">{{ __('general.question_type') }}:</label>
                                     <select class="form-control" wire:model.live="questionTypeFilter">
                                         <option value="">{{ __('views.all') }}</option>
-                                        <option value="multiple_choice">{{ __('general.multiple_choice') }}</option>
+                                        <option value="multiple_choice">{{ __('general.multiple_choice') }}
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -565,7 +570,7 @@
             document.addEventListener('click', function(e) {
                 const anchor = e.target.closest('a[href]');
                 if (!anchor) return;
-                if (anchor.hasAttribute('data-bypass-leave-confirm')) return; // allow bypass
+                if (anchor.hasAttribute('data-bypass-leave-confirm')) return; // cho phép bỏ qua
                 if (!isDirty) return;
                 const proceed = confirm("{{ __('views.leave_confirm') }}");
                 if (!proceed) {
@@ -575,4 +580,6 @@
             }, true);
         })();
     </script>
+    =======
+    >>>>>>> 282150b466aa7ba9b73489633ade3712c2eaa82a
 </x-layouts.dash-admin>

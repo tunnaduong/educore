@@ -16,7 +16,6 @@ class Login extends Component
 
     protected $messages = [
         'phone.required' => 'Vui lòng nhập số điện thoại',
-        'phone.min' => 'Tối thiểu :min ký tự',
         'phone.max' => 'Tối đa :max ký tự',
         'password.required' => 'Vui lòng nhập mật khẩu',
         'password.min' => 'Mật khẩu phải có ít nhất :min ký tự',
@@ -26,7 +25,7 @@ class Login extends Component
     public function login()
     {
         $this->validate([
-            'phone' => 'required|string|min:6|max:20',
+            'phone' => 'required|string|min:5|max:20',
             'password' => 'required|string|min:6',
         ]);
 
