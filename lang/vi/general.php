@@ -829,7 +829,7 @@ return [
     'note' => 'Lưu ý:',
     'you_may_force_create_warning' => 'Bạn vẫn có thể tạo lớp học, nhưng hãy cân nhắc kỹ để tránh xung đột lịch học.',
     'force_create_classroom' => 'Vẫn tạo lớp học',
-    
+
     // Chat related translations
     'no_users_found' => 'Không tìm thấy người dùng nào',
     'no_classes_found' => 'Không có lớp học nào',

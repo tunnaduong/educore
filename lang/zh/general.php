@@ -771,7 +771,7 @@ return [
     // Classroom create form translations
     'draft' => '草稿',
     'overlap_time' => '重叠时间',
-    
+
     // Chat related translations
     'no_users_found' => '未找到用户',
     'no_classes_found' => '未找到班级',

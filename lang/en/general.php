@@ -786,7 +786,7 @@ return [
     // Classroom create form translations
     'draft' => 'Draft',
     'overlap_time' => 'Overlap Time',
-    
+
     // Chat related translations
     'no_users_found' => 'No users found',
     'no_classes_found' => 'No classes found',
