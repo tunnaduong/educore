@@ -54,7 +54,7 @@
     </style>
     <div class="container py-4">
         <a href="{{ route('lessons.index') }}" class="text-decoration-none text-secondary d-inline-block mb-3">
-            <i class="bi bi-arrow-left mr-2"></i>Quay lại danh sách
+            <i class="bi bi-arrow-left mr-2"></i>{{ __('views.back_to_lessons_list') }}
         </a>
         <div class="card shadow-lg border-0">
             <div class="card-body p-4">
@@ -64,13 +64,13 @@
                             <i class="bi bi-journal-richtext mr-2"></i>{{ $lesson->title }}
                         </h3>
                         <div class="mb-2">
-                            <span class="badge bg-info mr-2"><i class="bi bi-hash"></i> Bài số:
+                            <span class="badge bg-info mr-2"><i class="bi bi-hash"></i> {{ __('general.lesson_number') }}:
                                 {{ $lesson->number }}</span>
                             <span class="badge bg-secondary"><i class="bi bi-calendar-event"></i>
                                 {{ $lesson->created_at?->format('d/m/Y H:i') }}</span>
                         </div>
                         <div class="mb-3">
-                            <strong class="text-muted">Mô tả:</strong>
+                            <strong class="text-muted">{{ __('general.description') }}:</strong>
                             <style>
                                 .description-content img {
                                     max-width: 100% !important;
@@ -78,47 +78,47 @@
                                 }
                             </style>
                             <div class="border rounded p-2 bg-light mt-1 description-content">
-                                {!! $lesson->description ?: 'Không có mô tả.' !!}
+                                {!! $lesson->description ?: __('general.no_description') !!}
                             </div>
                         </div>
                         @if ($lesson->content)
                             <div class="mb-3">
-                                <strong class="text-muted">Nội dung chi tiết:</strong>
+                                <strong class="text-muted">{{ __('views.detailed_content') }}:</strong>
                                 <div class="border rounded p-3 bg-white mt-1">{!! $lesson->content !!}</div>
                             </div>
                         @endif
                         <div class="d-flex gap-2 mt-4">
                             <a href="{{ route('lessons.edit', $lesson->id) }}" class="btn btn-warning"><i
-                                    class="bi bi-pencil mr-1"></i>Sửa</a>
+                                    class="bi bi-pencil mr-1"></i>{{ __('general.edit') }}</a>
                             <button type="button" class="btn btn-danger" wire:click="deleteLesson({{ $lesson->id }})"
-                                wire:confirm="Bạn có chắc chắn muốn xóa bài học '{{ $lesson->title }}' không?"><i
-                                    class="bi bi-trash mr-1"></i>Xóa</button>
+                                wire:confirm="{{ __('views.confirm_delete_lesson_simple', ['title' => $lesson->title]) }}"><i
+                                    class="bi bi-trash mr-1"></i>{{ __('general.delete') }}</button>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="mb-3">
-                            <strong class="text-muted">Video bài học:</strong><br>
+                            <strong class="text-muted">{{ __('views.lesson_video_label') }}:</strong><br>
                             @if ($lesson->video)
-                                <x-video-embed :url="$lesson->video" title="Video bài học" />
+                                <x-video-embed :url="$lesson->video" title="{{ __('views.lesson_video_label') }}" />
                             @else
-                                <span class="text-muted">Không có video</span>
+                                <span class="text-muted">{{ __('views.no_video') }}</span>
                             @endif
                         </div>
                         <div class="mb-3">
-                            <strong class="text-muted">Tài liệu/Slide:</strong><br>
+                            <strong class="text-muted">{{ __('views.documents_label') }}:</strong><br>
                             @if ($lesson->attachment)
                                 <a href="{{ asset('storage/' . $lesson->attachment) }}" target="_blank"
-                                    class="btn btn-outline-success mb-2"><i class="bi bi-download"></i> Tải tài liệu</a>
+                                    class="btn btn-outline-success mb-2"><i class="bi bi-download"></i> {{ __('views.download_document') }}</a>
                                 <button class="btn btn-outline-primary mb-2 ml-2" type="button"
                                     onclick="openPreviewModal()">
-                                    <i class="bi bi-eye"></i> Xem trước tài liệu
+                                    <i class="bi bi-eye"></i> {{ __('views.preview_document') }}
                                 </button>
                                 @php
                                     $ext = strtolower(pathinfo($lesson->attachment, PATHINFO_EXTENSION));
                                     $fileUrl = asset('storage/' . $lesson->attachment);
                                 @endphp
                             @else
-                                <span class="text-muted">Không có tài liệu</span>
+                                <span class="text-muted">{{ __('views.no_document') }}</span>
                             @endif
                         </div>
                     </div>
@@ -131,7 +131,7 @@
     <div id="previewModal" class="modal-custom">
         <div class="modal-content-custom">
             <div class="modal-header-custom">
-                <h5 class="modal-title">Xem trước tài liệu</h5>
+                <h5 class="modal-title">{{ __('general.preview_document_title') }}</h5>
                 <button type="button" class="close-custom" onclick="closePreviewModal()">&times;</button>
             </div>
             <div class="modal-body-custom">
@@ -146,8 +146,7 @@
                         <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={{ urlencode($fileUrl) }}"
                             width="100%" height="600px" frameborder="0"></iframe>
                     @else
-                        <div class="alert alert-info m-3">Không hỗ trợ xem trước loại tệp này. Vui lòng tải về để xem
-                            chi tiết.</div>
+                        <div class="alert alert-info m-3">{{ __('general.file_not_supported') }}</div>
                     @endif
                 @endif
             </div>

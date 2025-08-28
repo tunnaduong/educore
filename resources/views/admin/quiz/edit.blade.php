@@ -4,7 +4,7 @@
         <!-- Header -->
         <div class="mb-4">
             <a href="{{ route('quizzes.show', $quiz) }}" class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left mr-2"></i>Quay lại chi tiết bài kiểm tra
+                <i class="bi bi-arrow-left mr-2"></i>{{ __('views.back_to_quiz_detail') }}
             </a>
             <h4 class="mb-0 text-primary fs-4">
                 <i class="bi bi-pencil mr-2"></i>{{ __('general.edit_quiz') }}
@@ -19,31 +19,31 @@
                     <div class="card shadow-sm mb-4">
                         <div class="card-header bg-light">
                             <h6 class="mb-0">
-                                <i class="bi bi-info-circle mr-2"></i>Thông tin cơ bản
+                                <i class="bi bi-info-circle mr-2"></i>{{ __('views.basic_information') }}
                             </h6>
                         </div>
                         <div class="card-body">
                             <div class="mb-3">
-                                <label class="form-label">Tiêu đề bài kiểm tra <span
+                                <label class="form-label">{{ __('views.quiz_title_label') }} <span
                                         class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('title') is-invalid @enderror"
-                                    wire:model="title" placeholder="Nhập tiêu đề...">
+                                    wire:model="title" placeholder="{{ __('views.enter_title') }}">
                                 @error('title')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Mô tả</label>
+                                <label class="form-label">{{ __('general.description') }}</label>
                                 <textarea class="form-control @error('description') is-invalid @enderror" wire:model="description" rows="3"
-                                    placeholder="Mô tả bài kiểm tra..."></textarea>
+                                    placeholder="{{ __('views.quiz_description_placeholder') }}"></textarea>
                                 @error('description')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Lớp học <span class="text-danger">*</span></label>
+                                <label class="form-label">{{ __('general.classroom') }} <span class="text-danger">*</span></label>
                                 <select class="form-control @error('class_id') is-invalid @enderror"
                                     wire:model="class_id">
                                     <option value="">{{ __('general.choose_class') }}</option>
@@ -57,7 +57,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Hạn nộp</label>
+                                <label class="form-label">{{ __('general.deadline') }}</label>
                                 <input type="datetime-local"
                                     class="form-control @error('deadline') is-invalid @enderror" wire:model="deadline">
                                 @error('deadline')
@@ -66,12 +66,11 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Thời gian làm bài (phút)</label>
+                                <label class="form-label">{{ __('views.time_limit_minutes_label') }}</label>
                                 <input type="number" class="form-control @error('time_limit') is-invalid @enderror"
                                     wire:model="time_limit" min="1" max="480"
-                                    placeholder="Nhập thời gian làm bài (ví dụ: 30)">
-                                <small class="form-text text-muted">Để trống nếu không giới hạn thời gian. Tối đa 8 giờ
-                                    (480 phút)</small>
+                                    placeholder="{{ __('views.enter_time_limit_placeholder') }}">
+                                <small class="form-text text-muted">{{ __('views.time_limit_help') }}</small>
                                 @error('time_limit')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -197,13 +196,12 @@
                         </div>
                     </div>
 
-                    <!-- Danh sách câu hỏi đã thêm -->
+                    <!-- Added questions list -->
                     @if (count($questions) > 0)
                         <div class="card shadow-sm">
                             <div class="card-header bg-light">
                                 <h6 class="mb-0">
-                                    <i
-                                        class="bi bi-list-ul mr-2"></i>{{ __('general.question_list', ['count' => count($questions)]) }}
+                                    <i class="bi bi-list-ul mr-2"></i>{{ __('general.question_list', ['count' => count($questions)]) }}
                                 </h6>
                             </div>
                             <div class="card-body">
@@ -211,10 +209,10 @@
                                     <div class="border rounded p-3 mb-3">
                                         <div class="d-flex justify-content-between align-items-start mb-2">
                                             <div>
-                                                <span class="badge bg-primary mr-2">Câu {{ $index + 1 }}</span>
+                                                <span class="badge bg-primary mr-2">{{ __('views.question_number', ['number' => $index + 1]) }}</span>
                                                 <span
                                                     class="badge bg-secondary">{{ ucfirst($question['type']) }}</span>
-                                                <span class="badge bg-info">{{ $question['score'] ?? $question['points'] ?? 1 }} điểm</span>
+                                                <span class="badge bg-info">{{ $question['score'] ?? $question['points'] ?? 1 }} {{ __('views.points') }}</span>
                                             </div>
                                             <div class="btn-group btn-group-sm">
                                                 <button type="button" class="btn btn-outline-warning"
@@ -225,19 +223,19 @@
                                                 @if ($index > 0)
                                                     <button type="button" class="btn btn-outline-secondary"
                                                         wire:click="moveQuestionUp({{ $index }})"
-                                                        title="Di chuyển lên">
+                                                        title="{{ __('views.move_up') }}">
                                                         <i class="bi bi-arrow-up"></i>
                                                     </button>
                                                 @endif
                                                 @if ($index < count($questions) - 1)
                                                     <button type="button" class="btn btn-outline-secondary"
                                                         wire:click="moveQuestionDown({{ $index }})"
-                                                        title="Di chuyển xuống">
+                                                        title="{{ __('views.move_down') }}">
                                                         <i class="bi bi-arrow-down"></i>
                                                     </button>
                                                 @endif
                                                 <button type="button" class="btn btn-outline-danger"
-                                                    wire:click="removeQuestion({{ $index }})" title="Xóa">
+                                                    wire:click="removeQuestion({{ $index }})" title="{{ __('general.delete') }}">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </div>
@@ -245,7 +243,7 @@
                                         <div class="fw-medium">{{ $question['question'] }}</div>
                                         @if ($question['type'] === 'multiple_choice' && isset($question['options']))
                                             <div class="mt-2">
-                                                <small class="text-muted">Đáp án đúng:
+                                                <small class="text-muted">{{ __('general.correct_answer') }}:
                                                     <strong>{{ $question['correct_answer'] }}</strong></small>
                                             </div>
                                         @endif
@@ -263,11 +261,11 @@
                     <div class="card shadow-sm">
                         <div class="card-body text-end">
                             <a href="{{ route('quizzes.show', $quiz) }}" class="btn btn-secondary mr-2">
-                                <i class="bi bi-x-circle mr-2"></i>Hủy
+                                <i class="bi bi-x-circle mr-2"></i>{{ __('general.cancel') }}
                             </a>
                             <button type="submit" class="btn btn-primary"
                                 @if (count($questions) === 0) disabled @endif>
-                                <i class="bi bi-check-circle mr-2"></i>Cập nhật bài kiểm tra
+                                <i class="bi bi-check-circle mr-2"></i>{{ __('views.update_quiz') }}
                             </button>
                         </div>
                     </div>
