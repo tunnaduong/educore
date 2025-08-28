@@ -147,7 +147,7 @@ return [
     'to' => '到',
     'in' => '在',
     'results' => '结果',
-    
+
     // Question Bank Generator (QBG)
     'qbg' => [
         'ai_processing' => 'AI正在处理...',

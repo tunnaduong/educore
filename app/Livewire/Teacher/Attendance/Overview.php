@@ -130,7 +130,8 @@ class Overview extends Component
     public function getMonthName($month)
     {
         $month = (int) $month;
-        return __('general.month') . ' ' . $month;
+
+        return __('general.month').' '.$month;
     }
 
     public function render()
