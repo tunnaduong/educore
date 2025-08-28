@@ -71,20 +71,13 @@
                         </div>
                         <div class="mb-3">
                             <strong class="text-muted">Mô tả:</strong>
-                            <style>
-                                .description-content img {
-                                    max-width: 100% !important;
-                                    height: auto !important;
-                                }
-                            </style>
-                            <div class="border rounded p-2 bg-light mt-1 description-content">
-                                {!! $lesson->description ?: 'Không có mô tả.' !!}
-                            </div>
+                            <div class="border rounded p-2 bg-light mt-1">
+                                {{ $lesson->description ?: 'Không có mô tả.' }}</div>
                         </div>
                         @if ($lesson->content)
                             <div class="mb-3">
                                 <strong class="text-muted">Nội dung chi tiết:</strong>
-                                <div class="border rounded p-3 bg-white mt-1">{!! $lesson->content !!}</div>
+                                <div class="border rounded p-3 bg-white mt-1">{!! nl2br(e($lesson->content)) !!}</div>
                             </div>
                         @endif
                         <div class="d-flex gap-2 mt-4">
@@ -109,7 +102,7 @@
                             @if ($lesson->attachment)
                                 <a href="{{ asset('storage/' . $lesson->attachment) }}" target="_blank"
                                     class="btn btn-outline-success mb-2"><i class="bi bi-download"></i> Tải tài liệu</a>
-                                <button class="btn btn-outline-primary mb-2 ml-2" type="button"
+                                <button class="btn btn-outline-primary mb-2 ms-2" type="button"
                                     onclick="openPreviewModal()">
                                     <i class="bi bi-eye"></i> Xem trước tài liệu
                                 </button>

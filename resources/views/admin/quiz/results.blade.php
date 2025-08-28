@@ -164,7 +164,7 @@
                     </div>
 
                     <!-- Pagination -->
-                    <div>
+                    <div class="d-flex justify-content-center mt-4">
                         {{ $results->links('vendor.pagination.bootstrap-5') }}
                     </div>
                 @else
@@ -228,12 +228,19 @@
                         <h6 class="mb-3">Chi tiết từng câu hỏi:</h6>
                         @foreach ($quiz->questions as $index => $question)
                             @php
-                                $answers = $selectedResult->getAnswersArray();
-                                $answer = $answers[$index] ?? null;
+                                $answer = $selectedResult->answers[$index] ?? null;
                                 $isCorrect = false;
 
                                 if ($question['type'] === 'multiple_choice') {
                                     $isCorrect = $answer === $question['correct_answer'];
+                                } elseif ($question['type'] === 'fill_blank') {
+                                    $correctAnswers = is_array($question['correct_answer'])
+                                        ? $question['correct_answer']
+                                        : [$question['correct_answer']];
+                                    $isCorrect = in_array(
+                                        strtolower(trim($answer)),
+                                        array_map('strtolower', $correctAnswers),
+                                    );
                                 }
                             @endphp
 

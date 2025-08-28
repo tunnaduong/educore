@@ -169,7 +169,6 @@
                                                                 'active' => 'success',
                                                                 'paused' => 'warning',
                                                                 'dropped' => 'danger',
-                                                                'new' => 'info',
                                                             ];
                                                             $statusLabels = [
                                                                 'active' => __('general.student_status_active'),

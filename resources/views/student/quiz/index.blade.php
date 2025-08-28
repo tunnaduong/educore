@@ -156,7 +156,7 @@
                         </table>
                     </div>
                     <!-- Pagination -->
-                    <div>
+                    <div class="d-flex justify-content-center mt-4">
                         @if ($totalQuizzes > $perPage)
                             <nav aria-label="Quiz pagination">
                                 <ul class="pagination">

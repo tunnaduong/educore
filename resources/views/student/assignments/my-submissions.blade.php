@@ -194,7 +194,7 @@
                         </table>
                     </div>
                     <!-- Pagination -->
-                    <div>
+                    <div class="d-flex justify-content-center mt-4">
                         {{ $submissions->links('vendor.pagination.bootstrap-5') }}
                     </div>
                 @else

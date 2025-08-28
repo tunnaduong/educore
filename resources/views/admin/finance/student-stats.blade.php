@@ -79,7 +79,7 @@
                             <td class="text-center fw-bold text-primary">{{ $student['id'] }}</td>
                             <td>
                                 <div class="d-flex align-items-center" style="gap: 10px">
-                                    <div class="bg-primary bg-opacity-10 rounded-circle p-2 mr-3 d-flex align-items-center justify-content-center"
+                                    <div class="bg-primary bg-opacity-10 rounded-circle p-2 me-3 d-flex align-items-center justify-content-center"
                                         style="width: 40px">
                                         <i class="bi bi-person-fill text-white"></i>
                                     </div>
@@ -91,7 +91,7 @@
                             </td>
                             <td>
                                 @foreach ($student['classes'] as $class)
-                                    <span class="badge bg-light text-dark border mr-1 mb-1">
+                                    <span class="badge bg-light text-dark border me-1 mb-1">
                                         <i class="bi bi-building-fill mr-1"></i>{{ $class['class_name'] }}
                                     </span>
                                 @endforeach

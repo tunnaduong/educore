@@ -1,104 +1,5 @@
 <x-layouts.dash-admin active="lessons">
     @include('components.language')
-
-    @push('styles')
-        <style>
-            .cke_notifications_area {
-                display: none;
-            }
-        </style>
-    @endpush
-
-    @push('scripts')
-        <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
-        <script>
-            let editor = null;
-
-            function initCKEditor() {
-                if (typeof CKEDITOR !== 'undefined' && !editor) {
-                    editor = CKEDITOR.replace('description', {
-                        height: 200,
-                        removePlugins: 'elementspath,resize',
-                        toolbar: [{
-                                name: 'document',
-                                items: ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-',
-                                    'Templates'
-                                ]
-                            },
-                            {
-                                name: 'clipboard',
-                                items: ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo',
-                                    'Redo'
-                                ]
-                            },
-                            {
-                                name: 'editing',
-                                items: ['Find', 'Replace', '-', 'SelectAll', '-', 'SpellChecker', 'Scayt']
-                            },
-                            '/',
-                            {
-                                name: 'basicstyles',
-                                items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript',
-                                    '-', 'RemoveFormat'
-                                ]
-                            },
-                            {
-                                name: 'paragraph',
-                                items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-',
-                                    'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter',
-                                    'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl'
-                                ]
-                            },
-                            {
-                                name: 'links',
-                                items: ['Link', 'Unlink', 'Anchor']
-                            },
-                            {
-                                name: 'insert',
-                                items: ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley',
-                                    'SpecialChar', 'PageBreak', 'Iframe'
-                                ]
-                            },
-                            '/',
-                            {
-                                name: 'styles',
-                                items: ['Styles', 'Format', 'Font', 'FontSize']
-                            },
-                            {
-                                name: 'colors',
-                                items: ['TextColor', 'BGColor']
-                            },
-                            {
-                                name: 'tools',
-                                items: ['Maximize', 'ShowBlocks']
-                            }
-                        ]
-                    });
-
-                    // Đồng bộ dữ liệu từ CKEditor về Livewire
-                    editor.on('change', function() {
-                        @this.set('description', editor.getData());
-                    });
-                }
-            }
-
-            $(document).ready(function() {
-                initCKEditor();
-            });
-
-            // Khôi phục CKEditor sau khi Livewire reload
-            document.addEventListener('livewire:load', function() {
-                initCKEditor();
-            });
-
-            document.addEventListener('livewire:update', function() {
-                setTimeout(function() {
-                    initCKEditor();
-                }, 100);
-            });
-        </script>
-    @endpush
-
     <div class="container-fluid">
         <div class="mb-4">
             <a href="{{ route('lessons.index') }}" class="text-decoration-none text-secondary d-inline-block mb-3">
@@ -150,10 +51,8 @@
                             </div>
                             <div class="mb-3">
                                 <label for="description" class="form-label">Mô tả</label>
-                                <div wire:ignore>
-                                    <textarea wire:model="description" class="form-control @error('description') is-invalid @enderror" id="description"
-                                        rows="3" placeholder="Nhập mô tả về bài học..."></textarea>
-                                </div>
+                                <textarea wire:model="description" class="form-control @error('description') is-invalid @enderror" id="description"
+                                    rows="3" placeholder="Nhập mô tả về bài học..."></textarea>
                                 @error('description')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

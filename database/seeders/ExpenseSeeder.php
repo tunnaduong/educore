@@ -2,9 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Classroom;
 use App\Models\Expense;
-use App\Models\User;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 
@@ -16,14 +14,6 @@ class ExpenseSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create('vi_VN');
-
-        // Lấy tất cả nhân viên và lớp học
-        $staff = User::where('role', 'teacher')->get();
-        $classrooms = Classroom::all();
-
-        if ($staff->isEmpty()) {
-            return;
-        }
 
         // Danh sách loại chi phí
         $expenseTypes = [
@@ -101,8 +91,6 @@ class ExpenseSeeder extends Seeder
         $expenseCount = rand(15, 20);
 
         for ($i = 0; $i < $expenseCount; $i++) {
-            $staffMember = $staff->random();
-            $classroom = $classrooms->isNotEmpty() ? $classrooms->random() : null;
             $expenseType = $faker->randomElement(array_keys($expenseTypes));
             $description = $faker->randomElement($expenseDescriptions[$expenseType]);
 
@@ -110,15 +98,14 @@ class ExpenseSeeder extends Seeder
             $amount = $this->generateAmount($expenseType);
 
             // Tạo ngày chi phí
-            $spentAt = $faker->dateTimeBetween('-6 months', 'now');
+            $expenseDate = $faker->dateTimeBetween('-6 months', 'now');
 
             Expense::create([
-                'staff_id' => $staffMember->id,
-                'class_id' => $classroom ? $classroom->id : null,
-                'amount' => $amount,
                 'type' => $expenseType,
-                'note' => $description.($faker->optional(0.6)->sentence() ? ' - '.$faker->sentence() : ''),
-                'spent_at' => $spentAt,
+                'amount' => $amount,
+                'description' => $description,
+                'expense_date' => $expenseDate,
+                'notes' => $faker->optional(0.6)->sentence(), // 60% có ghi chú
             ]);
         }
     }

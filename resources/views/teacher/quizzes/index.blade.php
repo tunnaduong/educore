@@ -1,17 +1,18 @@
 <x-layouts.dash-teacher active="quizzes">
     @include('components.language')
+    
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-patch-question mr-2"></i>Quản lý bài kiểm tra
+                        <i class="bi bi-patch-question mr-2"></i>{{ __('general.manage_quizzes') }}
                     </h4>
-                    <p class="text-muted mb-0">Danh sách bài kiểm tra của các lớp bạn đang dạy</p>
+                    <p class="text-muted mb-0">{{ __('general.list_quizzes_for_your_classes') }}</p>
                 </div>
                 <a href="{{ route('teacher.quizzes.create') }}" class="btn btn-primary">
-                    <i class="bi bi-plus-circle mr-2"></i>Tạo bài kiểm tra mới
+                    <i class="bi bi-plus-circle mr-2"></i>{{ __('general.create_new_quiz') }}
                 </a>
             </div>
         </div>
@@ -21,30 +22,30 @@
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <label class="form-label">Tìm kiếm</label>
+                        <label class="form-label">{{ __('general.search') }}</label>
                         <input type="text" class="form-control" wire:model.live="search"
-                            placeholder="Tìm theo tên hoặc mô tả...">
+                            placeholder="{{ __('general.search_by_title_or_description') }}">
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label">Lớp học</label>
+                        <label class="form-label">{{ __('general.classroom') }}</label>
                         <select class="form-control" wire:model.live="filterClass">
-                            <option value="">Tất cả lớp</option>
+                            <option value="">{{ __('general.all_classes') }}</option>
                             @foreach ($classrooms as $classroom)
                                 <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label">Trạng thái</label>
+                        <label class="form-label">{{ __('general.status') }}</label>
                         <select class="form-control" wire:model.live="filterStatus">
-                            <option value="">Tất cả</option>
-                            <option value="active">Còn hạn</option>
-                            <option value="expired">Hết hạn</option>
+                            <option value="">{{ __('general.all') }}</option>
+                            <option value="active">{{ __('general.active') }}</option>
+                            <option value="expired">{{ __('general.expired') }}</option>
                         </select>
                     </div>
                     <div class="col-md-2 d-flex align-items-end">
                         <button class="btn btn-outline-secondary w-100" wire:click="$set('search', '')">
-                            <i class="bi bi-arrow-clockwise mr-2"></i>Reset
+                            <i class="bi bi-arrow-clockwise mr-2"></i>{{ __('general.reset') }}
                         </button>
                     </div>
                 </div>
@@ -55,7 +56,7 @@
         <div class="card shadow-sm">
             <div class="card-header bg-light">
                 <h6 class="mb-0">
-                    <i class="bi bi-list-ul mr-2"></i>Danh sách bài kiểm tra
+                    <i class="bi bi-list-ul mr-2"></i>{{ __('general.quiz_list') }}
                 </h6>
             </div>
             <div class="card-body">
@@ -64,14 +65,14 @@
                         <table class="table table-hover">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Tiêu đề</th>
-                                    <th>Lớp học</th>
-                                    <th>Số câu hỏi</th>
-                                    <th>Thời gian làm bài</th>
-                                    <th>Hạn nộp</th>
-                                    <th>Trạng thái</th>
-                                    <th>Ngày tạo</th>
-                                    <th>Thao tác</th>
+                                    <th>{{ __('general.title') }}</th>
+                                    <th>{{ __('general.classroom') }}</th>
+                                    <th>{{ __('general.question_count') }}</th>
+                                    <th>{{ __('general.time_limit') }}</th>
+                                    <th>{{ __('general.deadline') }}</th>
+                                    <th>{{ __('general.status') }}</th>
+                                    <th>{{ __('general.created_date') }}</th>
+                                    <th>{{ __('general.actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -85,7 +86,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <span class="badge bg-info">{{ $quiz->classroom->name ?? 'N/A' }}</span>
+                                            <span class="badge bg-info">{{ $quiz->classroom->name ?? __('general.not_available') }}</span>
                                         </td>
                                         <td>
                                             <span class="badge bg-secondary">{{ $quiz->getQuestionCount() }}</span>
@@ -93,9 +94,9 @@
                                         <td>
                                             @if ($quiz->time_limit)
                                                 <span class="badge bg-warning text-dark">{{ $quiz->time_limit }}
-                                                    phút</span>
+                                                    {{ __('general.minutes') }}</span>
                                             @else
-                                                <span class="text-muted">Không giới hạn</span>
+                                                <span class="text-muted">{{ __('general.no_limit') }}</span>
                                             @endif
                                         </td>
                                         <td>
@@ -103,14 +104,14 @@
                                                 <div class="fw-medium">{{ $quiz->deadline->format('d/m/Y H:i') }}</div>
                                                 <small class="text-muted">{{ $quiz->deadline->diffForHumans() }}</small>
                                             @else
-                                                <span class="text-muted">Không có hạn</span>
+                                                <span class="text-muted">{{ __('general.no_deadline') }}</span>
                                             @endif
                                         </td>
                                         <td>
                                             @if ($quiz->isExpired())
-                                                <span class="badge bg-danger">Hết hạn</span>
+                                                <span class="badge bg-danger">{{ __('general.expired') }}</span>
                                             @else
-                                                <span class="badge bg-success">Còn hạn</span>
+                                                <span class="badge bg-success">{{ __('general.active') }}</span>
                                             @endif
                                         </td>
                                         <td>
@@ -120,20 +121,20 @@
                                         <td>
                                             <div class="btn-group" role="group">
                                                 <a href="{{ route('teacher.quizzes.show', $quiz) }}"
-                                                    class="btn btn-sm btn-outline-primary" title="Xem chi tiết">
+                                                    class="btn btn-sm btn-outline-primary" title="{{ __('general.view_details') }}">
                                                     <i class="bi bi-eye"></i>
                                                 </a>
                                                 <a href="{{ route('teacher.quizzes.edit', $quiz) }}"
-                                                    class="btn btn-sm btn-outline-warning" title="Sửa">
+                                                    class="btn btn-sm btn-outline-warning" title="{{ __('general.edit') }}">
                                                     <i class="bi bi-pencil"></i>
                                                 </a>
                                                 <a href="{{ route('teacher.quizzes.show', $quiz) }}"
-                                                    class="btn btn-sm btn-outline-info" title="Xem kết quả">
+                                                    class="btn btn-sm btn-outline-info" title="{{ __('general.view_results') }}">
                                                     <i class="bi bi-graph-up"></i>
                                                 </a>
                                                 <button type="button" class="btn btn-sm btn-outline-danger"
-                                                    title="Xóa" wire:click="deleteQuiz({{ $quiz->id }})"
-                                                    wire:confirm="Bạn có chắc chắn muốn xóa bài kiểm tra '{{ $quiz->title }}'? Hành động này không thể hoàn tác.">
+                                                    title="{{ __('general.delete') }}" wire:click="deleteQuiz({{ $quiz->id }})"
+                                                    wire:confirm="{{ __('general.confirm_delete_quiz') }} '{{ $quiz->title }}'? {{ __('general.action_irreversible') }}">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </div>
@@ -145,16 +146,16 @@
                     </div>
 
                     <!-- Pagination -->
-                    <div>
+                    <div class="d-flex justify-content-center mt-4">
                         {{ $quizzes->links('vendor.pagination.bootstrap-5') }}
                     </div>
                 @else
                     <div class="text-center py-5">
                         <i class="bi bi-journal-x fs-1 text-muted mb-3"></i>
-                        <h5 class="text-muted">Không có bài kiểm tra nào</h5>
-                        <p class="text-muted">Hãy tạo bài kiểm tra đầu tiên để bắt đầu.</p>
+                        <h5 class="text-muted">{{ __('general.no_quizzes_yet') }}</h5>
+                        <p class="text-muted">{{ __('general.create_first_quiz') }}</p>
                         <a href="{{ route('teacher.quizzes.create') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle mr-2"></i>Tạo bài kiểm tra
+                            <i class="bi bi-plus-circle mr-2"></i>{{ __('general.create_quiz') }}
                         </a>
                     </div>
                 @endif

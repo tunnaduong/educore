@@ -1,5 +1,6 @@
 <x-layouts.dash-teacher active="assignments">
     @include('components.language')
+    
     <div class="container py-4">
         <!-- Header -->
         <div class="mb-4">
@@ -24,16 +25,16 @@
                             <label for="title" class="form-label fw-semibold">{{ __('general.title') }} *</label>
                             <input wire:model.defer="title" type="text"
                                 class="form-control @error('title') is-invalid @enderror" id="title"
-                                placeholder="VD: Bài luyện viết Hán tự - Bài 3">
+                                placeholder="{{ __('general.assignment_title_example') }}">
                             @error('title')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="col-md-4">
-                            <label for="class_id" class="form-label fw-semibold">Lớp học *</label>
+                            <label for="class_id" class="form-label fw-semibold">{{ __('general.classroom') }} *</label>
                             <select wire:model.defer="class_id"
                                 class="form-control @error('class_id') is-invalid @enderror" id="class_id">
-                                <option value="">Chọn lớp</option>
+                                <option value="">{{ __('general.select_class') }}</option>
                                 @foreach ($classrooms as $class)
                                     <option value="{{ $class->id }}">{{ $class->name }} ({{ $class->level }})
                                     </option>
@@ -48,7 +49,7 @@
                     <!-- Hạn nộp & điểm -->
                     <div class="row mb-4">
                         <div class="col-md-6">
-                            <label for="deadline" class="form-label fw-semibold">Hạn nộp *</label>
+                            <label for="deadline" class="form-label fw-semibold">{{ __('general.deadline') }} *</label>
                             <input wire:model.defer="deadline" type="datetime-local"
                                 class="form-control @error('deadline') is-invalid @enderror" id="deadline">
                             @error('deadline')
@@ -56,9 +57,9 @@
                             @enderror
                         </div>
                         <div class="col-md-6">
-                            <label for="max_score" class="form-label fw-semibold">Điểm tối đa (tuỳ chọn)</label>
+                            <label for="max_score" class="form-label fw-semibold">{{ __('general.max_score_optional') }}</label>
                             <input wire:model.defer="max_score" type="number" class="form-control" id="max_score"
-                                placeholder="VD: 10" min="0" max="10" step="0.1"
+                                placeholder="{{ __('general.eg_10') }}" min="0" max="10" step="0.1"
                                 oninput="if(this.value > 10) this.value = 10; if(this.value < 0) this.value = 0;"
                                 onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 46 || event.charCode === 8 || event.charCode === 9">
                         </div>
@@ -72,8 +73,15 @@
                                 <div class="form-check">
                                     <input wire:model.defer="types" class="form-check-input" type="checkbox"
                                         value="{{ $key }}" id="type_{{ $key }}">
-                                    <label class="form-check-label"
-                                        for="type_{{ $key }}">{{ $label }}</label>
+                                    <label class="form-check-label" for="type_{{ $key }}">{{ match($key) {
+                                        'text' => __('general.text'),
+                                        'essay' => __('general.essay'),
+                                        'image' => __('general.image'),
+                                        'audio' => __('general.audio'),
+                                        'video' => __('general.video'),
+                                        'file' => __('general.file'),
+                                        default => $label,
+                                    } }}</label>
                                 </div>
                             @endforeach
                         </div>
@@ -85,12 +93,12 @@
                     <!-- File & mô tả -->
                     <div class="row mb-4">
                         <div class="col-md-6">
-                            <label for="attachment" class="form-label">Tệp đính kèm</label>
+                            <label for="attachment" class="form-label">{{ __('general.attachment') }}</label>
                             @if ($old_attachment_path)
                                 <div class="small text-success mt-1">
                                     <a href="{{ asset('storage/' . $old_attachment_path) }}" target="_blank"
                                         class="btn btn-sm btn-outline-success">
-                                        <i class="bi bi-file-earmark-arrow-down"></i> File hiện tại
+                                        <i class="bi bi-file-earmark-arrow-down"></i> {{ __('general.current_file') }}
                                     </a>
                                 </div>
                             @endif
@@ -105,12 +113,12 @@
                             @enderror
                         </div>
                         <div class="col-md-6">
-                            <label for="video" class="form-label">Video (tối đa 100MB)</label>
+                            <label for="video" class="form-label">{{ __('general.video_max_100mb') }}</label>
                             @if ($old_video_path)
                                 <div class="small text-success mt-1">
                                     <video width="240" height="135" controls>
                                         <source src="{{ asset('storage/' . $old_video_path) }}" type="video/mp4">
-                                        Trình duyệt không hỗ trợ video.
+                                        {{ __('general.browser_not_support') }}
                                     </video>
                                 </div>
                             @endif
@@ -127,9 +135,9 @@
 
                     <!-- Mô tả -->
                     <div class="mb-4">
-                        <label for="description" class="form-label">Hướng dẫn / mô tả bài tập</label>
+                        <label for="description" class="form-label">{{ __('general.instructions_or_description') }}</label>
                         <textarea wire:model.defer="description" rows="4" class="form-control @error('description') is-invalid @enderror"
-                            id="description" placeholder="VD: Viết 10 câu sử dụng từ vựng của bài 3, ghi âm phần đọc...">{{ $description }}</textarea>
+                            id="description" placeholder="{{ __('general.assignment_description_example') }}">{{ $description }}</textarea>
                         @error('description')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -137,9 +145,9 @@
 
                     <!-- Buttons -->
                     <div class="d-flex justify-content-end gap-2">
-                        <a href="{{ route('teacher.assignments.index') }}" class="btn btn-outline-secondary">Hủy</a>
+                        <a href="{{ route('teacher.assignments.index') }}" class="btn btn-outline-secondary">{{ __('general.cancel') }}</a>
                         <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-send mr-1"></i> Cập nhật
+                            <i class="bi bi-send mr-1"></i> {{ __('general.update') }}
                         </button>
                     </div>
                 </form>

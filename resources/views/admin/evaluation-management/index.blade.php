@@ -6,7 +6,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-bar-chart-line mr-2"></i>Quản lý đánh giá chất lượng học viên
+                        <i class="bi bi-bar-chart-line me-2"></i>Quản lý đánh giá chất lượng học viên
                     </h4>
                     <p class="text-muted mb-0">Xem đánh giá và quản lý câu hỏi đánh giá</p>
                 </div>
@@ -16,14 +16,14 @@
         <!-- Alerts on top -->
         @if (session()->has('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle mr-2"></i>
+                <i class="bi bi-check-circle me-2"></i>
                 {{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif
         @if (session()->has('error'))
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-triangle mr-2"></i>
+                <i class="bi bi-exclamation-triangle me-2"></i>
                 {{ session('error') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
@@ -35,19 +35,19 @@
                 <button class="nav-link {{ $activeTab === 'evaluations' ? 'active' : '' }}"
                     wire:click="$set('activeTab', 'evaluations')" type="button" role="tab"
                     style="cursor: pointer;">
-                    <i class="bi bi-list-check mr-2"></i> Danh sách đánh giá
+                    <i class="bi bi-list-check me-2"></i> Danh sách đánh giá
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link {{ $activeTab === 'questions' ? 'active' : '' }}"
                     wire:click="$set('activeTab', 'questions')" type="button" role="tab" style="cursor: pointer;">
-                    <i class="bi bi-question-circle mr-2"></i> Quản lý câu hỏi
+                    <i class="bi bi-question-circle me-2"></i> Quản lý câu hỏi
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link {{ $activeTab === 'rounds' ? 'active' : '' }}"
                     wire:click="$set('activeTab', 'rounds')" type="button" role="tab" style="cursor: pointer;">
-                    <i class="bi bi-calendar-event mr-2"></i> Quản lý đợt đánh giá
+                    <i class="bi bi-calendar-event me-2"></i> Quản lý đợt đánh giá
                 </button>
             </li>
         </ul>
@@ -59,7 +59,7 @@
                 <!-- Hướng dẫn tính điểm -->
                 <div class="alert mb-4" style="background-color: #17a2b8; color: white; border: none;">
                     <h6 class="alert-heading fw-bold" style="color: white;">
-                        <i class="bi bi-info-circle mr-2"></i>Hướng dẫn tính điểm:
+                        <i class="bi bi-info-circle me-2"></i>Hướng dẫn tính điểm:
                     </h6>
                     <div style="color: white;">
                         <div class="mb-2">
@@ -213,7 +213,7 @@
                                             <tr>
                                                 <td>
                                                     <div class="d-flex align-items-center gap-2">
-                                                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center mr-2"
+                                                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-2"
                                                             style="width: 40px; height: 40px;">
                                                             <span
                                                                 class="text-white fw-bold">{{ substr($evaluation->student->user->name ?? 'N/A', 0, 1) }}</span>
@@ -230,7 +230,7 @@
                                                     @if ($evaluation->student->user->enrolledClassrooms->count() > 0)
                                                         @foreach ($evaluation->student->user->enrolledClassrooms as $classroom)
                                                             <span
-                                                                class="badge bg-info mr-1">{{ $classroom->name }}</span>
+                                                                class="badge bg-info me-1">{{ $classroom->name }}</span>
                                                         @endforeach
                                                     @else
                                                         <span class="text-muted">Chưa phân lớp</span>
@@ -319,7 +319,7 @@
                         <div class="d-flex justify-content-end mb-3">
                             <button class="btn btn-primary" wire:click="showAddQuestionModal"
                                 data-bs-toggle="tooltip" data-bs-placement="top" title="Thêm câu hỏi mới">
-                                <i class="bi bi-plus-circle mr-2"></i>Thêm câu hỏi
+                                <i class="bi bi-plus-circle me-2"></i>Thêm câu hỏi
                             </button>
                         </div>
                         @if ($questions->count() > 0)
@@ -407,7 +407,7 @@
                                 <p class="text-muted">Hãy thêm câu hỏi đánh giá để học viên có thể đánh giá chất lượng
                                     học tập.</p>
                                 <button class="btn btn-primary" wire:click="showAddQuestionModal">
-                                    <i class="bi bi-plus-circle mr-2"></i>Thêm câu hỏi đầu tiên
+                                    <i class="bi bi-plus-circle me-2"></i>Thêm câu hỏi đầu tiên
                                 </button>
                             </div>
                         @endif
@@ -425,7 +425,7 @@
                         <div class="d-flex justify-content-end mb-3">
                             <button class="btn btn-primary" wire:click="showAddRoundModal" data-bs-toggle="tooltip"
                                 data-bs-placement="top" title="Thêm đợt đánh giá mới">
-                                <i class="bi bi-plus-circle mr-2"></i>Thêm đợt đánh giá
+                                <i class="bi bi-plus-circle me-2"></i>Thêm đợt đánh giá
                             </button>
                         </div>
                         @if ($evaluationRounds->count() > 0)
@@ -521,7 +521,7 @@
                                 <h5 class="text-muted">Chưa có đợt đánh giá nào</h5>
                                 <p class="text-muted">Hãy tạo đợt đánh giá để học viên có thể thực hiện đánh giá.</p>
                                 <button class="btn btn-primary" wire:click="showAddRoundModal">
-                                    <i class="bi bi-plus-circle mr-2"></i>Tạo đợt đánh giá đầu tiên
+                                    <i class="bi bi-plus-circle me-2"></i>Tạo đợt đánh giá đầu tiên
                                 </button>
                             </div>
                         @endif
@@ -538,7 +538,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title text-primary fw-bold fs-4">
-                                <i class="bi bi-star-fill text-warning mr-2"></i>
+                                <i class="bi bi-star-fill text-warning me-2"></i>
                                 Chi tiết đánh giá của {{ $selectedEvaluation->student->user->name ?? 'Học viên' }}
                             </h5>
                             <button type="button" class="btn-close" wire:click="closeEvaluationDetail">
@@ -610,7 +610,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">
-                                <i class="bi bi-question-circle mr-2"></i>
+                                <i class="bi bi-question-circle me-2"></i>
                                 {{ $editingQuestion ? 'Sửa câu hỏi' : 'Thêm câu hỏi mới' }}
                             </h5>
                             <button type="button" class="btn-close" wire:click="closeQuestionModal">
@@ -664,7 +664,7 @@
                                     Hủy
                                 </button>
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="bi bi-check-circle mr-2"></i>
+                                    <i class="bi bi-check-circle me-2"></i>
                                     {{ $editingQuestion ? 'Cập nhật' : 'Thêm mới' }}
                                 </button>
                             </div>
@@ -682,7 +682,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">
-                                <i class="bi bi-calendar-event mr-2"></i>
+                                <i class="bi bi-calendar-event me-2"></i>
                                 {{ $editingRound ? 'Sửa đợt đánh giá' : 'Thêm đợt đánh giá mới' }}
                             </h5>
                             <button type="button" class="btn-close" wire:click="closeRoundModal">
@@ -693,7 +693,7 @@
                             <div class="modal-body">
                                 @if (session()->has('error'))
                                     <div class="alert alert-danger d-flex align-items-center" role="alert">
-                                        <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
                                         <div>{{ session('error') }}</div>
                                     </div>
                                 @endif
@@ -753,7 +753,7 @@
                                     Hủy
                                 </button>
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="bi bi-check-circle mr-2"></i>
+                                    <i class="bi bi-check-circle me-2"></i>
                                     {{ $editingRound ? 'Cập nhật' : 'Thêm mới' }}
                                 </button>
                             </div>
@@ -767,7 +767,7 @@
     @if (session()->has('success'))
         <div class="position-fixed top-0 end-0 p-3" style="z-index: 1060;">
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle mr-2"></i>
+                <i class="bi bi-check-circle me-2"></i>
                 {{ session('success') }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -779,7 +779,7 @@
     @if (session()->has('error'))
         <div class="position-fixed top-0 end-0 p-3" style="z-index: 1060;">
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-triangle mr-2"></i>
+                <i class="bi bi-exclamation-triangle me-2"></i>
                 {{ session('error') }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>

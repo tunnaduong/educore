@@ -5,7 +5,6 @@ namespace App\Livewire\Admin\Chat;
 use App\Models\Classroom;
 use App\Models\Message;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -44,7 +43,7 @@ class Index extends Component
 
     public function mount()
     {
-        $this->unreadCount = Message::unread(Auth::id())->count();
+        $this->unreadCount = Message::unread(auth()->id())->count();
         $this->allUsers = User::all();
     }
 
@@ -63,7 +62,7 @@ class Index extends Component
         Log::info('[Chat Debug] selectClass: Chọn lớp', [
             'class_id' => $classId,
             'selectedClass' => $this->selectedClass ? $this->selectedClass->toArray() : null,
-            'current_user_id' => Auth::id(),
+            'current_user_id' => auth()->id(),
         ]);
         $this->selectedUser = null;
         $this->messageType = 'class';
@@ -74,7 +73,7 @@ class Index extends Component
         if ($lastMsg) {
             \App\Models\ClassroomMessageRead::updateOrCreate(
                 [
-                    'user_id' => Auth::id(),
+                    'user_id' => auth()->id(),
                     'class_id' => $classId,
                 ],
                 [
@@ -92,50 +91,13 @@ class Index extends Component
 
     public function sendMessage()
     {
-        // Kiểm tra file trước khi validate
-        if ($this->attachment) {
-            try {
-                // Kiểm tra file có hợp lệ không
-                if (! $this->attachment->isValid()) {
-                    $this->addError('attachment', 'File không hợp lệ hoặc bị hỏng.');
-
-                    return;
-                }
-
-                // Kiểm tra kích thước
-                if ($this->attachment->getSize() > 102400 * 1024) { // 100MB
-                    $this->addError('attachment', 'File quá lớn. Kích thước tối đa là 100MB.');
-
-                    return;
-                }
-
-                // Kiểm tra MIME type
-                $allowedMimes = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'zip', 'rar', '7z', 'mp3', 'm4a', 'wav', 'ogg', 'oga', 'flac', 'amr', 'webm', 'mp4'];
-                $fileExtension = strtolower($this->attachment->getClientOriginalExtension());
-                if (! in_array($fileExtension, $allowedMimes)) {
-                    $this->addError('attachment', 'Định dạng file không được hỗ trợ.');
-
-                    return;
-                }
-            } catch (\Exception $e) {
-                $this->addError('attachment', 'Không thể xử lý file: '.$e->getMessage());
-
-                return;
-            }
-        }
-
         $this->validate([
-            'messageText' => 'nullable|string|max:1000',
+            'messageText' => 'required|string|max:1000',
+            'attachment' => 'nullable|file|max:10240', // 10MB max
         ]);
 
-        if ((trim($this->messageText) === '' || $this->messageText === null) && ! $this->attachment) {
-            $this->addError('messageText', 'Vui lòng nhập nội dung hoặc chọn tệp đính kèm.');
-
-            return;
-        }
-
         $messageData = [
-            'sender_id' => Auth::id(),
+            'sender_id' => auth()->id(),
             'message' => $this->messageText,
         ];
 
@@ -146,83 +108,29 @@ class Index extends Component
         }
 
         if ($this->attachment) {
-            try {
-                Log::info('Uploading attachment', [
-                    'original_name' => $this->attachment->getClientOriginalName(),
-                    'size' => $this->attachment->getSize(),
-                    'mime_type' => $this->attachment->getMimeType(),
-                ]);
-
-                $path = $this->attachment->store('chat-attachments', 'public');
-                $messageData['attachment'] = $path;
-
-                Log::info('Attachment uploaded successfully', ['path' => $path]);
-            } catch (\Exception $e) {
-                Log::error('Failed to upload attachment', [
-                    'error' => $e->getMessage(),
-                    'file' => $this->attachment->getClientOriginalName(),
-                ]);
-                $this->addError('attachment', 'Không thể tải lên tệp: '.$e->getMessage());
-
-                return;
-            }
+            $path = $this->attachment->store('chat-attachments', 'public');
+            $messageData['attachment'] = $path;
         }
 
         $message = Message::create($messageData);
 
         // Dispatch event để broadcast tin nhắn
-        Log::info('Dispatching MessageSent event', ['message_id' => $message->id]);
-        \App\Events\MessageSent::dispatch($message);
+        // \Log::info('Dispatching MessageSent event', ['message_id' => $message->id]);
+        // \App\Events\MessageSent::dispatch($message);
 
         $this->messageText = '';
         $this->attachment = null;
         $this->dispatch('messageSent');
     }
 
-    public function testUpload()
-    {
-        if ($this->attachment) {
-            try {
-                Log::info('Test upload - File info:', [
-                    'name' => $this->attachment->getClientOriginalName(),
-                    'size' => $this->attachment->getSize(),
-                    'mime' => $this->attachment->getMimeType(),
-                    'isValid' => $this->attachment->isValid(),
-                    'error' => $this->attachment->getError(),
-                ]);
-
-                $path = $this->attachment->store('chat-attachments', 'public');
-                $this->dispatch('alert', ['type' => 'success', 'message' => 'File uploaded: '.$path]);
-            } catch (\Exception $e) {
-                Log::error('Test upload failed:', ['error' => $e->getMessage()]);
-                $this->dispatch('alert', ['type' => 'error', 'message' => 'Upload failed: '.$e->getMessage()]);
-            }
-        } else {
-            $this->dispatch('alert', ['type' => 'warning', 'message' => 'No file selected']);
-        }
-    }
-
-    public function updatedAttachment()
-    {
-        if ($this->attachment) {
-            Log::info('Attachment updated:', [
-                'name' => $this->attachment->getClientOriginalName(),
-                'size' => $this->attachment->getSize(),
-                'mime' => $this->attachment->getMimeType(),
-                'isValid' => $this->attachment->isValid(),
-                'error' => $this->attachment->getError(),
-            ]);
-        }
-    }
-
     public function getMessagesProperty()
     {
         if ($this->selectedUser) {
             return Message::where(function ($query) {
-                $query->where('sender_id', Auth::id())
+                $query->where('sender_id', auth()->id())
                     ->where('receiver_id', $this->selectedUser->id)
                     ->orWhere('sender_id', $this->selectedUser->id)
-                    ->where('receiver_id', Auth::id());
+                    ->where('receiver_id', auth()->id());
             })->with(['sender', 'receiver'])->orderBy('created_at', 'desc')->paginate(20);
         }
 
@@ -238,7 +146,7 @@ class Index extends Component
 
     public function getUsersProperty()
     {
-        $query = User::where('id', '!=', Auth::id());
+        $query = User::where('id', '!=', auth()->id());
 
         if ($this->searchTerm) {
             $query->where(function ($q) {
@@ -253,12 +161,12 @@ class Index extends Component
     public function getClassesProperty()
     {
         // Nếu là admin, hiển thị tất cả lớp học
-        if (Auth::user()->role === 'admin') {
+        if (auth()->user()->role === 'admin') {
             $query = Classroom::query();
         } else {
             // Nếu không phải admin, chỉ hiển thị lớp mà user được gán
             $query = Classroom::whereHas('users', function ($q) {
-                $q->where('users.id', Auth::id());
+                $q->where('users.id', auth()->id());
             });
         }
 
@@ -268,10 +176,8 @@ class Index extends Component
 
         $classes = $query->orderBy('name')->get();
 
-        foreach ($classes as $classModel) {
-            if ($classModel instanceof \App\Models\Classroom) {
-                $classModel->unread_messages_count = $classModel->unreadMessagesCountForUser(Auth::id());
-            }
+        foreach ($classes as $class) {
+            $class->unread_messages_count = $class->unreadMessagesCountForUser(auth()->id());
         }
 
         return $classes;
@@ -279,7 +185,7 @@ class Index extends Component
 
     public function refreshMessages()
     {
-        $this->unreadCount = Message::unread(Auth::id())->count();
+        $this->unreadCount = Message::unread(auth()->id())->count();
     }
 
     public function handleNewMessage($event)
@@ -289,9 +195,9 @@ class Index extends Component
         if ($message) {
             $isRelevant = false;
 
-            if ($this->selectedUser && $message['receiver_id'] == $this->selectedUser->id && $message['sender_id'] == Auth::id()) {
+            if ($this->selectedUser && $message['receiver_id'] == $this->selectedUser->id && $message['sender_id'] == auth()->id()) {
                 $isRelevant = true;
-            } elseif ($this->selectedUser && $message['sender_id'] == $this->selectedUser->id && $message['receiver_id'] == Auth::id()) {
+            } elseif ($this->selectedUser && $message['sender_id'] == $this->selectedUser->id && $message['receiver_id'] == auth()->id()) {
                 $isRelevant = true;
             } elseif ($this->selectedClass && $message['class_id'] == $this->selectedClass->id) {
                 $isRelevant = true;
@@ -315,7 +221,7 @@ class Index extends Component
         if (! $this->selectedClass) {
             return;
         }
-        if (Auth::user()->role !== 'admin') {
+        if (auth()->user()->role !== 'admin') {
             $this->dispatch('showToast', ['type' => 'error', 'message' => 'Chỉ admin mới được thêm giáo viên!']);
 
             return;
@@ -375,15 +281,15 @@ class Index extends Component
     public function render()
     {
         if ($this->selectedClass) {
-            Log::info('[Chat Debug] render: Thành viên hiện tại của lớp', [
+            \Log::info('[Chat Debug] render: Thành viên hiện tại của lớp', [
                 'class_id' => $this->selectedClass->id,
                 'user_ids' => $this->selectedClass->users->pluck('id')->toArray(),
             ]);
-            Log::info('[Chat Debug] render: allUsers', [
+            \Log::info('[Chat Debug] render: allUsers', [
                 'user_ids' => $this->allUsers ? $this->allUsers->pluck('id')->toArray() : null,
             ]);
             $canAdd = $this->allUsers->whereNotIn('id', $this->selectedClass->users->pluck('id'));
-            Log::info('[Chat Debug] render: user có thể thêm', [
+            \Log::info('[Chat Debug] render: user có thể thêm', [
                 'user_ids' => $canAdd->pluck('id')->toArray(),
             ]);
         }

@@ -5,13 +5,13 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h4 class="mb-0 text-primary fs-4">
-                    <i class="bi bi-calendar-check mr-2"></i>{{ __('views.attendance_overview') }}
+                    <i class="bi bi-calendar-check mr-2"></i>Tổng quan điểm danh
                 </h4>
-                <p class="text-muted mb-0">{{ __('views.attendance_management_description') }}</p>
+                <p class="text-muted mb-0">Quản lý và theo dõi điểm danh học viên</p>
             </div>
             <div class="d-flex gap-2">
                 <a href="{{ route('classrooms.index') }}" class="btn btn-outline-primary">
-                    <i class="bi bi-mortarboard mr-2"></i>{{ __('views.manage_classrooms') }}
+                    <i class="bi bi-mortarboard mr-2"></i>Quản lý lớp học
                 </a>
             </div>
         </div>
@@ -22,7 +22,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-6">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-funnel mr-2"></i>{{ __('views.filter_by_month') }}
+                            <i class="bi bi-funnel mr-2"></i>Lọc theo tháng
                         </h5>
                     </div>
                     <div class="col-md-6">
@@ -50,7 +50,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">{{ __('views.total_students') }}</h6>
+                                <h6 class="card-title mb-0">Tổng học viên</h6>
                                 <h3 class="mb-0">{{ $overviewStats['total_students'] }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -65,7 +65,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">{{ __('views.active_classes') }}</h6>
+                                <h6 class="card-title mb-0">Lớp đang hoạt động</h6>
                                 <h3 class="mb-0">{{ $overviewStats['total_classes'] }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -80,7 +80,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">{{ __('views.attendance_sessions') }}</h6>
+                                <h6 class="card-title mb-0">Số lần điểm danh</h6>
                                 <h3 class="mb-0">{{ $overviewStats['total_attendance_days'] }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -95,7 +95,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">{{ __('views.average_rate') }}</h6>
+                                <h6 class="card-title mb-0">Tỷ lệ trung bình</h6>
                                 <h3 class="mb-0">{{ $overviewStats['attendance_rate'] }}%</h3>
                             </div>
                             <div class="align-self-center">
@@ -114,7 +114,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">{{ __('views.present_count') }}</h6>
+                                <h6 class="card-title mb-0">Số lần có mặt</h6>
                                 <h3 class="mb-0">{{ $overviewStats['total_present'] }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -129,7 +129,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">{{ __('views.absent_count') }}</h6>
+                                <h6 class="card-title mb-0">Số lần vắng</h6>
                                 <h3 class="mb-0">{{ $overviewStats['total_absent'] }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -148,7 +148,7 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-trophy mr-2"></i>{{ __('views.top_classes_attendance') }}
+                            <i class="bi bi-trophy mr-2"></i>Top 5 lớp học có điểm danh nhiều nhất
                         </h5>
                     </div>
                     <div class="card-body">
@@ -157,11 +157,11 @@
                                 <table class="table table-hover">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>{{ __('views.classroom') }}</th>
-                                            <th class="text-center">{{ __('views.total') }}</th>
-                                            <th class="text-center">{{ __('views.present') }}</th>
-                                            <th class="text-center">{{ __('views.rate') }}</th>
-                                            <th class="text-center">{{ __('views.actions') }}</th>
+                                            <th>Lớp học</th>
+                                            <th class="text-center">Tổng số</th>
+                                            <th class="text-center">Có mặt</th>
+                                            <th class="text-center">Tỷ lệ</th>
+                                            <th class="text-center">Hành động</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -203,18 +203,15 @@
                                                 <td class="text-center">
                                                     <div class="btn-group" role="group">
                                                         <a href="{{ route('classrooms.attendance', $classData['classroom']) }}"
-                                                            class="btn btn-sm btn-outline-primary"
-                                                            title="{{ __('views.attendance') }}">
+                                                            class="btn btn-sm btn-outline-primary" title="Điểm danh">
                                                             <i class="bi bi-calendar-check"></i>
                                                         </a>
                                                         <a href="{{ route('classrooms.attendance-history', $classData['classroom']) }}"
-                                                            class="btn btn-sm btn-outline-info"
-                                                            title="{{ __('views.history') }}">
+                                                            class="btn btn-sm btn-outline-info" title="Lịch sử">
                                                             <i class="bi bi-calendar-week"></i>
                                                         </a>
                                                         <a href="{{ route('classrooms.show', $classData['classroom']) }}"
-                                                            class="btn btn-sm btn-outline-secondary"
-                                                            title="{{ __('views.details') }}">
+                                                            class="btn btn-sm btn-outline-secondary" title="Chi tiết">
                                                             <i class="bi bi-eye"></i>
                                                         </a>
                                                     </div>
@@ -227,10 +224,9 @@
                         @else
                             <div class="text-center py-4">
                                 <i class="bi bi-calendar-x fs-1 text-muted mb-3"></i>
-                                <h5 class="text-muted">{{ __('views.no_attendance_data') }}</h5>
-                                <p class="text-muted">
-                                    {{ __('views.no_attendance_data_description', ['month' => $this->getMonthName($selectedMonth), 'year' => $selectedYear]) }}
-                                </p>
+                                <h5 class="text-muted">Chưa có dữ liệu điểm danh</h5>
+                                <p class="text-muted">Chưa có dữ liệu điểm danh cho tháng
+                                    {{ $this->getMonthName($selectedMonth) }} {{ $selectedYear }}.</p>
                             </div>
                         @endif
                     </div>
@@ -240,11 +236,11 @@
                 <div class="card shadow-sm">
                     <div class="card-header bg-light d-flex justify-content-between align-items-center">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-clock-history mr-2"></i>{{ __('views.recent_attendance') }}
+                            <i class="bi bi-clock-history mr-2"></i>Điểm danh gần đây
                         </h5>
                         <a href="{{ route('attendances.history') }}"
                             class="btn btn-sm btn-outline-secondary float-end">
-                            <i class="bi bi-calendar-week"></i> {{ __('views.attendance_history') }}
+                            <i class="bi bi-calendar-week"></i> Lịch sử điểm danh
                         </a>
                     </div>
                     <div class="card-body">
@@ -253,10 +249,10 @@
                                 <table class="table table-hover">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>{{ __('views.date') }}</th>
-                                            <th>{{ __('views.classroom') }}</th>
-                                            <th>{{ __('views.student') }}</th>
-                                            <th class="text-center">{{ __('views.status') }}</th>
+                                            <th>Ngày</th>
+                                            <th>Lớp học</th>
+                                            <th>Học viên</th>
+                                            <th class="text-center">Trạng thái</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -283,11 +279,9 @@
                                                 </td>
                                                 <td class="text-center">
                                                     @if ($attendance->present)
-                                                        <span
-                                                            class="badge bg-success">{{ __('views.present_status') }}</span>
+                                                        <span class="badge bg-success">Có mặt</span>
                                                     @else
-                                                        <span
-                                                            class="badge bg-danger">{{ __('views.absent_status') }}</span>
+                                                        <span class="badge bg-danger">Vắng</span>
                                                         @if ($attendance->reason)
                                                             <br><small
                                                                 class="text-muted">{{ $attendance->reason }}</small>
@@ -302,8 +296,8 @@
                         @else
                             <div class="text-center py-4">
                                 <i class="bi bi-calendar-x fs-1 text-muted mb-3"></i>
-                                <h5 class="text-muted">{{ __('views.no_attendance') }}</h5>
-                                <p class="text-muted">{{ __('views.no_attendance_description') }}</p>
+                                <h5 class="text-muted">Chưa có điểm danh</h5>
+                                <p class="text-muted">Chưa có dữ liệu điểm danh nào.</p>
                             </div>
                         @endif
                     </div>
@@ -315,7 +309,7 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-star mr-2"></i>{{ __('views.top_excellent_students') }}
+                            <i class="bi bi-star mr-2"></i>Top 5 học viên xuất sắc
                         </h5>
                     </div>
                     <div class="card-body">
@@ -343,7 +337,7 @@
                         @else
                             <div class="text-center py-3">
                                 <i class="bi bi-people fs-1 text-muted mb-2"></i>
-                                <p class="text-muted mb-0">{{ __('views.no_student_data') }}</p>
+                                <p class="text-muted mb-0">Chưa có dữ liệu học viên</p>
                             </div>
                         @endif
                     </div>
@@ -353,19 +347,19 @@
                 <div class="card shadow-sm">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-lightning mr-2"></i>{{ __('views.quick_actions') }}
+                            <i class="bi bi-lightning mr-2"></i>Hành động nhanh
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <a href="{{ route('classrooms.index') }}" class="btn btn-primary w-100">
-                                    <i class="bi bi-calendar-check mr-2"></i>{{ __('views.attendance_by_class') }}
+                                    <i class="bi bi-calendar-check mr-2"></i>Điểm danh theo lớp
                                 </a>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <a href="{{ route('classrooms.create') }}" class="btn btn-outline-primary w-100">
-                                    <i class="bi bi-plus-circle mr-2"></i>{{ __('views.create_new_class') }}
+                                    <i class="bi bi-plus-circle mr-2"></i>Tạo lớp học mới
                                 </a>
                             </div>
                         </div>

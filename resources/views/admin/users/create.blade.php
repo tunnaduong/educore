@@ -31,7 +31,8 @@
                             <div class="mb-3">
                                 <label for="phone" class="form-label">{{ __('general.phone_number') }} <span
                                         class="text-danger">*</span></label>
-                                <input wire:model.live="phone" type="text"
+                                <input wire:model.live="phone" type="text" inputmode="numeric"
+                                    oninput="this.value=this.value.replace(/[^0-9]/g,'')"
                                     class="form-control @error('phone') is-invalid @enderror" id="phone">
                                 @error('phone')
                                     <div class="invalid-feedback">{{ $message }}</div>
