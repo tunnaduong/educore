@@ -176,7 +176,8 @@
                                 <input wire:model="video" type="text"
                                     class="form-control @error('video') is-invalid @enderror" id="video"
                                     placeholder="{{ __('views.paste_lesson_video_link') }}">
-                                <small class="text-danger d-block mb-2">{{ __('views.google_drive_share_note') }}</small>
+                                <small
+                                    class="text-danger d-block mb-2">{{ __('views.google_drive_share_note') }}</small>
                                 @error('video')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -192,7 +193,8 @@
                         </div>
                         <!-- Submit Buttons -->
                         <div class="d-flex justify-content-end gap-2">
-                            <a href="{{ route('lessons.index') }}" class="btn btn-light">{{ __('general.cancel') }}</a>
+                            <a href="{{ route('lessons.index') }}"
+                                class="btn btn-light">{{ __('general.cancel') }}</a>
                             <button type="submit" class="btn btn-success">
                                 <i class="bi bi-folder-plus mr-2"></i>{{ __('views.save_lesson') }}
                             </button>
@@ -201,7 +203,8 @@
                 </div>
                 <div
                     class="col-md-5 d-flex flex-column justify-content-center align-items-center bg-light border-start rounded-end p-4">
-                    <img src="/educore-logo.png" alt="{{ __('views.add_new_lesson_title') }}" class="mb-3" style="max-width: 90px;">
+                    <img src="/educore-logo.png" alt="{{ __('views.add_new_lesson_title') }}" class="mb-3"
+                        style="max-width: 90px;">
                     <div class="text-center">
                         <h6 class="text-success fw-bold mb-2">{{ __('views.add_new_lesson_title') }}</h6>
                         <p class="text-muted small mb-0">{{ __('views.lesson_illustration_desc') }}</p>

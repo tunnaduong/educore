@@ -50,7 +50,8 @@
                             <label class="form-label text-muted small">{{ __('views.time_limit') }}</label>
                             <div class="fw-medium">
                                 @if ($quiz->time_limit)
-                                    <span class="badge bg-warning text-dark">{{ $quiz->time_limit }} {{ __('views.minutes') }}</span>
+                                    <span class="badge bg-warning text-dark">{{ $quiz->time_limit }}
+                                        {{ __('views.minutes') }}</span>
                                 @else
                                     <span class="text-muted">{{ __('views.unlimited') }}</span>
                                 @endif
@@ -109,7 +110,8 @@
                                 <h4 class="text-success mb-0">
                                     {{ $results->where('score', '>=', 80)->count() }}
                                 </h4>
-                                <small class="text-muted">{{ __('views.passed_with_threshold', ['threshold' => 80]) }}</small>
+                                <small
+                                    class="text-muted">{{ __('views.passed_with_threshold', ['threshold' => 80]) }}</small>
                             </div>
                         </div>
                         @if ($results->count() > 0)
@@ -147,9 +149,12 @@
                                 <div class="border rounded p-3 mb-3">
                                     <div class="d-flex justify-content-between align-items-start mb-2">
                                         <div>
-                                            <span class="badge bg-primary mr-2">{{ __('views.question_number', ['number' => $index + 1]) }}</span>
+                                            <span
+                                                class="badge bg-primary mr-2">{{ __('views.question_number', ['number' => $index + 1]) }}</span>
                                             <span class="badge bg-secondary">{{ ucfirst($question['type']) }}</span>
-                                            <span class="badge bg-info">{{ $question['score'] ?? $question['points'] ?? 1 }} {{ __('views.points') }}</span>
+                                            <span
+                                                class="badge bg-info">{{ $question['score'] ?? ($question['points'] ?? 1) }}
+                                                {{ __('views.points') }}</span>
                                         </div>
                                     </div>
                                     <div class="fw-medium mb-2">{{ $question['question'] }}</div>
@@ -227,12 +232,15 @@
                                                 <td>
                                                     @if ($result)
                                                         @if ($result->isOnTime())
-                                                            <span class="badge bg-success">{{ __('views.on_time') }}</span>
+                                                            <span
+                                                                class="badge bg-success">{{ __('views.on_time') }}</span>
                                                         @else
-                                                            <span class="badge bg-warning">{{ __('views.late') }}</span>
+                                                            <span
+                                                                class="badge bg-warning">{{ __('views.late') }}</span>
                                                         @endif
                                                     @else
-                                                        <span class="badge bg-secondary">{{ __('general.not_started') }}</span>
+                                                        <span
+                                                            class="badge bg-secondary">{{ __('general.not_started') }}</span>
                                                     @endif
                                                 </td>
                                                 <td>

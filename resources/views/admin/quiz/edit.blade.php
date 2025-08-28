@@ -43,7 +43,8 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">{{ __('general.classroom') }} <span class="text-danger">*</span></label>
+                                <label class="form-label">{{ __('general.classroom') }} <span
+                                        class="text-danger">*</span></label>
                                 <select class="form-control @error('class_id') is-invalid @enderror"
                                     wire:model="class_id">
                                     <option value="">{{ __('general.choose_class') }}</option>
@@ -201,7 +202,8 @@
                         <div class="card shadow-sm">
                             <div class="card-header bg-light">
                                 <h6 class="mb-0">
-                                    <i class="bi bi-list-ul mr-2"></i>{{ __('general.question_list', ['count' => count($questions)]) }}
+                                    <i
+                                        class="bi bi-list-ul mr-2"></i>{{ __('general.question_list', ['count' => count($questions)]) }}
                                 </h6>
                             </div>
                             <div class="card-body">
@@ -209,10 +211,13 @@
                                     <div class="border rounded p-3 mb-3">
                                         <div class="d-flex justify-content-between align-items-start mb-2">
                                             <div>
-                                                <span class="badge bg-primary mr-2">{{ __('views.question_number', ['number' => $index + 1]) }}</span>
+                                                <span
+                                                    class="badge bg-primary mr-2">{{ __('views.question_number', ['number' => $index + 1]) }}</span>
                                                 <span
                                                     class="badge bg-secondary">{{ ucfirst($question['type']) }}</span>
-                                                <span class="badge bg-info">{{ $question['score'] ?? $question['points'] ?? 1 }} {{ __('views.points') }}</span>
+                                                <span
+                                                    class="badge bg-info">{{ $question['score'] ?? ($question['points'] ?? 1) }}
+                                                    {{ __('views.points') }}</span>
                                             </div>
                                             <div class="btn-group btn-group-sm">
                                                 <button type="button" class="btn btn-outline-warning"
@@ -235,7 +240,8 @@
                                                     </button>
                                                 @endif
                                                 <button type="button" class="btn btn-outline-danger"
-                                                    wire:click="removeQuestion({{ $index }})" title="{{ __('general.delete') }}">
+                                                    wire:click="removeQuestion({{ $index }})"
+                                                    title="{{ __('general.delete') }}">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </div>

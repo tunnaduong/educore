@@ -275,7 +275,7 @@
                 const messageText = document.getElementById('messageText').value;
                 const fileInput = document.getElementById('attachment');
                 const file = fileInput.files[0];
-                
+
                 if (!messageText.trim() && !file) {
                     alert('{{ __('general.please_enter_message_or_file') }}');
                     return;
@@ -290,9 +290,9 @@
                 }
 
                 // Add receiver or class info
-                @if($selectedUser)
+                @if ($selectedUser)
                     formData.append('receiver_id', {{ $selectedUser->id }});
-                @elseif($selectedClass)
+                @elseif ($selectedClass)
                     formData.append('class_id', {{ $selectedClass->id }});
                 @endif
 
@@ -303,37 +303,37 @@
                 sendButton.disabled = true;
 
                 fetch('/chat/upload', {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Clear form
-                        document.getElementById('messageText').value = '';
-                        fileInput.value = '';
-                        
-                        // Add message to UI
-                        addMessageToUI(data.message);
-                        
-                        // Show success notification
-                        showNotification('{{ __('general.message_sent') }}', 'success');
-                    } else {
-                        alert('Lỗi: ' + data.error);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('{{ __('general.error_occurred_sending_message') }}');
-                })
-                .finally(() => {
-                    // Restore button
-                    sendButton.innerHTML = originalText;
-                    sendButton.disabled = false;
-                });
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Clear form
+                            document.getElementById('messageText').value = '';
+                            fileInput.value = '';
+
+                            // Add message to UI
+                            addMessageToUI(data.message);
+
+                            // Show success notification
+                            showNotification('{{ __('general.message_sent') }}', 'success');
+                        } else {
+                            alert('Lỗi: ' + data.error);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('{{ __('general.error_occurred_sending_message') }}');
+                    })
+                    .finally(() => {
+                        // Restore button
+                        sendButton.innerHTML = originalText;
+                        sendButton.disabled = false;
+                    });
             }
 
             // Add message to UI
@@ -343,10 +343,10 @@
 
                 const messageDiv = document.createElement('div');
                 messageDiv.className = 'message-item mb-3';
-                
+
                 const isMine = message.sender_id == {{ auth()->id() }};
                 const alignment = isMine ? 'text-end' : 'text-start';
-                
+
                 let attachmentHtml = '';
                 if (message.attachment) {
                     attachmentHtml = `
@@ -383,7 +383,8 @@
             function showNotification(title, type = 'info') {
                 if (Notification.permission === 'granted') {
                     new Notification(title, {
-                        body: type === 'success' ? '{{ __('general.success') }}!' : '{{ __('general.new_message_from') }}',
+                        body: type === 'success' ? '{{ __('general.success') }}!' :
+                            '{{ __('general.new_message_from') }}',
                         icon: '/favicon.ico',
                         badge: '/favicon.ico'
                     });
@@ -395,20 +396,20 @@
                 // Initialize Pusher if available
                 if (window.Echo) {
                     console.log('Pusher initialized');
-                    
+
                     // Listen to private user channels
                     window.Echo.private(`chat-user-{{ auth()->id() }}`)
                         .listen('.message.sent', (e) => {
                             console.log('Received message:', e);
-                            
+
                             // Add message to UI
                             addMessageToUI(e.message);
-                            
+
                             // Show notification if not focused
                             if (!document.hasFocus()) {
                                 showNotification('{{ __('general.new_message_from') }} ' + e.message.sender.name);
                             }
-                            
+
                             // Auto scroll
                             const container = document.getElementById('messagesContainer');
                             if (container) {
@@ -417,19 +418,20 @@
                         });
 
                     // Listen to class channels
-                    @if($selectedClass)
+                    @if ($selectedClass)
                         window.Echo.channel(`chat-class-{{ $selectedClass->id }}`)
                             .listen('.message.sent', (e) => {
                                 console.log('Received class message:', e);
-                                
+
                                 // Add message to UI
                                 addMessageToUI(e.message);
-                                
+
                                 // Show notification if not focused
                                 if (!document.hasFocus()) {
-                                    showNotification('{{ __('general.new_message_in_class') }} ' + '{{ $selectedClass->name }}');
+                                    showNotification('{{ __('general.new_message_in_class') }} ' +
+                                        '{{ $selectedClass->name }}');
                                 }
-                                
+
                                 // Auto scroll
                                 const container = document.getElementById('messagesContainer');
                                 if (container) {
@@ -455,11 +457,11 @@
                                 <i class="bi bi-paperclip"></i> 
                                 ${file.name} (${(file.size / 1024).toFixed(1)} KB)
                             `;
-                            
+
                             // Remove previous file info
                             const prevInfo = document.querySelector('.alert-info');
                             if (prevInfo) prevInfo.remove();
-                            
+
                             // Add new file info
                             fileInput.parentNode.parentNode.appendChild(fileInfo);
                         }
@@ -467,32 +469,32 @@
                 }
             });
 
-                // Auto refresh chat messages every 30 seconds as fallback using AJAX
-                function fetchChatMessages() {
-                    // Replace '#chat-messages' with the actual id/class of your chat messages container
-                    fetch('/admin/chat/messages') // Adjust this URL to your actual endpoint
-                        .then(response => {
-                            if (!response.ok) throw new Error('Network response was not ok');
-                            return response.text();
-                        })
-                        .then(html => {
-                            const chatContainer = document.querySelector('#chat-messages');
-                            if (chatContainer) {
-                                chatContainer.innerHTML = html;
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Failed to fetch chat messages:', error);
-                        });
-                }
+            // Auto refresh chat messages every 30 seconds as fallback using AJAX
+            function fetchChatMessages() {
+                // Replace '#chat-messages' with the actual id/class of your chat messages container
+                fetch('/admin/chat/messages') // Adjust this URL to your actual endpoint
+                    .then(response => {
+                        if (!response.ok) throw new Error('Network response was not ok');
+                        return response.text();
+                    })
+                    .then(html => {
+                        const chatContainer = document.querySelector('#chat-messages');
+                        if (chatContainer) {
+                            chatContainer.innerHTML = html;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Failed to fetch chat messages:', error);
+                    });
+            }
 
-                setInterval(() => {
-                    if (document.hasFocus()) {
-                        fetchChatMessages();
-                    }
-                }, 30000);
-            </script>
-        @endscript
+            setInterval(() => {
+                if (document.hasFocus()) {
+                    fetchChatMessages();
+                }
+            }, 30000);
+        </script>
+    @endscript
 
     @push('scripts')
         <script>

@@ -63,13 +63,16 @@
                     </h6>
                     <div style="color: white;">
                         <div class="mb-2">
-                            <strong style="color: white;">{{ __('views.teacher_rating_avg') }}</strong> {{ __('views.teacher_rating_desc') }}
+                            <strong style="color: white;">{{ __('views.teacher_rating_avg') }}</strong>
+                            {{ __('views.teacher_rating_desc') }}
                         </div>
                         <div class="mb-2">
-                            <strong style="color: white;">{{ __('views.course_rating_avg') }}</strong> {{ __('views.course_rating_desc') }}
+                            <strong style="color: white;">{{ __('views.course_rating_avg') }}</strong>
+                            {{ __('views.course_rating_desc') }}
                         </div>
                         <div class="mb-2">
-                            <strong style="color: white;">{{ __('views.personal_satisfaction') }}</strong> {{ __('views.personal_satisfaction_desc') }}
+                            <strong style="color: white;">{{ __('views.personal_satisfaction') }}</strong>
+                            {{ __('views.personal_satisfaction_desc') }}
                         </div>
                         <div style="color: #f0f0f0; font-size: 0.9em;">
                             {{ __('views.higher_score_better') }}
@@ -82,7 +85,8 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-4">
-                                <label for="classroomFilter" class="form-label">{{ __('views.filter_by_class') }}</label>
+                                <label for="classroomFilter"
+                                    class="form-label">{{ __('views.filter_by_class') }}</label>
                                 <div class="d-flex gap-2">
                                     <select wire:model.live="classroomId" class="form-control" id="classroomFilter">
                                         <option value="">{{ __('views.all_classes') }}</option>
@@ -92,7 +96,8 @@
                                     </select>
                                     @if ($classroomId)
                                         <button class="btn btn-outline-secondary btn-sm" wire:click="resetFilter"
-                                            data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __('views.clear_filter') }}">
+                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                            title="{{ __('views.clear_filter') }}">
                                             <i class="bi bi-x-lg"></i>
                                         </button>
                                     @endif
@@ -112,7 +117,8 @@
                                     </select>
                                     @if ($roundId)
                                         <button class="btn btn-outline-secondary btn-sm" wire:click="resetFilter"
-                                            data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __('views.clear_filter') }}">
+                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                            title="{{ __('views.clear_filter') }}">
                                             <i class="bi bi-x-lg"></i>
                                         </button>
                                     @endif
@@ -189,7 +195,8 @@
                 <!-- Danh sách đánh giá -->
                 <div class="card">
                     <div class="card-header">
-                        <h6 class="mb-0">{{ __('views.evaluation_list_title') }} ({{ $total }} {{ __('views.evaluation_list') }})</h6>
+                        <h6 class="mb-0">{{ __('views.evaluation_list_title') }} ({{ $total }}
+                            {{ __('views.evaluation_list') }})</h6>
                     </div>
                     <div class="card-body">
                         @if ($evaluations->count() > 0)
@@ -264,9 +271,11 @@
                                                 </td>
                                                 <td>
                                                     @if ($evaluation->submitted_at)
-                                                        <span class="badge bg-success">{{ __('views.submitted') }}</span>
+                                                        <span
+                                                            class="badge bg-success">{{ __('views.submitted') }}</span>
                                                     @else
-                                                        <span class="badge bg-warning">{{ __('views.not_submitted') }}</span>
+                                                        <span
+                                                            class="badge bg-warning">{{ __('views.not_submitted') }}</span>
                                                     @endif
                                                 </td>
                                                 <td>{{ $evaluation->submitted_at ? $evaluation->submitted_at->format('d/m/Y H:i') : 'N/A' }}
@@ -316,7 +325,8 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-end mb-3">
                             <button class="btn btn-primary" wire:click="showAddQuestionModal"
-                                data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __('views.add_new_question') }}">
+                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="{{ __('views.add_new_question') }}">
                                 <i class="bi bi-plus-circle mr-2"></i>{{ __('views.add_question') }}
                             </button>
                         </div>
@@ -345,15 +355,18 @@
                                                 <td>
                                                     @switch($question->category)
                                                         @case('teacher')
-                                                            <span class="badge bg-primary">{{ __('views.teacher_category') }}</span>
+                                                            <span
+                                                                class="badge bg-primary">{{ __('views.teacher_category') }}</span>
                                                         @break
 
                                                         @case('course')
-                                                            <span class="badge bg-success">{{ __('views.course_category') }}</span>
+                                                            <span
+                                                                class="badge bg-success">{{ __('views.course_category') }}</span>
                                                         @break
 
                                                         @case('personal')
-                                                            <span class="badge bg-warning">{{ __('views.personal_category') }}</span>
+                                                            <span
+                                                                class="badge bg-warning">{{ __('views.personal_category') }}</span>
                                                         @break
                                                     @endswitch
                                                 </td>
@@ -362,7 +375,8 @@
                                                     @if ($question->is_active)
                                                         <span class="badge bg-success">{{ __('views.active') }}</span>
                                                     @else
-                                                        <span class="badge bg-secondary">{{ __('views.inactive') }}</span>
+                                                        <span
+                                                            class="badge bg-secondary">{{ __('views.inactive') }}</span>
                                                     @endif
                                                 </td>
                                                 <td>
@@ -451,7 +465,8 @@
                                                         <span
                                                             class="text-muted">{{ Str::limit($round->description, 50) }}</span>
                                                     @else
-                                                        <span class="text-muted">{{ __('views.no_description') }}</span>
+                                                        <span
+                                                            class="text-muted">{{ __('views.no_description') }}</span>
                                                     @endif
                                                 </td>
                                                 <td>
@@ -536,7 +551,8 @@
                         <div class="modal-header">
                             <h5 class="modal-title text-primary fw-bold fs-4">
                                 <i class="bi bi-star-fill text-warning mr-2"></i>
-                                {{ __('views.evaluation_detail') }} {{ $selectedEvaluation->student->user->name ?? __('views.student') }}
+                                {{ __('views.evaluation_detail') }}
+                                {{ $selectedEvaluation->student->user->name ?? __('views.student') }}
                             </h5>
                             <button type="button" class="btn-close" wire:click="closeEvaluationDetail">
                                 <i class="bi bi-x-lg"></i>
@@ -704,7 +720,8 @@
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="round_description" class="form-label">{{ __('views.description') }}</label>
+                                    <label for="round_description"
+                                        class="form-label">{{ __('views.description') }}</label>
                                     <textarea wire:model="roundForm.description" class="form-control" id="round_description" rows="3"
                                         placeholder="{{ __('views.round_description_input') }}"></textarea>
                                     @error('roundForm.description')
@@ -714,8 +731,8 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label for="start_date" class="form-label">{{ __('views.start_date') }} <span
-                                                    class="text-danger">*</span></label>
+                                            <label for="start_date" class="form-label">{{ __('views.start_date') }}
+                                                <span class="text-danger">*</span></label>
                                             <input type="date" wire:model="roundForm.start_date"
                                                 class="form-control" id="start_date">
                                             @error('roundForm.start_date')
@@ -725,8 +742,8 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label for="end_date" class="form-label">{{ __('views.end_date') }} <span
-                                                    class="text-danger">*</span></label>
+                                            <label for="end_date" class="form-label">{{ __('views.end_date') }}
+                                                <span class="text-danger">*</span></label>
                                             <input type="date" wire:model="roundForm.end_date"
                                                 class="form-control" id="end_date">
                                             @error('roundForm.end_date')
