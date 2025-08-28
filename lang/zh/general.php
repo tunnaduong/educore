@@ -829,4 +829,25 @@ return [
     'video' => '视频',
     'created_date' => '创建日期',
     'actions' => '操作',
+    // Classroom create form translations
+    'draft' => '草稿',
+    'overlap_time' => '重叠时间',
+
+    // Chat related translations
+    'no_users_found' => '未找到用户',
+    'no_classes_found' => '未找到班级',
+    'no_messages_yet' => '暂无消息',
+    'start_conversation_now' => '立即开始对话！',
+    'enter_message' => '输入消息...',
+    'please_enter_message_or_file' => '请输入消息或选择文件',
+    'message_sent' => '消息已发送',
+    'error_occurred_sending_message' => '发送消息时发生错误',
+    'welcome_to_chat' => '欢迎使用聊天与互动',
+    'select_user_or_class_to_start' => '选择用户或班级开始对话',
+    'new_message_from' => '来自的新消息',
+    'new_message_in_class' => '班级中的新消息',
+    'classroom' => '班级',
+    'users' => '用户',
+    'classes' => '班级',
+    'search' => '搜索',
 ];

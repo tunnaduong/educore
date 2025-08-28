@@ -835,4 +835,25 @@ return [
     'video' => 'Video',
     'created_date' => 'Created Date',
     'actions' => 'Actions',
+    // Classroom create form translations
+    'draft' => 'Draft',
+    'overlap_time' => 'Overlap Time',
+
+    // Chat related translations
+    'no_users_found' => 'No users found',
+    'no_classes_found' => 'No classes found',
+    'no_messages_yet' => 'No messages yet',
+    'start_conversation_now' => 'Start a conversation now!',
+    'enter_message' => 'Enter message...',
+    'please_enter_message_or_file' => 'Please enter a message or select a file',
+    'message_sent' => 'Message sent',
+    'error_occurred_sending_message' => 'An error occurred while sending the message',
+    'welcome_to_chat' => 'Welcome to Chat & Interaction',
+    'select_user_or_class_to_start' => 'Select a user or class to start a conversation',
+    'new_message_from' => 'New message from',
+    'new_message_in_class' => 'New message in class',
+    'classroom' => 'Classroom',
+    'users' => 'Users',
+    'classes' => 'Classes',
+    'search' => 'Search',
 ];

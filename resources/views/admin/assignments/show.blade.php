@@ -4,10 +4,10 @@
         <!-- Header -->
         <div class="mb-4">
             <a href="{{ route('assignments.overview') }}" class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left mr-2"></i>Quay lại tổng quan bài tập
+                <i class="bi bi-arrow-left mr-2"></i>{{ __('views.back_to_assignments_overview') }}
             </a>
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-journal-text mr-2"></i>Chi tiết bài tập
+                <i class="bi bi-journal-text mr-2"></i>{{ __('views.assignment_details') }}
             </h4>
             <p class="text-muted mb-0">{{ $assignment->title }}</p>
         </div>
@@ -18,38 +18,38 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-info-circle mr-2"></i>Thông tin bài tập
+                            <i class="bi bi-info-circle mr-2"></i>{{ __('views.assignment_information') }}
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <label class="form-label text-muted small">Tiêu đề</label>
+                            <label class="form-label text-muted small">{{ __('views.title') }}</label>
                             <div class="fw-medium">{{ $assignment->title }}</div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small">Lớp học</label>
+                            <label class="form-label text-muted small">{{ __('views.classroom_name') }}</label>
                             <div class="fw-medium">{{ $classroom->name ?? '-' }}</div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small">Hạn nộp</label>
+                            <label class="form-label text-muted small">{{ __('views.deadline') }}</label>
                             <div class="fw-medium">
                                 {{ $assignment->deadline ? $assignment->deadline->format('d/m/Y H:i') : '-' }}</div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small">Ngày giao</label>
+                            <label class="form-label text-muted small">{{ __('views.assigned_date') }}</label>
                             <div class="fw-medium">{{ $assignment->created_at->format('d/m/Y H:i') }}</div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small">Mô tả</label>
+                            <label class="form-label text-muted small">{{ __('views.description') }}</label>
                             <div class="fw-medium">{!! nl2br(e($assignment->description)) !!}</div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small">File đính kèm</label>
+                            <label class="form-label text-muted small">{{ __('views.attached_file') }}</label>
                             <div class="fw-medium">
                                 @if ($assignment->attachment_path)
                                     <a href="{{ asset('storage/' . $assignment->attachment_path) }}" target="_blank"
                                         class="btn btn-sm btn-outline-success">
-                                        <i class="bi bi-file-earmark-arrow-down"></i> Tải file
+                                        <i class="bi bi-file-earmark-arrow-down"></i> {{ __('views.download_file') }}
                                     </a>
                                 @else
                                     -
@@ -57,13 +57,13 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small">Video giao</label>
+                            <label class="form-label text-muted small">{{ __('views.assignment_video') }}</label>
                             <div class="fw-medium">
                                 @if ($assignment->video_path)
                                     <video width="240" height="135" controls>
                                         <source src="{{ asset('storage/' . $assignment->video_path) }}"
                                             type="video/mp4">
-                                        Trình duyệt không hỗ trợ video.
+                                        {{ __('views.browser_not_support_video') }}
                                     </video>
                                 @else
                                     -
@@ -79,7 +79,7 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-people mr-2"></i>Danh sách học viên & tình trạng nộp bài
+                            <i class="bi bi-people mr-2"></i>{{ __('views.student_list_and_submission_status') }}
                         </h5>
                     </div>
                     <div class="card-body">
@@ -88,12 +88,12 @@
                                 <table class="table table-hover">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>Học viên</th>
-                                            <th>Email</th>
-                                            <th>Trạng thái nộp</th>
-                                            <th>Thời gian nộp</th>
-                                            <th>File</th>
-                                            <th>Video</th>
+                                            <th>{{ __('views.student') }}</th>
+                                            <th>{{ __('views.email') }}</th>
+                                            <th>{{ __('views.submission_status') }}</th>
+                                            <th>{{ __('views.submission_time') }}</th>
+                                            <th>{{ __('views.file') }}</th>
+                                            <th>{{ __('views.video') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -112,16 +112,16 @@
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>{{ $student->email ?? 'Chưa có' }}</td>
+                                                <td>{{ $student->email ?? __('views.not_available') }}</td>
                                                 <td>
                                                     @if ($submission)
                                                         @if ($submission->submitted_at && $assignment->deadline && $submission->submitted_at <= $assignment->deadline)
-                                                            <span class="badge bg-success">Đúng hạn</span>
+                                                            <span class="badge bg-success">{{ __('views.on_time') }}</span>
                                                         @else
-                                                            <span class="badge bg-warning">Trễ hạn</span>
+                                                            <span class="badge bg-warning">{{ __('views.late') }}</span>
                                                         @endif
                                                     @else
-                                                        <span class="badge bg-secondary">Chưa nộp</span>
+                                                        <span class="badge bg-secondary">{{ __('views.not_submitted') }}</span>
                                                     @endif
                                                 </td>
                                                 <td>
@@ -135,7 +135,7 @@
                                                     @if ($submission && $submission->file_path)
                                                         <a href="{{ asset('storage/' . $submission->file_path) }}"
                                                             target="_blank" class="btn btn-sm btn-outline-success">
-                                                            <i class="bi bi-file-earmark-arrow-down"></i> Tải file
+                                                            <i class="bi bi-file-earmark-arrow-down"></i> {{ __('views.download_file') }}
                                                         </a>
                                                     @else
                                                         -
@@ -146,7 +146,7 @@
                                                         <video width="160" height="90" controls>
                                                             <source src="{{ $submission->video_url }}"
                                                                 type="video/mp4">
-                                                            Trình duyệt không hỗ trợ video.
+                                                            {{ __('views.browser_not_support_video') }}
                                                         </video>
                                                     @else
                                                         -
@@ -160,8 +160,8 @@
                         @else
                             <div class="text-center py-4">
                                 <i class="bi bi-people fs-1 text-muted mb-3"></i>
-                                <h5 class="text-muted">Chưa có học viên nào</h5>
-                                <p class="text-muted">Vui lòng gán học viên vào lớp học.</p>
+                                <h5 class="text-muted">{{ __('views.no_students') }}</h5>
+                                <p class="text-muted">{{ __('views.please_assign_students_to_class') }}</p>
                             </div>
                         @endif
                     </div>

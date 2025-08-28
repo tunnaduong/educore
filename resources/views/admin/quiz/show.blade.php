@@ -4,97 +4,97 @@
         <!-- Header -->
         <div class="mb-4">
             <a href="{{ route('quizzes.index') }}" class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left mr-2"></i>Quay lại danh sách bài kiểm tra
+                <i class="bi bi-arrow-left mr-2"></i>{{ __('views.back_to_quiz_list') }}
             </a>
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-journal-text mr-2"></i>Chi tiết bài kiểm tra
+                        <i class="bi bi-journal-text mr-2"></i>{{ __('views.quiz_detail_title') }}
                     </h4>
                     <p class="text-muted mb-0">{{ $quiz->title }}</p>
                 </div>
                 <div class="btn-group">
                     <a href="{{ route('quizzes.edit', $quiz) }}" class="btn btn-warning">
-                        <i class="bi bi-pencil mr-2"></i>Sửa
+                        <i class="bi bi-pencil mr-2"></i>{{ __('general.edit') }}
                     </a>
                     <a href="{{ route('quizzes.results', $quiz) }}" class="btn btn-info">
-                        <i class="bi bi-graph-up mr-2"></i>Kết quả
+                        <i class="bi bi-graph-up mr-2"></i>{{ __('views.view_results') }}
                     </a>
                     <button type="button" class="btn btn-danger"
-                        wire:confirm="Bạn có chắc chắn muốn xóa bài kiểm tra này?" wire:click="deleteQuiz">
-                        <i class="bi bi-trash mr-2"></i>Xóa
+                        wire:confirm="{{ __('views.confirm_delete_quiz_simple') }}" wire:click="deleteQuiz">
+                        <i class="bi bi-trash mr-2"></i>{{ __('general.delete') }}
                     </button>
                 </div>
             </div>
         </div>
 
         <div class="row">
-            <!-- Thông tin bài kiểm tra -->
+            <!-- Quiz information -->
             <div class="col-lg-4">
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h6 class="mb-0">
-                            <i class="bi bi-info-circle mr-2"></i>Thông tin bài kiểm tra
+                            <i class="bi bi-info-circle mr-2"></i>{{ __('views.quiz_information') }}
                         </h6>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <label class="form-label text-muted small">Tiêu đề</label>
+                            <label class="form-label text-muted small">{{ __('general.title') }}</label>
                             <div class="fw-medium">{{ $quiz->title }}</div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small">Lớp học</label>
-                            <div class="fw-medium">{{ $classroom->name ?? 'N/A' }}</div>
+                            <label class="form-label text-muted small">{{ __('general.classroom') }}</label>
+                            <div class="fw-medium">{{ $classroom->name ?? __('views.not_available') }}</div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small">Thời gian làm bài</label>
+                            <label class="form-label text-muted small">{{ __('views.time_limit') }}</label>
                             <div class="fw-medium">
                                 @if ($quiz->time_limit)
-                                    <span class="badge bg-warning text-dark">{{ $quiz->time_limit }} phút</span>
+                                    <span class="badge bg-warning text-dark">{{ $quiz->time_limit }} {{ __('views.minutes') }}</span>
                                 @else
-                                    <span class="text-muted">Không giới hạn</span>
+                                    <span class="text-muted">{{ __('views.unlimited') }}</span>
                                 @endif
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small">Hạn nộp</label>
+                            <label class="form-label text-muted small">{{ __('general.deadline') }}</label>
                             <div class="fw-medium">
                                 @if ($quiz->deadline)
                                     {{ $quiz->deadline->format('d/m/Y H:i') }}
                                     @if ($quiz->isExpired())
-                                        <span class="badge bg-danger ml-2">Hết hạn</span>
+                                        <span class="badge bg-danger ml-2">{{ __('views.overdue_status') }}</span>
                                     @else
-                                        <span class="badge bg-success ml-2">Còn hạn</span>
+                                        <span class="badge bg-success ml-2">{{ __('views.active_status') }}</span>
                                     @endif
                                 @else
-                                    <span class="text-muted">Không có hạn</span>
+                                    <span class="text-muted">{{ __('views.no_deadline') }}</span>
                                 @endif
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small">Ngày tạo</label>
+                            <label class="form-label text-muted small">{{ __('views.created_at') }}</label>
                             <div class="fw-medium">{{ $quiz->created_at->format('d/m/Y H:i') }}</div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small">Mô tả</label>
+                            <label class="form-label text-muted small">{{ __('general.description') }}</label>
                             <div class="fw-medium">{!! nl2br(e($quiz->description)) !!}</div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small">Số câu hỏi</label>
+                            <label class="form-label text-muted small">{{ __('views.question_count') }}</label>
                             <div class="fw-medium">{{ $quiz->getQuestionCount() }}</div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small">Tổng điểm tối đa</label>
+                            <label class="form-label text-muted small">{{ __('views.max_score') }}</label>
                             <div class="fw-medium">{{ $quiz->getMaxScore() }}</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Thống kê -->
+                <!-- Statistics -->
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h6 class="mb-0">
-                            <i class="bi bi-graph-up mr-2"></i>Thống kê
+                            <i class="bi bi-graph-up mr-2"></i>{{ __('views.statistics') }}
                         </h6>
                     </div>
                     <div class="card-body">
@@ -102,14 +102,14 @@
                             <div class="col-6">
                                 <div class="border-end">
                                     <h4 class="text-primary mb-0">{{ $results->count() }}</h4>
-                                    <small class="text-muted">Đã làm bài</small>
+                                    <small class="text-muted">{{ __('views.attempted') }}</small>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <h4 class="text-success mb-0">
                                     {{ $results->where('score', '>=', 80)->count() }}
                                 </h4>
-                                <small class="text-muted">Đạt (≥80%)</small>
+                                <small class="text-muted">{{ __('views.passed_with_threshold', ['threshold' => 80]) }}</small>
                             </div>
                         </div>
                         @if ($results->count() > 0)
@@ -119,13 +119,13 @@
                                     <h5 class="text-info mb-0">
                                         {{ round($results->avg('score'), 1) }}%
                                     </h5>
-                                    <small class="text-muted">Điểm trung bình</small>
+                                    <small class="text-muted">{{ __('views.average_score') }}</small>
                                 </div>
                                 <div class="col-6">
                                     <h5 class="text-warning mb-0">
                                         {{ $results->max('score') }}%
                                     </h5>
-                                    <small class="text-muted">Điểm cao nhất</small>
+                                    <small class="text-muted">{{ __('views.highest_score') }}</small>
                                 </div>
                             </div>
                         @endif
@@ -133,12 +133,12 @@
                 </div>
             </div>
 
-            <!-- Danh sách câu hỏi -->
+            <!-- Question list -->
             <div class="col-lg-8">
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h6 class="mb-0">
-                            <i class="bi bi-list-ul mr-2"></i>Danh sách câu hỏi
+                            <i class="bi bi-list-ul mr-2"></i>{{ __('views.question_list_title') }}
                         </h6>
                     </div>
                     <div class="card-body">
@@ -147,9 +147,9 @@
                                 <div class="border rounded p-3 mb-3">
                                     <div class="d-flex justify-content-between align-items-start mb-2">
                                         <div>
-                                            <span class="badge bg-primary mr-2">Câu {{ $index + 1 }}</span>
+                                            <span class="badge bg-primary mr-2">{{ __('views.question_number', ['number' => $index + 1]) }}</span>
                                             <span class="badge bg-secondary">{{ ucfirst($question['type']) }}</span>
-                                            <span class="badge bg-info">{{ $question['score'] ?? $question['points'] ?? 1 }} điểm</span>
+                                            <span class="badge bg-info">{{ $question['score'] ?? $question['points'] ?? 1 }} {{ __('views.points') }}</span>
                                         </div>
                                     </div>
                                     <div class="fw-medium mb-2">{{ $question['question'] }}</div>
@@ -176,18 +176,18 @@
                         @else
                             <div class="text-center py-4">
                                 <i class="bi bi-exclamation-triangle fs-1 text-warning mb-3"></i>
-                                <h5 class="text-muted">Không có câu hỏi nào</h5>
-                                <p class="text-muted">Bài kiểm tra này chưa có câu hỏi.</p>
+                                <h5 class="text-muted">{{ __('views.no_questions') }}</h5>
+                                <p class="text-muted">{{ __('views.quiz_has_no_questions') }}</p>
                             </div>
                         @endif
                     </div>
                 </div>
 
-                <!-- Danh sách học viên và kết quả -->
+                <!-- Students and results -->
                 <div class="card shadow-sm">
                     <div class="card-header bg-light">
                         <h6 class="mb-0">
-                            <i class="bi bi-people mr-2"></i>Danh sách học viên & kết quả
+                            <i class="bi bi-people mr-2"></i>{{ __('views.student_list_and_results') }}
                         </h6>
                     </div>
                     <div class="card-body">
@@ -196,13 +196,13 @@
                                 <table class="table table-hover">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>Học viên</th>
-                                            <th>Email</th>
-                                            <th>Trạng thái</th>
-                                            <th>Điểm số</th>
-                                            <th>Thời gian làm</th>
-                                            <th>Thời gian nộp</th>
-                                            <th>Thao tác</th>
+                                            <th>{{ __('general.student') }}</th>
+                                            <th>{{ __('general.email') }}</th>
+                                            <th>{{ __('general.status') }}</th>
+                                            <th>{{ __('general.score') }}</th>
+                                            <th>{{ __('views.duration') }}</th>
+                                            <th>{{ __('views.submission_time') }}</th>
+                                            <th>{{ __('general.actions') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -223,16 +223,16 @@
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>{{ $student->email ?? 'Chưa có' }}</td>
+                                                <td>{{ $student->email ?? __('views.not_available') }}</td>
                                                 <td>
                                                     @if ($result)
                                                         @if ($result->isOnTime())
-                                                            <span class="badge bg-success">Đúng hạn</span>
+                                                            <span class="badge bg-success">{{ __('views.on_time') }}</span>
                                                         @else
-                                                            <span class="badge bg-warning">Trễ hạn</span>
+                                                            <span class="badge bg-warning">{{ __('views.late') }}</span>
                                                         @endif
                                                     @else
-                                                        <span class="badge bg-secondary">Chưa làm</span>
+                                                        <span class="badge bg-secondary">{{ __('general.not_started') }}</span>
                                                     @endif
                                                 </td>
                                                 <td>
@@ -267,7 +267,7 @@
                                                     @if ($result)
                                                         <a href="{{ route('quizzes.results', $quiz) }}?student={{ $student->student->id }}"
                                                             class="btn btn-sm btn-outline-primary"
-                                                            title="Xem chi tiết">
+                                                            title="{{ __('general.view_details') }}">
                                                             <i class="bi bi-eye"></i>
                                                         </a>
                                                     @else
@@ -282,8 +282,8 @@
                         @else
                             <div class="text-center py-4">
                                 <i class="bi bi-people fs-1 text-muted mb-3"></i>
-                                <h5 class="text-muted">Chưa có học viên nào</h5>
-                                <p class="text-muted">Vui lòng gán học viên vào lớp học.</p>
+                                <h5 class="text-muted">{{ __('general.no_students_yet') }}</h5>
+                                <p class="text-muted">{{ __('views.please_assign_students_to_class') }}</p>
                             </div>
                         @endif
                     </div>

@@ -6,13 +6,13 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-success fs-4">
-                        <i class="bi bi-folder-symlink-fill mr-2"></i>Bài học & Tài nguyên
+                        <i class="bi bi-folder-symlink-fill mr-2"></i>{{ __('general.lessons_resources') }}
                     </h4>
-                    <p class="text-muted mb-0">Quản lý, lưu trữ và tra cứu các bài học, tài liệu, video, slide...</p>
+                    <p class="text-muted mb-0">{{ __('general.manage_store_search_lessons') }}</p>
                 </div>
                 <div>
                     <a href="{{ route('lessons.create') }}" class="btn btn-success"><i class="bi bi-plus-circle mr-1"></i>
-                        Thêm bài học</a>
+                        {{ __('general.add_lesson') }}</a>
                 </div>
             </div>
         </div>
@@ -21,14 +21,14 @@
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-7">
-                        <label class="form-label">Tìm kiếm</label>
+                        <label class="form-label">{{ __('general.search') }}</label>
                         <input type="text" class="form-control" wire:model.live="search"
-                            placeholder="Tìm theo tên hoặc số bài...">
+                            placeholder="{{ __('general.search_by_name_or_number') }}">
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label">Lọc theo lớp học</label>
+                        <label class="form-label">{{ __('general.filter_by_class') }}</label>
                         <select class="form-control" wire:model.live="filterClass">
-                            <option value="">Tất cả lớp</option>
+                            <option value="">{{ __('general.all_classes') }}</option>
                             @foreach ($classrooms ?? [] as $classroom)
                                 <option value="{{ $classroom->id }}" @selected($filterClass == $classroom->id)>{{ $classroom->name }}
                                 </option>
@@ -38,7 +38,7 @@
                     <div class="col-md-2 d-flex align-items-end">
                         <button class="btn btn-outline-secondary w-100"
                             wire:click="$set('search', ''); $set('filterClass', '')" type="button">
-                            <i class="bi bi-arrow-clockwise mr-2"></i>Reset
+                            <i class="bi bi-arrow-clockwise mr-2"></i>{{ __('general.reset') }}
                         </button>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
         <div class="card shadow-sm">
             <div class="card-header bg-light">
                 <h6 class="mb-0">
-                    <i class="bi bi-list-ul mr-2"></i>Danh sách bài học & tài nguyên
+                    <i class="bi bi-list-ul mr-2"></i>{{ __('general.lessons_resources_list') }}
                 </h6>
             </div>
             <div class="card-body">
@@ -57,13 +57,13 @@
                         <table class="table table-hover align-middle">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Bài số</th>
-                                    <th>Tiêu đề</th>
-                                    <th>Lớp học</th>
-                                    <th>Video</th>
-                                    <th>Tài liệu</th>
-                                    <th>Ngày tạo</th>
-                                    <th>Thao tác</th>
+                                    <th>{{ __('general.lesson_number') }}</th>
+                                    <th>{{ __('general.title') }}</th>
+                                    <th>{{ __('general.class') }}</th>
+                                    <th>{{ __('general.video') }}</th>
+                                    <th>{{ __('general.document') }}</th>
+                                    <th>{{ __('general.created_date') }}</th>
+                                    <th>{{ __('general.actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -76,12 +76,12 @@
                                         </td>
                                         <td>
                                             <span
-                                                class="badge bg-primary">{{ $lesson->classroom->name ?? 'N/A' }}</span>
+                                                class="badge bg-primary">{{ $lesson->classroom->name ?? __('general.not_available') }}</span>
                                         </td>
                                         <td>
                                             @if ($lesson->video)
                                                 <a href="{{ $lesson->video }}" target="_blank"
-                                                    class="badge bg-warning text-dark">Video</a>
+                                                    class="badge bg-warning text-dark">{{ __('general.video') }}</a>
                                             @else
                                                 <span class="text-muted">-</span>
                                             @endif
@@ -89,7 +89,7 @@
                                         <td>
                                             @if ($lesson->attachment)
                                                 <a href="{{ asset('storage/' . $lesson->attachment) }}" target="_blank"
-                                                    class="badge bg-success">Tài liệu</a>
+                                                    class="badge bg-success">{{ __('general.document') }}</a>
                                             @else
                                                 <span class="text-muted">-</span>
                                             @endif
@@ -118,8 +118,8 @@
                 @else
                     <div class="text-center py-5">
                         <i class="bi bi-folder-x fs-1 text-muted mb-3"></i>
-                        <h5 class="text-muted">Không có bài học nào</h5>
-                        <p class="text-muted">Bạn chưa có bài học hoặc tài nguyên nào.</p>
+                        <h5 class="text-muted">{{ __('views.no_lessons') }}</h5>
+                        <p class="text-muted">{{ __('views.no_lessons_description') }}</p>
                     </div>
                 @endif
             </div>
@@ -133,16 +133,15 @@
             <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Xác nhận xoá bài học</h5>
+                        <h5 class="modal-title">{{ __('views.confirm_delete_lesson_title') }}</h5>
                         <button type="button" class="btn-close" wire:click="cancelDelete"></button>
                     </div>
                     <div class="modal-body">
-                        <p>Bạn có chắc chắn muốn xoá bài học "<strong>{{ $lessonTitleToDelete }}</strong>"?<br>Hành
-                            động này không thể hoàn tác.</p>
+                        <p>{{ __('views.confirm_delete_lesson', ['title' => $lessonTitleToDelete]) }}</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" wire:click="cancelDelete">Huỷ</button>
-                        <button type="button" class="btn btn-danger" wire:click="deleteLesson">Xoá</button>
+                        <button type="button" class="btn btn-secondary" wire:click="cancelDelete">{{ __('general.cancel') }}</button>
+                        <button type="button" class="btn btn-danger" wire:click="deleteLesson">{{ __('general.delete') }}</button>
                     </div>
                 </div>
             </div>
