@@ -492,5 +492,5 @@ return [
     'edit_lesson_title' => 'Sửa bài học',
     'current_document' => 'Tài liệu hiện tại',
     'save_changes' => 'Lưu thay đổi',
-    'update_lesson_info_desc' => 'Cập nhật thông tin bài học, tài liệu, video, slide cho học viên.'
+    'update_lesson_info_desc' => 'Cập nhật thông tin bài học, tài liệu, video, slide cho học viên.',
 ];
