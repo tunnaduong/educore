@@ -102,7 +102,7 @@ class DoQuiz extends Component
             $this->result = $existingResult;
             $this->isFinished = false;
             $this->startedAt = $existingResult->started_at;
-            $this->answers = $existingResult->answers ?? [];
+            $this->answers = $existingResult->getAnswersArray();
             $this->calculateTimeRemaining();
             // Đảm bảo timeRemaining luôn là số nguyên
             if ($this->timeRemaining !== null) {
@@ -198,7 +198,7 @@ class DoQuiz extends Component
         $maxScore = 0;
 
         foreach ($this->questions as $index => $question) {
-            $maxScore += $question['score'] ?? 1;
+            $maxScore += $question['score'] ?? $question['points'] ?? 1;
 
             if (isset($this->answers[$index])) {
                 $score = $this->calculateQuestionScore($question, $this->answers[$index]);
@@ -217,25 +217,12 @@ class DoQuiz extends Component
 
     public function calculateQuestionScore($question, $answer)
     {
-        switch ($question['type']) {
-            case 'multiple_choice':
-                return $answer === $question['correct_answer'] ? ($question['score'] ?? 1) : 0;
-
-            case 'fill_blank':
-                $correctAnswers = is_array($question['correct_answer']) ? $question['correct_answer'] : [$question['correct_answer']];
-
-                return in_array(strtolower(trim($answer)), array_map('strtolower', $correctAnswers)) ? ($question['score'] ?? 1) : 0;
-
-            case 'drag_drop':
-                return $answer === $question['correct_answer'] ? ($question['score'] ?? 1) : 0;
-
-            case 'essay':
-                // Tự luận cần chấm thủ công, tạm thời cho điểm tối đa
-                return $question['score'] ?? 1;
-
-            default:
-                return 0;
+        // Chỉ xử lý câu hỏi trắc nghiệm
+        if ($question['type'] === 'multiple_choice') {
+            return $answer === $question['correct_answer'] ? ($question['score'] ?? $question['points'] ?? 1) : 0;
         }
+
+        return 0;
     }
 
     public function saveResult()

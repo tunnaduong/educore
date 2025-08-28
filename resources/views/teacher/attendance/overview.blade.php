@@ -1,6 +1,5 @@
 <x-layouts.dash-teacher active="attendances">
     @include('components.language')
-    
     <div class="container-fluid">
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -115,7 +114,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">{{ __('general.present_count') }}</h6>
+                                <h6 class="card-title mb-0">Số lần có mặt</h6>
                                 <h3 class="mb-0">{{ $overviewStats['total_present'] }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -130,7 +129,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">{{ __('general.absent_count') }}</h6>
+                                <h6 class="card-title mb-0">Số lần vắng</h6>
                                 <h3 class="mb-0">{{ $overviewStats['total_absent'] }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -149,7 +148,7 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-trophy mr-2"></i>{{ __('general.top_5_classes_most_attendance') }}
+                            <i class="bi bi-trophy mr-2"></i>Top 5 lớp học có điểm danh nhiều nhất
                         </h5>
                     </div>
                     <div class="card-body">
@@ -158,11 +157,11 @@
                                 <table class="table table-hover">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>{{ __('general.classroom') }}</th>
-                                            <th class="text-center">{{ __('general.total') }}</th>
-                                            <th class="text-center">{{ __('general.present') }}</th>
-                                            <th class="text-center">{{ __('general.rate') }}</th>
-                                            <th class="text-center">{{ __('general.actions') }}</th>
+                                            <th>Lớp học</th>
+                                            <th class="text-center">Tổng số</th>
+                                            <th class="text-center">Có mặt</th>
+                                            <th class="text-center">Tỷ lệ</th>
+                                            <th class="text-center">Hành động</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -204,15 +203,15 @@
                                                 <td class="text-center">
                                                     <div class="btn-group" role="group">
                                                         <a href="{{ route('teacher.attendance.take', $classData['classroom']) }}"
-                                                            class="btn btn-sm btn-outline-primary" title="{{ __('general.attendance') }}">
+                                                            class="btn btn-sm btn-outline-primary" title="Điểm danh">
                                                             <i class="bi bi-calendar-check"></i>
                                                         </a>
                                                         <a href="{{ route('teacher.attendance.classroom-history', $classData['classroom']) }}"
-                                                            class="btn btn-sm btn-outline-info" title="{{ __('general.history') }}">
+                                                            class="btn btn-sm btn-outline-info" title="Lịch sử">
                                                             <i class="bi bi-calendar-week"></i>
                                                         </a>
                                                         <a href="{{ route('teacher.my-class.show', $classData['classroom']) }}"
-                                                            class="btn btn-sm btn-outline-secondary" title="{{ __('general.details') }}">
+                                                            class="btn btn-sm btn-outline-secondary" title="Chi tiết">
                                                             <i class="bi bi-eye"></i>
                                                         </a>
                                                     </div>
@@ -225,8 +224,8 @@
                         @else
                             <div class="text-center py-4">
                                 <i class="bi bi-calendar-x fs-1 text-muted mb-3"></i>
-                                <h5 class="text-muted">{{ __('general.no_attendance_data') }}</h5>
-                                <p class="text-muted">{{ __('general.no_attendance_data_month') }}
+                                <h5 class="text-muted">Chưa có dữ liệu điểm danh</h5>
+                                <p class="text-muted">Chưa có dữ liệu điểm danh cho tháng
                                     {{ $this->getMonthName($selectedMonth) }} {{ $selectedYear }}.</p>
                             </div>
                         @endif
@@ -237,11 +236,11 @@
                 <div class="card shadow-sm">
                     <div class="card-header bg-light d-flex justify-content-between align-items-center">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-clock-history mr-2"></i>{{ __('general.recent_attendance') }}
+                            <i class="bi bi-clock-history mr-2"></i>Điểm danh gần đây
                         </h5>
                         <a href="{{ route('teacher.attendance.history') }}"
                             class="btn btn-sm btn-outline-secondary float-end">
-                            <i class="bi bi-calendar-week"></i> {{ __('general.attendance_history') }}
+                            <i class="bi bi-calendar-week"></i> Lịch sử điểm danh
                         </a>
                     </div>
                     <div class="card-body">
@@ -250,10 +249,10 @@
                                 <table class="table table-hover">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>{{ __('general.date') }}</th>
-                                            <th>{{ __('general.classroom') }}</th>
-                                            <th>{{ __('general.student') }}</th>
-                                            <th class="text-center">{{ __('general.status') }}</th>
+                                            <th>Ngày</th>
+                                            <th>Lớp học</th>
+                                            <th>Học viên</th>
+                                            <th class="text-center">Trạng thái</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -280,9 +279,9 @@
                                                 </td>
                                                 <td class="text-center">
                                                     @if ($attendance->present)
-                                                        <span class="badge bg-success">{{ __('general.present') }}</span>
+                                                        <span class="badge bg-success">Có mặt</span>
                                                     @else
-                                                        <span class="badge bg-danger">{{ __('general.absent') }}</span>
+                                                        <span class="badge bg-danger">Vắng</span>
                                                         @if ($attendance->reason)
                                                             <br><small
                                                                 class="text-muted">{{ $attendance->reason }}</small>
@@ -297,8 +296,8 @@
                         @else
                             <div class="text-center py-4">
                                 <i class="bi bi-calendar-x fs-1 text-muted mb-3"></i>
-                                <h5 class="text-muted">{{ __('general.no_attendance_yet') }}</h5>
-                                <p class="text-muted">{{ __('general.no_attendance_data') }}</p>
+                                <h5 class="text-muted">Chưa có điểm danh</h5>
+                                <p class="text-muted">Chưa có dữ liệu điểm danh nào.</p>
                             </div>
                         @endif
                     </div>
@@ -310,7 +309,7 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-star mr-2"></i>{{ __('general.top_5_excellent_students') }}
+                            <i class="bi bi-star mr-2"></i>Top 5 học viên xuất sắc
                         </h5>
                     </div>
                     <div class="card-body">
@@ -338,7 +337,7 @@
                         @else
                             <div class="text-center py-3">
                                 <i class="bi bi-people fs-1 text-muted mb-2"></i>
-                                <p class="text-muted mb-0">{{ __('general.no_student_data') }}</p>
+                                <p class="text-muted mb-0">Chưa có dữ liệu học viên</p>
                             </div>
                         @endif
                     </div>
@@ -348,20 +347,20 @@
                 <div class="card shadow-sm">
                     <div class="card-header bg-light">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-lightning mr-2"></i>{{ __('general.quick_actions') }}
+                            <i class="bi bi-lightning mr-2"></i>Hành động nhanh
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <a href="{{ route('teacher.my-class.index') }}" class="btn btn-primary w-100">
-                                    <i class="bi bi-calendar-check mr-2"></i>{{ __('general.attendance_by_class') }}
+                                    <i class="bi bi-calendar-check mr-2"></i>Điểm danh theo lớp
                                 </a>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <a href="{{ route('teacher.attendance.history') }}"
                                     class="btn btn-outline-primary w-100">
-                                    <i class="bi bi-calendar-week mr-2"></i>{{ __('general.attendance_history') }}
+                                    <i class="bi bi-calendar-week mr-2"></i>Lịch sử điểm danh
                                 </a>
                             </div>
                         </div>

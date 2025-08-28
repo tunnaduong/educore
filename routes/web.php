@@ -220,3 +220,8 @@ Route::middleware(['auth', 'verified', 'role:student'])->name('student.')->prefi
     // Đánh giá chất lượng học
     Route::get('/evaluation', \App\Livewire\Student\Evaluation\Index::class)->name('evaluation');
 });
+
+Route::middleware(['auth'])->group(function () {
+    // Chat file upload
+    Route::post('/chat/upload', [App\Http\Controllers\ChatController::class, 'uploadAttachment'])->name('chat.upload');
+});

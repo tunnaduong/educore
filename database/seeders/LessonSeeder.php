@@ -189,15 +189,15 @@ class LessonSeeder extends Seeder
                 $content = $contents[$i] ?? $faker->paragraph(3);
 
                 // Tạo đường dẫn file (có thể null)
-                $attachmentPath = $faker->optional(0.4)->filePath();
-                $videoPath = $faker->optional(0.3)->filePath();
+                $attachment = $faker->optional(0.4)->filePath();
+                $video = $faker->optional(0.3)->filePath();
 
                 Lesson::create([
                     'classroom_id' => $classroom->id,
                     'title' => $title,
                     'content' => $content,
-                    'attachment_path' => $attachmentPath,
-                    'video_path' => $videoPath,
+                    'attachment' => $attachment,
+                    'video' => $video,
                 ]);
             }
         }

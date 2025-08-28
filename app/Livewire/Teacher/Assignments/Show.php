@@ -49,7 +49,7 @@ class Show extends Component
         if (! $studentId) {
             return [
                 'status' => 'not_submitted',
-                'label' => __('general.not_submitted'),
+                'label' => 'Chưa nộp',
                 'class' => 'bg-secondary',
                 'submitted_types' => [],
                 'required_types' => $this->assignment->types ?? [],
@@ -66,7 +66,7 @@ class Show extends Component
         if ($studentSubmissions->isEmpty()) {
             return [
                 'status' => 'not_submitted',
-                'label' => __('general.not_submitted'),
+                'label' => 'Chưa nộp',
                 'class' => 'bg-secondary',
                 'submitted_types' => [],
                 'required_types' => $this->assignment->types ?? [],
@@ -86,7 +86,7 @@ class Show extends Component
             // Đã nộp đủ
             return [
                 'status' => 'completed',
-                'label' => __('general.completed_submissions'),
+                'label' => 'Đã nộp đủ',
                 'class' => 'bg-success',
                 'submitted_types' => $submittedTypes,
                 'required_types' => $requiredTypes,
@@ -97,7 +97,7 @@ class Show extends Component
             // Còn thiếu
             return [
                 'status' => 'partial',
-                'label' => __('general.missing_of_total', ['missing' => count($missingTypes), 'total' => count($requiredTypes)]),
+                'label' => 'Còn thiếu '.count($missingTypes).'/'.count($requiredTypes),
                 'class' => 'bg-warning',
                 'submitted_types' => $submittedTypes,
                 'required_types' => $requiredTypes,
@@ -114,12 +114,12 @@ class Show extends Component
     public function getTypeLabel($type)
     {
         return match ($type) {
-            'text' => __('general.text'),
-            'essay' => __('general.essay'),
-            'image' => __('general.image'),
-            'audio' => __('general.audio'),
-            'video' => __('general.video'),
-            default => $type,
+            'text' => 'Điền từ',
+            'essay' => 'Tự luận',
+            'image' => 'Nộp ảnh',
+            'audio' => 'Ghi âm',
+            'video' => 'Quay video',
+            default => $type
         };
     }
 

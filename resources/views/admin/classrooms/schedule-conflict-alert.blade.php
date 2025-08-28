@@ -3,7 +3,7 @@
     @if (!empty($conflicts))
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
             <div class="d-flex align-items-start">
-                <i class="bi bi-exclamation-triangle-fill fs-4 me-3 mt-1"></i>
+                <i class="bi bi-exclamation-triangle-fill fs-4 mr-3 mt-1"></i>
                 <div class="flex-grow-1">
                     <h6 class="alert-heading mb-1">@lang('general.detected_schedule_conflicts_title')</h6>
                     <p class="mb-2">@lang('general.class_students_schedule_conflict_message')</p>
@@ -14,7 +14,7 @@
                                 <div class="card border-warning mb-2">
                                     <div class="card-body py-2">
                                         <div class="d-flex align-items-start">
-                                            <i class="bi bi-person-circle text-danger me-2 mt-1"></i>
+                                            <i class="bi bi-person-circle text-danger mr-2 mt-1"></i>
                                             <div class="flex-grow-1">
                                                 <strong>{{ $conflictData['student']->name }}</strong>
                                                 <div class="small text-muted mt-1">

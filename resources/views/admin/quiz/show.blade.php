@@ -149,13 +149,13 @@
                                         <div>
                                             <span class="badge bg-primary mr-2">Câu {{ $index + 1 }}</span>
                                             <span class="badge bg-secondary">{{ ucfirst($question['type']) }}</span>
-                                            <span class="badge bg-info">{{ $question['score'] }} điểm</span>
+                                            <span class="badge bg-info">{{ $question['score'] ?? $question['points'] ?? 1 }} điểm</span>
                                         </div>
                                     </div>
                                     <div class="fw-medium mb-2">{{ $question['question'] }}</div>
 
-                                    @if ($question['type'] === 'multiple_choice' && isset($question['options']))
-                                        <div class="ms-3">
+                                    @if (isset($question['options']))
+                                        <div class="ml-3">
                                             @foreach ($question['options'] as $optionIndex => $option)
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="radio" disabled
@@ -169,18 +169,6 @@
                                                     </label>
                                                 </div>
                                             @endforeach
-                                        </div>
-                                    @elseif($question['type'] === 'fill_blank')
-                                        <div class="ms-3">
-                                            <div class="alert alert-success mb-0">
-                                                <strong>Đáp án:</strong> {{ $question['correct_answer'] }}
-                                            </div>
-                                        </div>
-                                    @elseif($question['type'] === 'essay')
-                                        <div class="ms-3">
-                                            <div class="alert alert-info mb-0">
-                                                <strong>Loại câu hỏi:</strong> Tự luận (cần chấm thủ công)
-                                            </div>
                                         </div>
                                     @endif
                                 </div>
