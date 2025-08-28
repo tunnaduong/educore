@@ -54,7 +54,26 @@
       .smooth-scroll {
         scroll-behavior: smooth;
       }
+
+      /* Hide horizontal scrollbar cross-browser */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+      }
+
+      /* Disable text selection inside team scroller */
+      .team-embla,
+      .team-embla * {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/embla-carousel@8.1.6/embla-carousel.umd.js"></script>
   </head>
   <body class="font-sans smooth-scroll">
     <!-- Header/Navbar -->
@@ -556,96 +575,188 @@
     </section>
 
     <!-- Team Section -->
-    <section id="doi-ngu" class="py-20 px-6 bg-white">
-      <div class="container mx-auto max-w-4xl">
+    <section id="doi-ngu" class="py-20 px-0 bg-white">
+      <div class="w-full mx-auto">
         <h2 class="text-3xl font-bold text-center mb-16 text-gray-800">
           Nhóm phát triển EduCore
         </h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-          <!-- Team Member 1 -->
+        <div class="relative">
+          <!-- Fades -->
           <div
-            class="team-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300"
-          >
-            <div class="h-48 bg-gray-100 flex items-center justify-center">
-              <svg
-                class="w-24 h-24 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                ></path>
-              </svg>
-            </div>
-            <div class="p-6">
-              <h3 class="text-xl font-bold mb-1 text-gray-800">Nguyễn Văn A</h3>
-              <p class="text-blue-600 mb-3">Trưởng nhóm phát triển</p>
-              <p class="text-gray-600">
-                5+ năm kinh nghiệm phát triển phần mềm giáo dục
-              </p>
-            </div>
-          </div>
+            class="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-white to-transparent opacity-0 transition-opacity duration-200 z-10 team-fade-left"
+          ></div>
+          <div
+            class="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-white to-transparent opacity-0 transition-opacity duration-200 z-10 team-fade-right"
+          ></div>
 
-          <!-- Team Member 2 -->
-          <div
-            class="team-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300"
+          <!-- Arrow Buttons -->
+          <button
+            type="button"
+            class="team-prev absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white shadow rounded-full p-2 transition disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            <div class="h-48 bg-gray-100 flex items-center justify-center">
-              <svg
-                class="w-24 h-24 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                ></path>
-              </svg>
-            </div>
-            <div class="p-6">
-              <h3 class="text-xl font-bold mb-1 text-gray-800">Trần Thị B</h3>
-              <p class="text-blue-600 mb-3">Chuyên gia UX/UI</p>
-              <p class="text-gray-600">
-                Thiết kế giao diện thân thiện, dễ sử dụng
-              </p>
-            </div>
-          </div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 text-gray-700"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </button>
+          <button
+            type="button"
+            class="team-next absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white shadow rounded-full p-2 transition disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 text-gray-700"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
 
-          <!-- Team Member 3 -->
-          <div
-            class="team-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300"
-          >
-            <div class="h-48 bg-gray-100 flex items-center justify-center">
-              <svg
-                class="w-24 h-24 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
+          <style>
+            .member-img img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+            }
+          </style>
+
+          <!-- Horizontal scroller (Embla viewport) -->
+          <div class="team-scroller team-embla overflow-hidden pb-2 px-16">
+            <div class="team-track flex gap-8">
+              <!-- Team Member 1 -->
+              <div
+                class="min-w-[260px] team-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300"
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                ></path>
-              </svg>
-            </div>
-            <div class="p-6">
-              <h3 class="text-xl font-bold mb-1 text-gray-800">Lê Văn C</h3>
-              <p class="text-blue-600 mb-3">Chuyên gia giáo dục</p>
-              <p class="text-gray-600">
-                10+ năm kinh nghiệm quản lý trung tâm ngoại ngữ
-              </p>
+                <div
+                  class="h-48 bg-gray-100 flex items-center justify-center member-img"
+                >
+                  <img src="./member-images/tunganh.png" />
+                </div>
+                <div class="p-6">
+                  <h3 class="text-xl font-bold mb-1 text-gray-800">
+                    Dương Tùng Anh
+                  </h3>
+                  <p class="text-blue-600 mb-3">Trưởng nhóm phát triển</p>
+                  <p class="text-gray-600">
+                    5+ năm kinh nghiệm phát triển phần mềm giáo dục
+                  </p>
+                </div>
+              </div>
+
+              <!-- Team Member 2 -->
+              <div
+                class="min-w-[260px] team-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300"
+              >
+                <div
+                  class="h-48 bg-gray-100 flex items-center justify-center member-img"
+                >
+                  <img src="./member-images/tuananh.png" />
+                </div>
+                <div class="p-6">
+                  <h3 class="text-xl font-bold mb-1 text-gray-800">
+                    Hoàng Tuấn Anh
+                  </h3>
+                  <p class="text-blue-600 mb-3">Chuyên gia UX/UI</p>
+                  <p class="text-gray-600">
+                    Thiết kế giao diện thân thiện, dễ sử dụng
+                  </p>
+                </div>
+              </div>
+
+              <!-- Team Member 3 -->
+              <div
+                class="min-w-[260px] team-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300"
+              >
+                <div
+                  class="h-48 bg-gray-100 flex items-center justify-center member-img"
+                >
+                  <img src="./member-images/hoduc.png" />
+                </div>
+                <div class="p-6">
+                  <h3 class="text-xl font-bold mb-1 text-gray-800">Hồ Đức</h3>
+                  <p class="text-blue-600 mb-3">Kĩ sư Frontend</p>
+                  <p class="text-gray-600">
+                    Xây dựng UI hiện đại, tối ưu trải nghiệm
+                  </p>
+                </div>
+              </div>
+
+              <!-- Team Member 4 -->
+              <div
+                class="min-w-[260px] team-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300"
+              >
+                <div
+                  class="h-48 bg-gray-100 flex items-center justify-center member-img"
+                >
+                  <img src="./member-images/ducduy.png" />
+                </div>
+                <div class="p-6">
+                  <h3 class="text-xl font-bold mb-1 text-gray-800">
+                    Nguyễn Đức Duy
+                  </h3>
+                  <p class="text-blue-600 mb-3">Kĩ sư Backend</p>
+                  <p class="text-gray-600">
+                    Tối ưu hiệu năng và bảo mật hệ thống
+                  </p>
+                </div>
+              </div>
+
+              <!-- Team Member 5 -->
+              <div
+                class="min-w-[260px] team-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300"
+              >
+                <div
+                  class="h-48 bg-gray-100 flex items-center justify-center member-img"
+                >
+                  <img src="./member-images/linhchi.png" />
+                </div>
+                <div class="p-6">
+                  <h3 class="text-xl font-bold mb-1 text-gray-800">
+                    Phạm Linh Chi
+                  </h3>
+                  <p class="text-blue-600 mb-3">Documentation</p>
+                  <p class="text-gray-600">
+                    Viết tài liệu và hướng dẫn sử dụng
+                  </p>
+                </div>
+              </div>
+
+              <!-- Team Member 6 -->
+              <div
+                class="min-w-[260px] team-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300"
+              >
+                <div
+                  class="h-48 bg-gray-100 flex items-center justify-center member-img"
+                >
+                  <img src="./member-images/duyhai.png" />
+                </div>
+                <div class="p-6">
+                  <h3 class="text-xl font-bold mb-1 text-gray-800">
+                    Trần Duy Hải
+                  </h3>
+                  <p class="text-blue-600 mb-3">QA & Tester</p>
+                  <p class="text-gray-600">
+                    Đảm bảo chất lượng và độ ổn định sản phẩm
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -704,9 +815,33 @@
             </div>
             <button
               type="submit"
-              class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 transform hover:scale-105"
+              id="contactSubmitBtn"
+              class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 transform hover:scale-105 flex items-center justify-center"
             >
-              Gửi liên hệ
+              <span class="btn-label">Gửi liên hệ</span>
+              <span class="btn-loading hidden flex items-center gap-2">
+                <svg
+                  class="animate-spin h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    class="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    stroke-width="4"
+                  ></circle>
+                  <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                  ></path>
+                </svg>
+                <span>Đang gửi...</span>
+              </span>
             </button>
           </form>
         </div>
@@ -767,15 +902,37 @@
       // Toggle menu function
       function toggleMenu() {
         isMenuOpen = !isMenuOpen;
-        
+
         if (isMenuOpen) {
           // Open menu
           mobileNav.classList.remove("hidden");
-          mobileNav.classList.add("flex", "flex-col", "absolute", "top-16", "left-0", "right-0", "bg-white", "p-4", "shadow-md", "z-40");
+          mobileNav.classList.add(
+            "flex",
+            "flex-col",
+            "absolute",
+            "top-16",
+            "left-0",
+            "right-0",
+            "bg-white",
+            "p-4",
+            "shadow-md",
+            "z-40"
+          );
         } else {
           // Close menu
           mobileNav.classList.add("hidden");
-          mobileNav.classList.remove("flex", "flex-col", "absolute", "top-16", "left-0", "right-0", "bg-white", "p-4", "shadow-md", "z-40");
+          mobileNav.classList.remove(
+            "flex",
+            "flex-col",
+            "absolute",
+            "top-16",
+            "left-0",
+            "right-0",
+            "bg-white",
+            "p-4",
+            "shadow-md",
+            "z-40"
+          );
         }
       }
 
@@ -787,14 +944,18 @@
 
       // Close menu when clicking outside
       document.addEventListener("click", function (e) {
-        if (isMenuOpen && !mobileNav.contains(e.target) && !hamburgerButton.contains(e.target)) {
+        if (
+          isMenuOpen &&
+          !mobileNav.contains(e.target) &&
+          !hamburgerButton.contains(e.target)
+        ) {
           toggleMenu();
         }
       });
 
       // Close menu when clicking on menu items
-      mobileNav.querySelectorAll("a").forEach(link => {
-        link.addEventListener("click", function() {
+      mobileNav.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", function () {
           if (isMenuOpen) {
             toggleMenu();
           }
@@ -802,7 +963,7 @@
       });
 
       // Close menu on window resize (if screen becomes larger)
-      window.addEventListener("resize", function() {
+      window.addEventListener("resize", function () {
         if (window.innerWidth >= 768 && isMenuOpen) {
           toggleMenu();
         }
@@ -813,10 +974,41 @@
         .getElementById("contactForm")
         .addEventListener("submit", function (e) {
           e.preventDefault();
-          alert(
-            "Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất có thể."
-          );
-          this.reset();
+          const submitBtn = document.getElementById("contactSubmitBtn");
+          const labelEl = submitBtn.querySelector(".btn-label");
+          const loadingEl = submitBtn.querySelector(".btn-loading");
+          // Set loading state
+          submitBtn.disabled = true;
+          submitBtn.classList.add("opacity-80", "cursor-not-allowed");
+          labelEl.classList.add("hidden");
+          loadingEl.classList.remove("hidden");
+          const data = new FormData(this);
+
+          fetch(
+            "https://script.google.com/macros/s/AKfycbzGyxp5U3iftH1K_GwrkpNnk7Yvl_kn_sw7671gU1KH80CycWkWTE1gJ0BWpgT3FT7g/exec",
+            {
+              method: "POST",
+              body: data,
+            }
+          )
+            .then((res) => res.text())
+            .then((text) => {
+              alert(
+                "Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất có thể."
+              );
+            })
+            .catch((err) => {
+              alert("❌ Lỗi: " + err);
+              console.log(err);
+            })
+            .finally(() => {
+              // Reset loading state
+              submitBtn.disabled = false;
+              submitBtn.classList.remove("opacity-80", "cursor-not-allowed");
+              loadingEl.classList.add("hidden");
+              labelEl.classList.remove("hidden");
+              this.reset();
+            });
         });
 
       // Scroll animations
@@ -848,6 +1040,45 @@
           }
         });
       });
+
+      // Team scroller: Embla Carousel for smooth drag + fade edges
+      (function () {
+        const viewport = document.querySelector(".team-embla");
+        const container = document.querySelector(".team-track");
+        if (!viewport || !container || !window.EmblaCarousel) return;
+
+        const embla = EmblaCarousel(viewport, {
+          axis: "x",
+          dragFree: true,
+          containScroll: "trimSnaps",
+          slidesToScroll: 1,
+          align: "start",
+        });
+
+        const fadeLeft = document.querySelector(".team-fade-left");
+        const fadeRight = document.querySelector(".team-fade-right");
+        const prevBtn = document.querySelector(".team-prev");
+        const nextBtn = document.querySelector(".team-next");
+
+        function updateFades() {
+          const atStart = embla.canScrollPrev() === false;
+          const atEnd = embla.canScrollNext() === false;
+          if (fadeLeft) fadeLeft.style.opacity = atStart ? "0" : "1";
+          if (fadeRight) fadeRight.style.opacity = atEnd ? "0" : "1";
+          if (prevBtn) prevBtn.disabled = atStart;
+          if (nextBtn) nextBtn.disabled = atEnd;
+        }
+
+        embla.on("select", updateFades);
+        embla.on("reInit", updateFades);
+        updateFades();
+        window.addEventListener("resize", updateFades);
+
+        if (prevBtn)
+          prevBtn.addEventListener("click", () => embla.scrollPrev());
+        if (nextBtn)
+          nextBtn.addEventListener("click", () => embla.scrollNext());
+      })();
     </script>
   </body>
 </html>
