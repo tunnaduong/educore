@@ -76,7 +76,7 @@
                                 <input class="form-check-input" type="checkbox" wire:model.live="showTrashed"
                                     id="showTrashed">
                                 <label class="form-check-label" for="showTrashed">
-                                    Hiện lớp đã ẩn
+                                    @lang('general.show_trashed')
                                 </label>
                             </div>
                         </div>
@@ -85,7 +85,7 @@
                                 <input class="form-check-input" type="checkbox" wire:model.live="hideCompleted"
                                     id="hideCompleted">
                                 <label class="form-check-label" for="hideCompleted">
-                                    Ẩn lớp đã hoàn thành
+                                    @lang('general.hide_completed_classes')
                                 </label>
                             </div>
                         </div>
@@ -190,7 +190,7 @@
                                                 @if ($showTrashed && !is_null($classroom->deleted_at))
                                                     <button type="button" class="btn btn-sm btn-outline-success"
                                                         wire:click="restore({{ $classroom->id }})"
-                                                        title="Khôi phục lớp học">
+                                                        title="@lang('general.restore_classroom')">
                                                         <i class="fas fa-undo"></i>
                                                     </button>
                                                 @else
@@ -217,7 +217,7 @@
                                                         <button type="button" data-toggle="modal"
                                                             data-target="#deleteModal{{ $classroom->id }}"
                                                             class="btn btn-sm btn-outline-warning"
-                                                            title="Ẩn lớp đã hoàn thành">
+                                                            title="@lang('general.hide_completed_classes')">
                                                             <i class="fas fa-eye-slash"></i>
                                                         </button>
                                                     @else
