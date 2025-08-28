@@ -255,14 +255,14 @@
                         <!-- Thông báo -->
                         @if (session()->has('success'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                {{ session('success') }}
+                                <strong>{{ __('views.success') }}:</strong> {{ session('success') }}
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                             </div>
                         @endif
 
                         @if (session()->has('error'))
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                {{ session('error') }}
+                                <strong>{{ __('views.error') }}:</strong> {{ session('error') }}
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                             </div>
                         @endif
@@ -281,7 +281,7 @@
                                                     class="form-label">{{ __('general.class') }}</label>
                                                 <select wire:model.live="selectedClass" id="selectedClass"
                                                     class="form-control">
-                                                    <option value="">{{ __('general.select_class') }}</option>
+                                                    <option value="">{{ __('views.select_class') }}</option>
                                                     @foreach ($classes as $class)
                                                         <option value="{{ $class->id }}">{{ $class->name }}
                                                         </option>
@@ -297,7 +297,7 @@
                                                     class="form-label">{{ __('general.chinese_lesson') }}</label>
                                                 <select wire:model.live="selectedLesson" id="selectedLesson"
                                                     class="form-control" {{ !$selectedClass ? 'disabled' : '' }}>
-                                                    <option value="">{{ __('general.select_lesson') }}</option>
+                                                    <option value="">{{ __('views.select_lesson') }}</option>
                                                     @foreach ($lessons as $lesson)
                                                         <option value="{{ $lesson->id }}">{{ $lesson->title }}
                                                         </option>
@@ -369,25 +369,25 @@
                                                     <div wire:loading class="loading-overlay">
                                                         <div class="spinner-border spinner-border-sm text-light mr-2"
                                                             role="status">
-                                                            <span class="visually-hidden">Loading...</span>
+                                                            <span class="visually-hidden">{{ __('views.loading') }}</span>
                                                         </div>
-                                                        <span class="loading-text">{{ __('general.checking') }}</span>
+                                                        <span class="loading-text">{{ __('views.loading_text') }}</span>
                                                     </div>
                                                 </button>
                                                 <button wire:click="saveQuiz" class="btn btn-success btn-sm">
-                                                    <i class="fas fa-save"></i> Lưu Quiz
+                                                    <i class="fas fa-save"></i> {{ __('views.save_quiz') }}
                                                 </button>
                                             </div>
                                         </div>
                                         <div class="card-body">
                                             <div class="row mb-3">
                                                 <div class="col-md-6">
-                                                    <strong>Tổng điểm:</strong>
+                                                    <strong>{{ __('views.total_score') }}</strong>
                                                     {{ $generatedQuiz['total_score'] ?? 0 }}
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <strong>Thời gian ước tính:</strong>
-                                                    {{ $generatedQuiz['estimated_time'] ?? 30 }} phút
+                                                    <strong>{{ __('views.estimated_time') }}</strong>
+                                                    {{ $generatedQuiz['estimated_time'] ?? 30 }} {{ __('general.minutes') }}
                                                 </div>
                                             </div>
 
@@ -395,7 +395,7 @@
                                                 @foreach ($generatedQuiz['questions'] as $index => $question)
                                                     <div class="card mb-3">
                                                         <div class="card-header">
-                                                            <strong>Câu {{ $index + 1 }}:</strong>
+                                                            <strong>{{ __('views.question_number', ['number' => $index + 1]) }}</strong>
                                                             {{ $question['question'] }}
                                                             <span
                                                                 class="badge bg-secondary float-end">{{ ucfirst($question['type']) }}</span>
@@ -417,21 +417,21 @@
                                                             @endif
 
                                                             <div class="mt-3">
-                                                                <strong>Đáp án:</strong>
+                                                                <strong>{{ __('views.correct_answer') }}</strong>
                                                                 <span
                                                                     class="text-success">{{ $question['correct_answer'] }}</span>
                                                             </div>
 
                                                             @if (!empty($question['explanation']))
                                                                 <div class="mt-2">
-                                                                    <strong>Giải thích:</strong>
+                                                                    <strong>{{ __('views.explanation') }}</strong>
                                                                     <p class="text-muted mb-0">
                                                                         {{ $question['explanation'] }}</p>
                                                                 </div>
                                                             @endif
 
                                                             <div class="mt-2">
-                                                                <strong>Điểm:</strong> {{ $question['score'] ?? 1 }}
+                                                                <strong>{{ __('views.score') }}</strong> {{ $question['score'] ?? 1 }}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -443,8 +443,8 @@
                                     <div class="card">
                                         <div class="card-body text-center text-muted">
                                             <i class="fas fa-robot fa-5x mb-4"></i>
-                                            <h5>Chưa có quiz tiếng Trung được tạo</h5>
-                                            <p>Hãy chọn lớp học, bài học và cấu hình để tạo quiz tiếng Trung bằng AI</p>
+                                            <h5>{{ __('views.no_quiz_created') }}</h5>
+                                            <p>{{ __('views.no_quiz_created_description') }}</p>
                                         </div>
                                     </div>
                                 @endif

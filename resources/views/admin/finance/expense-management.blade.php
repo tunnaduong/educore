@@ -1,20 +1,20 @@
-<x-layouts.dash-admin active="finance" title="Quản lý chi tiêu">
+<x-layouts.dash-admin active="finance" title="{{ __('views.expense_management_title') }}">
     @include('components.language')
     <div class="container-fluid">
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h4 class="text-danger mb-1">
-                    <i class="bi bi-wallet2 mr-2"></i>Quản lý chi tiêu
+                    <i class="bi bi-wallet2 mr-2"></i>{{ __('views.expense_management_title') }}
                 </h4>
-                <p class="text-muted mb-0">Theo dõi và quản lý các khoản chi của trung tâm</p>
+                <p class="text-muted mb-0">{{ __('views.expense_management_description') }}</p>
             </div>
             <div class="d-flex gap-2">
                 <a href="{{ route('admin.finance.index') }}" class="btn btn-outline-secondary btn-lg">
-                    <i class="bi bi-arrow-left mr-2"></i>Quay lại thống kê
+                    <i class="bi bi-arrow-left mr-2"></i>{{ __('views.back_to_finance_overview') }}
                 </a>
                 <button class="btn btn-danger btn-lg shadow-sm" wire:click="openCreateModal">
-                    <i class="bi bi-plus-circle mr-2"></i>Thêm khoản chi
+                    <i class="bi bi-plus-circle mr-2"></i>{{ __('views.add_expense') }}
                 </button>
             </div>
         </div>
@@ -33,28 +33,28 @@
                             <i class="bi bi-tag-fill mr-1"></i>{{ __('general.expense_type') }}
                         </label>
                         <select wire:model="filterType" class="form-control">
-                            <option value="">Tất cả loại</option>
-                            <option value="salary">Lương</option>
-                            <option value="utilities">Tiện ích</option>
-                            <option value="maintenance">Bảo trì</option>
-                            <option value="supplies">Vật tư</option>
-                            <option value="marketing">Marketing</option>
-                            <option value="training">Đào tạo</option>
-                            <option value="other">Khác</option>
+                            <option value="">{{ __('views.all_types') }}</option>
+                            <option value="salary">{{ __('views.expense_type_salary') }}</option>
+                            <option value="utilities">{{ __('views.expense_type_utilities') }}</option>
+                            <option value="maintenance">{{ __('views.expense_type_maintenance') }}</option>
+                            <option value="supplies">{{ __('views.expense_type_supplies') }}</option>
+                            <option value="marketing">{{ __('views.expense_type_marketing') }}</option>
+                            <option value="training">{{ __('views.expense_type_training') }}</option>
+                            <option value="other">{{ __('views.expense_type_other') }}</option>
                         </select>
                     </div>
                     <div class="col-md-3">
                         <label class="form-label fw-semibold">
-                            <i class="bi bi-calendar-month text-primary mr-1"></i>Tháng
+                            <i class="bi bi-calendar-month text-primary mr-1"></i>{{ __('views.month') }}
                         </label>
                         <input type="month" wire:model="filterMonth" class="form-control">
                     </div>
                     <div class="col-md-3">
                         <label class="form-label fw-semibold">
-                            <i class="bi bi-person-fill text-success mr-1"></i>Nhân viên
+                            <i class="bi bi-person-fill text-success mr-1"></i>{{ __('general.employee') }}
                         </label>
                         <select wire:model="filterStaff" class="form-control">
-                            <option value="">Tất cả nhân viên</option>
+                            <option value="">{{ __('views.all_staff') }}</option>
                             @foreach ($this->staffs as $staff)
                                 <option value="{{ $staff->id }}">{{ $staff->name }}</option>
                             @endforeach
@@ -63,7 +63,7 @@
                     <div class="col-md-3 d-flex align-items-end">
                         <div class="text-muted small">
                             <i class="bi bi-info-circle mr-1"></i>
-                            Tổng: {{ number_format($expenses->sum('amount')) }}₫
+                            {{ __('views.total_prefix') }} {{ number_format($expenses->sum('amount')) }}₫
                         </div>
                     </div>
                 </div>
@@ -84,7 +84,7 @@
         <div class="card shadow-sm">
             <div class="card-header bg-gradient-danger text-white">
                 <h6 class="mb-0">
-                    <i class="bi bi-list-ul mr-2"></i>Danh sách chi tiêu
+                    <i class="bi bi-list-ul mr-2"></i>{{ __('views.expenses_list_title') }}
                 </h6>
             </div>
             <div class="table-responsive">
@@ -123,37 +123,37 @@
                                     @php
                                         $typeMap = [
                                             'salary' => [
-                                                'label' => 'Lương',
+                                                'label' => __('views.expense_type_salary'),
                                                 'icon' => 'bi-people-fill',
                                                 'color' => 'success',
                                             ],
                                             'utilities' => [
-                                                'label' => 'Tiện ích',
+                                                'label' => __('views.expense_type_utilities'),
                                                 'icon' => 'bi-lightning-fill',
                                                 'color' => 'warning',
                                             ],
                                             'maintenance' => [
-                                                'label' => 'Bảo trì',
+                                                'label' => __('views.expense_type_maintenance'),
                                                 'icon' => 'bi-tools',
                                                 'color' => 'info',
                                             ],
                                             'supplies' => [
-                                                'label' => 'Vật tư',
+                                                'label' => __('views.expense_type_supplies'),
                                                 'icon' => 'bi-box-seam',
                                                 'color' => 'secondary',
                                             ],
                                             'marketing' => [
-                                                'label' => 'Marketing',
+                                                'label' => __('views.expense_type_marketing'),
                                                 'icon' => 'bi-megaphone-fill',
                                                 'color' => 'primary',
                                             ],
                                             'training' => [
-                                                'label' => 'Đào tạo',
+                                                'label' => __('views.expense_type_training'),
                                                 'icon' => 'bi-mortarboard-fill',
                                                 'color' => 'info',
                                             ],
                                             'other' => [
-                                                'label' => 'Khác',
+                                                'label' => __('views.expense_type_other'),
                                                 'icon' => 'bi-three-dots',
                                                 'color' => 'secondary',
                                             ],
@@ -185,7 +185,7 @@
                                     @if ($expense->classroom)
                                         <span class="badge bg-light text-dark border">
                                             <i
-                                                class="bi bi-building-fill mr-1"></i>{{ $expense->classroom?->name ?? 'N/A' }}
+                                                class="bi bi-building-fill mr-1"></i>{{ $expense->classroom?->name ?? __('general.not_available') }}
                                         </span>
                                     @else
                                         <span class="text-muted">-</span>
@@ -219,9 +219,9 @@
                             <tr>
                                 <td colspan="8" class="text-center py-5">
                                     <i class="bi bi-wallet text-muted" style="font-size: 3rem;"></i>
-                                    <div class="mt-2 text-muted fs-5">Chưa có khoản chi nào</div>
+                                    <div class="mt-2 text-muted fs-5">{{ __('views.no_expenses') }}</div>
                                     <button class="btn btn-danger mt-3" wire:click="openCreateModal">
-                                        <i class="bi bi-plus-circle mr-1"></i>Thêm khoản chi đầu tiên
+                                        <i class="bi bi-plus-circle mr-1"></i>{{ __('views.add_first_expense') }}
                                     </button>
                                 </td>
                             </tr>
@@ -239,7 +239,7 @@
                         <div class="modal-header bg-danger text-white">
                             <h5 class="modal-title">
                                 <i class="bi {{ $editingExpenseId ? 'bi-pencil' : 'bi-plus-circle' }} mr-2"></i>
-                                {{ $editingExpenseId ? 'Sửa khoản chi' : 'Thêm khoản chi mới' }}
+                                {{ $editingExpenseId ? __('views.edit_expense_title') : __('views.add_new_expense_title') }}
                             </h5>
                             <button type="button" class="btn-close btn-close-white"
                                 wire:click="closeCreateModal"></button>
@@ -249,15 +249,15 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
-                                            <label class="form-label fw-semibold">Loại chi tiêu *</label>
+                                            <label class="form-label fw-semibold">{{ __('general.expense_type') }} *</label>
                                             <select wire:model="type" class="form-control" required>
-                                                <option value="salary">💰 Lương</option>
-                                                <option value="utilities">⚡ Tiện ích</option>
-                                                <option value="maintenance">🔧 Bảo trì</option>
-                                                <option value="supplies">📦 Vật tư</option>
-                                                <option value="marketing">📢 Marketing</option>
-                                                <option value="training">🎓 Đào tạo</option>
-                                                <option value="other">➕ Khác</option>
+                                                <option value="salary">💰 {{ __('views.expense_type_salary') }}</option>
+                                                <option value="utilities">⚡ {{ __('views.expense_type_utilities') }}</option>
+                                                <option value="maintenance">🔧 {{ __('views.expense_type_maintenance') }}</option>
+                                                <option value="supplies">📦 {{ __('views.expense_type_supplies') }}</option>
+                                                <option value="marketing">📢 {{ __('views.expense_type_marketing') }}</option>
+                                                <option value="training">🎓 {{ __('views.expense_type_training') }}</option>
+                                                <option value="other">➕ {{ __('views.expense_type_other') }}</option>
                                             </select>
                                             @error('type')
                                                 <span class="text-danger small">{{ $message }}</span>
@@ -266,7 +266,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
-                                            <label class="form-label fw-semibold">Số tiền *</label>
+                                            <label class="form-label fw-semibold">{{ __('general.amount') }} *</label>
                                             <input type="number" wire:model="amount" class="form-control"
                                                 min="1" required autocomplete="off">
                                             @error('amount')
@@ -278,9 +278,9 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
-                                            <label class="form-label fw-semibold">Nhân viên</label>
+                                            <label class="form-label fw-semibold">{{ __('general.employee') }}</label>
                                             <select wire:model="staff_id" class="form-control">
-                                                <option value="">-- Chọn nhân viên --</option>
+                                                <option value="">{{ __('views.select_employee_placeholder') }}</option>
                                                 @foreach ($this->staffs as $staff)
                                                     <option value="{{ $staff->id }}">{{ $staff->name }}</option>
                                                 @endforeach
@@ -292,9 +292,9 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
-                                            <label class="form-label fw-semibold">Lớp học</label>
+                                            <label class="form-label fw-semibold">{{ __('general.classroom') }}</label>
                                             <select wire:model="class_id" class="form-control">
-                                                <option value="">-- Chọn lớp --</option>
+                                                <option value="">{{ __('views.select_class_placeholder') }}</option>
                                                 @foreach ($this->classrooms as $class)
                                                     <option value="{{ $class->id }}">{{ $class->name }}</option>
                                                 @endforeach
@@ -308,7 +308,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
-                                            <label class="form-label fw-semibold">Ngày chi *</label>
+                                            <label class="form-label fw-semibold">{{ __('general.expense_date') }} *</label>
                                             <input type="date" wire:model="spent_at" class="form-control"
                                                 required>
                                             @error('spent_at')
@@ -318,8 +318,8 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
-                                            <label class="form-label fw-semibold">Ghi chú</label>
-                                            <textarea wire:model="note" class="form-control" rows="2" placeholder="Mô tả chi tiết về khoản chi..."></textarea>
+                                            <label class="form-label fw-semibold">{{ __('general.notes') }}</label>
+                                            <textarea wire:model="note" class="form-control" rows="2" placeholder="{{ __('views.expense_note_placeholder') }}"></textarea>
                                             @error('note')
                                                 <span class="text-danger small">{{ $message }}</span>
                                             @enderror
@@ -329,11 +329,11 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary"
-                                    wire:click="closeCreateModal">Đóng</button>
+                                    wire:click="closeCreateModal">{{ __('general.close') }}</button>
                                 <button type="submit" class="btn btn-danger">
                                     <i
                                         class="bi {{ $editingExpenseId ? 'bi-check-circle' : 'bi-plus-circle' }} mr-1"></i>
-                                    {{ $editingExpenseId ? 'Cập nhật' : 'Thêm khoản chi' }}
+                                    {{ $editingExpenseId ? __('general.update') : __('views.add_expense') }}
                                 </button>
                             </div>
                         </form>

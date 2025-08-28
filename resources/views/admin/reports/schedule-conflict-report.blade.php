@@ -168,8 +168,7 @@
                                                                     @endforeach
                                                                     @if (count($conflict['conflicts']) > 2)
                                                                         <div class="text-primary">
-                                                                            +{{ count($conflict['conflicts']) - 2 }}
-                                                                            lớp khác</div>
+                                                                            +{{ count($conflict['conflicts']) - 2 }} {{ __('views.other_classes') }}</div>
                                                                     @endif
                                                                 </div>
                                                             </td>
@@ -240,7 +239,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <h6 class="text-success">Lớp hiện tại</h6>
+                                <h6 class="text-success">{{ __('views.current_class') }}</h6>
                                 <div class="card border-success">
                                     <div class="card-body">
                                         <div class="d-flex align-items-center mb-2">
@@ -253,7 +252,7 @@
                                                         -
                                                         {{ $selectedConflict['classroom']->schedule['time'] ?? '' }}
                                                     @else
-                                                        Chưa có lịch học
+                                                        {{ __('views.no_schedule') }}
                                                     @endif
                                                 </small>
                                             </div>
@@ -263,7 +262,7 @@
                             </div>
                         </div>
 
-                        <h6 class="text-danger mb-3">Các lớp trùng lịch:</h6>
+                        <h6 class="text-danger mb-3">{{ __('views.conflicting_classes') }}</h6>
                         @foreach ($selectedConflict['conflicts'] as $conflict)
                             <div class="card border-danger mb-3">
                                 <div class="card-header bg-light">
