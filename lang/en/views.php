@@ -505,5 +505,5 @@ return [
     'edit_lesson_title' => 'Edit Lesson',
     'current_document' => 'Current document',
     'save_changes' => 'Save changes',
-    'update_lesson_info_desc' => 'Update lesson information, documents, video, slides for students.'
+    'update_lesson_info_desc' => 'Update lesson information, documents, video, slides for students.',
 ];

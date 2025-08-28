@@ -503,5 +503,5 @@ return [
     'edit_lesson_title' => '编辑课程',
     'current_document' => '当前资料',
     'save_changes' => '保存更改',
-    'update_lesson_info_desc' => '更新课程信息、资料、视频、幻灯片，方便学生学习。'
+    'update_lesson_info_desc' => '更新课程信息、资料、视频、幻灯片，方便学生学习。',
 ];
