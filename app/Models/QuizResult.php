@@ -18,6 +18,7 @@ class QuizResult extends Model
     ];
 
     protected $casts = [
+        'answers' => 'array',
         'started_at' => 'datetime',
         'submitted_at' => 'datetime',
     ];
@@ -44,51 +45,6 @@ class QuizResult extends Model
     public function getUserAttribute()
     {
         return $this->student ? $this->student->user : null;
-    }
-
-    /**
-     * Accessor để đảm bảo answers luôn là array
-     */
-    public function getAnswersAttribute($value)
-    {
-        if (is_string($value)) {
-            return json_decode($value, true) ?? [];
-        }
-
-        if (is_array($value)) {
-            return $value;
-        }
-
-        return [];
-    }
-
-    /**
-     * Mutator để đảm bảo answers được lưu dưới dạng JSON
-     */
-    public function setAnswersAttribute($value)
-    {
-        if (is_array($value)) {
-            $this->attributes['answers'] = json_encode($value);
-        } else {
-            $this->attributes['answers'] = $value;
-        }
-    }
-
-    /**
-     * Helper method để lấy answers dưới dạng array
-     */
-    public function getAnswersArray(): array
-    {
-        $answers = $this->getAttribute('answers');
-        if (is_string($answers)) {
-            return json_decode($answers, true) ?? [];
-        }
-
-        if (is_array($answers)) {
-            return $answers;
-        }
-
-        return [];
     }
 
     /**
@@ -129,8 +85,7 @@ class QuizResult extends Model
     public function getCorrectAnswersCount(): int
     {
         $correctCount = 0;
-
-        foreach ($this->getAnswersArray() as $index => $answer) {
+        foreach ($this->answers ?? [] as $index => $answer) {
             if (! empty($answer)) {
                 $correctCount++;
             }

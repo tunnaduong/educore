@@ -64,7 +64,8 @@
                             <i class="bi bi-journal-richtext mr-2"></i>{{ $lesson->title }}
                         </h3>
                         <div class="mb-2">
-                            <span class="badge bg-info mr-2"><i class="bi bi-hash"></i> {{ __('general.lesson_number') }}:
+                            <span class="badge bg-info mr-2"><i class="bi bi-hash"></i>
+                                {{ __('general.lesson_number') }}:
                                 {{ $lesson->number }}</span>
                             <span class="badge bg-secondary"><i class="bi bi-calendar-event"></i>
                                 {{ $lesson->created_at?->format('d/m/Y H:i') }}</span>
@@ -90,7 +91,8 @@
                         <div class="d-flex gap-2 mt-4">
                             <a href="{{ route('lessons.edit', $lesson->id) }}" class="btn btn-warning"><i
                                     class="bi bi-pencil mr-1"></i>{{ __('general.edit') }}</a>
-                            <button type="button" class="btn btn-danger" wire:click="deleteLesson({{ $lesson->id }})"
+                            <button type="button" class="btn btn-danger"
+                                wire:click="deleteLesson({{ $lesson->id }})"
                                 wire:confirm="{{ __('views.confirm_delete_lesson_simple', ['title' => $lesson->title]) }}"><i
                                     class="bi bi-trash mr-1"></i>{{ __('general.delete') }}</button>
                         </div>
@@ -108,7 +110,8 @@
                             <strong class="text-muted">{{ __('views.documents_label') }}:</strong><br>
                             @if ($lesson->attachment)
                                 <a href="{{ asset('storage/' . $lesson->attachment) }}" target="_blank"
-                                    class="btn btn-outline-success mb-2"><i class="bi bi-download"></i> {{ __('views.download_document') }}</a>
+                                    class="btn btn-outline-success mb-2"><i class="bi bi-download"></i>
+                                    {{ __('views.download_document') }}</a>
                                 <button class="btn btn-outline-primary mb-2 ml-2" type="button"
                                     onclick="openPreviewModal()">
                                     <i class="bi bi-eye"></i> {{ __('views.preview_document') }}

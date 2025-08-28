@@ -52,9 +52,7 @@ class Review extends Component
             return 'unknown';
         }
         $question = $this->quiz->questions[$questionIndex];
-
-        $answers = $this->result->getAnswersArray();
-        $answer = $answers[$questionIndex] ?? null;
+        $answer = $this->result->answers[$questionIndex] ?? null;
 
         if (empty($answer)) {
             return 'unanswered';
@@ -67,6 +65,10 @@ class Review extends Component
 
         if ($question['type'] === 'multiple_choice') {
             return $answer === $question['correct_answer'] ? 'correct' : 'incorrect';
+        } elseif ($question['type'] === 'fill_blank') {
+            $correctAnswers = is_array($question['correct_answer']) ? $question['correct_answer'] : [$question['correct_answer']];
+
+            return in_array(strtolower(trim($answer)), array_map('strtolower', $correctAnswers)) ? 'correct' : 'incorrect';
         }
 
         return 'unknown';

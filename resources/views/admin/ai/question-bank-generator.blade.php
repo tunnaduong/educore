@@ -317,14 +317,14 @@
                                                 {{ $isProcessing ? 'disabled' : '' }}>
                                                 @if ($isProcessing)
                                                     <div class="loading-overlay">
-                                                        <div class="spinner-border spinner-border-sm text-light mr-2"
+                                                        <div class="spinner-border spinner-border-sm text-light me-2"
                                                             role="status">
                                                             <span class="visually-hidden">Loading...</span>
                                                         </div>
                                                         <span class="loading-text">Đang tạo ngân hàng câu hỏi...</span>
                                                     </div>
                                                 @else
-                                                    <i class="fas fa-magic mr-2"></i>
+                                                    <i class="fas fa-magic me-2"></i>
                                                     Tạo Ngân hàng Câu hỏi Tiếng Trung
                                                 @endif
                                             </button>
@@ -423,6 +423,21 @@
                                                             <span
                                                                 class="badge bg-primary">{{ $generatedBank['statistics']['multiple_choice_count'] ?? 0 }}</span>
                                                         </li>
+                                                        <li class="list-group-item d-flex justify-content-between">
+                                                            <span>Điền khuyết</span>
+                                                            <span
+                                                                class="badge bg-info">{{ $generatedBank['statistics']['fill_blank_count'] ?? 0 }}</span>
+                                                        </li>
+                                                        <li class="list-group-item d-flex justify-content-between">
+                                                            <span>Tự luận</span>
+                                                            <span
+                                                                class="badge bg-warning">{{ $generatedBank['statistics']['essay_count'] ?? 0 }}</span>
+                                                        </li>
+                                                        <li class="list-group-item d-flex justify-content-between">
+                                                            <span>Đúng/Sai</span>
+                                                            <span
+                                                                class="badge bg-secondary">{{ $generatedBank['statistics']['true_false_count'] ?? 0 }}</span>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                                 <div class="col-md-6">
@@ -453,7 +468,7 @@
                                             <h6>Một số câu hỏi mẫu:</h6>
                                             <div class="questions-preview"
                                                 style="max-height: 400px; overflow-y: auto;">
-                                                @foreach ($generatedBank['questions'] as $index => $question)
+                                                @foreach (array_slice($generatedBank['questions'], 0, 5) as $index => $question)
                                                     <div class="card mb-3">
                                                         <div
                                                             class="card-header d-flex justify-content-between align-items-center">
@@ -517,7 +532,13 @@
                                                 @endforeach
                                             </div>
 
-
+                                            @if (count($generatedBank['questions']) > 5)
+                                                <div class="text-center mt-3">
+                                                    <p class="text-muted">Và
+                                                        {{ count($generatedBank['questions']) - 5 }}
+                                                        câu hỏi khác...</p>
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 @else

@@ -199,13 +199,13 @@
                                             </span>
                                             @if ($this->shouldShowWarning())
                                                 <span
-                                                    class="badge bg-warning text-dark ml-2 animate__animated animate__pulse">
+                                                    class="badge bg-warning text-dark ms-2 animate__animated animate__pulse">
                                                     <i class="bi bi-exclamation-triangle"></i> Cảnh báo
                                                 </span>
                                             @endif
                                             @if ($this->shouldShowUrgentWarning())
                                                 <span
-                                                    class="badge bg-danger text-white ml-2 animate__animated animate__pulse">
+                                                    class="badge bg-danger text-white ms-2 animate__animated animate__pulse">
                                                     <i class="bi bi-exclamation-triangle-fill"></i> Khẩn cấp
                                                 </span>
                                             @endif
@@ -265,17 +265,17 @@
                             <!-- Legend -->
                             <div class="mt-3 pt-3 border-top">
                                 <div class="d-flex align-items-center mb-1">
-                                    <div class="btn btn-sm btn-outline-secondary mr-2"
+                                    <div class="btn btn-sm btn-outline-secondary me-2"
                                         style="width: 20px; height: 20px; padding: 0;"></div>
                                     <small class="text-muted">Chưa trả lời</small>
                                 </div>
                                 <div class="d-flex align-items-center mb-1">
-                                    <div class="btn btn-sm btn-success mr-2"
+                                    <div class="btn btn-sm btn-success me-2"
                                         style="width: 20px; height: 20px; padding: 0;"></div>
                                     <small class="text-muted">Đã trả lời</small>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <div class="btn btn-sm btn-primary mr-2"
+                                    <div class="btn btn-sm btn-primary me-2"
                                         style="width: 20px; height: 20px; padding: 0;"></div>
                                     <small class="text-muted">Câu hiện tại</small>
                                 </div>
@@ -317,18 +317,54 @@
 
                                 <!-- Form trả lời -->
                                 <div class="mb-4">
-                                    @foreach ($currentQuestion['options'] as $option)
-                                        <div class="form-check mb-2">
-                                            <input class="form-check-input" type="radio"
-                                                wire:model.live="answers.{{ $currentQuestionIndex }}"
-                                                wire:change="saveAnswer" value="{{ $option }}"
-                                                id="option_{{ $currentQuestionIndex }}_{{ $loop->index }}">
-                                            <label class="form-check-label"
-                                                for="option_{{ $currentQuestionIndex }}_{{ $loop->index }}">
-                                                {{ $option }}
-                                            </label>
-                                        </div>
-                                    @endforeach
+                                    @switch($currentQuestion['type'])
+                                        @case('multiple_choice')
+                                            @foreach ($currentQuestion['options'] as $option)
+                                                <div class="form-check mb-2">
+                                                    <input class="form-check-input" type="radio"
+                                                        wire:model.live="answers.{{ $currentQuestionIndex }}"
+                                                        wire:change="saveAnswer" value="{{ $option }}"
+                                                        id="option_{{ $currentQuestionIndex }}_{{ $loop->index }}">
+                                                    <label class="form-check-label"
+                                                        for="option_{{ $currentQuestionIndex }}_{{ $loop->index }}">
+                                                        {{ $option }}
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        @break
+
+                                        @case('fill_blank')
+                                            <div class="form-group">
+                                                <input type="text" class="form-control"
+                                                    wire:model.live.debounce.500ms="answers.{{ $currentQuestionIndex }}"
+                                                    wire:change="saveAnswer" placeholder="Nhập câu trả lời...">
+                                            </div>
+                                        @break
+
+                                        @case('drag_drop')
+                                            <div class="alert alert-info">
+                                                <i class="bi bi-info-circle mr-2"></i>
+                                                Kéo thả các đáp án vào vị trí đúng
+                                            </div>
+                                            <div class="form-group">
+                                                <select class="form-control"
+                                                    wire:model.live="answers.{{ $currentQuestionIndex }}"
+                                                    wire:change="saveAnswer">
+                                                    <option value="">Chọn đáp án...</option>
+                                                    @foreach ($currentQuestion['options'] as $option)
+                                                        <option value="{{ $option }}">{{ $option }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        @break
+
+                                        @case('essay')
+                                            <div class="form-group">
+                                                <textarea class="form-control" rows="6" wire:model.live.debounce.1000ms="answers.{{ $currentQuestionIndex }}"
+                                                    wire:change="saveAnswer" placeholder="Viết câu trả lời của bạn..."></textarea>
+                                            </div>
+                                        @break
+                                    @endswitch
                                 </div>
 
                                 <!-- Nút điều hướng -->
@@ -554,7 +590,7 @@
                     // Thêm event listener cho các nút điều hướng để tránh confirm nộp bài
                     const navigationButtons = document.querySelectorAll(
                         'button[wire\\:click="nextQuestion"], button[wire\\:click="previousQuestion"], button[wire\\:click^="goToQuestion"]'
-                    );
+                        );
                     navigationButtons.forEach(function(button) {
                         button.addEventListener('click', function() {
                             // Tạm thời vô hiệu hóa onbeforeunload khi chuyển câu hỏi

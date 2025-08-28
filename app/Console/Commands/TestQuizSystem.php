@@ -174,9 +174,8 @@ class TestQuizSystem extends Command
                     'score' => 1,
                 ],
                 [
-                    'type' => 'multiple_choice',
+                    'type' => 'fill_blank',
                     'question' => 'Việt Nam có bao nhiêu tỉnh thành?',
-                    'options' => ['60', '61', '62', '63'],
                     'correct_answer' => '63',
                     'score' => 1,
                 ],
@@ -188,10 +187,8 @@ class TestQuizSystem extends Command
                     'score' => 1,
                 ],
                 [
-                    'type' => 'multiple_choice',
-                    'question' => 'Thành phố nào là trung tâm kinh tế lớn nhất Việt Nam?',
-                    'options' => ['Hà Nội', 'Hồ Chí Minh', 'Đà Nẵng', 'Huế'],
-                    'correct_answer' => 'Hồ Chí Minh',
+                    'type' => 'essay',
+                    'question' => 'Hãy viết một đoạn văn ngắn về quê hương của bạn.',
                     'score' => 2,
                 ],
             ],

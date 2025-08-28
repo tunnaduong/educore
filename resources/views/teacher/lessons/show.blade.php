@@ -1,57 +1,21 @@
 <x-layouts.dash-teacher active="lessons">
     @include('components.language')
-
-    @push('styles')
-        <style>
-            .description-content {
-                line-height: 1.6;
-            }
-
-            .description-content img {
-                max-width: 100% !important;
-                height: auto !important;
-            }
-
-            .description-content table {
-                width: 100%;
-                border-collapse: collapse;
-                margin: 10px 0;
-            }
-
-            .description-content table,
-            .description-content th,
-            .description-content td {
-                border: 1px solid #ddd;
-            }
-
-            .description-content th,
-            .description-content td {
-                padding: 8px;
-                text-align: left;
-            }
-
-            .description-content th {
-                background-color: #f8f9fa;
-            }
-        </style>
-    @endpush
-
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-eye mr-2"></i>Chi tiết bài học
+                        <i class="bi bi-eye mr-2"></i>{{ __('general.lesson_details') }}
                     </h4>
                     <p class="text-muted mb-0">{{ __('general.lesson_detail_description') }}</p>
                 </div>
                 <div>
                     <a href="{{ route('teacher.lessons.edit', $lesson->id) }}" class="btn btn-warning mr-2">
-                        <i class="bi bi-pencil mr-1"></i>Chỉnh sửa
+                        <i class="bi bi-pencil mr-1"></i>{{ __('general.edit') }}
                     </a>
                     <a href="{{ route('teacher.lessons.index') }}" class="btn btn-outline-secondary">
-                        <i class="bi bi-arrow-left mr-1"></i>Quay lại
+                        <i class="bi bi-arrow-left mr-1"></i>{{ __('general.back') }}
                     </a>
                 </div>
             </div>
@@ -69,11 +33,11 @@
                     <div class="card-body">
                         <div class="row g-3">
                             <div class="col-md-8">
-                                <label class="form-label fw-bold">Tiêu đề</label>
+                                <label class="form-label fw-bold">{{ __('general.title') }}</label>
                                 <p class="mb-0">{{ $lesson->title }}</p>
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label fw-bold">Số bài học</label>
+                                <label class="form-label fw-bold">{{ __('general.lesson_number') }}</label>
                                 <p class="mb-0">
                                     @if ($lesson->number)
                                         <span class="badge bg-info">{{ $lesson->number }}</span>
@@ -83,20 +47,20 @@
                                 </p>
                             </div>
                             <div class="col-12">
-                                <label class="form-label fw-bold">Lớp học</label>
+                                <label class="form-label fw-bold">{{ __('general.classroom') }}</label>
                                 <p class="mb-0">
-                                    <span class="badge bg-primary">{{ $lesson->classroom->name ?? 'N/A' }}</span>
+                                    <span class="badge bg-primary">{{ $lesson->classroom->name ?? __('general.not_available') }}</span>
                                 </p>
                             </div>
                             <div class="col-12">
-                                <label class="form-label fw-bold">Mô tả</label>
-                                <div class="mb-0">
+                                <label class="form-label fw-bold">{{ __('general.description') }}</label>
+                                <p class="mb-0">
                                     @if ($lesson->description)
-                                        <div class="description-content">{!! $lesson->description !!}</div>
+                                        {!! nl2br(e($lesson->description)) !!}
                                     @else
-                                        <span class="text-muted">Không có mô tả</span>
+                                        <span class="text-muted">{{ __('general.no_description') }}</span>
                                     @endif
-                                </div>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -107,11 +71,11 @@
                     <div class="card shadow-sm mb-4">
                         <div class="card-header bg-light">
                             <h6 class="mb-0">
-                                <i class="bi bi-play-circle mr-2"></i>Video bài học
+                                <i class="bi bi-play-circle mr-2"></i>{{ __('general.lesson_video') }}
                             </h6>
                         </div>
                         <div class="card-body">
-                            <x-video-embed :url="$lesson->video" title="Video bài học" />
+                            <x-video-embed :url="$lesson->video" :title="__('general.lesson_video')" />
                         </div>
                     </div>
                 @endif
@@ -123,16 +87,15 @@
                     <div class="card shadow-sm mb-4">
                         <div class="card-header bg-light">
                             <h6 class="mb-0">
-                                <i class="bi bi-file-earmark mr-2"></i>Tài liệu đính kèm
+                                <i class="bi bi-file-earmark mr-2"></i>{{ __('general.attachment') }}
                             </h6>
                         </div>
                         <div class="card-body">
                             <div class="d-flex align-items-center p-3 border rounded">
                                 <i class="bi bi-file-earmark-text fs-2 text-primary mr-3"></i>
                                 <div class="flex-grow-1">
-                                    <h6 class="mb-1" style="word-break: break-word;">
-                                        {{ basename($lesson->attachment) }}</h6>
-                                    <small class="text-muted">Tài liệu bài học</small>
+                                    <h6 class="mb-1">{{ basename($lesson->attachment) }}</h6>
+                                    <small class="text-muted">{{ __('general.document') }}</small>
                                 </div>
                             </div>
                             <div class="mt-3 d-flex gap-2">
@@ -157,17 +120,17 @@
                 <div class="card shadow-sm">
                     <div class="card-header bg-light">
                         <h6 class="mb-0">
-                            <i class="bi bi-info-circle mr-2"></i>Thông tin khác
+                            <i class="bi bi-info-circle mr-2"></i>{{ __('general.other_info') }}
                         </h6>
                     </div>
                     <div class="card-body">
                         <div class="row g-3">
                             <div class="col-12">
-                                <label class="form-label fw-bold">Ngày tạo</label>
+                                <label class="form-label fw-bold">{{ __('general.created_date') }}</label>
                                 <p class="mb-0">{{ $lesson->created_at?->format('d/m/Y H:i') }}</p>
                             </div>
                             <div class="col-12">
-                                <label class="form-label fw-bold">Cập nhật lần cuối</label>
+                                <label class="form-label fw-bold">{{ __('general.last_updated') }}</label>
                                 <p class="mb-0">{{ $lesson->updated_at?->format('d/m/Y H:i') }}</p>
                             </div>
                         </div>

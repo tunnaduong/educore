@@ -9,7 +9,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <h5 class="mb-0">
-                                    <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
                                     {{ __('general.schedule_conflict_report') }}
                                 </h5>
                                 <small class="text-light">
@@ -21,17 +21,17 @@
                             <div class="d-flex gap-2">
                                 <button wire:click="refreshConflicts" class="btn btn-light btn-sm"
                                     @if ($loading) disabled @endif>
-                                    <i class="bi bi-arrow-clockwise mr-1"></i>
+                                    <i class="bi bi-arrow-clockwise me-1"></i>
                                     @if ($loading)
                                         <span
-                                            class="spinner-border spinner-border-sm mr-1"></span>{{ __('general.checking') }}
+                                            class="spinner-border spinner-border-sm me-1"></span>{{ __('general.checking') }}
                                     @else
                                         {{ __('general.refresh') }}
                                     @endif
                                 </button>
                                 <a href="{{ route('admin.reports.schedule-conflict.export') }}"
                                     class="btn btn-success btn-sm">
-                                    <i class="bi bi-download mr-1"></i>{{ __('general.export_report') }}
+                                    <i class="bi bi-download me-1"></i>{{ __('general.export_report') }}
                                 </a>
                             </div>
                         </div>
@@ -40,7 +40,7 @@
                     <div class="card-body">
                         @if (session('message'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <i class="bi bi-check-circle mr-2"></i>
+                                <i class="bi bi-check-circle me-2"></i>
                                 {{ session('message') }}
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                             </div>
@@ -113,7 +113,7 @@
                                 <div class="card-header bg-light">
                                     <h5 class="mb-0 text-primary">
                                         <i class="bi bi-list-ul mr-2"></i>{{ __('general.schedule_conflict_list') }}
-                                        <span class="badge bg-warning ml-2">{{ $conflicts->total() }}</span>
+                                        <span class="badge bg-warning ms-2">{{ $conflicts->total() }}</span>
                                     </h5>
                                 </div>
                                 <div class="card-body">
@@ -134,7 +134,7 @@
                                                         <tr>
                                                             <td>
                                                                 <div class="d-flex align-items-center">
-                                                                    <i class="bi bi-mortarboard text-primary mr-2"></i>
+                                                                    <i class="bi bi-mortarboard text-primary me-2"></i>
                                                                     <div>
                                                                         <div class="fw-medium">
                                                                             {{ $conflict['classroom']->name }}</div>
@@ -146,7 +146,7 @@
                                                             <td>
                                                                 <div class="d-flex align-items-center">
                                                                     <i
-                                                                        class="bi bi-person-circle text-success mr-2"></i>
+                                                                        class="bi bi-person-circle text-success me-2"></i>
                                                                     <div>
                                                                         <div class="fw-medium">
                                                                             {{ $conflict['student']->name }}</div>
@@ -229,7 +229,7 @@
                                 <div class="card border-primary">
                                     <div class="card-body">
                                         <div class="d-flex align-items-center mb-2">
-                                            <i class="bi bi-person-circle text-primary mr-2"></i>
+                                            <i class="bi bi-person-circle text-primary me-2"></i>
                                             <div>
                                                 <strong>{{ $selectedConflict['student']->name }}</strong><br>
                                                 <small
@@ -244,7 +244,7 @@
                                 <div class="card border-success">
                                     <div class="card-body">
                                         <div class="d-flex align-items-center mb-2">
-                                            <i class="bi bi-mortarboard text-success mr-2"></i>
+                                            <i class="bi bi-mortarboard text-success me-2"></i>
                                             <div>
                                                 <strong>{{ $selectedConflict['classroom']->name }}</strong><br>
                                                 <small class="text-muted">

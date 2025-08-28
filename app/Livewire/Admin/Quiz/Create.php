@@ -43,8 +43,6 @@ class Create extends Component
 
     public $questionTypeFilter = '';
 
-    public $editingIndex = null;
-
     protected $rules = [
         'title' => 'required|min:3|max:255',
         'description' => 'nullable|max:1000',
@@ -53,7 +51,7 @@ class Create extends Component
         'time_limit' => 'nullable|integer|min:1|max:480',
         'questions' => 'required|array|min:1',
         'questions.*.question' => 'required|min:3',
-        'questions.*.type' => 'required|in:multiple_choice',
+        'questions.*.type' => 'required|in:multiple_choice,fill_blank,drag_drop,essay',
         'questions.*.score' => 'required|integer|min:1|max:10',
     ];
 
@@ -110,7 +108,7 @@ class Create extends Component
     {
         $this->validate([
             'currentQuestion.question' => 'required|min:3',
-            'currentQuestion.type' => 'required|in:multiple_choice',
+            'currentQuestion.type' => 'required|in:multiple_choice,fill_blank,drag_drop,essay',
             'currentQuestion.score' => 'required|integer|min:1|max:10',
         ]);
 
@@ -122,17 +120,11 @@ class Create extends Component
             ]);
         }
 
-        if ($this->editingIndex !== null) {
-            // Cập nhật câu hỏi hiện có
-            $this->questions[$this->editingIndex] = $this->currentQuestion;
-            $this->resetCurrentQuestion();
-            session()->flash('message', 'Câu hỏi đã được cập nhật.');
-        } else {
-            // Thêm câu hỏi mới
-            $this->questions[] = $this->currentQuestion;
-            $this->resetCurrentQuestion();
-            session()->flash('message', 'Câu hỏi đã được thêm thành công.');
-        }
+        $this->questions[] = $this->currentQuestion;
+
+        $this->resetCurrentQuestion();
+
+        session()->flash('message', 'Câu hỏi đã được thêm thành công.');
     }
 
     public function removeQuestion($index)
@@ -190,28 +182,6 @@ class Create extends Component
             'score' => 1,
             'audio' => null,
         ];
-        $this->editingIndex = null;
-    }
-
-    public function editQuestion($index)
-    {
-        if (! isset($this->questions[$index])) {
-            return;
-        }
-
-        $question = $this->questions[$index];
-
-        // Đảm bảo cấu trúc đầy đủ trước khi bind vào form
-        $this->currentQuestion = [
-            'question' => $question['question'] ?? '',
-            'type' => $question['type'] ?? 'multiple_choice',
-            'options' => $question['options'] ?? ['', '', '', ''],
-            'correct_answer' => $question['correct_answer'] ?? '',
-            'score' => $question['score'] ?? 1,
-            'audio' => $question['audio'] ?? null,
-        ];
-
-        $this->editingIndex = $index;
     }
 
     // Thêm các phương thức cho ngân hàng câu hỏi
@@ -309,28 +279,12 @@ class Create extends Component
                 return;
             }
 
-            $tempQuiz = (object) [
-                'questions' => $this->questions,
-            ];
+            $result = $aiHelper->validateAndFixQuiz($this->questions);
 
-            $result = $aiHelper->validateQuizWithAI($tempQuiz);
-
-            if ($result && ! empty($result['fixed_questions'])) {
-                $this->questions = $result['fixed_questions'];
-                $errorCount = count($result['validation_info']['errors_found'] ?? []);
-                $suggestionCount = count($result['validation_info']['suggestions'] ?? []);
-
-                if ($errorCount > 0) {
-                    session()->flash('message', 'AI đã sửa '.$errorCount.' lỗi trong quiz.');
-                } else {
-                    session()->flash('message', 'Quiz đã được kiểm tra và không có lỗi nào.');
-                }
-
-                if ($suggestionCount > 0) {
-                    session()->flash('info', 'AI đưa ra '.$suggestionCount.' gợi ý cải thiện.');
-                }
+            if ($result && isset($result['suggestions'])) {
+                session()->flash('message', 'AI đã kiểm tra quiz và đưa ra '.count($result['suggestions']).' gợi ý cải thiện.');
             } else {
-                session()->flash('message', 'Quiz đã được kiểm tra và không có lỗi nào.');
+                session()->flash('message', 'Quiz đã được kiểm tra và không có lỗi nào được phát hiện.');
             }
         } catch (\Exception $e) {
             session()->flash('error', 'Có lỗi xảy ra khi kiểm tra quiz: '.$e->getMessage());

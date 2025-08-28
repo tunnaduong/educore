@@ -15,61 +15,43 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        // Nếu đang chạy trong môi trường testing, chỉ chạy DuskTestSeeder
-        if (app()->environment('testing') || config('app.env') === 'testing') {
-            $this->call([
-                DuskTestSeeder::class,
-            ]);
-
-            return;
-        }
-
         // Thứ tự chạy seeder theo dependency
         $this->call([
-            // 1. Tạo admin
-            AdminSeeder::class,
+            // 1. Tạo users, students, classrooms và relationships
+            UserSeeder::class,
 
-            // 2. Tạo teachers
-            TeacherSeeder::class,
-
-            // 3. Tạo students
-            StudentSeeder::class,
-
-            // 4. Tạo classrooms và relationships
-            ClassroomSeeder::class,
-
-            // 5. Tạo assignments cho các lớp
+            // 2. Tạo assignments cho các lớp
             AssignmentSeeder::class,
 
-            // 6. Tạo attendance data
+            // 3. Tạo attendance data
             AttendanceSeeder::class,
 
-            // 7. Tạo lessons cho các lớp
+            // 4. Tạo lessons cho các lớp
             LessonSeeder::class,
 
-            // 8. Tạo quizzes cho các lớp
+            // 5. Tạo quizzes cho các lớp
             QuizSeeder::class,
 
-            // 9. Tạo question bank
+            // 6. Tạo question bank
             QuestionBankSeeder::class,
 
-            // 10. Tạo assignment submissions
+            // 7. Tạo assignment submissions
             AssignmentSubmissionSeeder::class,
 
-            // 11. Tạo quiz results
+            // 8. Tạo quiz results
             QuizResultSeeder::class,
 
-            // 12. Tạo payments
+            // 9. Tạo payments
             PaymentSeeder::class,
 
-            // 13. Tạo expenses
+            // 10. Tạo expenses
             ExpenseSeeder::class,
 
-            // 14. Tạo notifications (giữ nguyên seeder cũ)
+            // 11. Tạo notifications (giữ nguyên seeder cũ)
             NotificationSeeder::class,
             TeacherNotificationSeeder::class,
 
-            // 15. Tạo chat messages (giữ nguyên seeder cũ)
+            // 12. Tạo chat messages (giữ nguyên seeder cũ)
             ChatSeeder::class,
         ]);
     }

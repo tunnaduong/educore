@@ -1,246 +1,6 @@
 <x-layouts.dash-admin active="quizzes">
     @include('components.language')
     <div class="container-fluid">
-        <style>
-            /* AI Loading Modal */
-            .ai-loading-modal {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.8);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 9999;
-                backdrop-filter: blur(5px);
-            }
-
-            .ai-loading-content {
-                margin: 0 auto;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                border-radius: 20px;
-                padding: 3rem;
-                text-align: center;
-                color: white;
-                max-width: 500px;
-                width: 90%;
-                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-                animation: modalSlideIn 0.3s ease-out;
-            }
-
-            @keyframes modalSlideIn {
-                from {
-                    opacity: 0;
-                    transform: translateY(-50px) scale(0.9);
-                }
-
-                to {
-                    opacity: 1;
-                    transform: translateY(0) scale(1);
-                }
-            }
-
-            /* AI Loading Animation */
-            .ai-loading-animation {
-                position: relative;
-                min-height: 200px;
-                margin-bottom: 2rem;
-            }
-
-            .ai-brain {
-                animation: pulse 2s infinite;
-                margin-bottom: 1rem;
-            }
-
-            .ai-particles {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                width: 150px;
-                height: 150px;
-            }
-
-            .particle {
-                position: absolute;
-                width: 6px;
-                height: 6px;
-                background: linear-gradient(45deg, #ffffff, #e3f2fd);
-                border-radius: 50%;
-                animation: particle-float 3s infinite ease-in-out;
-            }
-
-            .particle:nth-child(1) {
-                top: 20%;
-                left: 20%;
-                animation-delay: 0s;
-            }
-
-            .particle:nth-child(2) {
-                top: 20%;
-                right: 20%;
-                animation-delay: 0.5s;
-            }
-
-            .particle:nth-child(3) {
-                bottom: 20%;
-                left: 20%;
-                animation-delay: 1s;
-            }
-
-            .particle:nth-child(4) {
-                bottom: 20%;
-                right: 20%;
-                animation-delay: 1.5s;
-            }
-
-            .particle:nth-child(5) {
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                animation-delay: 2s;
-            }
-
-            @keyframes pulse {
-
-                0%,
-                100% {
-                    transform: scale(1);
-                    opacity: 1;
-                }
-
-                50% {
-                    transform: scale(1.1);
-                    opacity: 0.8;
-                }
-            }
-
-            @keyframes particle-float {
-
-                0%,
-                100% {
-                    transform: translateY(0) scale(1);
-                    opacity: 0.7;
-                }
-
-                50% {
-                    transform: translateY(-15px) scale(1.2);
-                    opacity: 1;
-                }
-            }
-
-            /* Progress bar animation */
-            .progress-bar-animated {
-                background-image: linear-gradient(45deg,
-                        rgba(255, 255, 255, .15) 25%,
-                        transparent 25%,
-                        transparent 50%,
-                        rgba(255, 255, 255, .15) 50%,
-                        rgba(255, 255, 255, .15) 75%,
-                        transparent 75%,
-                        transparent);
-                background-size: 1rem 1rem;
-                animation: progress-bar-stripes 1s linear infinite;
-            }
-
-            @keyframes progress-bar-stripes {
-                0% {
-                    background-position: 1rem 0;
-                }
-
-                100% {
-                    background-position: 0 0;
-                }
-            }
-
-            /* Typing animation for loading text */
-            .typing-animation {
-                overflow: hidden;
-                border-right: 2px solid white;
-                white-space: nowrap;
-                animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
-            }
-
-            @keyframes typing {
-                from {
-                    width: 0;
-                }
-
-                to {
-                    width: 100%;
-                }
-            }
-
-            @keyframes blink-caret {
-
-                from,
-                to {
-                    border-color: transparent;
-                }
-
-                50% {
-                    border-color: white;
-                }
-            }
-
-            /* Loading steps */
-            .loading-steps {
-                margin-top: 1rem;
-            }
-
-            .loading-step {
-                opacity: 0.5;
-                transition: opacity 0.3s ease;
-            }
-
-            .loading-step.active {
-                opacity: 1;
-            }
-
-            .loading-step i {
-                margin-right: 0.5rem;
-            }
-        </style>
-
-        <!-- AI Loading Modal -->
-        <div wire:loading wire:target="validateQuizWithAI" class="ai-loading-modal">
-            <div class="ai-loading-content">
-                <div class="ai-loading-animation">
-                    <div class="ai-brain">
-                        <i class="fas fa-brain fa-4x"></i>
-                    </div>
-                    <div class="ai-particles">
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                    </div>
-                </div>
-
-                <h3 class="mb-3 typing-animation">{{ __('views.ai_processing') }}</h3>
-                <p class="mb-4">{{ __('views.ai_processing_description') }}</p>
-
-                <div class="progress mb-3" style="height: 8px;">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%"></div>
-                </div>
-
-                <div class="loading-steps">
-                    <div class="loading-step active">
-                        <i class="fas fa-search"></i> {{ __('general.analyzing_content') }}
-                    </div>
-                    <div class="loading-step">
-                        <i class="fas fa-cogs"></i> {{ __('general.ai_processing_step') }}
-                    </div>
-                    <div class="loading-step">
-                        <i class="fas fa-check"></i> {{ __('general.completing') }}
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Header -->
         <div class="mb-4">
             <a href="{{ route('quizzes.index') }}" class="text-decoration-none text-secondary d-inline-block mb-3">
@@ -262,6 +22,28 @@
                         </h6>
                     </div>
                     <div class="card-body">
+                        <style>
+                            /* Loading Button Styles */
+                            .loading-overlay {
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                right: 0;
+                                bottom: 0;
+                                background: rgba(255, 193, 7, 0.9);
+                                border-radius: 0.375rem;
+                                z-index: 10;
+                            }
+
+                            .loading-text {
+                                color: white;
+                                font-weight: 500;
+                            }
+                        </style>
+
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="text-center">
@@ -279,7 +61,8 @@
                                     <h6>{{ __('views.question_bank_cn_title') }}</h6>
                                     <p class="text-muted small">{{ __('views.question_bank_cn_desc') }}</p>
                                     <a href="{{ route('ai.question-bank-generator') }}" class="btn btn-success">
-                                        <i class="fas fa-database mr-1"></i>{{ __('general.create_question_bank_button') }}
+                                        <i
+                                            class="fas fa-database mr-1"></i>{{ __('general.create_question_bank_button') }}
                                     </a>
                                 </div>
                             </div>
@@ -295,12 +78,23 @@
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="text-center">
+                                <div class="text-center position-relative">
                                     <i class="fas fa-check-circle fa-3x text-warning mb-3"></i>
                                     <h6>{{ __('views.quiz_check_title') }}</h6>
                                     <p class="text-muted small">{{ __('views.quiz_check_desc') }}</p>
-                                    <button type="button" class="btn btn-warning" wire:click="validateQuizWithAI">
-                                        <i class="fas fa-check-circle mr-1"></i>{{ __('views.quiz_check_button') }}
+                                    <button type="button" class="btn btn-warning position-relative"
+                                        wire:click="validateQuizWithAI" wire:loading.attr="disabled"
+                                        wire:loading.class="disabled">
+                                        <div wire:loading.remove>
+                                            <i class="fas fa-check-circle mr-1"></i>{{ __('views.quiz_check_button') }}
+                                        </div>
+                                        <div wire:loading class="loading-overlay">
+                                            <div class="spinner-border spinner-border-sm text-light me-2"
+                                                role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                            <span class="loading-text">{{ __('views.checking') }}</span>
+                                        </div>
                                     </button>
                                 </div>
                             </div>
@@ -341,7 +135,8 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">{{ __('general.classroom') }} <span class="text-danger">*</span></label>
+                                <label class="form-label">{{ __('general.classroom') }} <span
+                                        class="text-danger">*</span></label>
                                 <select class="form-control @error('class_id') is-invalid @enderror"
                                     wire:model="class_id">
                                     <option value="">{{ __('general.choose_class') }}</option>
@@ -357,8 +152,7 @@
                             <div class="mb-3">
                                 <label class="form-label">{{ __('general.deadline') }}</label>
                                 <input type="datetime-local"
-                                    class="form-control @error('deadline') is-invalid @enderror"
-                                    wire:model="deadline">
+                                    class="form-control @error('deadline') is-invalid @enderror" wire:model="deadline">
                                 @error('deadline')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -406,7 +200,8 @@
                                         <select
                                             class="form-control @error('currentQuestion.type') is-invalid @enderror"
                                             wire:model="currentQuestion.type">
-                                            <option value="multiple_choice">{{ __('general.multiple_choice') }}</option>
+                                            <option value="multiple_choice">{{ __('general.multiple_choice') }}
+                                            </option>
                                         </select>
                                         @error('currentQuestion.type')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -414,7 +209,8 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label class="form-label">{{ __('general.score') }} <span class="text-danger">*</span></label>
+                                        <label class="form-label">{{ __('general.score') }} <span
+                                                class="text-danger">*</span></label>
                                         <input type="number"
                                             class="form-control @error('currentQuestion.score') is-invalid @enderror"
                                             wire:model="currentQuestion.score" min="1" max="10">
@@ -428,7 +224,8 @@
                             <!-- Options for multiple choice -->
                             @if ($currentQuestion['type'] === 'multiple_choice')
                                 <div class="mb-3">
-                                    <label class="form-label">{{ __('general.answer_options') }} <span class="text-danger">*</span></label>
+                                    <label class="form-label">{{ __('general.answer_options') }} <span
+                                            class="text-danger">*</span></label>
                                     @foreach ($currentQuestion['options'] as $index => $option)
                                         <div class="input-group mb-2">
                                             <input type="text"
@@ -450,14 +247,16 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="form-label">{{ __('general.correct_answer') }} <span class="text-danger">*</span></label>
+                                    <label class="form-label">{{ __('general.correct_answer') }} <span
+                                            class="text-danger">*</span></label>
                                     <select
                                         class="form-control @error('currentQuestion.correct_answer') is-invalid @enderror"
                                         wire:model.live="currentQuestion.correct_answer">
                                         <option value="">{{ __('general.choose_correct_answer') }}</option>
                                         @foreach ($currentQuestion['options'] as $index => $option)
                                             <option value="{{ $option }}" {{ $option ? '' : 'disabled' }}>
-                                                {{ $option ?: __('general.answer_number', ['number' => $index + 1]) }}</option>
+                                                {{ $option ?: __('general.answer_number', ['number' => $index + 1]) }}
+                                            </option>
                                         @endforeach
                                     </select>
                                     @error('currentQuestion.correct_answer')
@@ -465,8 +264,6 @@
                                     @enderror
                                 </div>
                             @endif
-
-
 
                             <div class="text-end">
                                 @if ($editingIndex !== null)
@@ -491,7 +288,8 @@
                         <div class="card shadow-sm">
                             <div class="card-header bg-light">
                                 <h6 class="mb-0">
-                                    <i class="bi bi-list-ul mr-2"></i>{{ __('general.question_list', ['count' => count($questions)]) }}
+                                    <i
+                                        class="bi bi-list-ul mr-2"></i>{{ __('general.question_list', ['count' => count($questions)]) }}
                                 </h6>
                             </div>
                             <div class="card-body">
@@ -499,14 +297,18 @@
                                     <div class="border rounded p-3 mb-3">
                                         <div class="d-flex justify-content-between align-items-start mb-2">
                                             <div>
-                                                <span class="badge bg-primary mr-2">{{ __('views.question_number', ['number' => $index + 1]) }}</span>
+                                                <span
+                                                    class="badge bg-primary mr-2">{{ __('views.question_number', ['number' => $index + 1]) }}</span>
                                                 <span
                                                     class="badge bg-secondary">{{ ucfirst($question['type']) }}</span>
-                                                <span class="badge bg-info">{{ $question['score'] ?? $question['points'] ?? 1 }} {{ __('views.points') }}</span>
+                                                <span
+                                                    class="badge bg-info">{{ $question['score'] ?? ($question['points'] ?? 1) }}
+                                                    {{ __('views.points') }}</span>
                                             </div>
                                             <div class="btn-group btn-group-sm">
                                                 <button type="button" class="btn btn-outline-warning"
-                                                    wire:click="editQuestion({{ $index }})" title="{{ __('general.edit') }}">
+                                                    wire:click="editQuestion({{ $index }})"
+                                                    title="{{ __('general.edit') }}">
                                                     <i class="bi bi-pencil"></i>
                                                 </button>
                                                 @if ($index > 0)
@@ -524,7 +326,8 @@
                                                     </button>
                                                 @endif
                                                 <button type="button" class="btn btn-outline-danger"
-                                                    wire:click="removeQuestion({{ $index }})" title="{{ __('general.delete') }}">
+                                                    wire:click="removeQuestion({{ $index }})"
+                                                    title="{{ __('general.delete') }}">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </div>
@@ -600,7 +403,8 @@
                                 <div class="col-md-6">
                                     <label class="form-label">{{ __('views.select_question_bank_label') }}</label>
                                     <select class="form-control" wire:model.live="selectedQuestionBank">
-                                        <option value="">{{ __('views.select_question_bank_placeholder') }}</option>
+                                        <option value="">{{ __('views.select_question_bank_placeholder') }}
+                                        </option>
                                         @foreach ($questionBanks as $bank)
                                             <option value="{{ $bank->id }}">{{ $bank->name }}
                                                 ({{ $bank->getQuestionCount() }} {{ __('views.questions') }})
@@ -627,11 +431,13 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="d-flex justify-content-between align-items-center mb-3">
-                                            <h6>{{ __('general.question_list', ['count' => count($filteredQuestions)]) }}</h6>
+                                            <h6>{{ __('general.question_list', ['count' => count($filteredQuestions)]) }}
+                                            </h6>
                                             <div>
                                                 <button type="button" class="btn btn-success btn-sm"
                                                     wire:click="addSelectedQuestions">
-                                                    <i class="fas fa-plus mr-1"></i>{{ __('views.add_selected_questions', ['count' => count($selectedQuestions)]) }}
+                                                    <i
+                                                        class="fas fa-plus mr-1"></i>{{ __('views.add_selected_questions', ['count' => count($selectedQuestions)]) }}
                                                 </button>
                                             </div>
                                         </div>
@@ -705,7 +511,8 @@
                                     <h5>{{ __('views.no_question_banks') }}</h5>
                                     <p>{{ __('views.please_create_question_bank_ai') }}</p>
                                     <a href="{{ route('ai.question-bank-generator') }}" class="btn btn-primary">
-                                        <i class="fas fa-plus mr-1"></i>{{ __('general.create_question_bank_button') }}
+                                        <i
+                                            class="fas fa-plus mr-1"></i>{{ __('general.create_question_bank_button') }}
                                     </a>
                                 </div>
                             @endif
@@ -758,7 +565,7 @@
             document.addEventListener('click', function(e) {
                 const anchor = e.target.closest('a[href]');
                 if (!anchor) return;
-                if (anchor.hasAttribute('data-bypass-leave-confirm')) return; // cho phép bỏ qua
+                if (anchor.hasAttribute('data-bypass-leave-confirm')) return; // allow bypass
                 if (!isDirty) return;
                 const proceed = confirm("{{ __('views.leave_confirm') }}");
                 if (!proceed) {

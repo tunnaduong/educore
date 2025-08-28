@@ -1,5 +1,6 @@
 <x-layouts.dash-teacher active="chat">
     @include('components.language')
+    
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
@@ -7,7 +8,7 @@
                 <div class="card h-100">
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0">
-                            <i class="fas fa-comments mr-2"></i>
+                            <i class="fas fa-comments me-2"></i>
                             {{ __('general.chat') }}
                         </h5>
                     </div>
@@ -18,17 +19,17 @@
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link {{ $activeTab === 'classes' ? 'active' : '' }}"
                                     wire:click="setActiveTab('classes')" type="button" role="tab">
-                                    <i class="fas fa-users mr-1"></i>
+                                    <i class="fas fa-users me-1"></i>
                                     {{ __('general.classes') }}
                                     @if ($unreadCount > 0)
-                                        <span class="badge bg-danger ml-1">{{ $unreadCount }}</span>
+                                        <span class="badge bg-danger ms-1">{{ $unreadCount }}</span>
                                     @endif
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link {{ $activeTab === 'users' ? 'active' : '' }}"
                                     wire:click="setActiveTab('users')" type="button" role="tab">
-                                    <i class="fas fa-user mr-1"></i>
+                                    <i class="fas fa-user me-1"></i>
                                     {{ __('general.users') }}
                                 </button>
                             </li>
@@ -56,7 +57,7 @@
                                             wire:click="selectClass({{ $class->id }})" style="cursor: pointer;">
                                             <div class="d-flex align-items-center">
                                                 <div
-                                                    class="avatar-sm bg-primary rounded-circle d-flex align-items-center justify-content-center mr-3">
+                                                    class="avatar-sm bg-primary rounded-circle d-flex align-items-center justify-content-center me-3">
                                                     <i class="fas fa-users text-white"></i>
                                                 </div>
                                                 <div>
@@ -79,7 +80,7 @@
                                     @empty
                                         <div class="text-center p-4">
                                             <i class="fas fa-inbox fa-2x text-muted mb-2"></i>
-                                            <p class="text-muted">{{ __('general.no_classes') }}</p>
+                                            <p class="text-muted">{{ __('general.no_classes_found') }}</p>
                                         </div>
                                     @endforelse
                                 </div>
@@ -94,7 +95,7 @@
                                             wire:click="selectUser({{ $user->id }})" style="cursor: pointer;">
                                             <div class="d-flex align-items-center">
                                                 <div
-                                                    class="avatar-sm bg-secondary rounded-circle d-flex align-items-center justify-content-center mr-3">
+                                                    class="avatar-sm bg-secondary rounded-circle d-flex align-items-center justify-content-center me-3">
                                                     <i class="fas fa-user text-white"></i>
                                                 </div>
                                                 <div>
@@ -104,7 +105,7 @@
                                                     </h6>
                                                     <small
                                                         class="text-muted {{ $selectedUser && $selectedUser->id === $user->id ? 'text-white-50' : '' }}">
-                                                        {{ ucfirst($user->role) }}
+                                                        {{ $user->role === 'teacher' ? __('general.teacher') : __('general.student') }}
                                                     </small>
                                                 </div>
                                             </div>
@@ -112,7 +113,7 @@
                                     @empty
                                         <div class="text-center p-4">
                                             <i class="fas fa-users fa-2x text-muted mb-2"></i>
-                                            <p class="text-muted">{{ __('views.no_users') }}</p>
+                                            <p class="text-muted">{{ __('general.no_users_found') }}</p>
                                         </div>
                                     @endforelse
                                 </div>
@@ -132,22 +133,22 @@
                                 <div class="d-flex align-items-center">
                                     @if ($selectedUser)
                                         <div
-                                            class="avatar-sm bg-secondary rounded-circle d-flex align-items-center justify-content-center mr-3">
+                                            class="avatar-sm bg-secondary rounded-circle d-flex align-items-center justify-content-center me-3">
                                             <i class="fas fa-user text-white"></i>
                                         </div>
                                         <div>
                                             <h6 class="mb-0">{{ $selectedUser->name }}</h6>
-                                            <small class="text-muted">{{ ucfirst($selectedUser->role) }}</small>
+                                            <small class="text-muted">{{ $selectedUser->role === 'teacher' ? __('general.teacher') : __('general.student') }}</small>
                                         </div>
                                     @elseif($selectedClass)
                                         <div
-                                            class="avatar-sm bg-primary rounded-circle d-flex align-items-center justify-content-center mr-3">
+                                            class="avatar-sm bg-primary rounded-circle d-flex align-items-center justify-content-center me-3">
                                             <i class="fas fa-users text-white"></i>
                                         </div>
                                         <div>
                                             <h6 class="mb-0">{{ $selectedClass->name }}</h6>
                                             <small class="text-muted">{{ $selectedClass->users->count() }}
-                                                {{ __('views.members') }}</small>
+                                                {{ __('general.members') }}</small>
                                         </div>
                                     @endif
                                 </div>
@@ -156,8 +157,8 @@
                                 @if (count($typingUsers) > 0)
                                     <div class="text-muted">
                                         <small>
-                                            <i class="fas fa-circle text-success mr-1"></i>
-                                            {{ implode(', ', $typingUsers) }} đang nhập...
+                                            <i class="fas fa-circle text-success me-1"></i>
+                                            {{ implode(', ', $typingUsers) }} {{ __('general.typing_indicator') }}
                                         </small>
                                     </div>
                                 @endif
@@ -187,8 +188,8 @@
                                                 <div class="mt-2">
                                                     <a href="{{ route('chat.download', $message->id) }}"
                                                         class="btn btn-sm {{ $message->sender_id === auth()->id() ? 'btn-light' : 'btn-outline-primary' }}">
-                                                        <i class="fas fa-paperclip mr-1"></i>
-                                                        Tải file đính kèm
+                                                        <i class="fas fa-paperclip me-1"></i>
+                                                        {{ __('general.download_attachment') }}
                                                     </a>
                                                 </div>
                                             @endif
@@ -201,7 +202,7 @@
                                 @empty
                                     <div class="text-center text-muted">
                                         <i class="fas fa-comments fa-2x mb-2"></i>
-                                        <p>Chưa có tin nhắn nào</p>
+                                        <p>{{ __('general.no_messages_yet') }}</p>
                                     </div>
                                 @endforelse
                             </div>
@@ -213,7 +214,7 @@
                                 <div class="row g-2">
                                     <div class="col">
                                         <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Nhập tin nhắn..."
+                                            <input type="text" class="form-control" placeholder="{{ __('general.type_your_message') }}"
                                                 wire:model="messageText" wire:keydown="startTyping"
                                                 wire:keyup.debounce.1000ms="stopTyping">
 
@@ -235,10 +236,10 @@
                                         @if ($attachment)
                                             <div class="mt-2 p-2 bg-light rounded">
                                                 <small class="text-muted">
-                                                    <i class="fas fa-file mr-1"></i>
+                                                    <i class="fas fa-file me-1"></i>
                                                     {{ $attachment->getClientOriginalName() }}
                                                 </small>
-                                                <button type="button" class="btn btn-sm btn-outline-danger ml-2"
+                                                <button type="button" class="btn btn-sm btn-outline-danger ms-2"
                                                     wire:click="$set('attachment', null)">
                                                     <i class="fas fa-times"></i>
                                                 </button>
@@ -254,8 +255,8 @@
                             style="height: 400px;">
                             <div class="text-center text-muted">
                                 <i class="fas fa-comments fa-3x mb-3"></i>
-                                <h5>Chọn một cuộc trò chuyện để bắt đầu</h5>
-                                <p>Chọn một lớp học hoặc người dùng từ danh sách bên trái</p>
+                                <h5>{{ __('general.start_conversation') }}</h5>
+                                <p>{{ __('general.select_class_or_user_from_left') }}</p>
                             </div>
                         </div>
                     @endif
@@ -270,7 +271,7 @@
         <div class="d-flex align-items-center justify-content-center h-100">
             <div class="text-center bg-white p-4 rounded shadow">
                 <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
-                <h5>Thả file để đính kèm</h5>
+                <h5>{{ __('general.drop_file_to_attach') }}</h5>
             </div>
         </div>
     </div>

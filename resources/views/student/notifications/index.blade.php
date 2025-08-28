@@ -189,7 +189,7 @@
                     </div>
 
                     <!-- Pagination -->
-                    <div>
+                    <div class="d-flex justify-content-center mt-4">
                         {{ $notifications->links('vendor.pagination.bootstrap-5') }}
                     </div>
                 @else

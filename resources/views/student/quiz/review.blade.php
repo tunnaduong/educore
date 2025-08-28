@@ -183,9 +183,7 @@
                     @if (isset($quiz->questions[$selectedQuestion]))
                         @php
                             $question = $quiz->questions[$selectedQuestion];
-
-                            $answers = $result->getAnswersArray();
-                            $answer = $answers[$selectedQuestion] ?? null;
+                            $answer = $result->answers[$selectedQuestion] ?? null;
                             $status = $this->getQuestionStatus($selectedQuestion);
                         @endphp
                         <div class="border rounded p-4">
@@ -220,35 +218,42 @@
                                         </div>
                                     @endforeach
                                 </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="alert alert-info">
-                                            <strong>Đáp án của bạn:</strong><br>
-                                            {{ $answer ?: 'Chưa trả lời' }}
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="alert alert-success">
-                                            <strong>Đáp án đúng:</strong><br>
-                                            @if (isset($question['correct_answer']))
-                                                @if (is_array($question['correct_answer']))
-                                                    {{ implode(', ', $question['correct_answer']) }}
-                                                @else
-                                                    {{ $question['correct_answer'] }}
-                                                @endif
-                                            @else
-                                                <span class="text-muted">Cần chấm thủ công</span>
-                                            @endif
-                                        </div>
+                            @elseif($question['type'] === 'fill_blank')
+                                <div class="mb-3">
+                                    <h6>Điền vào chỗ trống:</h6>
+                                    <div class="alert alert-light">
+                                        <strong>Đáp án của bạn:</strong> {{ $answer ?: 'Chưa trả lời' }}
                                     </div>
                                 </div>
-                                @if (isset($question['explanation']) && $question['explanation'])
-                                    <div class="alert alert-warning">
-                                        <strong>Giải thích:</strong><br>
-                                        {{ $question['explanation'] }}
+                            @endif
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="alert alert-info">
+                                        <strong>Đáp án của bạn:</strong><br>
+                                        {{ $answer ?: 'Chưa trả lời' }}
                                     </div>
-                                @endif
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="alert alert-success">
+                                        <strong>Đáp án đúng:</strong><br>
+                                        @if (isset($question['correct_answer']))
+                                            @if (is_array($question['correct_answer']))
+                                                {{ implode(', ', $question['correct_answer']) }}
+                                            @else
+                                                {{ $question['correct_answer'] }}
+                                            @endif
+                                        @else
+                                            <span class="text-muted">Cần chấm thủ công</span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            @if (isset($question['explanation']) && $question['explanation'])
+                                <div class="alert alert-warning">
+                                    <strong>Giải thích:</strong><br>
+                                    {{ $question['explanation'] }}
+                                </div>
+                            @endif
                         </div>
                     @endif
                 </div>

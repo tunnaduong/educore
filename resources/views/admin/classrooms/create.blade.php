@@ -168,7 +168,7 @@
         <!-- Flash Messages -->
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle mr-2"></i>
+                <i class="bi bi-check-circle me-2"></i>
                 {{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
@@ -176,7 +176,7 @@
 
         @if (session('error'))
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-triangle mr-2"></i>
+                <i class="bi bi-exclamation-triangle me-2"></i>
                 {{ session('error') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
@@ -322,7 +322,7 @@
                                 <div class="mb-3">
                                     <div class="alert alert-warning border-warning">
                                         <div class="d-flex align-items-start">
-                                            <i class="bi bi-exclamation-triangle-fill text-warning mr-2 mt-1"></i>
+                                            <i class="bi bi-exclamation-triangle-fill text-warning me-2 mt-1"></i>
                                             <div>
                                                 <strong>{{ __('general.schedule_conflict_warning') }}</strong>
                                                 <div class="small mt-1">
@@ -399,7 +399,7 @@
                             <div class="card border-warning mb-3">
                                 <div class="card-header bg-warning bg-opacity-10">
                                     <div class="d-flex align-items-center">
-                                        <i class="bi bi-person-circle text-warning mr-2"></i>
+                                        <i class="bi bi-person-circle text-warning me-2"></i>
                                         <strong>{{ $conflictData['teacher']->name }}</strong>
                                         <span class="badge bg-warning text-dark ml-auto">{{ __('general.teacher') }}</span>
                                     </div>
@@ -409,11 +409,11 @@
                                     @foreach($conflictData['conflicts'] as $conflict)
                                         <div class="alert alert-danger py-2 mb-2">
                                             <div class="d-flex align-items-start">
-                                                <i class="bi bi-calendar-x text-danger mr-2 mt-1"></i>
+                                                <i class="bi bi-calendar-x text-danger me-2 mt-1"></i>
                                                 <div>
                                                     <strong>{{ $conflict['classroom']->name }}</strong>
                                                     <div class="small text-muted mt-1">
-                                                        <i class="bi bi-clock mr-1"></i>
+                                                        <i class="bi bi-clock me-1"></i>
                                                         {{ $conflict['message'] }}
                                                     </div>
                                                     @if($conflict['overlapTime'])

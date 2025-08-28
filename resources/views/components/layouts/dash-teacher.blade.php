@@ -19,49 +19,43 @@
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
                     @switch(app()->getLocale())
                         @case('vi')
-                            <img src="https://twemoji.maxcdn.com/v/latest/svg/1f1fb-1f1f3.svg" class="mb-1" width="16"
-                                height="16" alt="VN"> <span class="d-none d-md-inline">@lang('general.vietnamese')</span>
+                            <img src="https://twemoji.maxcdn.com/v/latest/svg/1f1fb-1f1f3.svg" width="16" height="16"
+                                alt="VN"> @lang('general.vietnamese')
                         @break
 
                         @case('en')
-                            <img src="https://twemoji.maxcdn.com/v/latest/svg/1f1ec-1f1e7.svg" class="mb-1" width="16"
-                                height="16" alt="GB"> <span class="d-none d-md-inline">@lang('general.english')</span>
+                            <img src="https://twemoji.maxcdn.com/v/latest/svg/1f1ec-1f1e7.svg" width="16" height="16"
+                                alt="GB"> @lang('general.english')
                         @break
 
                         @case('zh')
-                            <img src="https://twemoji.maxcdn.com/v/latest/svg/1f1e8-1f1f3.svg" class="mb-1" width="16"
-                                height="16" alt="CN"> <span class="d-none d-md-inline">@lang('general.chinese')</span>
+                            <img src="https://twemoji.maxcdn.com/v/latest/svg/1f1e8-1f1f3.svg" width="16" height="16"
+                                alt="CN"> @lang('general.chinese')
                         @break
 
                         @default
-                            <span class="d-none d-md-inline">@lang('general.language')</span>
+                            @lang('general.language')
                     @endswitch
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a href="{{ route('lang.switch', 'vi') }}"
-                        class="dropdown-item {{ app()->getLocale() == 'vi' ? 'active' : '' }}">
-                        <img src="https://twemoji.maxcdn.com/v/latest/svg/1f1fb-1f1f3.svg" class="mb-1" width="16"
-                            height="16" alt="VN">
+                    <a href="{{ route('lang.switch', 'vi') }}" class="dropdown-item {{ app()->getLocale() == 'vi' ? 'active' : '' }}">
+                        <img src="https://twemoji.maxcdn.com/v/latest/svg/1f1fb-1f1f3.svg" width="16" height="16" alt="VN"> 
                         @lang('general.vietnamese')
-                        @if (app()->getLocale() == 'vi')
+                        @if(app()->getLocale() == 'vi')
                             <i class="fas fa-check ml-2 text-white"></i>
                         @endif
                     </a>
-                    <a href="{{ route('lang.switch', 'en') }}"
-                        class="dropdown-item {{ app()->getLocale() == 'en' ? 'active' : '' }}">
-                        <img src="https://twemoji.maxcdn.com/v/latest/svg/1f1ec-1f1e7.svg" class="mb-1" width="16"
-                            height="16" alt="GB">
+                    <a href="{{ route('lang.switch', 'en') }}" class="dropdown-item {{ app()->getLocale() == 'en' ? 'active' : '' }}">
+                        <img src="https://twemoji.maxcdn.com/v/latest/svg/1f1ec-1f1e7.svg" width="16" height="16" alt="GB"> 
                         @lang('general.english')
-                        @if (app()->getLocale() == 'en')
+                        @if(app()->getLocale() == 'en')
                             <i class="fas fa-check ml-2 text-white"></i>
                         @endif
                     </a>
-                    <a href="{{ route('lang.switch', 'zh') }}"
-                        class="dropdown-item {{ app()->getLocale() == 'zh' ? 'active' : '' }}">
-                        <img src="https://twemoji.maxcdn.com/v/latest/svg/1f1e8-1f1f3.svg" class="mb-1" width="16"
-                            height="16" alt="CN">
+                    <a href="{{ route('lang.switch', 'zh') }}" class="dropdown-item {{ app()->getLocale() == 'zh' ? 'active' : '' }}">
+                        <img src="https://twemoji.maxcdn.com/v/latest/svg/1f1e8-1f1f3.svg" width="16" height="16" alt="CN"> 
                         @lang('general.chinese')
-                        @if (app()->getLocale() == 'zh')
+                        @if(app()->getLocale() == 'zh')
                             <i class="fas fa-check ml-2 text-white"></i>
                         @endif
                     </a>

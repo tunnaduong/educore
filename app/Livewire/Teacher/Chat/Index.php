@@ -121,47 +121,10 @@ class Index extends Component
 
     public function sendMessage()
     {
-        // Kiểm tra file trước khi validate
-        if ($this->attachment) {
-            try {
-                // Kiểm tra file có hợp lệ không
-                if (! $this->attachment->isValid()) {
-                    $this->addError('attachment', 'File không hợp lệ hoặc bị hỏng.');
-
-                    return;
-                }
-
-                // Kiểm tra kích thước
-                if ($this->attachment->getSize() > self::MAX_ATTACHMENT_SIZE) { // 100MB
-                    $this->addError('attachment', 'File quá lớn. Kích thước tối đa là 100MB.');
-
-                    return;
-                }
-
-                // Kiểm tra MIME type
-                $allowedMimes = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'zip', 'rar', '7z', 'mp3', 'm4a', 'wav', 'ogg', 'oga', 'flac', 'amr', 'webm', 'mp4'];
-                $fileExtension = strtolower($this->attachment->getClientOriginalExtension());
-                if (! in_array($fileExtension, $allowedMimes)) {
-                    $this->addError('attachment', 'Định dạng file không được hỗ trợ.');
-
-                    return;
-                }
-            } catch (\Exception $e) {
-                $this->addError('attachment', 'Không thể xử lý file: '.$e->getMessage());
-
-                return;
-            }
-        }
-
         $this->validate([
-            'messageText' => 'nullable|string|max:1000',
+            'messageText' => 'required|string|max:1000',
+            'attachment' => 'nullable|file|max:10240', // 10MB max
         ]);
-
-        if ((trim($this->messageText) === '' || $this->messageText === null) && ! $this->attachment) {
-            $this->addError('messageText', 'Vui lòng nhập nội dung hoặc chọn tệp đính kèm.');
-
-            return;
-        }
 
         $currentUserId = Auth::id();
         if (! $currentUserId) {
@@ -180,26 +143,8 @@ class Index extends Component
         }
 
         if ($this->attachment) {
-            try {
-                Log::info('Uploading attachment', [
-                    'original_name' => $this->attachment->getClientOriginalName(),
-                    'size' => $this->attachment->getSize(),
-                    'mime_type' => $this->attachment->getMimeType(),
-                ]);
-
-                $path = $this->attachment->store('chat-attachments', 'public');
-                $messageData['attachment'] = $path;
-
-                Log::info('Attachment uploaded successfully', ['path' => $path]);
-            } catch (\Exception $e) {
-                Log::error('Failed to upload attachment', [
-                    'error' => $e->getMessage(),
-                    'file' => $this->attachment->getClientOriginalName(),
-                ]);
-                $this->addError('attachment', 'Không thể tải lên tệp: '.$e->getMessage());
-
-                return;
-            }
+            $path = $this->attachment->store('chat-attachments', 'public');
+            $messageData['attachment'] = $path;
         }
 
         $message = Message::create($messageData);

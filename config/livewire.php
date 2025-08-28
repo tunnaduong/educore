@@ -64,11 +64,11 @@ return [
     */
 
     'temporary_file_upload' => [
-        'disk' => 'public',
-        'rules' => ['required', 'file', 'max:524288'],
-        'directory' => 'livewire-tmp',
-        'middleware' => null,
-        'preview_mimes' => [
+        'disk' => null,        // Example: 'local', 's3'              | Default: 'default'
+        'rules' => ['required', 'file', 'max:524288'],       // Example: ['file', 'mimes:png,jpg']  | Default: ['required', 'file', 'max:102400'] (100MB)
+        'directory' => null,   // Example: 'tmp'                      | Default: 'livewire-tmp'
+        'middleware' => null,  // Example: 'throttle:5,1'             | Default: 'throttle:60,1'
+        'preview_mimes' => [   // Supported file types for temporary pre-signed file URLs...
             'png',
             'gif',
             'bmp',
@@ -79,11 +79,15 @@ return [
             'avi',
             'wmv',
             'mp3',
-            'flac',
-            'ogg',
+            'm4a',
+            'jpg',
+            'jpeg',
+            'mpga',
+            'webp',
             'wma',
         ],
-        'max_upload_time' => 5,
+        'max_upload_time' => 5, // Max duration (in minutes) before an upload is invalidated...
+        'cleanup' => true, // Should cleanup temporary uploads older than 24 hrs...
     ],
 
     /*

@@ -50,7 +50,7 @@ class Edit extends Component
             ],
             'phone' => [
                 'required',
-                'max:15',
+                'regex:/^\d{10,15}$/',
                 Rule::unique('users', 'phone')->ignore($this->user->id),
             ],
             'role' => 'required|in:admin,teacher,student',
@@ -65,7 +65,7 @@ class Edit extends Component
         'email.email' => 'Email không hợp lệ',
         'email.unique' => 'Email đã tồn tại trong hệ thống',
         'phone.required' => 'Vui lòng nhập số điện thoại',
-        'phone.max' => 'Số điện thoại không được vượt quá :max ký tự',
+        'phone.regex' => 'Số điện thoại chỉ gồm số và có 10-15 chữ số',
         'phone.unique' => 'Số điện thoại đã tồn tại trong hệ thống',
         'role.required' => 'Vui lòng chọn vai trò',
         'role.in' => 'Vai trò không hợp lệ',

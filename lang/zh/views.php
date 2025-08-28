@@ -504,4 +504,53 @@ return [
     'current_document' => '当前资料',
     'save_changes' => '保存更改',
     'update_lesson_info_desc' => '更新课程信息、资料、视频、幻灯片，方便学生学习。',
+    // Question Bank Generator (QBG)
+    'qbg' => [
+        'ai_processing' => 'AI正在处理...',
+        'ai_processing_description' => '使用人工智能分析和处理数据',
+        'analyzing_content' => '正在分析内容',
+        'ai_processing_step' => 'AI处理',
+        'completing' => '完成中',
+
+        'create_chinese_question_bank_with_ai' => '使用AI创建中文题库',
+        'auto_create_chinese_question_bank_max_100' => '自动创建最多含100道题的中文题库',
+
+        'question_bank_configuration' => '题库配置',
+        'question_bank_name' => '题库名称',
+        'enter_question_bank_name' => '输入题库名称',
+        'describe_question_bank' => '描述题库',
+        'chinese_topic' => '中文主题',
+        'topic_placeholder_examples' => '例如：基础交际、HSK1语法、家庭词汇...',
+        'max_questions' => '最大题目数量',
+
+        'creating_question_bank' => '正在创建题库...',
+        'ai_generating_question_bank' => 'AI正在生成题库...',
+        'please_wait' => '请稍候',
+        'create_chinese_question_bank_button' => '创建中文题库',
+
+        'preview_chinese_question_bank' => '预览中文题库',
+        'create_quiz' => '创建测验',
+        'save_question_bank' => '保存题库',
+
+        'total_questions' => '题目总数',
+        'easy_questions' => '简单题',
+        'medium_questions' => '中等题',
+        'hard_questions' => '困难题',
+
+        'distribution_by_question_type' => '按题型分布：',
+        'distribution_by_difficulty' => '按难度分布：',
+        'easy_label' => '简单',
+        'medium_label' => '中等',
+        'hard_label' => '困难',
+
+        'sample_questions' => '示例题目：',
+        'question_label' => '题目',
+        'answer' => '答案',
+        'explanation' => '解析',
+        'tags' => '标签',
+        'and_other_questions' => '以及其他 :count 道题...',
+
+        'no_question_bank_created_yet' => '尚未创建题库',
+        'fill_info_and_create_question_bank_ai' => '填写信息并使用AI创建中文题库',
+    ],
 ];
