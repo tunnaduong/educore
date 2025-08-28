@@ -103,7 +103,7 @@
                                         <div class="list-group-item text-center text-muted">
                                             <i class="bi bi-diagram-3-fill"
                                                 style="font-size: 2rem; color: #dee2e6;"></i>
-                                            <p class="mt-2">Không có lớp học nào</p>
+                                            <p class="mt-2">{{ __('general.no_classes_found') }}</p>
                                         </div>
                                     @endforelse
                                 </div>
@@ -137,7 +137,7 @@
                                     </div>
                                     <div>
                                         <h6 class="mb-0">{{ $selectedClass->name }}</h6>
-                                        <small class="text-muted">Lớp học</small>
+                                        <small class="text-muted">{{ __('general.classroom') }}</small>
                                     </div>
                                 @endif
                             </div>
@@ -205,8 +205,8 @@
                                 @empty
                                     <div class="text-center text-muted mt-5">
                                         <i class="bi bi-chat-dots" style="font-size: 3rem; color: #dee2e6;"></i>
-                                        <p class="mt-3">Chưa có tin nhắn nào</p>
-                                        <p>Bắt đầu cuộc trò chuyện ngay!</p>
+                                        <p class="mt-3">{{ __('general.no_messages_yet') }}</p>
+                                        <p>{{ __('general.start_conversation_now') }}</p>
                                     </div>
                                 @endforelse
                             </div>
@@ -218,7 +218,7 @@
                                         <div class="col">
                                             <div class="input-group">
                                                 <input type="text" id="messageText" class="form-control"
-                                                    placeholder="Nhập tin nhắn..." maxlength="1000">
+                                                    placeholder="{{ __('general.enter_message') }}" maxlength="1000">
                                                 <input type="file" id="attachment" class="d-none"
                                                     accept="image/*,audio/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar,.7z">
                                                 <button type="button" class="btn btn-outline-secondary btn-sm"
@@ -253,8 +253,8 @@
                             style="height: 400px;">
                             <div class="text-center">
                                 <i class="bi bi-chat-dots-fill" style="font-size: 4rem; color: #0dcaf0;"></i>
-                                <h4 class="mt-3">Chào mừng đến với Chat & Tương tác</h4>
-                                <p class="text-muted">Chọn một người dùng hoặc lớp học để bắt đầu cuộc trò chuyện</p>
+                                <h4 class="mt-3">{{ __('general.welcome_to_chat') }}</h4>
+                                <p class="text-muted">{{ __('general.select_user_or_class_to_start') }}</p>
                             </div>
                         </div>
                     @endif
@@ -275,9 +275,9 @@
                 const messageText = document.getElementById('messageText').value;
                 const fileInput = document.getElementById('attachment');
                 const file = fileInput.files[0];
-                
+
                 if (!messageText.trim() && !file) {
-                    alert('Vui lòng nhập tin nhắn hoặc chọn file');
+                    alert('{{ __('general.please_enter_message_or_file') }}');
                     return;
                 }
 
@@ -315,19 +315,19 @@
                         // Clear form
                         document.getElementById('messageText').value = '';
                         fileInput.value = '';
-                        
+
                         // Add message to UI
                         addMessageToUI(data.message);
-                        
+
                         // Show success notification
-                        showNotification('Tin nhắn đã gửi', 'success');
+                        showNotification('{{ __('general.message_sent') }}', 'success');
                     } else {
                         alert('Lỗi: ' + data.error);
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('Có lỗi xảy ra khi gửi tin nhắn');
+                    alert('{{ __('general.error_occurred_sending_message') }}');
                 })
                 .finally(() => {
                     // Restore button
@@ -343,10 +343,10 @@
 
                 const messageDiv = document.createElement('div');
                 messageDiv.className = 'message-item mb-3';
-                
+
                 const isMine = message.sender_id == {{ auth()->id() }};
                 const alignment = isMine ? 'text-end' : 'text-start';
-                
+
                 let attachmentHtml = '';
                 if (message.attachment) {
                     attachmentHtml = `
@@ -383,7 +383,7 @@
             function showNotification(title, type = 'info') {
                 if (Notification.permission === 'granted') {
                     new Notification(title, {
-                        body: type === 'success' ? 'Thành công!' : 'Có tin nhắn mới',
+                        body: type === 'success' ? '{{ __('general.success') }}!' : '{{ __('general.new_message_from') }}',
                         icon: '/favicon.ico',
                         badge: '/favicon.ico'
                     });
@@ -395,20 +395,20 @@
                 // Initialize Pusher if available
                 if (window.Echo) {
                     console.log('Pusher initialized');
-                    
+
                     // Listen to private user channels
                     window.Echo.private(`chat-user-{{ auth()->id() }}`)
                         .listen('.message.sent', (e) => {
                             console.log('Received message:', e);
-                            
+
                             // Add message to UI
                             addMessageToUI(e.message);
-                            
+
                             // Show notification if not focused
                             if (!document.hasFocus()) {
-                                showNotification('Tin nhắn mới từ ' + e.message.sender.name);
+                                showNotification('{{ __('general.new_message_from') }} ' + e.message.sender.name);
                             }
-                            
+
                             // Auto scroll
                             const container = document.getElementById('messagesContainer');
                             if (container) {
@@ -421,15 +421,15 @@
                         window.Echo.channel(`chat-class-{{ $selectedClass->id }}`)
                             .listen('.message.sent', (e) => {
                                 console.log('Received class message:', e);
-                                
+
                                 // Add message to UI
                                 addMessageToUI(e.message);
-                                
+
                                 // Show notification if not focused
                                 if (!document.hasFocus()) {
-                                    showNotification('Tin nhắn mới trong lớp ' + '{{ $selectedClass->name }}');
+                                    showNotification('{{ __('general.new_message_in_class') }} ' + '{{ $selectedClass->name }}');
                                 }
-                                
+
                                 // Auto scroll
                                 const container = document.getElementById('messagesContainer');
                                 if (container) {
@@ -452,14 +452,14 @@
                             const fileInfo = document.createElement('div');
                             fileInfo.className = 'alert alert-info alert-sm mt-2';
                             fileInfo.innerHTML = `
-                                <i class="bi bi-paperclip"></i> 
+                                <i class="bi bi-paperclip"></i>
                                 ${file.name} (${(file.size / 1024).toFixed(1)} KB)
                             `;
-                            
+
                             // Remove previous file info
                             const prevInfo = document.querySelector('.alert-info');
                             if (prevInfo) prevInfo.remove();
-                            
+
                             // Add new file info
                             fileInput.parentNode.parentNode.appendChild(fileInfo);
                         }

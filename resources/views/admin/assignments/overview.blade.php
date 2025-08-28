@@ -1,8 +1,8 @@
-<x-layouts.dash-admin active="assignments" title="Tổng quan bài tập">
+<x-layouts.dash-admin active="assignments" title="{{ __('views.assignment_overview') }}">
     @include('components.language')
     <div class="d-flex justify-content-end mb-3">
         <a href="{{ route('assignments.create') }}" class="btn btn-primary">
-            <i class="bi bi-plus-circle mr-2"></i>Giao bài tập mới
+            <i class="bi bi-plus-circle mr-2"></i>{{ __('views.create_new_assignment') }}
         </a>
     </div>
     <div class="row">
@@ -13,7 +13,7 @@
                     <div class="row align-items-center">
                         <div class="col-md-6">
                             <h5 class="mb-0 text-primary">
-                                <i class="fas fa-chart-bar mr-2"></i>Tổng quan bài tập
+                                <i class="fas fa-chart-bar mr-2"></i>{{ __('views.assignment_overview') }}
                             </h5>
                         </div>
                         <div class="col-md-6">
@@ -42,7 +42,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <h6 class="card-title mb-0">Tổng bài tập</h6>
+                                    <h6 class="card-title mb-0">{{ __('views.total_assignments') }}</h6>
                                     <h3 class="mb-0">{{ $overviewStats['total_assignments'] ?? 0 }}</h3>
                                 </div>
                                 <div class="align-self-center">
@@ -57,7 +57,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <h6 class="card-title mb-0">Lớp có bài tập</h6>
+                                    <h6 class="card-title mb-0">{{ __('views.classes_with_assignments') }}</h6>
                                     <h3 class="mb-0">{{ $overviewStats['total_classes'] ?? 0 }}</h3>
                                 </div>
                                 <div class="align-self-center">
@@ -72,7 +72,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <h6 class="card-title mb-0">Tổng lượt nộp</h6>
+                                    <h6 class="card-title mb-0">{{ __('views.total_submissions') }}</h6>
                                     <h3 class="mb-0">{{ $overviewStats['total_submissions'] ?? 0 }}</h3>
                                 </div>
                                 <div class="align-self-center">
@@ -87,7 +87,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <h6 class="card-title mb-0">Tỷ lệ nộp bài</h6>
+                                    <h6 class="card-title mb-0">{{ __('views.submission_rate') }}</h6>
                                     <h3 class="mb-0">{{ $overviewStats['submission_rate'] ?? 0 }}%</h3>
                                 </div>
                                 <div class="align-self-center">
@@ -105,7 +105,7 @@
                     <div class="card card-outline card-primary mb-4">
                         <div class="card-header">
                             <h5 class="mb-0 text-primary">
-                                <i class="fas fa-trophy mr-2"></i>Top 5 lớp có nhiều bài tập nhất
+                                <i class="fas fa-trophy mr-2"></i>{{ __('views.top_classes_with_most_assignments') }}
                             </h5>
                         </div>
                         <div class="card-body">
@@ -114,10 +114,10 @@
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
-                                                <th>Lớp học</th>
-                                                <th class="text-center">Số bài tập</th>
-                                                <th class="text-center">Tỷ lệ nộp</th>
-                                                <th class="text-center">Hành động</th>
+                                                <th>{{ __('views.classroom') }}</th>
+                                                <th class="text-center">{{ __('views.assignment_count') }}</th>
+                                                <th class="text-center">{{ __('views.submission_rate') }}</th>
+                                                <th class="text-center">{{ __('views.actions') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -146,7 +146,7 @@
                                                     <td class="text-center">
                                                         <a href="{{ route('assignments.list', ['classroomFilter' => $classData['classroom']->id ?? '']) }}"
                                                             class="btn btn-sm btn-outline-primary">
-                                                            <i class="fas fa-eye mr-1"></i>Xem chi tiết
+                                                            <i class="fas fa-eye mr-1"></i>{{ __('views.view_details') }}
                                                         </a>
                                                     </td>
                                                 </tr>
@@ -157,7 +157,7 @@
                             @else
                                 <div class="text-center py-4">
                                     <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
-                                    <p class="text-muted">Chưa có dữ liệu bài tập</p>
+                                    <p class="text-muted">{{ __('views.no_assignment_data') }}</p>
                                 </div>
                             @endif
                         </div>
@@ -168,7 +168,7 @@
                     <div class="card card-outline card-primary">
                         <div class="card-header">
                             <h5 class="mb-0 text-primary">
-                                <i class="fas fa-chart-pie mr-2"></i>Thống kê theo tháng
+                                <i class="fas fa-chart-pie mr-2"></i>{{ __('views.monthly_statistics') }}
                             </h5>
                         </div>
                         <div class="card-body">
@@ -177,9 +177,9 @@
                                     <table class="table table-sm">
                                         <thead>
                                             <tr>
-                                                <th>Tháng</th>
-                                                <th class="text-center">Bài tập</th>
-                                                <th class="text-center">Nộp bài</th>
+                                                <th>{{ __('views.month') }}</th>
+                                                <th class="text-center">{{ __('views.assignments') }}</th>
+                                                <th class="text-center">{{ __('views.submissions') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -202,7 +202,7 @@
                             @else
                                 <div class="text-center py-3">
                                     <i class="fas fa-chart-line fa-2x text-muted mb-2"></i>
-                                    <p class="text-muted small">Chưa có dữ liệu thống kê</p>
+                                    <p class="text-muted small">{{ __('views.no_statistics_data') }}</p>
                                 </div>
                             @endif
                         </div>

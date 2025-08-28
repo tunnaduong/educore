@@ -101,23 +101,23 @@
                                                             <span class="badge bg-secondary mr-1">
                                                                 @switch($type)
                                                                     @case('text')
-                                                                        Điền từ
+                                                                        {{ __('general.text') }}
                                                                     @break
 
                                                                     @case('essay')
-                                                                        Tự luận
+                                                                        {{ __('general.essay') }}
                                                                     @break
 
                                                                     @case('image')
-                                                                        Ảnh
+                                                                        {{ __('general.image') }}
                                                                     @break
 
                                                                     @case('audio')
-                                                                        Âm thanh
+                                                                        {{ __('general.audio') }}
                                                                     @break
 
                                                                     @case('video')
-                                                                        Video
+                                                                        {{ __('general.video') }}
                                                                     @break
 
                                                                     @default
@@ -137,14 +137,13 @@
                                         </td>
                                         <td>
                                             @if ($assignment->deadline > now())
-                                                <span class="badge bg-success">Đang hoạt động</span>
+                                                <span class="badge bg-success">{{ __('views.active_status') }}</span>
                                             @else
-                                                <span class="badge bg-danger">Quá hạn</span>
+                                                <span class="badge bg-danger">{{ __('views.overdue_status') }}</span>
                                             @endif
                                         </td>
                                         <td>
-                                            <span class="badge bg-info">{{ $assignment->submissions->count() }} bài
-                                                nộp</span>
+                                            <span class="badge bg-info">{{ $assignment->submissions->count() }} {{ __('views.submissions_count') }}</span>
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group">
@@ -158,7 +157,7 @@
                                                 </a>
                                                 <button type="button" class="btn btn-sm btn-outline-danger"
                                                     wire:click="deleteAssignment({{ $assignment->id }})"
-                                                    wire:confirm="Bạn có chắc chắn muốn xóa bài tập '{{ $assignment->title }}'? Hành động này không thể hoàn tác.">
+                                                    wire:confirm="{{ __('views.confirm_delete_assignment', ['title' => $assignment->title]) }}">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </div>
@@ -176,10 +175,10 @@
                 @else
                     <div class="text-center py-5">
                         <i class="bi bi-journal-x fs-1 text-muted mb-3"></i>
-                        <h5 class="text-muted">Không có bài tập nào</h5>
-                        <p class="text-muted">Tạo bài tập đầu tiên để bắt đầu</p>
+                        <h5 class="text-muted">{{ __('views.no_assignments') }}</h5>
+                        <p class="text-muted">{{ __('views.create_first_assignment') }}</p>
                         <a href="{{ route('assignments.create') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle mr-2"></i>Giao bài tập mới
+                            <i class="bi bi-plus-circle mr-2"></i>{{ __('general.create_new_assignment') }}
                         </a>
                     </div>
                 @endif
@@ -189,7 +188,7 @@
         <!-- Back Button -->
         <div class="text-center mt-4">
             <a href="{{ route('assignments.overview') }}" class="btn btn-outline-secondary">
-                <i class="bi bi-arrow-left mr-2"></i>Quay lại tổng quan
+                <i class="bi bi-arrow-left mr-2"></i>{{ __('views.back_to_overview') }}
             </a>
         </div>
     </div>

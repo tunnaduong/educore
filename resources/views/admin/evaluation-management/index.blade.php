@@ -6,9 +6,9 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-bar-chart-line mr-2"></i>Quản lý đánh giá chất lượng học viên
+                        <i class="bi bi-bar-chart-line mr-2"></i>{{ __('views.evaluation_management') }}
                     </h4>
-                    <p class="text-muted mb-0">Xem đánh giá và quản lý câu hỏi đánh giá</p>
+                    <p class="text-muted mb-0">{{ __('views.view_evaluations_and_manage_questions') }}</p>
                 </div>
             </div>
         </div>
@@ -35,19 +35,19 @@
                 <button class="nav-link {{ $activeTab === 'evaluations' ? 'active' : '' }}"
                     wire:click="$set('activeTab', 'evaluations')" type="button" role="tab"
                     style="cursor: pointer;">
-                    <i class="bi bi-list-check mr-2"></i> Danh sách đánh giá
+                    <i class="bi bi-list-check mr-2"></i> {{ __('views.evaluation_list') }}
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link {{ $activeTab === 'questions' ? 'active' : '' }}"
                     wire:click="$set('activeTab', 'questions')" type="button" role="tab" style="cursor: pointer;">
-                    <i class="bi bi-question-circle mr-2"></i> Quản lý câu hỏi
+                    <i class="bi bi-question-circle mr-2"></i> {{ __('views.question_management') }}
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link {{ $activeTab === 'rounds' ? 'active' : '' }}"
                     wire:click="$set('activeTab', 'rounds')" type="button" role="tab" style="cursor: pointer;">
-                    <i class="bi bi-calendar-event mr-2"></i> Quản lý đợt đánh giá
+                    <i class="bi bi-calendar-event mr-2"></i> {{ __('views.round_management') }}
                 </button>
             </li>
         </ul>
@@ -59,22 +59,20 @@
                 <!-- Hướng dẫn tính điểm -->
                 <div class="alert mb-4" style="background-color: #17a2b8; color: white; border: none;">
                     <h6 class="alert-heading fw-bold" style="color: white;">
-                        <i class="bi bi-info-circle mr-2"></i>Hướng dẫn tính điểm:
+                        <i class="bi bi-info-circle mr-2"></i>{{ __('views.scoring_guide') }}
                     </h6>
                     <div style="color: white;">
                         <div class="mb-2">
-                            <strong style="color: white;">Điểm TB đánh giá giáo viên:</strong> Trung bình cộng các câu
-                            hỏi nhóm 1 (1-5 điểm/câu).
+                            <strong style="color: white;">{{ __('views.teacher_rating_avg') }}</strong> {{ __('views.teacher_rating_desc') }}
                         </div>
                         <div class="mb-2">
-                            <strong style="color: white;">Điểm TB đánh giá khóa học:</strong> Trung bình cộng các câu
-                            hỏi nhóm 2 (1-5 điểm/câu).
+                            <strong style="color: white;">{{ __('views.course_rating_avg') }}</strong> {{ __('views.course_rating_desc') }}
                         </div>
                         <div class="mb-2">
-                            <strong style="color: white;">Điểm hài lòng cá nhân:</strong> Điểm câu hỏi số 10 (1-5 điểm).
+                            <strong style="color: white;">{{ __('views.personal_satisfaction') }}</strong> {{ __('views.personal_satisfaction_desc') }}
                         </div>
                         <div style="color: #f0f0f0; font-size: 0.9em;">
-                            Điểm càng cao mức độ hài lòng càng lớn.
+                            {{ __('views.higher_score_better') }}
                         </div>
                     </div>
                 </div>
@@ -84,27 +82,27 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-4">
-                                <label for="classroomFilter" class="form-label">Lọc theo lớp:</label>
+                                <label for="classroomFilter" class="form-label">{{ __('views.filter_by_class') }}</label>
                                 <div class="d-flex gap-2">
                                     <select wire:model.live="classroomId" class="form-control" id="classroomFilter">
-                                        <option value="">Tất cả lớp</option>
+                                        <option value="">{{ __('views.all_classes') }}</option>
                                         @foreach ($classrooms as $classroom)
                                             <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
                                         @endforeach
                                     </select>
                                     @if ($classroomId)
                                         <button class="btn btn-outline-secondary btn-sm" wire:click="resetFilter"
-                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Xóa bộ lọc">
+                                            data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __('views.clear_filter') }}">
                                             <i class="bi bi-x-lg"></i>
                                         </button>
                                     @endif
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <label for="roundFilter" class="form-label">Lọc theo đợt đánh giá:</label>
+                                <label for="roundFilter" class="form-label">{{ __('views.filter_by_round') }}</label>
                                 <div class="d-flex gap-2">
                                     <select wire:model.live="roundId" class="form-control" id="roundFilter">
-                                        <option value="">Tất cả đợt</option>
+                                        <option value="">{{ __('views.all_rounds') }}</option>
                                         @foreach ($evaluationRounds as $round)
                                             <option value="{{ $round->id }}">{{ $round->name }}
                                                 ({{ $round->start_date->format('d/m') }} -
@@ -114,7 +112,7 @@
                                     </select>
                                     @if ($roundId)
                                         <button class="btn btn-outline-secondary btn-sm" wire:click="resetFilter"
-                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Xóa bộ lọc">
+                                            data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __('views.clear_filter') }}">
                                             <i class="bi bi-x-lg"></i>
                                         </button>
                                     @endif
@@ -131,7 +129,7 @@
                             <div class="card-body">
                                 <div class="d-flex justify-content-between">
                                     <div>
-                                        <h6 class="card-title">Điểm TB Giáo viên</h6>
+                                        <h6 class="card-title">{{ __('views.teacher_avg_score') }}</h6>
                                         <h3 class="mb-0">{{ number_format($avgTeacher, 1) }}/5.0</h3>
                                     </div>
                                     <div class="align-self-center">
@@ -151,7 +149,7 @@
                             <div class="card-body">
                                 <div class="d-flex justify-content-between">
                                     <div>
-                                        <h6 class="card-title">Điểm TB Khóa học</h6>
+                                        <h6 class="card-title">{{ __('views.course_avg_score') }}</h6>
                                         <h3 class="mb-0">{{ number_format($avgCourse, 1) }}/5.0</h3>
                                     </div>
                                     <div class="align-self-center">
@@ -171,7 +169,7 @@
                             <div class="card-body">
                                 <div class="d-flex justify-content-between">
                                     <div>
-                                        <h6 class="card-title">Điểm TB Cá nhân</h6>
+                                        <h6 class="card-title">{{ __('views.personal_avg_score') }}</h6>
                                         <h3 class="mb-0">{{ number_format($avgPersonal, 1) }}/5.0</h3>
                                     </div>
                                     <div class="align-self-center">
@@ -191,7 +189,7 @@
                 <!-- Danh sách đánh giá -->
                 <div class="card">
                     <div class="card-header">
-                        <h6 class="mb-0">Danh sách đánh giá ({{ $total }} đánh giá)</h6>
+                        <h6 class="mb-0">{{ __('views.evaluation_list_title') }} ({{ $total }} {{ __('views.evaluation_list') }})</h6>
                     </div>
                     <div class="card-body">
                         @if ($evaluations->count() > 0)
@@ -199,13 +197,13 @@
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <th>Học viên</th>
-                                            <th>Lớp</th>
-                                            <th>Đợt</th>
-                                            <th>Điểm TB</th>
-                                            <th>Trạng thái</th>
-                                            <th>Ngày gửi</th>
-                                            <th>Thao tác</th>
+                                            <th>{{ __('views.student') }}</th>
+                                            <th>{{ __('views.class') }}</th>
+                                            <th>{{ __('views.round') }}</th>
+                                            <th>{{ __('views.avg_score') }}</th>
+                                            <th>{{ __('views.status') }}</th>
+                                            <th>{{ __('views.submission_date') }}</th>
+                                            <th>{{ __('views.actions') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -233,7 +231,7 @@
                                                                 class="badge bg-info mr-1">{{ $classroom->name }}</span>
                                                         @endforeach
                                                     @else
-                                                        <span class="text-muted">Chưa phân lớp</span>
+                                                        <span class="text-muted">{{ __('views.not_assigned') }}</span>
                                                     @endif
                                                 </td>
                                                 <td>
@@ -255,20 +253,20 @@
                                                         @endphp
                                                         <span class="badge bg-{{ $color }}">
                                                             @if ($rating >= 4)
-                                                                Hài lòng
+                                                                {{ __('views.satisfied') }}
                                                             @elseif($rating >= 3)
-                                                                Bình thường
+                                                                {{ __('views.normal') }}
                                                             @else
-                                                                Không hài lòng
+                                                                {{ __('views.not_satisfied') }}
                                                             @endif
                                                         </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     @if ($evaluation->submitted_at)
-                                                        <span class="badge bg-success">Đã gửi</span>
+                                                        <span class="badge bg-success">{{ __('views.submitted') }}</span>
                                                     @else
-                                                        <span class="badge bg-warning">Chưa gửi</span>
+                                                        <span class="badge bg-warning">{{ __('views.not_submitted') }}</span>
                                                     @endif
                                                 </td>
                                                 <td>{{ $evaluation->submitted_at ? $evaluation->submitted_at->format('d/m/Y H:i') : 'N/A' }}
@@ -278,14 +276,14 @@
                                                         <button class="btn btn-outline-primary"
                                                             wire:click="showEvaluationDetail({{ $evaluation->id }})"
                                                             data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            title="Xem chi tiết">
+                                                            title="{{ __('views.view_details') }}">
                                                             <i class="bi bi-eye"></i>
                                                         </button>
                                                         <button class="btn btn-outline-danger"
                                                             wire:click="deleteEvaluation({{ $evaluation->id }})"
-                                                            wire:confirm="Bạn có chắc chắn muốn xóa đánh giá này?"
+                                                            wire:confirm="{{ __('views.confirm_delete_evaluation') }}"
                                                             data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            title="Xóa đánh giá">
+                                                            title="{{ __('views.delete_evaluation') }}">
                                                             <i class="bi bi-trash"></i>
                                                         </button>
                                                     </div>
@@ -301,8 +299,8 @@
                         @else
                             <div class="text-center py-4">
                                 <i class="bi bi-inbox fs-1 text-muted mb-3"></i>
-                                <h5 class="text-muted">Chưa có đánh giá nào</h5>
-                                <p class="text-muted">Học viên chưa gửi đánh giá nào trong hệ thống.</p>
+                                <h5 class="text-muted">{{ __('views.no_evaluations') }}</h5>
+                                <p class="text-muted">{{ __('views.no_evaluations_desc') }}</p>
                             </div>
                         @endif
                     </div>
@@ -313,13 +311,13 @@
             <div class="{{ $activeTab === 'questions' ? 'd-block' : 'd-none' }}" id="questions" role="tabpanel">
                 <div class="card">
                     <div class="card-header">
-                        <h6 class="mb-0">Quản lý câu hỏi đánh giá</h6>
+                        <h6 class="mb-0">{{ __('views.question_management_title') }}</h6>
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-end mb-3">
                             <button class="btn btn-primary" wire:click="showAddQuestionModal"
-                                data-bs-toggle="tooltip" data-bs-placement="top" title="Thêm câu hỏi mới">
-                                <i class="bi bi-plus-circle mr-2"></i>Thêm câu hỏi
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __('views.add_new_question') }}">
+                                <i class="bi bi-plus-circle mr-2"></i>{{ __('views.add_question') }}
                             </button>
                         </div>
                         @if ($questions->count() > 0)
@@ -327,11 +325,11 @@
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <th>Thứ tự</th>
-                                            <th>Danh mục</th>
-                                            <th>Câu hỏi</th>
-                                            <th>Trạng thái</th>
-                                            <th>Thao tác</th>
+                                            <th>{{ __('views.order') }}</th>
+                                            <th>{{ __('views.category') }}</th>
+                                            <th>{{ __('views.question') }}</th>
+                                            <th>{{ __('views.status') }}</th>
+                                            <th>{{ __('views.actions') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -347,24 +345,24 @@
                                                 <td>
                                                     @switch($question->category)
                                                         @case('teacher')
-                                                            <span class="badge bg-primary">Giáo viên</span>
+                                                            <span class="badge bg-primary">{{ __('views.teacher_category') }}</span>
                                                         @break
 
                                                         @case('course')
-                                                            <span class="badge bg-success">Khóa học</span>
+                                                            <span class="badge bg-success">{{ __('views.course_category') }}</span>
                                                         @break
 
                                                         @case('personal')
-                                                            <span class="badge bg-warning">Cá nhân</span>
+                                                            <span class="badge bg-warning">{{ __('views.personal_category') }}</span>
                                                         @break
                                                     @endswitch
                                                 </td>
                                                 <td>{{ $question->question }}</td>
                                                 <td>
                                                     @if ($question->is_active)
-                                                        <span class="badge bg-success">Hoạt động</span>
+                                                        <span class="badge bg-success">{{ __('views.active') }}</span>
                                                     @else
-                                                        <span class="badge bg-secondary">Không hoạt động</span>
+                                                        <span class="badge bg-secondary">{{ __('views.inactive') }}</span>
                                                     @endif
                                                 </td>
                                                 <td>
@@ -372,22 +370,22 @@
                                                         <button class="btn btn-outline-primary"
                                                             wire:click="showEditQuestionModal({{ $question->id }})"
                                                             data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            title="Sửa câu hỏi">
+                                                            title="{{ __('views.edit_question') }}">
                                                             <i class="bi bi-pencil"></i>
                                                         </button>
                                                         <button
                                                             class="btn btn-outline-{{ $question->is_active ? 'warning' : 'success' }}"
                                                             wire:click="toggleQuestionStatus({{ $question->id }})"
                                                             data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            title="{{ $question->is_active ? 'Tạm dừng' : 'Kích hoạt' }}">
+                                                            title="{{ $question->is_active ? __('views.pause') : __('views.activate') }}">
                                                             <i
                                                                 class="bi bi-{{ $question->is_active ? 'pause' : 'play' }}"></i>
                                                         </button>
                                                         <button class="btn btn-outline-danger"
                                                             wire:click="deleteQuestion({{ $question->id }})"
-                                                            wire:confirm="Bạn có chắc chắn muốn xóa câu hỏi này?"
+                                                            wire:confirm="{{ __('views.confirm_delete_question') }}"
                                                             data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            title="Xóa câu hỏi">
+                                                            title="{{ __('views.delete_question') }}">
                                                             <i class="bi bi-trash"></i>
                                                         </button>
                                                     </div>
@@ -403,11 +401,10 @@
                         @else
                             <div class="text-center py-4">
                                 <i class="bi bi-question-circle fs-1 text-muted mb-3"></i>
-                                <h5 class="text-muted">Chưa có câu hỏi nào</h5>
-                                <p class="text-muted">Hãy thêm câu hỏi đánh giá để học viên có thể đánh giá chất lượng
-                                    học tập.</p>
+                                <h5 class="text-muted">{{ __('views.no_questions') }}</h5>
+                                <p class="text-muted">{{ __('views.no_questions_desc') }}</p>
                                 <button class="btn btn-primary" wire:click="showAddQuestionModal">
-                                    <i class="bi bi-plus-circle mr-2"></i>Thêm câu hỏi đầu tiên
+                                    <i class="bi bi-plus-circle mr-2"></i>{{ __('views.add_first_question') }}
                                 </button>
                             </div>
                         @endif
@@ -419,13 +416,13 @@
             <div class="{{ $activeTab === 'rounds' ? 'd-block' : 'd-none' }}" id="rounds" role="tabpanel">
                 <div class="card">
                     <div class="card-header">
-                        <h6 class="mb-0">Quản lý đợt đánh giá</h6>
+                        <h6 class="mb-0">{{ __('views.round_management_title') }}</h6>
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-end mb-3">
                             <button class="btn btn-primary" wire:click="showAddRoundModal" data-bs-toggle="tooltip"
-                                data-bs-placement="top" title="Thêm đợt đánh giá mới">
-                                <i class="bi bi-plus-circle mr-2"></i>Thêm đợt đánh giá
+                                data-bs-placement="top" title="{{ __('views.add_new_round') }}">
+                                <i class="bi bi-plus-circle mr-2"></i>{{ __('views.add_round') }}
                             </button>
                         </div>
                         @if ($evaluationRounds->count() > 0)
@@ -433,13 +430,13 @@
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <th>STT</th>
-                                            <th>Tên đợt đánh giá</th>
-                                            <th>Mô tả</th>
-                                            <th>Thời gian</th>
-                                            <th>Trạng thái</th>
-                                            <th>Số đánh giá</th>
-                                            <th>Thao tác</th>
+                                            <th>{{ __('views.stt') }}</th>
+                                            <th>{{ __('views.round_name') }}</th>
+                                            <th>{{ __('views.description') }}</th>
+                                            <th>{{ __('views.time_period') }}</th>
+                                            <th>{{ __('views.status') }}</th>
+                                            <th>{{ __('views.evaluation_count') }}</th>
+                                            <th>{{ __('views.actions') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -454,14 +451,14 @@
                                                         <span
                                                             class="text-muted">{{ Str::limit($round->description, 50) }}</span>
                                                     @else
-                                                        <span class="text-muted">Không có mô tả</span>
+                                                        <span class="text-muted">{{ __('views.no_description') }}</span>
                                                     @endif
                                                 </td>
                                                 <td>
                                                     <div class="small">
-                                                        <div><strong>Từ:</strong>
+                                                        <div><strong>{{ __('views.from') }}</strong>
                                                             {{ $round->start_date->format('d/m/Y') }}</div>
-                                                        <div><strong>Đến:</strong>
+                                                        <div><strong>{{ __('views.to') }}</strong>
                                                             {{ $round->end_date->format('d/m/Y') }}</div>
                                                     </div>
                                                 </td>
@@ -487,22 +484,22 @@
                                                         <button class="btn btn-outline-primary"
                                                             wire:click="showEditRoundModal({{ $round->id }})"
                                                             data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            title="Sửa đợt đánh giá">
+                                                            title="{{ __('views.edit_round') }}">
                                                             <i class="bi bi-pencil"></i>
                                                         </button>
                                                         <button
                                                             class="btn btn-outline-{{ $round->is_active ? 'warning' : 'success' }}"
                                                             wire:click="toggleRoundStatus({{ $round->id }})"
                                                             data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            title="{{ $round->is_active ? 'Tạm dừng' : 'Kích hoạt' }}">
+                                                            title="{{ $round->is_active ? __('views.pause') : __('views.activate') }}">
                                                             <i
                                                                 class="bi bi-{{ $round->is_active ? 'pause' : 'play' }}"></i>
                                                         </button>
                                                         <button class="btn btn-outline-danger"
                                                             wire:click="deleteRound({{ $round->id }})"
-                                                            wire:confirm="Bạn có chắc chắn muốn xóa đợt đánh giá này?"
+                                                            wire:confirm="{{ __('views.confirm_delete_round') }}"
                                                             data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            title="Xóa đợt đánh giá">
+                                                            title="{{ __('views.delete_round') }}">
                                                             <i class="bi bi-trash"></i>
                                                         </button>
                                                     </div>
@@ -518,10 +515,10 @@
                         @else
                             <div class="text-center py-4">
                                 <i class="bi bi-calendar-x fs-1 text-muted mb-3"></i>
-                                <h5 class="text-muted">Chưa có đợt đánh giá nào</h5>
-                                <p class="text-muted">Hãy tạo đợt đánh giá để học viên có thể thực hiện đánh giá.</p>
+                                <h5 class="text-muted">{{ __('views.no_rounds') }}</h5>
+                                <p class="text-muted">{{ __('views.no_rounds_desc') }}</p>
                                 <button class="btn btn-primary" wire:click="showAddRoundModal">
-                                    <i class="bi bi-plus-circle mr-2"></i>Tạo đợt đánh giá đầu tiên
+                                    <i class="bi bi-plus-circle mr-2"></i>{{ __('views.create_first_round') }}
                                 </button>
                             </div>
                         @endif
@@ -539,7 +536,7 @@
                         <div class="modal-header">
                             <h5 class="modal-title text-primary fw-bold fs-4">
                                 <i class="bi bi-star-fill text-warning mr-2"></i>
-                                Chi tiết đánh giá của {{ $selectedEvaluation->student->user->name ?? 'Học viên' }}
+                                {{ __('views.evaluation_detail') }} {{ $selectedEvaluation->student->user->name ?? __('views.student') }}
                             </h5>
                             <button type="button" class="btn-close" wire:click="closeEvaluationDetail">
                                 <i class="bi bi-x-lg"></i>
@@ -547,7 +544,7 @@
                         </div>
                         <div class="modal-body">
                             <div class="mb-3">
-                                <strong>Nhóm 1 - Đánh giá giáo viên:</strong>
+                                <strong>{{ __('views.group1_teacher') }}</strong>
                                 <ul class="mb-2">
                                     @foreach ($selectedEvaluation->teacher_ratings ?? [] as $k => $v)
                                         @php
@@ -556,13 +553,13 @@
                                                 ->where('order', $k)
                                                 ->first();
                                         @endphp
-                                        <li>{{ $question ? $question->question : "Câu hỏi $k" }}:
+                                        <li>{{ $question ? $question->question : __('views.question') . ' ' . $k }}:
                                             {{ $v }}/5</li>
                                     @endforeach
                                 </ul>
                             </div>
                             <div class="mb-3">
-                                <strong>Nhóm 2 - Đánh giá khóa học:</strong>
+                                <strong>{{ __('views.group2_course') }}</strong>
                                 <ul class="mb-2">
                                     @foreach ($selectedEvaluation->course_ratings ?? [] as $k => $v)
                                         @php
@@ -571,30 +568,30 @@
                                                 ->where('order', $k)
                                                 ->first();
                                         @endphp
-                                        <li>{{ $question ? $question->question : "Câu hỏi $k" }}:
+                                        <li>{{ $question ? $question->question : __('views.question') . ' ' . $k }}:
                                             {{ $v }}/5</li>
                                     @endforeach
                                 </ul>
                             </div>
                             <div class="mb-3">
-                                <strong>Nhóm 3 - Mức độ hài lòng cá nhân:</strong>
+                                <strong>{{ __('views.group3_personal') }}</strong>
                                 @php
                                     $personalQuestion = $questions->where('category', 'personal')->first();
                                 @endphp
                                 <p class="mb-2">
-                                    {{ $personalQuestion ? $personalQuestion->question : 'Mức độ hài lòng cá nhân' }}:
+                                    {{ $personalQuestion ? $personalQuestion->question : __('views.personal_satisfaction_question') }}:
                                     {{ $selectedEvaluation->personal_satisfaction }}/5</p>
                             </div>
                             @if ($selectedEvaluation->suggestions)
                                 <div class="mb-3">
-                                    <strong>Đề xuất cải thiện:</strong>
+                                    <strong>{{ __('views.improvement_suggestions') }}</strong>
                                     <p class="mb-0">{{ $selectedEvaluation->suggestions }}</p>
                                 </div>
                             @endif
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" wire:click="closeEvaluationDetail">
-                                Đóng
+                                {{ __('views.close') }}
                             </button>
                         </div>
                     </div>
@@ -611,7 +608,7 @@
                         <div class="modal-header">
                             <h5 class="modal-title">
                                 <i class="bi bi-question-circle mr-2"></i>
-                                {{ $editingQuestion ? 'Sửa câu hỏi' : 'Thêm câu hỏi mới' }}
+                                {{ $editingQuestion ? __('views.edit_question_title') : __('views.add_question_title') }}
                             </h5>
                             <button type="button" class="btn-close" wire:click="closeQuestionModal">
                                 <i class="bi bi-x-lg"></i>
@@ -620,29 +617,29 @@
                         <form wire:submit.prevent="saveQuestion">
                             <div class="modal-body">
                                 <div class="mb-3">
-                                    <label for="category" class="form-label">Danh mục <span
+                                    <label for="category" class="form-label">{{ __('views.category') }} <span
                                             class="text-danger">*</span></label>
                                     <select wire:model="questionForm.category" class="form-control" id="category">
-                                        <option value="">Chọn danh mục</option>
-                                        <option value="teacher">Giáo viên</option>
-                                        <option value="course">Khóa học</option>
-                                        <option value="personal">Cá nhân</option>
+                                        <option value="">{{ __('views.select_category') }}</option>
+                                        <option value="teacher">{{ __('views.teacher_category') }}</option>
+                                        <option value="course">{{ __('views.course_category') }}</option>
+                                        <option value="personal">{{ __('views.personal_category') }}</option>
                                     </select>
                                     @error('questionForm.category')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="question" class="form-label">Câu hỏi <span
+                                    <label for="question" class="form-label">{{ __('views.question') }} <span
                                             class="text-danger">*</span></label>
                                     <textarea wire:model="questionForm.question" class="form-control" id="question" rows="3"
-                                        placeholder="Nhập câu hỏi đánh giá..."></textarea>
+                                        placeholder="{{ __('views.question_text') }}"></textarea>
                                     @error('questionForm.question')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="order" class="form-label">Thứ tự hiển thị</label>
+                                    <label for="order" class="form-label">{{ __('views.display_order') }}</label>
                                     <input type="number" wire:model="questionForm.order" class="form-control"
                                         id="order" min="0" placeholder="0">
                                     @error('questionForm.order')
@@ -654,18 +651,18 @@
                                         <input wire:model="questionForm.is_active" class="form-check-input"
                                             type="checkbox" id="is_active">
                                         <label class="form-check-label" for="is_active">
-                                            Câu hỏi hoạt động
+                                            {{ __('views.question_active') }}
                                         </label>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" wire:click="closeQuestionModal">
-                                    Hủy
+                                    {{ __('views.cancel') }}
                                 </button>
                                 <button type="submit" class="btn btn-primary">
                                     <i class="bi bi-check-circle mr-2"></i>
-                                    {{ $editingQuestion ? 'Cập nhật' : 'Thêm mới' }}
+                                    {{ $editingQuestion ? __('views.update') : __('views.add_new') }}
                                 </button>
                             </div>
                         </form>
@@ -683,7 +680,7 @@
                         <div class="modal-header">
                             <h5 class="modal-title">
                                 <i class="bi bi-calendar-event mr-2"></i>
-                                {{ $editingRound ? 'Sửa đợt đánh giá' : 'Thêm đợt đánh giá mới' }}
+                                {{ $editingRound ? __('views.edit_round_title') : __('views.add_round_title') }}
                             </h5>
                             <button type="button" class="btn-close" wire:click="closeRoundModal">
                                 <i class="bi bi-x-lg"></i>
@@ -698,18 +695,18 @@
                                     </div>
                                 @endif
                                 <div class="mb-3">
-                                    <label for="round_name" class="form-label">Tên đợt đánh giá <span
+                                    <label for="round_name" class="form-label">{{ __('views.round_name') }} <span
                                             class="text-danger">*</span></label>
                                     <input type="text" wire:model="roundForm.name" class="form-control"
-                                        id="round_name" placeholder="Nhập tên đợt đánh giá...">
+                                        id="round_name" placeholder="{{ __('views.round_name_input') }}">
                                     @error('roundForm.name')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="round_description" class="form-label">Mô tả</label>
+                                    <label for="round_description" class="form-label">{{ __('views.description') }}</label>
                                     <textarea wire:model="roundForm.description" class="form-control" id="round_description" rows="3"
-                                        placeholder="Nhập mô tả đợt đánh giá..."></textarea>
+                                        placeholder="{{ __('views.round_description_input') }}"></textarea>
                                     @error('roundForm.description')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -717,7 +714,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label for="start_date" class="form-label">Ngày bắt đầu <span
+                                            <label for="start_date" class="form-label">{{ __('views.start_date') }} <span
                                                     class="text-danger">*</span></label>
                                             <input type="date" wire:model="roundForm.start_date"
                                                 class="form-control" id="start_date">
@@ -728,7 +725,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label for="end_date" class="form-label">Ngày kết thúc <span
+                                            <label for="end_date" class="form-label">{{ __('views.end_date') }} <span
                                                     class="text-danger">*</span></label>
                                             <input type="date" wire:model="roundForm.end_date"
                                                 class="form-control" id="end_date">
@@ -743,18 +740,18 @@
                                         <input wire:model="roundForm.is_active" class="form-check-input"
                                             type="checkbox" id="round_is_active">
                                         <label class="form-check-label" for="round_is_active">
-                                            Đợt đánh giá hoạt động
+                                            {{ __('views.round_active') }}
                                         </label>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" wire:click="closeRoundModal">
-                                    Hủy
+                                    {{ __('views.cancel') }}
                                 </button>
                                 <button type="submit" class="btn btn-primary">
                                     <i class="bi bi-check-circle mr-2"></i>
-                                    {{ $editingRound ? 'Cập nhật' : 'Thêm mới' }}
+                                    {{ $editingRound ? __('views.update') : __('views.add_new') }}
                                 </button>
                             </div>
                         </form>
