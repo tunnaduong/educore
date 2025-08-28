@@ -1,25 +1,24 @@
 <x-layouts.dash-teacher active="notifications">
     @include('components.language')
-    
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-bell mr-2"></i>{{ __('general.notifications_reminders') }}
+                        <i class="bi bi-bell mr-2"></i>Thông báo & Nhắc lịch
                     </h4>
-                    <p class="text-muted mb-0">{{ __('general.create_and_manage_notifications') }}</p>
+                    <p class="text-muted mb-0">Tạo và quản lý thông báo cho học viên</p>
                 </div>
                 <div class="d-flex">
                     <button wire:click="markAllAsRead" class="btn btn-outline-secondary mr-2">
-                        <i class="bi bi-check-all mr-2"></i><span class="d-none d-md-inline">{{ __('general.mark_all_as_read') }}</span>
+                        <i class="bi bi-check-all mr-2"></i><span class="d-none d-md-inline">Đánh dấu tất cả đã đọc</span>
                     </button>
                     <button wire:click="deleteExpired" class="btn btn-outline-warning mr-2">
-                        <i class="bi bi-trash mr-2"></i><span class="d-none d-md-inline">{{ __('general.delete_expired') }}</span>
+                        <i class="bi bi-trash mr-2"></i><span class="d-none d-md-inline">Xóa hết hạn</span>
                     </button>
                     <button wire:click="create" class="btn btn-primary">
-                        <i class="bi bi-plus-circle mr-2"></i><span class="d-none d-md-inline">{{ __('general.create_notification') }}</span>
+                        <i class="bi bi-plus-circle mr-2"></i><span class="d-none d-md-inline">Tạo thông báo mới</span>
                     </button>
                 </div>
             </div>
@@ -30,32 +29,32 @@
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <label class="form-label">{{ __('general.search') }}</label>
+                        <label class="form-label">Tìm kiếm</label>
                         <input wire:model.live="search" type="text" class="form-control"
-                            placeholder="{{ __('general.search_by_title_or_content') }}">
+                            placeholder="Tìm theo tiêu đề hoặc nội dung...">
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label">{{ __('general.notification_type') }}</label>
+                        <label class="form-label">Loại thông báo</label>
                         <select wire:model.live="filterType" class="form-control">
-                            <option value="">{{ __('general.all') }}</option>
-                            <option value="info">{{ __('general.info') }}</option>
-                            <option value="warning">{{ __('general.warning') }}</option>
-                            <option value="success">{{ __('general.success') }}</option>
-                            <option value="danger">{{ __('general.danger') }}</option>
-                            <option value="reminder">{{ __('general.reminder') }}</option>
+                            <option value="">Tất cả</option>
+                            <option value="info">Thông tin</option>
+                            <option value="warning">Cảnh báo</option>
+                            <option value="success">Thành công</option>
+                            <option value="danger">Nguy hiểm</option>
+                            <option value="reminder">Nhắc nhở</option>
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label">{{ __('general.status') }}</label>
+                        <label class="form-label">Trạng thái</label>
                         <select wire:model.live="filterStatus" class="form-control">
-                            <option value="">{{ __('general.all') }}</option>
-                            <option value="unread">{{ __('general.unread') }}</option>
-                            <option value="read">{{ __('general.read') }}</option>
+                            <option value="">Tất cả</option>
+                            <option value="unread">Chưa đọc</option>
+                            <option value="read">Đã đọc</option>
                         </select>
                     </div>
                     <div class="col-md-2 d-flex align-items-end">
                         <button wire:click="$set('search', '')" class="btn btn-outline-secondary w-100">
-                            <i class="bi bi-arrow-clockwise mr-1"></i><span class="d-none d-md-inline">{{ __('general.reset') }}</span>
+                            <i class="bi bi-arrow-clockwise mr-1"></i><span class="d-none d-md-inline">Reset</span>
                         </button>
                     </div>
                 </div>
@@ -70,13 +69,13 @@
                         <table class="table table-hover mb-0">
                             <thead class="table-light">
                                 <tr>
-                                    <th>{{ __('general.title') }}</th>
-                                    <th>{{ __('general.type') }}</th>
-                                    <th>{{ __('general.classroom') }}</th>
-                                    <th>{{ __('general.schedule') }}</th>
-                                    <th>{{ __('general.status') }}</th>
-                                    <th>{{ __('general.created_at') }}</th>
-                                    <th>{{ __('general.actions') }}</th>
+                                    <th>Tiêu đề</th>
+                                    <th>Loại</th>
+                                    <th>Lớp học</th>
+                                    <th>Lịch gửi</th>
+                                    <th>Trạng thái</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -98,11 +97,11 @@
                                                     'reminder' => 'info',
                                                 ];
                                                 $typeLabels = [
-                                                    'info' => __('general.info'),
-                                                    'warning' => __('general.warning'),
-                                                    'success' => __('general.success'),
-                                                    'danger' => __('general.danger'),
-                                                    'reminder' => __('general.reminder'),
+                                                    'info' => 'Thông tin',
+                                                    'warning' => 'Cảnh báo',
+                                                    'success' => 'Thành công',
+                                                    'danger' => 'Nguy hiểm',
+                                                    'reminder' => 'Nhắc nhở',
                                                 ];
                                             @endphp
                                             <span class="badge bg-{{ $typeColors[$notification->type] }}">
@@ -112,7 +111,7 @@
                                         <td>
                                             @if ($notification->classroom)
                                                 <span
-                                                    class="badge bg-secondary">{{ $notification->classroom?->name ?? __('general.not_available') }}</span>
+                                                    class="badge bg-secondary">{{ $notification->classroom?->name ?? 'N/A' }}</span>
                                             @else
                                                 <span class="text-muted">-</span>
                                             @endif
@@ -121,19 +120,19 @@
                                             @if ($notification->scheduled_at)
                                                 <div>{{ $notification->scheduled_at->format('d/m/Y H:i') }}</div>
                                                 @if ($notification->scheduled_at->isPast())
-                                                    <small class="text-warning fw-bold">{{ __('general.sent') }}</small>
+                                                    <small class="text-warning fw-bold">Đã gửi</small>
                                                 @else
-                                                    <small class="text-muted">{{ __('general.scheduled') }}</small>
+                                                    <small class="text-muted">Chờ gửi</small>
                                                 @endif
                                             @else
-                                                <span class="text-success fw-bold">{{ __('general.sent') }}</span>
+                                                <span class="text-success fw-bold">Đã gửi</span>
                                             @endif
                                         </td>
                                         <td>
                                             @if ($notification->is_read)
-                                                <span class="badge bg-success">{{ __('general.read') }}</span>
+                                                <span class="badge bg-success">Đã đọc</span>
                                             @else
-                                                <span class="badge bg-warning">{{ __('general.unread') }}</span>
+                                                <span class="badge bg-warning">Chưa đọc</span>
                                             @endif
                                         </td>
                                         <td>
@@ -145,27 +144,27 @@
                                             <div class="btn-group" role="group">
                                                 @if (!$notification->is_read)
                                                     <button wire:click="toggleRead({{ $notification->id }})"
-                                                        class="btn btn-sm btn-outline-success" title="{{ __('general.mark_as_read') }}">
+                                                        class="btn btn-sm btn-outline-success" title="Đánh dấu đã đọc">
                                                         <i class="bi bi-check"></i>
                                                     </button>
                                                 @endif
                                                 <button wire:click="edit({{ $notification->id }})"
-                                                    class="btn btn-sm btn-outline-primary" title="{{ __('general.edit') }}">
+                                                    class="btn btn-sm btn-outline-primary" title="Chỉnh sửa">
                                                     <i class="bi bi-pencil"></i>
                                                 </button>
                                                 <button wire:click="duplicate({{ $notification->id }})"
-                                                    class="btn btn-sm btn-outline-info" title="{{ __('general.duplicate') }}">
+                                                    class="btn btn-sm btn-outline-info" title="Sao chép">
                                                     <i class="bi bi-files"></i>
                                                 </button>
                                                 @if ($notification->scheduled_at && $notification->scheduled_at->isFuture())
                                                     <button wire:click="sendNow({{ $notification->id }})"
-                                                        class="btn btn-sm btn-outline-success" title="{{ __('general.send_now') }}">
+                                                        class="btn btn-sm btn-outline-success" title="Gửi ngay">
                                                         <i class="bi bi-send"></i>
                                                     </button>
                                                 @endif
                                                 <button wire:click="delete({{ $notification->id }})"
-                                                    class="btn btn-sm btn-outline-danger" title="{{ __('general.delete') }}"
-                                                    wire:confirm="{{ __('general.confirm_delete_notification') }}">
+                                                    class="btn btn-sm btn-outline-danger" title="Xóa"
+                                                    wire:confirm="Bạn có chắc chắn muốn xóa thông báo này?">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </div>
@@ -181,10 +180,10 @@
                 @else
                     <div class="text-center py-5">
                         <i class="bi bi-bell-slash" style="font-size: 3rem; color: #ccc;"></i>
-                        <h5 class="mt-3 text-muted">{{ __('general.no_notifications') }}</h5>
-                        <p class="text-muted">{{ __('general.create_first_notification') }}</p>
+                        <h5 class="mt-3 text-muted">Không có thông báo nào</h5>
+                        <p class="text-muted">Tạo thông báo đầu tiên để bắt đầu</p>
                         <button wire:click="create" class="btn btn-primary">
-                            <i class="bi bi-plus-circle mr-2"></i><span class="d-none d-md-inline">{{ __('general.create_notification') }}</span>
+                            <i class="bi bi-plus-circle mr-2"></i><span class="d-none d-md-inline">Tạo thông báo mới</span>
                         </button>
                     </div>
                 @endif
@@ -199,7 +198,7 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">{{ __('general.create_notification') }}</h5>
+                        <h5 class="modal-title">Tạo thông báo mới</h5>
                         <button type="button" class="btn-close"
                             wire:click="$set('showCreateModal', false)"></button>
                     </div>
@@ -207,41 +206,41 @@
                         <div class="modal-body">
                             <div class="row g-3">
                                 <div class="col-12">
-                                    <label class="form-label">{{ __('general.title') }} <span class="text-danger">*</span></label>
+                                    <label class="form-label">Tiêu đề <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control @error('title') is-invalid @enderror"
-                                        wire:model="title" placeholder="{{ __('general.enter_notification_title') }}">
+                                        wire:model="title" placeholder="Nhập tiêu đề thông báo...">
                                     @error('title')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="col-12">
-                                    <label class="form-label">{{ __('general.content') }} <span class="text-danger">*</span></label>
+                                    <label class="form-label">Nội dung <span class="text-danger">*</span></label>
                                     <textarea class="form-control @error('message') is-invalid @enderror" wire:model="message" rows="4"
-                                        placeholder="{{ __('general.enter_notification_content') }}"></textarea>
+                                        placeholder="Nhập nội dung thông báo..."></textarea>
                                     @error('message')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">{{ __('general.notification_type') }} <span
+                                    <label class="form-label">Loại thông báo <span
                                             class="text-danger">*</span></label>
                                     <select class="form-control @error('type') is-invalid @enderror"
                                         wire:model="type">
-                                        <option value="info">{{ __('general.info') }}</option>
-                                        <option value="warning">{{ __('general.warning') }}</option>
-                                        <option value="success">{{ __('general.success') }}</option>
-                                        <option value="danger">{{ __('general.danger') }}</option>
-                                        <option value="reminder">{{ __('general.reminder') }}</option>
+                                        <option value="info">Thông tin</option>
+                                        <option value="warning">Cảnh báo</option>
+                                        <option value="success">Thành công</option>
+                                        <option value="danger">Nguy hiểm</option>
+                                        <option value="reminder">Nhắc nhở</option>
                                     </select>
                                     @error('type')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">{{ __('general.classroom') }}</label>
+                                    <label class="form-label">Lớp học</label>
                                     <select class="form-control @error('class_id') is-invalid @enderror"
                                         wire:model="class_id">
-                                        <option value="">{{ __('general.all_classes') }}</option>
+                                        <option value="">Tất cả lớp học</option>
                                         @foreach ($classrooms as $classroom)
                                             <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
                                         @endforeach
@@ -251,21 +250,21 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">{{ __('general.schedule') }}</label>
+                                    <label class="form-label">Lịch gửi</label>
                                     <input type="datetime-local"
                                         class="form-control @error('scheduled_at') is-invalid @enderror"
                                         wire:model="scheduled_at">
                                     @error('scheduled_at')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
-                                    <small class="form-text text-muted">{{ __('general.leave_empty_to_send_now') }}</small>
+                                    <small class="form-text text-muted">Để trống để gửi ngay</small>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-check mt-4">
                                         <input class="form-check-input" type="checkbox" wire:model="is_urgent"
                                             id="is_urgent">
                                         <label class="form-check-label" for="is_urgent">
-                                            {{ __('general.urgent_notification') }}
+                                            Thông báo khẩn cấp
                                         </label>
                                     </div>
                                 </div>
@@ -273,9 +272,9 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary"
-                                wire:click="$set('showCreateModal', false)">{{ __('general.cancel') }}</button>
+                                wire:click="$set('showCreateModal', false)">Huỷ</button>
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-check-circle mr-2"></i><span class="d-none d-md-inline">{{ __('general.create') }}</span>
+                                <i class="bi bi-check-circle mr-2"></i><span class="d-none d-md-inline">Tạo thông báo</span>
                             </button>
                         </div>
                     </form>
@@ -291,48 +290,48 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">{{ __('general.edit_notification') }}</h5>
+                        <h5 class="modal-title">Chỉnh sửa thông báo</h5>
                         <button type="button" class="btn-close" wire:click="$set('showEditModal', false)"></button>
                     </div>
                     <form wire:submit="update">
                         <div class="modal-body">
                             <div class="row g-3">
                                 <div class="col-12">
-                                    <label class="form-label">{{ __('general.title') }} <span class="text-danger">*</span></label>
+                                    <label class="form-label">Tiêu đề <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control @error('title') is-invalid @enderror"
-                                        wire:model="title" placeholder="{{ __('general.enter_notification_title') }}">
+                                        wire:model="title" placeholder="Nhập tiêu đề thông báo...">
                                     @error('title')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="col-12">
-                                    <label class="form-label">{{ __('general.content') }} <span class="text-danger">*</span></label>
+                                    <label class="form-label">Nội dung <span class="text-danger">*</span></label>
                                     <textarea class="form-control @error('message') is-invalid @enderror" wire:model="message" rows="4"
-                                        placeholder="{{ __('general.enter_notification_content') }}"></textarea>
+                                        placeholder="Nhập nội dung thông báo..."></textarea>
                                     @error('message')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">{{ __('general.notification_type') }} <span
+                                    <label class="form-label">Loại thông báo <span
                                             class="text-danger">*</span></label>
                                     <select class="form-control @error('type') is-invalid @enderror"
                                         wire:model="type">
-                                        <option value="info">{{ __('general.info') }}</option>
-                                        <option value="warning">{{ __('general.warning') }}</option>
-                                        <option value="success">{{ __('general.success') }}</option>
-                                        <option value="danger">{{ __('general.danger') }}</option>
-                                        <option value="reminder">{{ __('general.reminder') }}</option>
+                                        <option value="info">Thông tin</option>
+                                        <option value="warning">Cảnh báo</option>
+                                        <option value="success">Thành công</option>
+                                        <option value="danger">Nguy hiểm</option>
+                                        <option value="reminder">Nhắc nhở</option>
                                     </select>
                                     @error('type')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">{{ __('general.classroom') }}</label>
+                                    <label class="form-label">Lớp học</label>
                                     <select class="form-control @error('class_id') is-invalid @enderror"
                                         wire:model="class_id">
-                                        <option value="">{{ __('general.all_classes') }}</option>
+                                        <option value="">Tất cả lớp học</option>
                                         @foreach ($classrooms as $classroom)
                                             <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
                                         @endforeach
@@ -342,21 +341,21 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">{{ __('general.schedule') }}</label>
+                                    <label class="form-label">Lịch gửi</label>
                                     <input type="datetime-local"
                                         class="form-control @error('scheduled_at') is-invalid @enderror"
                                         wire:model="scheduled_at">
                                     @error('scheduled_at')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
-                                    <small class="form-text text-muted">{{ __('general.leave_empty_to_send_now') }}</small>
+                                    <small class="form-text text-muted">Để trống để gửi ngay</small>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-check mt-4">
                                         <input class="form-check-input" type="checkbox" wire:model="is_urgent"
                                             id="is_urgent_edit">
                                         <label class="form-check-label" for="is_urgent_edit">
-                                            {{ __('general.urgent_notification') }}
+                                            Thông báo khẩn cấp
                                         </label>
                                     </div>
                                 </div>
@@ -364,9 +363,9 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary"
-                                wire:click="$set('showEditModal', false)">{{ __('general.cancel') }}</button>
+                                wire:click="$set('showEditModal', false)">Huỷ</button>
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-check-circle mr-2"></i><span class="d-none d-md-inline">{{ __('general.update_notification') }}</span>
+                                <i class="bi bi-check-circle mr-2"></i><span class="d-none d-md-inline">Cập nhật thông báo</span>
                             </button>
                         </div>
                     </form>

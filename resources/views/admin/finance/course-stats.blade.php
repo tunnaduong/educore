@@ -38,7 +38,7 @@
                             <td class="text-center fw-bold text-primary">{{ $course['id'] }}</td>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <div class="bg-success bg-opacity-10 rounded p-2 me-3">
+                                    <div class="bg-success bg-opacity-10 rounded p-2 mr-3">
                                         <i class="bi bi-book-fill text-success"></i>
                                     </div>
                                     <div>

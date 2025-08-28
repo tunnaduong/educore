@@ -6,7 +6,7 @@
                 <div class="card">
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0">
-                            <i class="fas fa-vial me-2"></i>
+                            <i class="fas fa-vial mr-2"></i>
                             Test Chat Functionality
                         </h5>
                     </div>
@@ -60,7 +60,7 @@
 
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-paper-plane me-2"></i>
+                                    <i class="fas fa-paper-plane mr-2"></i>
                                     Send Test Message
                                 </button>
                             </div>

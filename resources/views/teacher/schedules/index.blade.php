@@ -1,17 +1,14 @@
 <x-layouts.dash-teacher active="schedules">
     @include('components.language')
-    @php
-        $fcLocale = app()->getLocale() === 'zh' ? 'zh-cn' : app()->getLocale();
-    @endphp
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-calendar3 mr-2"></i>{{ __('general.teaching_schedule') }}
+                        <i class="bi bi-calendar3 mr-2"></i>Lịch giảng dạy
                     </h4>
-                    <p class="text-muted mb-0">{{ __('general.view_teaching_schedule') }}</p>
+                    <p class="text-muted mb-0">{{ __('views.view_teaching_schedule') }}</p>
                 </div>
             </div>
         </div>
@@ -21,15 +18,15 @@
             <div class="d-flex align-items-center gap-4 flex-wrap">
                 <div><span
                         style="display:inline-block;width:18px;height:18px;background:#0d6efd;border-radius:4px;margin-right:6px;"></span>
-                    <b>{{ __('general.teaching_schedule') }}</b>
+                    <b>{{ __('views.teaching_schedule') }}</b>
                 </div>
                 <div><span
                         style="display:inline-block;width:18px;height:18px;background:#fd7e14;border-radius:4px;margin-right:6px;"></span>
-                    <b>{{ __('general.assignments') }}</b>
+                    <b>{{ __('views.assignments') }}</b>
                 </div>
                 <div><span
                         style="display:inline-block;width:18px;height:18px;background:#20c997;border-radius:4px;margin-right:6px;"></span>
-                    <b>{{ __('general.quizzes') }}</b>
+                    <b>{{ __('views.quizzes') }}</b>
                 </div>
             </div>
         </div>
@@ -71,39 +68,23 @@
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
             var events = @json($events);
-            var i18n = {
-                today: "{{ __('general.today') }}",
-                month: "{{ __('general.month') }}",
-                week: "{{ __('general.week') }}",
-                day: "{{ __('general.day') }}",
-                list: "{{ __('general.list') }}",
-                allDayText: "{{ __('general.all_day') }}",
-                noEventsText: "{{ __('general.no_events_to_display') }}",
-                noEventsOnDay: "{{ __('general.no_events_on_day') }}",
-                classLabel: "{{ __('general.class') }}",
-                timeLabel: "{{ __('general.time') }}",
-                allDay: "{{ __('general.all_day') }}",
-                locationLabel: "{{ __('general.location') }}",
-                dayScheduleTitle: "{{ __('general.schedule_for_day') }}",
-                eventDetailTitle: "{{ __('general.event_details') }}",
-            };
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'listWeek',
-                locale: '{{ $fcLocale }}',
+                locale: 'vi',
                 buttonText: {
-                    today: i18n.today,
-                    month: i18n.month,
-                    week: i18n.week,
-                    day: i18n.day,
-                    list: i18n.list
+                    today: 'Hôm nay',
+                    month: 'Tháng',
+                    week: 'Tuần',
+                    day: 'Ngày',
+                    list: 'Danh sách'
                 },
                 titleFormat: {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric'
                 },
-                allDayText: i18n.allDayText,
-                noEventsText: i18n.noEventsText,
+                allDayText: 'Cả ngày',
+                noEventsText: 'Không có sự kiện để hiển thị',
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
@@ -119,7 +100,7 @@
                     });
                     var html = '';
                     if (dayEvents.length === 0) {
-                        html = '<p class="text-center">' + i18n.noEventsOnDay + '</p>';
+                        html = '<p class="text-center">Không có sự kiện nào trong ngày này.</p>';
                     } else {
                         html = '<ul class="list-group">';
                         dayEvents.forEach(function(ev) {
@@ -151,21 +132,21 @@
                                 .title + '</b></div>';
 
                             if (ev.extendedProps && ev.extendedProps.classroom) {
-                                html += '<small class="text-muted">' + i18n.classLabel + ': ' + ev.extendedProps
+                                html += '<small class="text-muted">Lớp: ' + ev.extendedProps
                                     .classroom + '</small><br>';
                             }
 
                             if (ev.start && ev.end && !ev.allDay) {
                                 var start = ev.start.substring(11, 16);
                                 var end = ev.end.substring(11, 16);
-                                html += '<small class="text-muted">' + i18n.timeLabel + ': ' + start +
+                                html += '<small class="text-muted">Thời gian: ' + start +
                                     ' - ' + end + '</small>';
                             } else if (ev.allDay) {
-                                html += '<small class="text-muted">' + i18n.allDay + '</small>';
+                                html += '<small class="text-muted">Cả ngày</small>';
                             }
 
                             if (ev.extendedProps && ev.extendedProps.location) {
-                                html += '<br><small class="text-muted">' + i18n.locationLabel + ': ' + ev
+                                html += '<br><small class="text-muted">Địa điểm: ' + ev
                                     .extendedProps.location + '</small>';
                             }
 
@@ -195,7 +176,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalScheduleLabel">{{ __('general.schedule_for_day') }}</h5>
+                    <h5 class="modal-title" id="modalScheduleLabel">Lịch giảng dạy trong ngày</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="modalScheduleBody">
@@ -210,7 +191,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalEventLabel">{{ __('general.event_details') }}</h5>
+                    <h5 class="modal-title" id="modalEventLabel">Chi tiết sự kiện</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="modalEventBody">

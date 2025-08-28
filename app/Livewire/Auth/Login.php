@@ -25,7 +25,7 @@ class Login extends Component
     public function login()
     {
         $this->validate([
-            'phone' => 'required|string|max:20',
+            'phone' => 'required|string|min:5|max:20',
             'password' => 'required|string|min:6',
         ]);
 

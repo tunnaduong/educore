@@ -255,7 +255,8 @@
                         <div>
                             <i class="fas fa-envelope bg-blue"></i>
                             <div class="timeline-item">
-                                <span class="time"><i class="fas fa-clock"></i> {{ __('general.minutes_ago', ['count' => 2]) }}</span>
+                                <span class="time"><i class="fas fa-clock"></i>
+                                    {{ __('general.minutes_ago', ['count' => 2]) }}</span>
                                 <h3 class="timeline-header">{{ __('general.new_teacher_message') }}</h3>
                                 <div class="timeline-body">
                                     {{ __('general.unread_messages_count', ['count' => $unreadCount]) }}
@@ -265,7 +266,8 @@
                         <div>
                             <i class="fas fa-bell bg-yellow"></i>
                             <div class="timeline-item">
-                                <span class="time"><i class="fas fa-clock"></i> {{ __('general.minutes_ago', ['count' => 5]) }}</span>
+                                <span class="time"><i class="fas fa-clock"></i>
+                                    {{ __('general.minutes_ago', ['count' => 5]) }}</span>
                                 <h3 class="timeline-header">{{ __('general.new_notification') }}</h3>
                                 <div class="timeline-body">
                                     {{ __('general.unread_notifications_count', ['count' => $unreadNotification]) }}
@@ -286,7 +288,9 @@
                 new Chart(ctx, {
                     type: 'doughnut',
                     data: {
-                        labels: ['{{ __("general.present") }}', '{{ __("general.absent") }}', '{{ __("general.late") }}'],
+                        labels: ['{{ __('general.present') }}', '{{ __('general.absent') }}',
+                            '{{ __('general.late') }}'
+                        ],
                         datasets: [{
                             data: [75, 15, 10],
                             backgroundColor: ['#28a745', '#dc3545', '#ffc107'],
