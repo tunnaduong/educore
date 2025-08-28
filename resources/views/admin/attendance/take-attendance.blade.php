@@ -4,10 +4,10 @@
         <!-- Header -->
         <div class="mb-4">
             <a href="{{ route('classrooms.index') }}" class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left mr-2"></i>Quay lại lớp học
+                <i class="bi bi-arrow-left mr-2"></i>@lang('general.back_to_classroom')
             </a>
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-calendar-check mr-2"></i>Điểm danh - {{ $classroom->name }}
+                <i class="bi bi-calendar-check mr-2"></i>@lang('general.take_attendance') - {{ $classroom->name }}
             </h4>
         </div>
 
@@ -18,7 +18,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">Tổng học viên</h6>
+                                <h6 class="card-title mb-0">@lang('general.total_students')</h6>
                                 <h3 class="mb-0">{{ $stats['total'] }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -33,7 +33,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">Có mặt</h6>
+                                <h6 class="card-title mb-0">@lang('general.present')</h6>
                                 <h3 class="mb-0">{{ $stats['present'] }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -48,7 +48,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">Vắng</h6>
+                                <h6 class="card-title mb-0">@lang('general.absent')</h6>
                                 <h3 class="mb-0">{{ $stats['absent'] }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -63,7 +63,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">Tỷ lệ có mặt</h6>
+                                <h6 class="card-title mb-0">@lang('general.attendance_rate')</h6>
                                 <h3 class="mb-0">{{ $stats['presentPercentage'] }}%</h3>
                             </div>
                             <div class="align-self-center">
@@ -81,8 +81,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-6">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-calendar-event mr-2"></i>Điểm danh ngày
-                            {{ \Carbon\Carbon::parse($selectedDate)->format('d/m/Y') }}
+                            <i class="bi bi-calendar-event mr-2"></i>@lang('general.take_attendance_on_date', ['date' => \Carbon\Carbon::parse($selectedDate)->format('d/m/Y')])
                         </h5>
                     </div>
                     <div class="col-md-6">
@@ -91,7 +90,7 @@
                                 style="max-width: 200px;">
                             <button wire:click="saveAttendance" class="btn btn-primary"
                                 {{ !$canTakeAttendance ? 'disabled' : '' }}>
-                                <i class="bi bi-save mr-2"></i>Lưu điểm danh
+                                <i class="bi bi-save mr-2"></i>@lang('general.save_attendance')
                             </button>
                         </div>
                     </div>
@@ -119,7 +118,7 @@
                 @if (!$canTakeAttendance && $attendanceMessage)
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
                         <i class="bi bi-exclamation-triangle mr-2"></i>
-                        <strong>Lưu ý:</strong> {{ $attendanceMessage }}
+                        <strong>@lang('general.note')</strong> {{ __($attendanceMessage) }}
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -129,8 +128,8 @@
                 @if (empty($attendanceData))
                     <div class="text-center py-5">
                         <i class="bi bi-people fs-1 text-muted mb-3"></i>
-                        <h5 class="text-muted">Chưa có học viên nào trong lớp</h5>
-                        <p class="text-muted">Vui lòng thêm học viên vào lớp trước khi điểm danh.</p>
+                        <h5 class="text-muted">@lang('general.no_students_in_class')</h5>
+                        <p class="text-muted">@lang('general.please_add_students_before_attendance')</p>
                     </div>
                 @else
                     <div class="table-responsive">
@@ -138,10 +137,10 @@
                             <thead class="table-light">
                                 <tr>
                                     <th width="50">#</th>
-                                    <th>Học viên</th>
-                                    <th width="120">Trạng thái</th>
-                                    <th>Lý do nghỉ</th>
-                                    <th width="100">Thao tác</th>
+                                    <th>@lang('general.student')</th>
+                                    <th width="120">@lang('general.status')</th>
+                                    <th>@lang('general.absence_reason')</th>
+                                    <th width="100">@lang('general.actions')</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -170,9 +169,9 @@
                                                 <label class="form-check-label"
                                                     for="attendance_{{ $data['student_record']->id }}">
                                                     @if ($data['present'])
-                                                        <span class="badge bg-success">Có mặt</span>
+                                                        <span class="badge bg-success">@lang('general.present')</span>
                                                     @else
-                                                        <span class="badge bg-danger">Vắng</span>
+                                                        <span class="badge bg-danger">@lang('general.absent')</span>
                                                     @endif
                                                 </label>
                                             </div>
@@ -183,7 +182,7 @@
                                                     <span
                                                         class="text-muted">{{ Str::limit($data['reason'], 30) }}</span>
                                                 @else
-                                                    <span class="text-muted">Chưa có lý do</span>
+                                                    <span class="text-muted">@lang('general.no_absence_reason')</span>
                                                 @endif
                                             @else
                                                 <span class="text-muted">-</span>
@@ -195,7 +194,7 @@
                                                     wire:click="openReasonModal({{ $data['student_record']->id }})"
                                                     class="btn btn-sm btn-outline-primary"
                                                     {{ !$canTakeAttendance ? 'disabled' : '' }}>
-                                                    <i class="bi bi-pencil mr-1"></i>Lý do
+                                                    <i class="bi bi-pencil mr-1"></i>@lang('general.reason')
                                                 </button>
                                             @endif
                                         </td>
@@ -216,7 +215,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">
-                            <i class="bi bi-exclamation-triangle mr-2"></i>Lý do nghỉ học
+                            <i class="bi bi-exclamation-triangle mr-2"></i>@lang('general.absence_reason')
                         </h5>
                         <button type="button" class="close" wire:click="$set('showReasonModal', false)"
                             aria-label="Close">
@@ -225,9 +224,9 @@
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="absenceReason" class="form-label">Lý do nghỉ học</label>
+                            <label for="absenceReason" class="form-label">@lang('general.absence_reason')</label>
                             <textarea wire:model="absenceReason" class="form-control" id="absenceReason" rows="3"
-                                placeholder="Nhập lý do nghỉ học..."></textarea>
+                                placeholder="@lang('general.enter_absence_reason')"></textarea>
                             @error('absenceReason')
                                 <div class="text-danger small mt-1">{{ $message }}</div>
                             @enderror
@@ -235,10 +234,10 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" wire:click="$set('showReasonModal', false)">
-                            Hủy
+                            @lang('general.cancel')
                         </button>
                         <button type="button" class="btn btn-primary" wire:click="saveReason">
-                            <i class="bi bi-check-circle mr-2"></i>Lưu lý do
+                            <i class="bi bi-check-circle mr-2"></i>@lang('general.save_reason')
                         </button>
                     </div>
                 </div>

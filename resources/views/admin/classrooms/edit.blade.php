@@ -158,10 +158,10 @@
         <!-- Header -->
         <div class="mb-4">
             <a href="{{ route('classrooms.index') }}" class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left mr-2"></i>Quay lại
+                <i class="bi bi-arrow-left mr-2"></i>@lang('general.back')
             </a>
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-pencil-square mr-2"></i>Chỉnh sửa lớp học
+                <i class="bi bi-pencil-square mr-2"></i>@lang('general.edit_classroom')
             </h4>
         </div>
 
@@ -189,42 +189,42 @@
                     <form wire:submit="save">
                         <!-- Thông tin cơ bản -->
                         <div class="mb-4">
-                            <h5 class="text-primary mb-3">Thông tin lớp học</h5>
+                            <h5 class="text-primary mb-3">@lang('general.classroom_information')</h5>
                             <div class="mb-3">
-                                <label for="name" class="form-label">Tên lớp học <span
+                                <label for="name" class="form-label">@lang('general.classroom_name') <span
                                         class="text-danger">*</span></label>
                                 <input wire:model="name" type="text"
                                     class="form-control @error('name') is-invalid @enderror" id="name"
-                                    placeholder="Ví dụ: Lớp HSK3 - Khóa 1">
+                                    placeholder="@lang('general.example_class_name')">
                                 @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="level" class="form-label">Trình độ <span
+                                <label for="level" class="form-label">@lang('general.level') <span
                                         class="text-danger">*</span></label>
                                 <select wire:model="level" class="form-control @error('level') is-invalid @enderror"
                                     id="level">
-                                    <option value="">Chọn trình độ</option>
+                                    <option value="">@lang('general.choose_level')</option>
                                     <option value="HSK1">HSK 1</option>
                                     <option value="HSK2">HSK 2</option>
                                     <option value="HSK3">HSK 3</option>
                                     <option value="HSK4">HSK 4</option>
                                     <option value="HSK5">HSK 5</option>
                                     <option value="HSK6">HSK 6</option>
-                                    <option value="Sơ cấp 1">Sơ cấp 1</option>
-                                    <option value="Sơ cấp 2">Sơ cấp 2</option>
-                                    <option value="Trung cấp 1">Trung cấp 1</option>
-                                    <option value="Trung cấp 2">Trung cấp 2</option>
-                                    <option value="Cao cấp 1">Cao cấp 1</option>
-                                    <option value="Cao cấp 2">Cao cấp 2</option>
+                                    <option value="Sơ cấp 1">@lang('general.basic1')</option>
+                                    <option value="Sơ cấp 2">@lang('general.basic2')</option>
+                                    <option value="Trung cấp 1">@lang('general.intermediate1')</option>
+                                    <option value="Trung cấp 2">@lang('general.intermediate2')</option>
+                                    <option value="Cao cấp 1">@lang('general.advanced1')</option>
+                                    <option value="Cao cấp 2">@lang('general.advanced2')</option>
                                 </select>
                                 @error('level')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="teacher_ids" class="form-label">Giảng viên <span
+                                <label for="teacher_ids" class="form-label">@lang('general.teacher') <span
                                         class="text-danger">*</span></label>
                                 <div class="dropdown" x-data="{ open: false }" @click.away="open = false">
                                     <button
@@ -234,7 +234,7 @@
                                             @if (count($teacher_ids))
                                                 {{ collect($teachers)->whereIn('id', $teacher_ids)->pluck('name')->join(', ') }}
                                             @else
-                                                Chọn giảng viên
+                                                @lang('general.select_teacher')
                                             @endif
                                         </span>
                                         <span class="ml-2"><i class="fas fa-chevron-down"
@@ -256,30 +256,30 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="status" class="form-label">Trạng thái <span
+                                <label for="status" class="form-label">@lang('general.status') <span
                                         class="text-danger">*</span></label>
                                 <select wire:model="status" class="form-control @error('status') is-invalid @enderror"
                                     id="status">
-                                    <option value="draft">Nháp</option>
-                                    <option value="active">Đang hoạt động</option>
-                                    <option value="inactive">Không hoạt động</option>
-                                    <option value="completed">Đã kết thúc</option>
+                                    <option value="draft">@lang('general.draft')</option>
+                                    <option value="active">@lang('general.active')</option>
+                                    <option value="inactive">@lang('general.inactive')</option>
+                                    <option value="completed">@lang('general.completed')</option>
                                 </select>
                                 @error('status')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Ngày học <span class="text-danger">*</span></label>
+                                <label class="form-label">@lang('general.study_days') <span class="text-danger">*</span></label>
                                 <div class="days-selector">
                                     @foreach ([
-        'Monday' => 'Thứ 2',
-        'Tuesday' => 'Thứ 3',
-        'Wednesday' => 'Thứ 4',
-        'Thursday' => 'Thứ 5',
-        'Friday' => 'Thứ 6',
-        'Saturday' => 'Thứ 7',
-        'Sunday' => 'Chủ nhật',
+        'Monday' => __('general.monday'),
+        'Tuesday' => __('general.tuesday'),
+        'Wednesday' => __('general.wednesday'),
+        'Thursday' => __('general.thursday'),
+        'Friday' => __('general.friday'),
+        'Saturday' => __('general.saturday'),
+        'Sunday' => __('general.sunday'),
     ] as $value => $label)
                                         <div class="day-item">
                                             <input wire:model="days" class="day-checkbox" type="checkbox"
@@ -299,7 +299,7 @@
                             <!-- Thời gian học -->
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <label for="startTime" class="form-label">Giờ bắt đầu <span
+                                    <label for="startTime" class="form-label">@lang('general.start_time') <span
                                             class="text-danger">*</span></label>
                                     <input type="time" wire:model="startTime"
                                         class="form-control @error('startTime') is-invalid @enderror" id="startTime">
@@ -308,7 +308,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="endTime" class="form-label">Giờ kết thúc <span
+                                    <label for="endTime" class="form-label">@lang('general.end_time') <span
                                             class="text-danger">*</span></label>
                                     <input type="time" wire:model="endTime"
                                         class="form-control @error('endTime') is-invalid @enderror" id="endTime">
@@ -317,7 +317,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            
+
                             <!-- Cảnh báo trùng lịch real-time -->
                             @if($realTimeValidation && !empty($teacherConflicts))
                                 <div class="mb-3">
@@ -325,9 +325,9 @@
                                         <div class="d-flex align-items-start">
                                             <i class="bi bi-exclamation-triangle-fill text-warning me-2 mt-1"></i>
                                             <div>
-                                                <strong>Cảnh báo trùng lịch!</strong>
+                                                <strong>@lang('general.schedule_conflict_warning')</strong>
                                                 <div class="small mt-1">
-                                                    Phát hiện trùng lịch với các lớp hiện có. Vui lòng kiểm tra và điều chỉnh lịch học.
+                                                    @lang('general.conflict_detected_message')
                                                 </div>
                                                 <div class="mt-2">
                                                     @foreach($teacherConflicts as $teacherId => $conflictData)
@@ -336,7 +336,7 @@
                                                             @foreach($conflictData['conflicts'] as $conflict)
                                                                 {{ $conflict['message'] }}
                                                                 @if($conflict['overlapTime'])
-                                                                    (Trùng: {{ $conflict['overlapTime'] }})
+                                                                    (@lang('general.overlap_time'): {{ $conflict['overlapTime'] }})
                                                                 @endif
                                                             @endforeach
                                                         </div>
@@ -347,11 +347,11 @@
                                     </div>
                                 </div>
                             @endif
-                            
+
                             <div class="mb-3">
-                                <label for="notes" class="form-label">Mô tả</label>
+                                <label for="notes" class="form-label">@lang('general.description')</label>
                                 <textarea wire:model="notes" class="form-control @error('notes') is-invalid @enderror" id="notes" rows="3"
-                                    placeholder="Nhập mô tả về lớp học..."></textarea>
+                                    placeholder="@lang('general.enter_classroom_description')"></textarea>
                                 @error('notes')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -359,20 +359,19 @@
                         </div>
                         <!-- Submit Buttons -->
                         <div class="d-flex justify-content-end gap-2">
-                            <a href="{{ route('classrooms.index') }}" class="btn btn-light">Hủy</a>
+                            <a href="{{ route('classrooms.index') }}" class="btn btn-light">@lang('general.cancel')</a>
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-save mr-2"></i>Lưu thay đổi
+                                <i class="bi bi-save mr-2"></i>@lang('general.save_changes')
                             </button>
                         </div>
                     </form>
                 </div>
                 <div
                     class="col-md-5 d-flex flex-column justify-content-center align-items-center bg-light border-start rounded-end p-4">
-                    <img src="/educore-logo.png" alt="Chỉnh sửa lớp học" class="mb-3" style="max-width: 90px;">
+                    <img src="/educore-logo.png" alt="@lang('general.edit_classroom')" class="mb-3" style="max-width: 90px;">
                     <div class="text-center">
-                        <h6 class="text-primary fw-bold mb-2">Chỉnh sửa lớp học</h6>
-                        <p class="text-muted small mb-0">Cập nhật thông tin, thay đổi giảng viên, lịch học hoặc mô tả
-                            cho lớp học một cách dễ dàng.</p>
+                        <h6 class="text-primary fw-bold mb-2">@lang('general.edit_classroom')</h6>
+                        <p class="text-muted small mb-0">@lang('general.edit_classroom_description')</p>
                     </div>
                 </div>
             </div>
@@ -386,16 +385,16 @@
             <div class="modal-content">
                 <div class="modal-header bg-warning text-dark">
                     <h5 class="modal-title">
-                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                        Cảnh báo trùng lịch giáo viên!
+                        <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                        @lang('general.teacher_conflict_warning_title')
                     </h5>
                     <button type="button" class="btn-close" wire:click="closeConflictModal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="alert alert-warning">
-                        <strong>Phát hiện trùng lịch dạy!</strong> Một số giáo viên được chọn có lịch dạy trùng với các lớp khác.
+                        <strong>@lang('general.detected_teacher_conflicts_title')</strong> @lang('general.detected_teacher_conflicts_desc')
                     </div>
-                    
+
                     <div class="conflicts-list" style="max-height: 400px; overflow-y: auto;">
                         @foreach($teacherConflicts as $teacherId => $conflictData)
                             <div class="card border-warning mb-3">
@@ -403,11 +402,11 @@
                                     <div class="d-flex align-items-center">
                                         <i class="bi bi-person-circle text-warning me-2"></i>
                                         <strong>{{ $conflictData['teacher']->name }}</strong>
-                                        <span class="badge bg-warning text-dark ms-auto">Giáo viên</span>
+                                        <span class="badge bg-warning text-dark ml-auto">@lang('general.teacher')</span>
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <h6 class="text-danger mb-2">Các lớp bị trùng lịch:</h6>
+                                    <h6 class="text-danger mb-2">@lang('general.conflicting_classes')</h6>
                                     @foreach($conflictData['conflicts'] as $conflict)
                                         <div class="alert alert-danger py-2 mb-2">
                                             <div class="d-flex align-items-start">
@@ -420,8 +419,8 @@
                                                     </div>
                                                     @if($conflict['overlapTime'])
                                                         <div class="small text-danger mt-1">
-                                                            <i class="bi bi-exclamation-circle me-1"></i>
-                                                            Thời gian trùng: {{ $conflict['overlapTime'] }}
+                                                            <i class="bi bi-exclamation-circle mr-1"></i>
+                                                            @lang('general.overlap_time'): {{ $conflict['overlapTime'] }}
                                                         </div>
                                                     @endif
                                                 </div>
@@ -432,18 +431,18 @@
                             </div>
                         @endforeach
                     </div>
-                    
+
                     <div class="alert alert-info">
-                        <i class="bi bi-info-circle me-2"></i>
-                        <strong>Lưu ý:</strong> Bạn có thể chọn cập nhật lớp bất chấp trùng lịch, nhưng điều này có thể gây ra vấn đề trong việc sắp xếp lịch dạy của giáo viên.
+                        <i class="bi bi-info-circle mr-2"></i>
+                        <strong>@lang('general.note')</strong> @lang('general.you_may_force_update_warning')
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" wire:click="closeConflictModal">
-                        <i class="bi bi-x-circle me-2"></i>Hủy bỏ
+                        <i class="bi bi-x-circle mr-2"></i>@lang('general.cancel')
                     </button>
                     <button type="button" class="btn btn-warning" wire:click="forceUpdate">
-                        <i class="bi bi-exclamation-triangle me-2"></i>Cập nhật bất chấp trùng lịch
+                        <i class="bi bi-exclamation-triangle mr-2"></i>@lang('general.force_update_despite_conflicts')
                     </button>
                 </div>
             </div>
