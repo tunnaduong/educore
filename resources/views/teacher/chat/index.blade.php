@@ -105,7 +105,7 @@
                                                     </h6>
                                                     <small
                                                         class="text-muted {{ $selectedUser && $selectedUser->id === $user->id ? 'text-white-50' : '' }}">
-                                                        {{ ucfirst($user->role) }}
+                                                        {{ $user->role === 'teacher' ? __('general.teacher') : __('general.student') }}
                                                     </small>
                                                 </div>
                                             </div>
@@ -138,7 +138,7 @@
                                         </div>
                                         <div>
                                             <h6 class="mb-0">{{ $selectedUser->name }}</h6>
-                                            <small class="text-muted">{{ ucfirst($selectedUser->role) }}</small>
+                                            <small class="text-muted">{{ $selectedUser->role === 'teacher' ? __('general.teacher') : __('general.student') }}</small>
                                         </div>
                                     @elseif($selectedClass)
                                         <div

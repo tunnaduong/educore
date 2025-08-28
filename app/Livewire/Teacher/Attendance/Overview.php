@@ -129,7 +129,8 @@ class Overview extends Component
 
     public function getMonthName($month)
     {
-        return 'Tháng '.(int) $month;
+        $month = (int) $month;
+        return __('general.month') . ' ' . $month;
     }
 
     public function render()

@@ -104,7 +104,7 @@
                                     <div class="d-flex justify-content-between align-items-start mb-2">
                                         <div>
                                             <span class="badge bg-primary mr-2">{{ __('general.question') }} {{ $index + 1 }}</span>
-                                            <span class="badge bg-info">{{ $question['score'] }} {{ __('general.pts') }}</span>
+                                            <span class="badge bg-info">{{ data_get($question, 'score', 1) }} {{ __('general.pts') }}</span>
                                         </div>
                                     </div>
                                     <div class="fw-medium mb-2">{{ $question['question'] }}</div>

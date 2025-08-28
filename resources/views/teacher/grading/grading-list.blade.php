@@ -60,7 +60,7 @@
                             <i class="bi bi-journal-check mr-2"></i>
                             <span class="mb-0">{{ __('general.assignments_to_grade') }}</span>
                         </div>
-                        <div class="text-white-50 small">
+                        <div class="text-white small">
                             {{ $assignments->total() }} {{ __('general.assignments') }}
                         </div>
                     </div>

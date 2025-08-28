@@ -120,7 +120,7 @@
                             <i class="bi bi-people mr-2"></i>
                             <span class="mb-0">{{ __('general.student_submissions') }}</span>
                         </div>
-                        <div class="text-white-50 small">
+                        <div class="text-white small">
                             {{ $submissions->count() }} {{ __('general.submissions') }}
                         </div>
                     </div>

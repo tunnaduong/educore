@@ -360,11 +360,11 @@
                     <div class="card shadow-sm">
                         <div class="card-body text-end">
                             <a href="{{ route('quizzes.index') }}" class="btn btn-secondary mr-2">
-                                <i class="bi bi-x-circle mr-2"></i>Hủy
+                                <i class="bi bi-x-circle mr-2"></i>{{ __('general.cancel') }}
                             </a>
                             <button type="submit" class="btn btn-primary"
                                 @if (count($questions) === 0) disabled @endif>
-                                <i class="bi bi-check-circle mr-2"></i>Lưu bài kiểm tra
+                                <i class="bi bi-check-circle mr-2"></i>{{ __('general.save_quiz') }}
                             </button>
                         </div>
                     </div>

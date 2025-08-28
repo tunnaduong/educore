@@ -29,12 +29,12 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label text-muted small">{{ __('general.classroom') }}</label>
-                            <div class="fw-medium">{{ $classroom->name ?? '-' }}</div>
+                            <div class="fw-medium">{{ $classroom->name ?? __('general.not_available') }}</div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label text-muted small">{{ __('general.deadline') }}</label>
                             <div class="fw-medium">
-                                {{ $assignment->deadline ? $assignment->deadline->format('d/m/Y H:i') : '-' }}</div>
+                                {{ $assignment->deadline ? $assignment->deadline->format('d/m/Y H:i') : __('general.not_available') }}</div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label text-muted small">{{ __('general.assigned_at') }}</label>
@@ -54,7 +54,7 @@
                                         @endforeach
                                     </div>
                                 @else
-                                    -
+                                    {{ __('general.not_available') }}
                                 @endif
                             </div>
                         </div>
@@ -67,7 +67,7 @@
                                         <i class="bi bi-file-earmark-arrow-down"></i> {{ __('general.download_file') }}
                                     </a>
                                 @else
-                                    -
+                                    {{ __('general.not_available') }}
                                 @endif
                             </div>
                         </div>
@@ -81,7 +81,7 @@
                                         {{ __('general.browser_not_support') }}
                                     </video>
                                 @else
-                                    -
+                                    {{ __('general.not_available') }}
                                 @endif
                             </div>
                         </div>
