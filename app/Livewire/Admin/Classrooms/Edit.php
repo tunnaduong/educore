@@ -228,7 +228,7 @@ class Edit extends Component
 
         session()->flash('success', 'Lớp học đã được cập nhật thành công!');
 
-        return $this->redirect(route('classrooms.index'), navigate: true);
+        return $this->redirect(route('classrooms.index'));
     }
 
     public function forceUpdate()

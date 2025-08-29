@@ -65,7 +65,7 @@ class Create extends Component
         // Tạo user
         $user = User::create([
             'name' => $this->name,
-            'email' => $this->email,
+            'email' => $this->email ?: null, // Chuyển email rỗng thành null
             'phone' => $this->phone,
             'password' => Hash::make($this->password),
             'role' => 'student',
