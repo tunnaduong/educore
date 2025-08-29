@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      EduCore - Hệ thống quản lý đào tạo trung tâm tiếng Trung hiện đại
+    </title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary: #2563eb;
+        --secondary: #1e40af;
+        --accent: #f59e0b;
+        --dark: #1f2937;
+        --light: #f8fafc;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        line-height: 1.6;
+      }
+
+      .hero {
+        background: linear-gradient(135deg, var(--primary) 0%, #64b9ff 100%);
+        color: white;
+        padding: 120px 0 80px;
+        position: relative;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="white" opacity="0.1"><polygon points="0,100 1000,0 1000,100"/></svg>');
+        background-size: cover;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+      }
+
+      .logo-container {
+        text-align: center;
+        margin-bottom: -2rem;
+      }
+
+      .logo-container img {
+        width: 200px;
+        height: auto;
+      }
+
+      .btn-custom {
+        background: var(--accent);
+        border: none;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 50px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        margin: 0 10px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+      }
+
+      .btn-custom:hover {
+        background: #d97706;
+        transform: translateY(-2px);
+        color: white;
+      }
+
+      .btn-outline {
+        background: transparent;
+        border: 2px solid white;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 50px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        margin: 0 10px;
+        transition: all 0.3s ease;
+      }
+
+      .btn-outline:hover {
+        background: white;
+        color: var(--primary);
+      }
+
+      .glow-text {
+        text-shadow: 0 0 2px rgba(0, 0, 0, 0.8), 0 0 50px;
+      }
+
+      .glow-wrapper {
+        position: relative;
+        display: inline-block;
+      }
+
+      /* tạo glow */
+      .glow-wrapper::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 150px;
+        height: 150px;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.6); /* màu glow, ví dụ xanh lá */
+        filter: blur(50px);
+        z-index: -1;
+      }
+
+      .section {
+        padding: 80px 0;
+      }
+
+      .section:nth-child(even) {
+        background: var(--light);
+      }
+
+      .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        border-left: 4px solid var(--primary);
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      }
+
+      .card-white {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+      }
+
+      .feature-icon {
+        font-size: 2.5rem;
+        color: var(--primary);
+        margin-bottom: 1rem;
+      }
+
+      .team-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: var(--primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        color: white;
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+
+      .team-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+
+      .tech-icon {
+        font-size: 2rem;
+        color: var(--primary);
+        margin-bottom: 1rem;
+      }
+
+      .code-block {
+        background: #1f2937;
+        color: #f9fafb;
+        padding: 1.5rem;
+        border-radius: 10px;
+        font-family: "Courier New", monospace;
+        margin: 1rem 0;
+      }
+
+      .footer {
+        background: var(--dark);
+        color: white;
+        padding: 60px 0 30px;
+        text-align: center;
+      }
+
+      @media (max-width: 768px) {
+        .hero h1 {
+          font-size: 2.5rem;
+        }
+
+        .btn-custom,
+        .btn-outline {
+          display: block;
+          margin: 10px auto;
+          max-width: 250px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content text-center">
+          <div class="logo-container glow-wrapper">
+            <img
+              src="https://raw.githubusercontent.com/tunnaduong/educore/refs/heads/main/public/educore-logo.png"
+              alt="EduCore Logo"
+            />
+          </div>
+          <h1 class="display-4 fw-bold mb-4 glow-text">
+            Edu<span style="color: var(--accent)">Core</span>
+          </h1>
+          <p class="lead mb-4">
+            Hệ thống quản lý đào tạo trung tâm tiếng Trung hiện đại 🎓
+          </p>
+          <p class="mb-5">
+            Quản lý toàn diện từ người dùng, lớp học, điểm danh đến báo cáo tiến
+            độ học tập
+          </p>
+          <div>
+            <a href="#features" class="btn-custom">
+              <i class="fas fa-rocket"></i> Khám phá tính năng
+            </a>
+            <a
+              href="https://github.com/tunnaduong/educore"
+              class="btn-outline"
+              target="_blank"
+            >
+              <i class="fab fa-github"></i> Xem trên GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section">
+      <div class="container">
+        <h2 class="text-center display-5 fw-bold mb-5">✨ Tính năng nổi bật</h2>
+        <div class="row g-4">
+          <div class="col-lg-4 col-md-6">
+            <div class="card h-100 p-4">
+              <div class="feature-icon">
+                <i class="fas fa-users"></i>
+              </div>
+              <h4>Quản lý người dùng & Phân quyền</h4>
+              <p>
+                Quản lý người dùng với các vai trò Admin, Giảng viên, Học viên.
+                Phân quyền rõ ràng, hỗ trợ đăng nhập bằng số điện thoại + mật
+                khẩu.
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="card h-100 p-4">
+              <div class="feature-icon">
+                <i class="fas fa-chalkboard-teacher"></i>
+              </div>
+              <h4>Lớp học linh hoạt</h4>
+              <p>
+                Tạo, chỉnh sửa, xoá lớp học. Gán giảng viên & học viên. Thiết
+                lập lịch học theo tuần/tháng. Phân loại lớp theo trình độ.
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="card h-100 p-4">
+              <div class="feature-icon">
+                <i class="fas fa-user-graduate"></i>
+              </div>
+              <h4>Hồ sơ học viên</h4>
+              <p>
+                Lưu trữ đầy đủ thông tin cá nhân và quá trình học tập. Theo dõi
+                tiến độ học, điểm số, trạng thái học tập.
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="card h-100 p-4">
+              <div class="feature-icon">
+                <i class="fas fa-clipboard-check"></i>
+              </div>
+              <h4>Điểm danh chi tiết</h4>
+              <p>
+                Giảng viên điểm danh từng buổi học. Ghi chú lý do nghỉ, thống kê
+                buổi học. Tích hợp dữ liệu vào hồ sơ học viên.
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="card h-100 p-4">
+              <div class="feature-icon">
+                <i class="fas fa-tasks"></i>
+              </div>
+              <h4>Giao bài tập theo lộ trình</h4>
+              <p>
+                Giao bài tập theo từng bài học cụ thể. Hỗ trợ nhiều loại bài
+                tập: trực tuyến, upload ảnh, ghi âm/video. Deadline + khóa nộp
+                bài tự động.
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="card h-100 p-4">
+              <div class="feature-icon">
+                <i class="fas fa-question-circle"></i>
+              </div>
+              <h4>Quiz & Kiểm tra</h4>
+              <p>
+                Tạo bài thi thử HSK, kiểm tra kỹ năng nghe – nói – đọc – viết.
+                Nhiều dạng bài: trắc nghiệm, điền từ, tự luận.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="section">
+      <div class="container">
+        <h2 class="text-center display-5 fw-bold mb-5">👥 Thành viên nhóm</h2>
+        <div class="row g-4">
+          <div class="col-lg-4 col-md-6">
+            <div class="card-white h-100 p-4 text-center">
+              <div class="team-avatar">
+                <img src="/member-images/tunganh.png" />
+              </div>
+              <h4>Dương Tùng Anh</h4>
+              <p class="text-muted">Project Manager / Full-stack Dev</p>
+              <a
+                href="https://github.com/tunnaduong"
+                class="text-decoration-none"
+                target="_blank"
+              >
+                <i class="fab fa-github"></i> @tunnaduong
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="card-white h-100 p-4 text-center">
+              <div class="team-avatar">
+                <img src="/member-images/tuananh.png" />
+              </div>
+              <h4>Hoàng Tuấn Anh</h4>
+              <p class="text-muted">Frontend / UI-UX</p>
+              <a
+                href="https://github.com/anhhtpn00019"
+                class="text-decoration-none"
+                target="_blank"
+              >
+                <i class="fab fa-github"></i> @anhhtpn00019
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="card-white h-100 p-4 text-center">
+              <div class="team-avatar">
+                <img src="/member-images/ducduy.png" />
+              </div>
+              <h4>Nguyễn Đức Duy</h4>
+              <p class="text-muted">Backend Dev</p>
+              <a
+                href="https://github.com/duyandie"
+                class="text-decoration-none"
+                target="_blank"
+              >
+                <i class="fab fa-github"></i> @duyandie
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="card-white h-100 p-4 text-center">
+              <div class="team-avatar">
+                <img src="/member-images/linhchi.png" />
+              </div>
+              <h4>Phạm Linh Chi</h4>
+              <p class="text-muted">Documentation</p>
+              <a
+                href="https://github.com/chi-pn00026"
+                class="text-decoration-none"
+                target="_blank"
+              >
+                <i class="fab fa-github"></i> @chi-pn00026
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="card-white h-100 p-4 text-center">
+              <div class="team-avatar">
+                <img src="/member-images/hoduc.png" />
+              </div>
+              <h4>Hồ Đức</h4>
+              <p class="text-muted">Frontend / UI-UX</p>
+              <a
+                href="https://github.com/Duch147"
+                class="text-decoration-none"
+                target="_blank"
+              >
+                <i class="fab fa-github"></i> @Duch147
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="card-white h-100 p-4 text-center">
+              <div class="team-avatar">
+                <img src="/member-images/duyhai.png" />
+              </div>
+              <h4>Trần Duy Hải</h4>
+              <p class="text-muted">Tester / QA</p>
+              <a
+                href="https://github.com/DuyHai1708"
+                class="text-decoration-none"
+                target="_blank"
+              >
+                <i class="fab fa-github"></i> @DuyHai1708
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section class="section">
+      <div class="container">
+        <h2 class="text-center display-5 fw-bold mb-5">🚀 Công nghệ sử dụng</h2>
+        <div class="row g-4">
+          <div class="col-lg-3 col-md-6">
+            <div class="card h-100 p-4 text-center">
+              <div class="tech-icon">
+                <i class="fab fa-php"></i>
+              </div>
+              <h5>Laravel 11.x</h5>
+              <p class="text-muted">PHP 8.3+</p>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="card h-100 p-4 text-center">
+              <div class="tech-icon">
+                <i class="fab fa-bootstrap"></i>
+              </div>
+              <h5>Bootstrap 4.x</h5>
+              <p class="text-muted">Livewire 3.x / Alpine.js</p>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="card h-100 p-4 text-center">
+              <div class="tech-icon">
+                <i class="fas fa-database"></i>
+              </div>
+              <h5>MySQL</h5>
+              <p class="text-muted">Database</p>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="card h-100 p-4 text-center">
+              <div class="tech-icon">
+                <i class="fab fa-node-js"></i>
+              </div>
+              <h5>Vite</h5>
+              <p class="text-muted">Build Tool</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Installation Section -->
+    <section class="section">
+      <div class="container">
+        <h2 class="text-center display-5 fw-bold mb-5">🛠️ Hướng dẫn cài đặt</h2>
+        <div class="row">
+          <div class="col-lg-6">
+            <h4>Yêu cầu hệ thống:</h4>
+            <ul class="list-unstyled">
+              <li><i class="fas fa-check text-success me-2"></i>Laragon</li>
+              <li><i class="fas fa-check text-success me-2"></i>MySQL</li>
+              <li>
+                <i class="fas fa-check text-success me-2"></i>Apache/NGINX
+              </li>
+              <li><i class="fas fa-check text-success me-2"></i>PHP 8.3+</li>
+              <li><i class="fas fa-check text-success me-2"></i>Composer</li>
+              <li>
+                <i class="fas fa-check text-success me-2"></i>Node.js (npm)
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-6">
+            <h4>Lệnh cài đặt:</h4>
+            <div class="code-block">
+              <code>
+                git clone https://github.com/tunnaduong/educore.git<br />
+                cd educore<br /><br />
+                cp .env.example .env<br />
+                # Cập nhật thông tin kết nối DB và APP_URL<br /><br />
+                composer install<br />
+                php artisan key:generate<br />
+                php artisan migrate<br />
+                npm install<br />
+                npm run build<br />
+                php artisan serve
+              </code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="text-center mb-4">
+          <h3>EduCore</h3>
+          <p>Hệ thống quản lý đào tạo trung tâm tiếng Trung hiện đại</p>
+          <p>
+            <em
+              >Đồng hành cùng các trung tâm tiếng Trung xây dựng hệ thống học
+              tập hiệu quả và hiện đại.</em
+            >
+          </p>
+        </div>
+
+        <div class="text-center mb-4">
+          <a
+            href="https://github.com/tunnaduong/educore"
+            class="btn btn-outline-light me-3"
+            target="_blank"
+          >
+            <i class="fab fa-github"></i> GitHub
+          </a>
+          <a href="mailto:tunnaduong@gmail.com" class="btn btn-outline-light">
+            <i class="fas fa-envelope"></i> Liên hệ
+          </a>
+        </div>
+
+        <div class="text-center">
+          <p>
+            &copy; 2025 EduCore. Được phát triển bởi Team No Sleep - FPT
+            Polytechnic Hà Nam.
+          </p>
+          <p>Dự án được cấp phép theo MIT License.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Smooth scrolling
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
