@@ -38,7 +38,7 @@ class Index extends Component
     public $questionForm = [
         'category' => '',
         'question' => '',
-        'order' => 0,
+        'order' => 1,
         'is_active' => true,
     ];
 
@@ -91,13 +91,13 @@ class Index extends Component
     public function updatedClassroomId()
     {
         $this->resetPage();
-        Log::info('Classroom filter changed to: '.($this->classroomId ?: 'null'));
+        Log::info('Classroom filter changed to: ' . ($this->classroomId ?: 'null'));
     }
 
     public function updatedRoundId()
     {
         $this->resetPage();
-        Log::info('Round filter changed to: '.($this->roundId ?: 'null'));
+        Log::info('Round filter changed to: ' . ($this->roundId ?: 'null'));
     }
 
     public function resetFilter()
@@ -128,7 +128,7 @@ class Index extends Component
         $this->questionForm = [
             'category' => 'teacher',
             'question' => '',
-            'order' => 0,
+            'order' => 1,
             'is_active' => true,
         ];
         $this->showQuestionModal = true;
@@ -156,7 +156,7 @@ class Index extends Component
         $this->questionForm = [
             'category' => '',
             'question' => '',
-            'order' => 0,
+            'order' => 1,
             'is_active' => true,
         ];
     }
@@ -177,7 +177,7 @@ class Index extends Component
         if ($isActive) {
             $activeCount = EvaluationQuestion::where('category', $category)
                 ->where('is_active', true)
-                ->when($excludeId, fn ($q) => $q->where('id', '!=', $excludeId))
+                ->when($excludeId, fn($q) => $q->where('id', '!=', $excludeId))
                 ->count();
             if ($activeCount >= $this->categoryLimits[$category]) {
                 session()->flash('error', 'Đã đạt giới hạn câu hỏi hoạt động cho danh mục này.');
@@ -189,7 +189,7 @@ class Index extends Component
             $dupOrder = EvaluationQuestion::where('category', $category)
                 ->where('is_active', true)
                 ->where('order', $order)
-                ->when($excludeId, fn ($q) => $q->where('id', '!=', $excludeId))
+                ->when($excludeId, fn($q) => $q->where('id', '!=', $excludeId))
                 ->exists();
             if ($dupOrder) {
                 session()->flash('error', 'Thứ tự hiển thị đã tồn tại ở danh mục này.');
