@@ -934,5 +934,5 @@ return [
     'needs_manual_grading' => '需要人工评分',
     'explanation' => '解释',
     'total_questions' => '总题数',
-    'back_to_quiz_list' => '返回测验列表'
+    'back_to_quiz_list' => '返回测验列表',
 ];

@@ -964,5 +964,5 @@ return [
     'needs_manual_grading' => 'Cần chấm thủ công',
     'explanation' => 'Giải thích',
     'total_questions' => 'Tổng câu hỏi',
-    'back_to_quiz_list' => 'Quay lại danh sách bài kiểm tra'
+    'back_to_quiz_list' => 'Quay lại danh sách bài kiểm tra',
 ];

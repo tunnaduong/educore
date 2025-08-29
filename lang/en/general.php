@@ -934,5 +934,5 @@ return [
     'needs_manual_grading' => 'Needs manual grading',
     'explanation' => 'Explanation',
     'total_questions' => 'Total questions',
-    'back_to_quiz_list' => 'Back to quiz list'
+    'back_to_quiz_list' => 'Back to quiz list',
 ];
