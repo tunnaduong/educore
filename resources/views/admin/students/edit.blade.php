@@ -17,7 +17,7 @@
             <div class="row g-0 align-items-stretch">
                 <div class="col-md-7 p-4">
                     <form wire:submit="save">
-                        <!-- Thông tin cá nhân -->
+                        <!-- {{ __('views.personal_info_comment') }} -->
                         <div class="mb-4">
                             <h5 class="text-primary mb-3">{{ __('general.personal_info') }}</h5>
                             <div class="mb-3">
@@ -82,7 +82,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Thông tin học tập -->
+                        <!-- {{ __('views.academic_info_comment') }} -->
                         <div class="mb-4">
                             <h5 class="text-primary mb-3">{{ __('general.academic_info') }}</h5>
                             <div class="row">

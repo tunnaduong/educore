@@ -41,7 +41,7 @@
             </button>
         </div>
 
-        <!-- Modal tạo payment -->
+        <!-- {{ __('views.create_payment_modal') }} -->
         @if ($showCreateModal)
             <div class="modal fade show d-block" tabindex="-1" style="background:rgba(0,0,0,0.3);">
                 <div class="modal-dialog">
@@ -160,17 +160,17 @@
                                     @php
                                         $typeMap = [
                                             'tuition' => [
-                                                'label' => 'Học phí',
+                                                'label' => __('views.finance_item_tuition'),
                                                 'icon' => 'bi-mortarboard',
                                                 'color' => 'primary',
                                             ],
                                             'material' => [
-                                                'label' => 'Tài liệu',
+                                                'label' => __('views.finance_item_material'),
                                                 'icon' => 'bi-book',
                                                 'color' => 'info',
                                             ],
                                             'other' => [
-                                                'label' => 'Khác',
+                                                'label' => __('views.finance_item_other'),
                                                 'icon' => 'bi-three-dots',
                                                 'color' => 'secondary',
                                             ],
@@ -226,7 +226,7 @@
                                 </td>
                             </tr>
 
-                            <!-- Modal sửa trạng thái -->
+                            <!-- {{ __('views.edit_status_modal') }} -->
                             <div class="modal fade" id="editStatusModal{{ $payment->id }}" tabindex="-1"
                                 role="dialog" aria-labelledby="editStatusLabel{{ $payment->id }}"
                                 aria-hidden="true">
@@ -236,7 +236,7 @@
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="editStatusLabel{{ $payment->id }}">{{ __('views.edit_payment_status') }}</h5>
                                             <button type="button" class="close" data-dismiss="modal"
-                                                aria-label="Đóng">
+                                                aria-label="{{ __('general.close') }}">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
@@ -277,7 +277,7 @@
                                 </div>
                             </div>
 
-                            <!-- Modal xác nhận xóa -->
+                            <!-- {{ __('views.confirm_delete_modal') }} -->
                             <div class="modal fade" id="confirmDeleteModal{{ $payment->id }}" tabindex="-1"
                                 role="dialog" aria-labelledby="confirmDeleteLabel{{ $payment->id }}"
                                 aria-hidden="true">
@@ -287,7 +287,7 @@
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="confirmDeleteLabel{{ $payment->id }}">{{ __('views.confirm_delete_payment_title') }}</h5>
                                             <button type="button" class="close" data-dismiss="modal"
-                                                aria-label="Đóng">
+                                                aria-label="{{ __('general.close') }}">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>

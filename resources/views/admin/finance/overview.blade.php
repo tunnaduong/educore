@@ -1,6 +1,6 @@
 <div class="container-fluid">
     @include('components.language')
-    <!-- Bộ lọc ngày tháng -->
+    <!-- {{ __('views.date_filter_section') }} -->
     <div class="card shadow-sm mb-4">
         <div class="card-header bg-light">
             <h6 class="mb-0 text-primary">
@@ -31,7 +31,7 @@
         </div>
     </div>
 
-    <!-- Thống kê tổng quan -->
+    <!-- {{ __('views.overview_statistics') }} -->
     <div class="row g-4 mb-4">
         <div class="col-xl-4 col-md-6">
             <div class="card border-0 shadow-sm h-100 bg-gradient-success">
