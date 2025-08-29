@@ -105,7 +105,7 @@
                                         </td>
                                         <td>
                                             <span
-                                                class="badge bg-info">{{ $assignment->classroom?->name ?? 'N/A' }}</span>
+                                                class="badge bg-info">{{ $assignment->classroom?->name ?? __('general.not_available') }}</span>
                                         </td>
                                         <td>
                                             @if ($assignment->classroom?->teachers?->count())

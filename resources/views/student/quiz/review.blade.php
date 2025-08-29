@@ -5,22 +5,20 @@
         <div class="mb-4">
             <a href="{{ route('student.quizzes.index') }}"
                 class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left mr-2"></i>Quay lại danh sách bài kiểm tra
+                <i class="bi bi-arrow-left mr-2"></i>{{ __('general.back_to_quiz_list') }}
             </a>
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-clipboard-check mr-2"></i>Xem lại bài kiểm tra
+                <i class="bi bi-clipboard-check mr-2"></i>{{ __('general.review_quiz') }}
             </h4>
             <p class="text-muted mb-0">{{ $quiz->title }}</p>
         </div>
 
         @if (!$result)
             <div class="alert alert-warning mt-4">
-                <h5 class="alert-heading"><i class="bi bi-exclamation-triangle mr-2"></i>Không tìm thấy kết quả bài kiểm
-                    tra</h5>
-                <p>Bạn chưa làm hoặc kết quả bài kiểm tra này đã bị xóa. Nếu bạn nghĩ đây là lỗi, vui lòng liên hệ giáo
-                    viên để được hỗ trợ.</p>
+                <h5 class="alert-heading"><i class="bi bi-exclamation-triangle mr-2"></i>{{ __('general.quiz_result_not_found') }}</h5>
+                <p>{{ __('general.quiz_result_not_found_description') }}</p>
                 <a href="{{ route('student.quizzes.index') }}" class="btn btn-primary mt-2"><i
-                        class="bi bi-arrow-left mr-1"></i>Quay lại danh sách bài kiểm tra</a>
+                        class="bi bi-arrow-left mr-1"></i>{{ __('general.back_to_quiz_list') }}</a>
             </div>
         @else
             <!-- Thống kê tổng quan -->
@@ -29,7 +27,7 @@
                     <div class="card bg-primary text-white">
                         <div class="card-body text-center">
                             <h3 class="mb-0">{{ $result->score }}%</h3>
-                            <small>Điểm số</small>
+                            <small>{{ __('general.score') }}</small>
                         </div>
                     </div>
                 </div>
@@ -37,7 +35,7 @@
                     <div class="card bg-info text-white">
                         <div class="card-body text-center">
                             <h3 class="mb-0">{{ $result->getDurationString() }}</h3>
-                            <small>Thời gian làm</small>
+                            <small>{{ __('general.time_taken') }}</small>
                         </div>
                     </div>
                 </div>
@@ -45,7 +43,7 @@
                     <div class="card bg-success text-white">
                         <div class="card-body text-center">
                             <h3 class="mb-0">{{ $result->getCorrectAnswersCount() }}</h3>
-                            <small>Câu trả lời đúng</small>
+                            <small>{{ __('general.correct_answers') }}</small>
                         </div>
                     </div>
                 </div>
@@ -53,7 +51,7 @@
                     <div class="card bg-warning text-white">
                         <div class="card-body text-center">
                             <h3 class="mb-0">{{ count($quiz->questions) }}</h3>
-                            <small>Tổng câu hỏi</small>
+                            <small>{{ __('general.total_questions') }}</small>
                         </div>
                     </div>
                 </div>
@@ -65,44 +63,44 @@
                     <div class="card shadow-sm">
                         <div class="card-header bg-light">
                             <h6 class="mb-0">
-                                <i class="bi bi-info-circle mr-2"></i>Thông tin bài kiểm tra
+                                <i class="bi bi-info-circle mr-2"></i>{{ __('general.quiz_information') }}
                             </h6>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-6">
-                                    <small class="text-muted">Lớp học:</small>
-                                    <div class="fw-medium">{{ $quiz->classroom ? $quiz->classroom->name : 'N/A' }}</div>
+                                    <small class="text-muted">{{ __('general.classroom') }}:</small>
+                                    <div class="fw-medium">{{ $quiz->classroom ? $quiz->classroom->name : __('general.not_available') }}</div>
                                 </div>
                                 <div class="col-6">
-                                    <small class="text-muted">Hạn nộp:</small>
+                                    <small class="text-muted">{{ __('general.deadline') }}:</small>
                                     <div class="fw-medium">
                                         @if ($quiz->deadline)
                                             {{ $quiz->deadline->format('d/m/Y H:i') }}
                                         @else
-                                            Không có hạn
+                                            {{ __('general.no_deadline') }}
                                         @endif
                                     </div>
                                 </div>
                             </div>
                             <div class="row mt-3">
                                 <div class="col-6">
-                                    <small class="text-muted">Bắt đầu làm:</small>
+                                    <small class="text-muted">{{ __('general.started_at') }}:</small>
                                     <div class="fw-medium">
                                         @if ($result->started_at)
                                             {{ $result->started_at->format('d/m/Y H:i') }}
                                         @else
-                                            N/A
+                                            {{ __('general.not_available') }}
                                         @endif
                                     </div>
                                 </div>
                                 <div class="col-6">
-                                    <small class="text-muted">Nộp bài:</small>
+                                    <small class="text-muted">{{ __('general.submitted_at') }}:</small>
                                     <div class="fw-medium">
                                         @if ($result->submitted_at)
                                             {{ $result->submitted_at->format('d/m/Y H:i') }}
                                         @else
-                                            Chưa nộp
+                                            {{ __('general.not_submitted') }}
                                         @endif
                                     </div>
                                 </div>
@@ -114,7 +112,7 @@
                     <div class="card shadow-sm">
                         <div class="card-header bg-light">
                             <h6 class="mb-0">
-                                <i class="bi bi-graph-up mr-2"></i>Thống kê câu trả lời
+                                <i class="bi bi-graph-up mr-2"></i>{{ __('general.answer_statistics') }}
                             </h6>
                         </div>
                         <div class="card-body">
@@ -137,19 +135,19 @@
                                 <div class="col-4">
                                     <div class="text-success">
                                         <h4 class="mb-0">{{ $correctCount }}</h4>
-                                        <small>Đúng</small>
+                                        <small>{{ __('general.correct') }}</small>
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="text-danger">
                                         <h4 class="mb-0">{{ $incorrectCount }}</h4>
-                                        <small>Sai</small>
+                                        <small>{{ __('general.incorrect') }}</small>
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="text-secondary">
                                         <h4 class="mb-0">{{ $unansweredCount }}</h4>
-                                        <small>Chưa trả lời</small>
+                                        <small>{{ __('general.unanswered') }}</small>
                                     </div>
                                 </div>
                             </div>
@@ -162,7 +160,7 @@
             <div class="card shadow-sm">
                 <div class="card-header bg-light">
                     <h6 class="mb-0">
-                        <i class="bi bi-list-ul mr-2"></i>Chi tiết từng câu hỏi
+                        <i class="bi bi-list-ul mr-2"></i>{{ __('general.question_details') }}
                     </h6>
                 </div>
                 <div class="card-body">
@@ -173,7 +171,7 @@
                                 <button type="button"
                                     class="btn btn-sm {{ $selectedQuestion == $index ? 'btn-primary' : 'btn-outline-' . $this->getQuestionStatusClass($index) }}"
                                     wire:click="selectQuestion({{ $index }})">
-                                    Câu {{ $index + 1 }}
+                                    {{ __('general.question') }} {{ $index + 1 }}
                                 </button>
                             @endforeach
                         </div>
@@ -191,7 +189,7 @@
                         <div class="border rounded p-4">
                             <div class="d-flex justify-content-between align-items-start mb-3">
                                 <div>
-                                    <span class="badge bg-primary mr-2">Câu {{ $selectedQuestion + 1 }}</span>
+                                    <span class="badge bg-primary mr-2">{{ __('general.question') }} {{ $selectedQuestion + 1 }}</span>
                                     <span class="badge bg-secondary mr-2">{{ ucfirst($question['type']) }}</span>
                                     <span class="badge bg-{{ $this->getQuestionStatusClass($selectedQuestion) }}">
                                         {{ $this->getQuestionStatusText($selectedQuestion) }}
@@ -201,7 +199,7 @@
                             <div class="fw-medium mb-3 fs-5">{{ $question['question'] }}</div>
                             @if ($question['type'] === 'multiple_choice')
                                 <div class="mb-3">
-                                    <h6>Các lựa chọn:</h6>
+                                    <h6>{{ __('general.options') }}:</h6>
                                     @foreach ($question['options'] as $optionIndex => $option)
                                         <div class="form-check mb-2">
                                             <input class="form-check-input" type="radio" disabled
@@ -224,13 +222,13 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="alert alert-info">
-                                            <strong>Đáp án của bạn:</strong><br>
-                                            {{ $answer ?: 'Chưa trả lời' }}
+                                            <strong>{{ __('general.your_answer') }}:</strong><br>
+                                            {{ $answer ?: __('general.not_answered') }}
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="alert alert-success">
-                                            <strong>Đáp án đúng:</strong><br>
+                                            <strong>{{ __('general.correct_answer') }}:</strong><br>
                                             @if (isset($question['correct_answer']))
                                                 @if (is_array($question['correct_answer']))
                                                     {{ implode(', ', $question['correct_answer']) }}
@@ -238,17 +236,18 @@
                                                     {{ $question['correct_answer'] }}
                                                 @endif
                                             @else
-                                                <span class="text-muted">Cần chấm thủ công</span>
+                                                <span class="text-muted">{{ __('general.needs_manual_grading') }}</span>
                                             @endif
                                         </div>
                                     </div>
                                 </div>
                                 @if (isset($question['explanation']) && $question['explanation'])
                                     <div class="alert alert-warning">
-                                        <strong>Giải thích:</strong><br>
+                                        <strong>{{ __('general.explanation') }}:</strong><br>
                                         {{ $question['explanation'] }}
                                     </div>
                                 @endif
+                            @endif
                         </div>
                     @endif
                 </div>

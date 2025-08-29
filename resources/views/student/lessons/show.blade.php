@@ -44,11 +44,11 @@
                         <h4 class="mb-0 text-primary fs-4">
                             <i class="bi bi-book mr-2"></i>{{ $lesson->title }}
                         </h4>
-                        <p class="text-muted mb-0">Chi tiết bài học</p>
+                        <p class="text-muted mb-0">{{ __('views.student_pages.lessons.show.title') }}</p>
                     </div>
                     <div>
                         <a href="{{ route('student.lessons.index') }}" class="btn btn-outline-secondary">
-                            <i class="bi bi-arrow-left"></i> Quay lại danh sách
+                            <i class="bi bi-arrow-left"></i> {{ __('views.student_pages.lessons.show.back_to_list') }}
                         </a>
                     </div>
                 </div>
@@ -57,7 +57,7 @@
             <div class="card shadow-sm">
                 <div class="card-body">
                     <div class="mb-3">
-                        <strong class="text-muted">Mô tả:</strong>
+                        <strong class="text-muted">{{ __('views.student_pages.lessons.show.description_label') }}</strong>
                         <div class="mt-1 description-content">{!! $lesson->description !!}</div>
                     </div>
 
@@ -81,7 +81,7 @@
                     @endphp
                     @if ($lesson->video)
                         <div class="mb-3">
-                            <strong class="text-muted">Video bài học:</strong><br>
+                            <strong class="text-muted">{{ __('views.student_pages.lessons.show.video_label') }}</strong><br>
                             @if ($isYoutube && $youtubeId)
                                 <div class="ratio ratio-16x9 rounded overflow-hidden mb-2"
                                     style="position: relative;padding-bottom: 56.25%;">
@@ -98,21 +98,21 @@
                                 </div>
                             @else
                                 <a href="{{ $lesson->video }}" target="_blank" class="btn btn-outline-primary"><i
-                                        class="bi bi-play-circle"></i> Xem video</a>
+                                        class="bi bi-play-circle"></i> {{ __('views.student_pages.lessons.show.watch_video') }}</a>
                             @endif
                         </div>
                     @endif
 
                     @if ($lesson->attachment)
                         <div class="mb-3">
-                            <strong class="text-muted">Tài liệu đính kèm:</strong><br>
+                            <strong class="text-muted">{{ __('views.student_pages.lessons.show.attachments_label') }}</strong><br>
                             <a href="{{ asset('storage/' . $lesson->attachment) }}" target="_blank"
                                 class="btn btn-outline-success mb-2">
-                                <i class="bi bi-download"></i> Tải tài liệu
+                                <i class="bi bi-download"></i> {{ __('views.student_pages.lessons.show.download_document') }}
                             </a>
                             <button class="btn btn-outline-primary mb-2 ml-2" type="button"
                                 onclick="openPreviewModal()">
-                                <i class="bi bi-eye"></i> Xem trước tài liệu
+                                <i class="bi bi-eye"></i> {{ __('views.student_pages.lessons.show.preview_document') }}
                             </button>
                             @php
                                 $ext = strtolower(pathinfo($lesson->attachment, PATHINFO_EXTENSION));
@@ -128,11 +128,11 @@
                 @endif
                 @if (!$completed)
                     <button wire:click="markAsCompleted" class="btn btn-success">
-                        <i class="bi bi-check-circle"></i> Đánh dấu đã hoàn thành
+                        <i class="bi bi-check-circle"></i> {{ __('views.student_pages.lessons.show.mark_completed') }}
                     </button>
                 @else
                     <div class="alert alert-info mb-0">
-                        <i class="bi bi-check2-circle"></i> Bạn đã hoàn thành bài học này!
+                        <i class="bi bi-check2-circle"></i> {{ __('views.student_pages.lessons.show.already_completed') }}
                     </div>
                 @endif
             </div>
@@ -194,7 +194,7 @@
     <div id="previewModal" class="modal-custom">
         <div class="modal-content-custom">
             <div class="modal-header-custom">
-                <h5 class="modal-title">Xem trước tài liệu</h5>
+                <h5 class="modal-title">{{ __('views.student_pages.lessons.show.modal_preview_title') }}</h5>
                 <button type="button" class="close-custom" onclick="closePreviewModal()">&times;</button>
             </div>
             <div class="modal-body-custom">
@@ -203,14 +203,13 @@
                         <iframe src="{{ $fileUrl }}" width="100%" height="600px"
                             style="border:1px solid #ccc;"></iframe>
                     @elseif (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp']))
-                        <img src="{{ $fileUrl }}" alt="Tài liệu hình ảnh"
+                        <img src="{{ $fileUrl }}" alt="{{ __('views.student_pages.lessons.show.img_alt_document') }}"
                             class="img-fluid border rounded d-block mx-auto" style="max-height:600px;">
                     @elseif (in_array($ext, ['doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx']))
                         <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={{ urlencode($fileUrl) }}"
                             width="100%" height="600px" frameborder="0"></iframe>
                     @else
-                        <div class="alert alert-info m-3">Không hỗ trợ xem trước loại tệp này. Vui lòng tải về để xem
-                            chi tiết.</div>
+                        <div class="alert alert-info m-3">{{ __('views.student_pages.lessons.show.preview_not_supported') }}</div>
                     @endif
                 @endif
             </div>
