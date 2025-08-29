@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Attendance;
 use App\Models\Message;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,12 @@ class Home extends Component
 
     public $unreadNotification = 0;
 
+    public $attendanceStatusCounts = [
+        'present' => 0,
+        'absent' => 0,
+        'late' => 0,
+    ];
+
     public function mount()
     {
         $userId = Auth::id();
@@ -21,6 +28,19 @@ class Home extends Component
             $query->where('user_id', $userId)
                 ->orWhereNull('user_id');
         })->where('is_read', false)->count();
+
+        // Tính số liệu điểm danh tháng hiện tại cho biểu đồ trên Dashboard admin
+        $year = (int) now()->year;
+        $month = (int) now()->month;
+        $monthlyAttendances = Attendance::forMonth($year, $month)->get();
+        $present = $monthlyAttendances->where('present', true)->count();
+        $absent = $monthlyAttendances->where('present', false)->count();
+        // Hệ thống chưa có cột 'late' -> mặc định 0
+        $this->attendanceStatusCounts = [
+            'present' => $present,
+            'absent' => $absent,
+            'late' => 0,
+        ];
     }
 
     public function render()
