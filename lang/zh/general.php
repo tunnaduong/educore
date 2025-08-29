@@ -655,6 +655,8 @@ return [
     'back' => '返回',
     'update_user_information' => '更新用户信息',
     'personal_information' => '个人信息',
+    'academic_info' => '学术信息',
+    'update_student_info_desc' => '轻松更新学员信息、状态、级别或备注。',
     'account_information' => '账户信息',
     'phone_number' => '电话号码',
     'new_password' => '新密码',

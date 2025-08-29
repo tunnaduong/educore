@@ -47,7 +47,7 @@
         </div>
     </div>
 
-    <!-- Bảng danh sách học viên -->
+    <!-- {{ __('views.student_list_section') }} -->
     <div class="card shadow-sm">
         <div class="card-header bg-primary text-white">
             <h6 class="mb-0">

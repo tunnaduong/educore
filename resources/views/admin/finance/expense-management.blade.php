@@ -1,7 +1,7 @@
 <x-layouts.dash-admin active="finance" title="{{ __('views.expense_management_title') }}">
     @include('components.language')
     <div class="container-fluid">
-        <!-- Header -->
+        <!-- {{ __('views.header_section') }} -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h4 class="text-danger mb-1">
@@ -14,12 +14,12 @@
                     <i class="bi bi-arrow-left mr-2"></i>{{ __('views.back_to_finance_overview') }}
                 </a>
                 <button class="btn btn-danger btn-lg shadow-sm" wire:click="openCreateModal">
-                    <i class="bi bi-plus-circle mr-2"></i>{{ __('views.add_expense') }}
+                    <i class="bi bi-plus mr-2"></i>{{ __('views.add_expense') }}
                 </button>
             </div>
         </div>
 
-        <!-- Filters -->
+        <!-- {{ __('views.filters_section') }} -->
         <div class="card shadow-sm mb-4">
             <div class="card-header bg-light">
                 <h6 class="mb-0 text-primary">
@@ -70,7 +70,7 @@
             </div>
         </div>
 
-        <!-- Success Message -->
+        <!-- {{ __('views.success_message_section') }} -->
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
                 <i class="bi bi-check-circle-fill mr-2"></i>{{ session('success') }}
@@ -80,7 +80,7 @@
             </div>
         @endif
 
-        <!-- Expenses Table -->
+        <!-- {{ __('views.expenses_table_section') }} -->
         <div class="card shadow-sm">
             <div class="card-header bg-gradient-danger text-white">
                 <h6 class="mb-0">
@@ -111,7 +111,7 @@
                                 <i class="bi bi-chat-left-text mr-1"></i>{{ __('general.notes') }}
                             </th>
                             <th class="text-center" width="10%">
-                                <i class="bi bi-gear mr-1"></i>Thao tác
+                                <i class="bi bi-gear mr-1"></i>{{ __('general.actions') }}
                             </th>
                         </tr>
                     </thead>
@@ -208,7 +208,7 @@
                                             <i class="bi bi-pencil"></i>
                                         </button>
                                         <button wire:click="deleteExpense({{ $expense->id }})"
-                                            wire:confirm="Bạn có chắc muốn xóa khoản chi này?"
+                                            wire:confirm="{{ __('views.confirm_delete_expense') }}"
                                             class="btn btn-outline-danger">
                                             <i class="bi bi-trash"></i>
                                         </button>
@@ -231,7 +231,7 @@
             </div>
         </div>
 
-        <!-- Create/Edit Modal -->
+        <!-- {{ __('views.create_edit_modal_section') }} -->
         @if ($showCreateModal)
             <div class="modal fade show d-block" tabindex="-1" style="background:rgba(0,0,0,0.5);">
                 <div class="modal-dialog modal-dialog-scrollable modal-lg">
