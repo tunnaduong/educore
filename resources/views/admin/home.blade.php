@@ -282,31 +282,60 @@
 
     @push('scripts')
         <script>
-            // Chart.js for attendance statistics
-            document.addEventListener('DOMContentLoaded', function() {
-                const ctx = document.getElementById('attendanceChart').getContext('2d');
-                new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['{{ __('general.present') }}', '{{ __('general.absent') }}',
-                            '{{ __('general.late') }}'
-                        ],
-                        datasets: [{
-                            data: [75, 15, 10],
-                            backgroundColor: ['#28a745', '#dc3545', '#ffc107'],
-                            borderWidth: 0
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'bottom'
-                            }
+            // Chart.js for attendance statistics (live data)
+            document.addEventListener('DOMContentLoaded', function () {
+                function ensureChartJsLoaded(callback) {
+                    if (window.Chart) return callback();
+                    var s = document.createElement('script');
+                    s.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+                    s.onload = callback;
+                    document.head.appendChild(s);
+                }
+
+                function renderDashboardAttendanceChart() {
+                    const el = document.getElementById('attendanceChart');
+                    if (!el) return;
+                    const ctx = el.getContext('2d');
+
+                    const present = {{ (int) ($attendanceStatusCounts['present'] ?? 0) }};
+                    const absent = {{ (int) ($attendanceStatusCounts['absent'] ?? 0) }};
+                    const late = {{ (int) ($attendanceStatusCounts['late'] ?? 0) }};
+
+                    if (el._chartInstance) {
+                        el._chartInstance.destroy();
+                        el._chartInstance = null;
+                    }
+
+                    el._chartInstance = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['{{ __('general.present') }}', '{{ __('general.absent') }}', '{{ __('general.late') }}'],
+                            datasets: [{
+                                data: [present, absent, late],
+                                backgroundColor: ['#28a745', '#dc3545', '#ffc107'],
+                                borderWidth: 0,
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { position: 'bottom' } }
                         }
+                    });
+                }
+
+                function init() { ensureChartJsLoaded(renderDashboardAttendanceChart); }
+                init();
+
+                // Re-render after Livewire updates the DOM
+                document.addEventListener('livewire:load', function () {
+                    if (window.Livewire) {
+                        window.Livewire.hook('message.processed', function () { init(); });
                     }
                 });
+                if (window.Livewire && window.Livewire.hook) {
+                    window.Livewire.hook('morph.updated', function () { init(); });
+                }
             });
         </script>
     @endpush
