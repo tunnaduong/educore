@@ -86,8 +86,6 @@
                     </div>
                     <div class="col-md-6">
                         <div class="d-flex gap-2 justify-content-end">
-                            <input wire:model.live="selectedDate" type="date" class="form-control"
-                                style="max-width: 200px;">
                             <button wire:click="saveAttendance" class="btn btn-primary"
                                 {{ !$canTakeAttendance ? 'disabled' : '' }}>
                                 <i class="bi bi-save mr-2"></i>@lang('general.save_attendance')
