@@ -6,7 +6,7 @@
                 <div class="card-header">
                     <h3 class="card-title">
                         <i class="bi bi-robot text-primary"></i>
-                        @lang('general.ai_assistant') - @lang('general.smart_teaching')
+                        {{ __('general.ai_assistant') }} - {{ __('general.smart_teaching') }}
                     </h3>
                 </div>
                 <div class="card-body">
@@ -25,7 +25,7 @@
                 <div class="card-header">
                     <h4 class="card-title">
                         <i class="bi bi-journal-check text-success"></i>
-                        @lang('general.ai_grading')
+                        {{ __('general.ai_grading') }}
                     </h4>
                 </div>
                 <div class="card-body">
@@ -115,7 +115,7 @@
                 <div class="card-header">
                     <h4 class="card-title">
                         <i class="bi bi-patch-question text-info"></i>
-                        @lang('general.ai_quiz_generator')
+                        {{ __('general.ai_quiz_generator') }}
                     </h4>
                 </div>
                 <div class="card-body">
@@ -164,7 +164,7 @@
                     <div class="d-flex justify-content-between">
                         <div>
                             <h4>{{ $recentSubmissions->count() }}</h4>
-                            <p class="mb-0">@lang('general.pending_grading')</p>
+                            <p class="mb-0">{{ __('general.pending_grading') }}</p>
                         </div>
                         <div>
                             <i class="bi bi-journal-check" style="font-size: 2rem;"></i>
@@ -179,7 +179,7 @@
                     <div class="d-flex justify-content-between">
                         <div>
                             <h4>{{ $availableAssignments->count() }}</h4>
-                            <p class="mb-0">@lang('general.can_create_quiz')</p>
+                            <p class="mb-0">{{ __('general.can_create_quiz') }}</p>
                         </div>
                         <div>
                             <i class="bi bi-patch-question" style="font-size: 2rem;"></i>
@@ -194,7 +194,7 @@
                     <div class="d-flex justify-content-between">
                         <div>
                             <h4>{{ $classrooms->count() }}</h4>
-                            <p class="mb-0">@lang('general.active_classes')</p>
+                            <p class="mb-0">{{ __('general.active_classes') }}</p>
                         </div>
                         <div>
                             <i class="bi bi-people" style="font-size: 2rem;"></i>
@@ -212,7 +212,7 @@
                 <div class="card-header">
                     <h4 class="card-title">
                         <i class="bi bi-lightbulb text-warning"></i>
-                        @lang('general.ai_guide')
+                        {{ __('general.ai_guide') }}
                     </h4>
                 </div>
                 <div class="card-body">
