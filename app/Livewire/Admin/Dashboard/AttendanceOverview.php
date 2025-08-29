@@ -55,6 +55,7 @@ class AttendanceOverview extends Component
                 $present = $items->where('present', true)->count();
                 $total = $items->count();
                 $rate = $total > 0 ? round(($present / $total) * 100, 1) : 0;
+
                 return [
                     'date' => $date,
                     'present' => $present,
