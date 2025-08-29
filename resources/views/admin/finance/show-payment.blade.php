@@ -1,7 +1,7 @@
-<x-layouts.dash-admin title="Chi tiết học phí">
+<x-layouts.dash-admin title="{{ __('views.tuition_payment_details') }}">
     @include('components.language')
     <div class="container py-4">
-        <!-- Header với thông tin học viên -->
+        <!-- {{ __('views.header_with_student_info') }} -->
         <div class="card border-0 shadow-sm mb-4 bg-gradient-info">
             <div class="card-body text-white p-4">
                 <div class="row align-items-center">
@@ -11,16 +11,16 @@
                         </h4>
                         <div class="row">
                             <div class="col-md-4">
-                                <div class="small text-white-50 mb-1">Email</div>
+                                <div class="small text-white-50 mb-1">{{ __('general.email') }}</div>
                                 <div class="fw-semibold">{{ $user->email }}</div>
                             </div>
                             <div class="col-md-4">
-                                <div class="small text-white-50 mb-1">Mã học viên</div>
+                                <div class="small text-white-50 mb-1">{{ __('views.student_code') }}</div>
                                 <div class="fw-semibold">#{{ $user->id }}</div>
                             </div>
                             <div class="col-md-4">
-                                <div class="small text-white-50 mb-1">Trạng thái</div>
-                                <span class="badge bg-light text-primary">Đang hoạt động</span>
+                                <div class="small text-white-50 mb-1">{{ __('general.status') }}</div>
+                                <span class="badge bg-light text-primary">{{ __('views.active_status') }}</span>
                             </div>
                         </div>
                     </div>
@@ -31,13 +31,13 @@
             </div>
         </div>
 
-        <!-- Nút tạo giao dịch -->
+        <!-- {{ __('views.payment_history_title') }} -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="mb-0">
-                <i class="bi bi-credit-card-2-front text-primary mr-2"></i>Lịch sử thanh toán học phí
+                <i class="bi bi-credit-card-2-front text-primary mr-2"></i>{{ __('views.payment_history_title') }}
             </h5>
             <button class="btn btn-primary btn-lg shadow-sm" wire:click="openCreateModal">
-                <i class="bi bi-plus-circle mr-2"></i>Tạo giao dịch mới
+                <i class="bi bi-plus-circle mr-2"></i>{{ __('views.create_new_payment') }}
             </button>
         </div>
 
@@ -47,16 +47,16 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Tạo giao dịch học phí mới</h5>
+                            <h5 class="modal-title">{{ __('views.create_new_tuition_payment') }}</h5>
                             <button type="button" class="close"
                                 wire:click="closeCreateModal"><span>&times;</span></button>
                         </div>
                         <form wire:submit.prevent="createPayment">
                             <div class="modal-body">
                                 <div class="form-group mb-2">
-                                    <label>Lớp học</label>
+                                    <label>{{ __('general.classroom') }}</label>
                                     <select wire:model.defer="newClassId" class="form-control" required>
-                                        <option value="">-- Chọn lớp --</option>
+                                        <option value="">{{ __('views.select_class_placeholder') }}</option>
                                         @foreach ($this->classrooms as $class)
                                             <option value="{{ $class->id }}">{{ $class->name }}</option>
                                         @endforeach
@@ -66,7 +66,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group mb-2">
-                                    <label>Số tiền</label>
+                                    <label>{{ __('general.amount') }}</label>
                                     <input type="number" wire:model.defer="newAmount" class="form-control"
                                         min="0" required autocomplete="off">
                                     @error('newAmount')
@@ -74,37 +74,37 @@
                                     @enderror
                                 </div>
                                 <div class="form-group mb-2">
-                                    <label>Loại</label>
+                                    <label>{{ __('views.type') }}</label>
                                     <select wire:model.defer="newType" class="form-control">
-                                        <option value="tuition">Học phí</option>
-                                        <option value="material">Tài liệu</option>
-                                        <option value="other">Khác</option>
+                                        <option value="tuition">{{ __('views.finance_item_tuition') }}</option>
+                                        <option value="material">{{ __('views.finance_item_material') }}</option>
+                                        <option value="other">{{ __('views.finance_item_other') }}</option>
                                     </select>
                                     @error('newType')
                                         <span class="text-danger small">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group mb-2">
-                                    <label>Trạng thái</label>
+                                    <label>{{ __('general.status') }}</label>
                                     <select wire:model.defer="newStatus" class="form-control">
-                                        <option value="unpaid">Chưa đóng</option>
-                                        <option value="partial">Còn thiếu</option>
-                                        <option value="paid">Đã đóng đủ</option>
+                                        <option value="unpaid">{{ __('views.unpaid') }}</option>
+                                        <option value="partial">{{ __('views.partial') }}</option>
+                                        <option value="paid">{{ __('views.paid_full') }}</option>
                                     </select>
                                     @error('newStatus')
                                         <span class="text-danger small">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group mb-2">
-                                    <label>Ngày thanh toán</label>
+                                    <label>{{ __('views.payment_date') }}</label>
                                     <input type="datetime-local" wire:model.defer="newPaidAt" class="form-control">
                                     @error('newPaidAt')
                                         <span class="text-danger small">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group mb-2">
-                                    <label>Ghi chú</label>
-                                    <textarea wire:model.defer="newNotes" class="form-control" rows="3" placeholder="Nhập ghi chú (tùy chọn)"></textarea>
+                                    <label>{{ __('general.notes') }}</label>
+                                    <textarea wire:model.defer="newNotes" class="form-control" rows="3" placeholder="{{ __('views.optional_note_placeholder') }}"></textarea>
                                     @error('newNotes')
                                         <span class="text-danger small">{{ $message }}</span>
                                     @enderror
@@ -112,8 +112,8 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary"
-                                    wire:click="closeCreateModal">Đóng</button>
-                                <button type="submit" class="btn btn-primary">Tạo giao dịch</button>
+                                    wire:click="closeCreateModal">{{ __('general.close') }}</button>
+                                <button type="submit" class="btn btn-primary">{{ __('views.create_payment') }}</button>
                             </div>
                         </form>
                     </div>
@@ -136,13 +136,13 @@
                     <thead class="table-primary">
                         <tr>
                             <th class="text-center">#</th>
-                            <th><i class="bi bi-building mr-1"></i>Lớp học</th>
-                            <th><i class="bi bi-cash mr-1"></i>Số tiền</th>
-                            <th><i class="bi bi-tag mr-1"></i>Loại</th>
-                            <th class="text-center"><i class="bi bi-check-circle mr-1"></i>Trạng thái</th>
-                            <th><i class="bi bi-calendar mr-1"></i>Ngày thanh toán</th>
-                            <th class="text-center"><i class="bi bi-image mr-1"></i>Minh chứng</th>
-                            <th class="text-center"><i class="bi bi-gear mr-1"></i>Thao tác</th>
+                            <th><i class="bi bi-building mr-1"></i>{{ __('general.classroom') }}</th>
+                            <th><i class="bi bi-cash mr-1"></i>{{ __('general.amount') }}</th>
+                            <th><i class="bi bi-tag mr-1"></i>{{ __('views.type') }}</th>
+                            <th class="text-center"><i class="bi bi-check-circle mr-1"></i>{{ __('general.status') }}</th>
+                            <th><i class="bi bi-calendar mr-1"></i>{{ __('views.payment_date') }}</th>
+                            <th class="text-center"><i class="bi bi-image mr-1"></i>{{ __('views.proof') }}</th>
+                            <th class="text-center"><i class="bi bi-gear mr-1"></i>{{ __('general.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -189,15 +189,15 @@
                                 <td class="text-center">
                                     @if ($payment->status === 'paid')
                                         <span class="badge bg-success">
-                                            <i class="bi bi-check-circle-fill mr-1"></i>Đã đóng đủ
+                                            <i class="bi bi-check-circle-fill mr-1"></i>{{ __('views.paid_full') }}
                                         </span>
                                     @elseif($payment->status === 'partial')
                                         <span class="badge bg-warning">
-                                            <i class="bi bi-exclamation-triangle-fill mr-1"></i>Còn thiếu
+                                            <i class="bi bi-exclamation-triangle-fill mr-1"></i>{{ __('views.partial') }}
                                         </span>
                                     @else
                                         <span class="badge bg-danger">
-                                            <i class="bi bi-x-circle-fill mr-1"></i>Chưa đóng
+                                            <i class="bi bi-x-circle-fill mr-1"></i>{{ __('views.unpaid') }}
                                         </span>
                                     @endif
                                 </td>
@@ -210,8 +210,7 @@
                                     @endif
                                     <form wire:submit.prevent="uploadProof({{ $payment->id }})" class="mt-2">
                                         <input type="file" wire:model="proof" class="form-control-file mb-1">
-                                        <button type="submit" class="btn btn-sm btn-primary">Tải lên minh
-                                            chứng</button>
+                                        <button type="submit" class="btn btn-sm btn-primary">{{ __('views.upload_proof') }}</button>
                                     </form>
                                     @error('proof')
                                         <span class="text-danger small">{{ $message }}</span>
@@ -220,9 +219,9 @@
                                 <td>
                                     <div class="btn-group btn-group-sm">
                                         <button class="btn btn-primary" data-toggle="modal"
-                                            data-target="#editStatusModal{{ $payment->id }}">Sửa</button>
+                                            data-target="#editStatusModal{{ $payment->id }}">{{ __('general.edit') }}</button>
                                         <button class="btn btn-outline-danger" data-toggle="modal"
-                                            data-target="#confirmDeleteModal{{ $payment->id }}">Xóa</button>
+                                            data-target="#confirmDeleteModal{{ $payment->id }}">{{ __('general.delete') }}</button>
                                     </div>
                                 </td>
                             </tr>
@@ -235,45 +234,44 @@
                                     role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="editStatusLabel{{ $payment->id }}">Sửa trạng
-                                                thái thanh toán</h5>
+                                            <h5 class="modal-title" id="editStatusLabel{{ $payment->id }}">{{ __('views.edit_payment_status') }}</h5>
                                             <button type="button" class="close" data-dismiss="modal"
                                                 aria-label="Đóng">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <p><strong>Giao dịch #{{ $payment->id }}</strong></p>
-                                            <p>Số tiền:
+                                            <p><strong>{{ __('views.payment_transaction_hash', ['id' => $payment->id]) }}</strong></p>
+                                            <p>{{ __('general.amount') }}:
                                                 <strong>{{ number_format($payment->amount, 0, ',', '.') }}₫</strong>
                                             </p>
-                                            <p>Lớp học: <strong>{{ $payment->classroom->name ?? '-' }}</strong></p>
-                                            <p>Ghi chú: <strong>{{ $payment->note ?? '-' }}</strong></p>
+                                            <p>{{ __('general.classroom') }}: <strong>{{ $payment->classroom->name ?? '-' }}</strong></p>
+                                            <p>{{ __('general.notes') }}: <strong>{{ $payment->note ?? '-' }}</strong></p>
 
                                             <div class="form-group">
-                                                <label>Chọn trạng thái mới:</label>
+                                                <label>{{ __('views.choose_new_status') }}:</label>
                                                 <div class="mt-2">
                                                     <button type="button" class="btn btn-success btn-block mb-2"
                                                         data-dismiss="modal"
                                                         wire:click="updateStatus({{ $payment->id }}, 'paid')">
-                                                        <i class="fas fa-check-circle"></i> Đã đóng đủ
+                                                        <i class="fas fa-check-circle"></i> {{ __('views.paid_full') }}
                                                     </button>
                                                     <button type="button" class="btn btn-warning btn-block mb-2"
                                                         data-dismiss="modal"
                                                         wire:click="updateStatus({{ $payment->id }}, 'partial')">
-                                                        <i class="fas fa-exclamation-triangle"></i> Còn thiếu
+                                                        <i class="fas fa-exclamation-triangle"></i> {{ __('views.partial') }}
                                                     </button>
                                                     <button type="button" class="btn btn-danger btn-block"
                                                         data-dismiss="modal"
                                                         wire:click="updateStatus({{ $payment->id }}, 'unpaid')">
-                                                        <i class="fas fa-times-circle"></i> Chưa đóng
+                                                        <i class="fas fa-times-circle"></i> {{ __('views.unpaid') }}
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Đóng</button>
+                                                data-dismiss="modal">{{ __('general.close') }}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -287,22 +285,20 @@
                                     role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="confirmDeleteLabel{{ $payment->id }}">Xác
-                                                nhận xóa
-                                                giao dịch</h5>
+                                            <h5 class="modal-title" id="confirmDeleteLabel{{ $payment->id }}">{{ __('views.confirm_delete_payment_title') }}</h5>
                                             <button type="button" class="close" data-dismiss="modal"
                                                 aria-label="Đóng">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            Bạn có chắc chắn muốn xóa giao dịch này không?
+                                            {{ __('views.confirm_delete_payment_message') }}
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Hủy</button>
+                                                data-dismiss="modal">{{ __('general.cancel') }}</button>
                                             <button type="button" data-dismiss="modal" class="btn btn-danger"
-                                                wire:click="deletePayment({{ $payment->id }})">Xóa</button>
+                                                wire:click="deletePayment({{ $payment->id }})">{{ __('general.delete') }}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -311,9 +307,9 @@
                             <tr>
                                 <td colspan="8" class="text-center py-5">
                                     <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
-                                    <div class="mt-2 text-muted">Chưa có giao dịch học phí nào</div>
+                                    <div class="mt-2 text-muted">{{ __('views.no_tuition_payments') }}</div>
                                     <button class="btn btn-primary mt-3" wire:click="openCreateModal">
-                                        <i class="bi bi-plus-circle mr-1"></i>Tạo giao dịch đầu tiên
+                                        <i class="bi bi-plus-circle mr-1"></i>{{ __('views.create_first_payment') }}
                                     </button>
                                 </td>
                             </tr>
@@ -325,7 +321,7 @@
 
         <div class="mt-4">
             <a href="{{ route('admin.finance.index') }}" class="btn btn-outline-secondary btn-lg">
-                <i class="bi bi-arrow-left mr-2"></i>Quay lại thống kê
+                <i class="bi bi-arrow-left mr-2"></i>{{ __('views.back_to_finance_overview') }}
             </a>
         </div>
     </div>

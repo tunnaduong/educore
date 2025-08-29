@@ -6,12 +6,12 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-calendar3 mr-2"></i>Lịch giảng dạy tổng quan
+                        <i class="bi bi-calendar3 mr-2"></i>{{ __('views.teaching_schedule_overview') }}
                     </h4>
-                    <p class="text-muted mb-0">Xem tất cả lịch học, bài tập và bài kiểm tra</p>
+                    <p class="text-muted mb-0">{{ __('views.view_all_schedules_assignments_quizzes') }}</p>
                 </div>
                 <a href="{{ route('schedules.index') }}" class="btn btn-outline-primary">
-                    <i class="bi bi-arrow-left mr-2"></i>Quay lại danh sách
+                    <i class="bi bi-arrow-left mr-2"></i>{{ __('views.back_to_list') }}
                 </a>
             </div>
         </div>
@@ -21,15 +21,15 @@
             <div class="d-flex align-items-center gap-4 flex-wrap">
                 <div><span
                         style="display:inline-block;width:18px;height:18px;background:#0d6efd;border-radius:4px;margin-right:6px;"></span>
-                    <b>Lịch học</b>
+                    <b>{{ __('views.schedule') }}</b>
                 </div>
                 <div><span
                         style="display:inline-block;width:18px;height:18px;background:#fd7e14;border-radius:4px;margin-right:6px;"></span>
-                    <b>Bài tập</b>
+                    <b>{{ __('views.assignment') }}</b>
                 </div>
                 <div><span
                         style="display:inline-block;width:18px;height:18px;background:#20c997;border-radius:4px;margin-right:6px;"></span>
-                    <b>Bài kiểm tra</b>
+                    <b>{{ __('views.quiz') }}</b>
                 </div>
             </div>
         </div>
@@ -76,19 +76,19 @@
                 initialView: 'listWeek',
                 locale: 'vi',
                 buttonText: {
-                    today: 'Hôm nay',
-                    month: 'Tháng',
-                    week: 'Tuần',
-                    day: 'Ngày',
-                    list: 'Danh sách'
+                    today: '{{ __('views.today') }}',
+                    month: '{{ __('views.month') }}',
+                    week: '{{ __('views.week') }}',
+                    day: '{{ __('views.day') }}',
+                    list: '{{ __('views.list') }}'
                 },
                 titleFormat: {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric'
                 },
-                allDayText: 'Cả ngày',
-                noEventsText: 'Không có sự kiện để hiển thị',
+                allDayText: '{{ __('views.all_day') }}',
+                noEventsText: '{{ __('views.no_events_to_display') }}',
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
@@ -104,7 +104,7 @@
                     });
                     var html = '';
                     if (dayEvents.length === 0) {
-                        html = '<p class="text-center">Không có sự kiện nào trong ngày này.</p>';
+                        html = '<p class="text-center">{{ __('views.no_events_on_this_day') }}</p>';
                     } else {
                         html = '<ul class="list-group">';
                         dayEvents.forEach(function(ev) {
@@ -132,22 +132,22 @@
                                 .title + '</b></div>';
 
                             if (ev.extendedProps && ev.extendedProps.classroom) {
-                                html += '<small class="text-muted">Lớp: ' + ev.extendedProps
+                                html += '<small class="text-muted">{{ __('views.class_label') }}: ' + ev.extendedProps
                                     .classroom + '</small><br>';
                             }
 
                             if (ev.start && ev.end) {
                                 var start = ev.start.substring(11, 16);
                                 var end = ev.end.substring(11, 16);
-                                html += '<small class="text-muted">Thời gian: ' + start +
+                                html += '<small class="text-muted">{{ __('views.time_label') }}: ' + start +
                                     ' - ' + end + '</small>';
                             } else if (ev.start) {
                                 var start = ev.start.substring(11, 16);
-                                html += '<small class="text-muted">Thời gian: ' + start + '</small>';
+                                html += '<small class="text-muted">{{ __('views.time_label') }}: ' + start + '</small>';
                             }
 
                             if (ev.extendedProps && ev.extendedProps.location) {
-                                html += '<br><small class="text-muted">Địa điểm: ' + ev
+                                html += '<br><small class="text-muted">{{ __('views.location_label') }}: ' + ev
                                     .extendedProps.location + '</small>';
                             }
 
@@ -175,37 +175,37 @@
         Livewire.on('showEventModal', (data) => {
             var html = '<div class="event-detail">';
             html += '<h6 class="mb-3">' + data.title + '</h6>';
-            
+
             if (data.classroom) {
-                html += '<p><strong>Lớp:</strong> ' + data.classroom + '</p>';
+                html += '<p><strong>{{ __('views.class_label') }}:</strong> ' + data.classroom + '</p>';
             }
-            
+
             if (data.description) {
-                html += '<p><strong>Mô tả:</strong> ' + data.description + '</p>';
+                html += '<p><strong>{{ __('views.description_label') }}:</strong> ' + data.description + '</p>';
             }
-            
+
             if (data.location) {
-                html += '<p><strong>Địa điểm:</strong> ' + data.location + '</p>';
+                html += '<p><strong>{{ __('views.location_label') }}:</strong> ' + data.location + '</p>';
             }
-            
+
             if (data.teachers) {
-                html += '<p><strong>Giáo viên:</strong> ' + data.teachers + '</p>';
+                html += '<p><strong>{{ __('views.teachers_label') }}:</strong> ' + data.teachers + '</p>';
             }
-            
+
             if (data.studentCount) {
-                html += '<p><strong>Số học sinh:</strong> ' + data.studentCount + '</p>';
+                html += '<p><strong>{{ __('views.student_count_label') }}:</strong> ' + data.studentCount + '</p>';
             }
-            
+
             if (data.points) {
-                html += '<p><strong>Điểm:</strong> ' + data.points + '</p>';
+                html += '<p><strong>{{ __('views.points_label') }}:</strong> ' + data.points + '</p>';
             }
-            
+
             if (data.duration) {
-                html += '<p><strong>Thời gian:</strong> ' + data.duration + ' phút</p>';
+                html += '<p><strong>{{ __('views.duration_label') }}:</strong> ' + data.duration + ' {{ __('views.minutes') }}</p>';
             }
-            
+
             html += '</div>';
-            
+
             document.getElementById('modalEventBody').innerHTML = html;
             var modal = new bootstrap.Modal(document.getElementById('modalEvent'));
             modal.show();
@@ -217,7 +217,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalScheduleLabel">Lịch giảng dạy trong ngày</h5>
+                    <h5 class="modal-title" id="modalScheduleLabel">{{ __('views.teaching_schedule_today') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="modalScheduleBody">
@@ -232,7 +232,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalEventLabel">Chi tiết sự kiện</h5>
+                    <h5 class="modal-title" id="modalEventLabel">{{ __('views.event_details') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="modalEventBody">
