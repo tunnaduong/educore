@@ -601,4 +601,69 @@ return [
         'no_question_bank_created_yet' => 'No question bank has been created',
         'fill_info_and_create_question_bank_ai' => 'Fill in the information and create a Chinese question bank with AI',
     ],
+
+    // Student Report
+    'detailed_student_report' => 'Detailed Student Report',
+    'unsubmitted_assignments' => 'Unsubmitted Assignments',
+    'all_assignments_submitted' => 'All assignments have been submitted',
+    'student_needs_support_message' => 'This student needs additional academic support. Please contact the teacher for appropriate support measures.',
+    'student_is_stable_message' => 'This student is performing well academically. Continue monitoring and encouraging to maintain good results.',
+
+    // Finance Overview
+    'finance_overview' => 'Finance Overview',
+    'finance_overview_description' => 'Track income, expenses, profit and manage student tuition',
+    'manage_expenses_button' => 'Manage Expenses',
+    'time_filter' => 'Time Filter',
+    'from_date' => 'From Date',
+    'to_date' => 'To Date',
+    'data_auto_update_on_date_change' => 'Data will automatically update when date changes',
+    'total_income' => 'Total Income',
+    'income_from_tuition_materials' => 'From tuition and materials',
+    'total_expense' => 'Total Expense',
+    'expense_operations_salary' => 'Operations and salary',
+    'profit' => 'Profit',
+    'loss' => 'Loss',
+    'business_good' => 'Business is good',
+    'need_to_review_costs' => 'Need to review costs',
+
+    // Student Finance Stats
+    'student_filter_title' => 'Student Filter',
+    'tuition_status_label' => 'Tuition Status',
+    'all_statuses' => 'All Statuses',
+    'paid_full' => 'Paid in Full',
+    'partial' => 'Partial Payment',
+    'unpaid' => 'Unpaid',
+    'student_list_and_tuition_status' => 'Student List and Tuition Status',
+    'joined_classes' => 'Joined Classes',
+    'tuition_status' => 'Tuition Status',
+    'try_change_filters' => 'Try changing filters to see different results',
+
+    // Transaction List
+    'recent_transactions' => 'Recent Transactions',
+    'type' => 'Type',
+    'code' => 'Code',
+    'item_category' => 'Category',
+    'amount' => 'Amount',
+    'operator' => 'Operator',
+    'note' => 'Note',
+    'income_label' => 'Income',
+    'expense_label' => 'Expense',
+    'finance_item_tuition' => 'Tuition',
+    'finance_item_material' => 'Material',
+    'finance_item_other' => 'Other',
+    'no_transactions' => 'No transactions',
+    'transactions_will_appear_here' => 'Transactions will appear here',
+    'transaction_list_table' => 'Transaction List Table',
+
+    // Comments
+    'date_filter_section' => 'Date Filter Section',
+    'overview_statistics' => 'Overview Statistics',
+    'student_list_section' => 'Student List Section',
+
+    // Expense Categories
+    'expense_rent' => 'Rent',
+    'expense_utility' => 'Utility',
+    'expense_marketing' => 'Marketing',
+    'expense_certificate' => 'Certificate',
+    'expense_exam' => 'Exam',
 ];

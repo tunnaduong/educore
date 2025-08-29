@@ -586,4 +586,69 @@ return [
         'no_question_bank_created_yet' => 'Chưa có ngân hàng câu hỏi được tạo',
         'fill_info_and_create_question_bank_ai' => 'Hãy điền thông tin và tạo ngân hàng câu hỏi tiếng Trung bằng AI',
     ],
+
+    // Student Report
+    'detailed_student_report' => 'Báo cáo chi tiết học viên',
+    'unsubmitted_assignments' => 'Bài tập chưa nộp',
+    'all_assignments_submitted' => 'Tất cả bài tập đã được nộp',
+    'student_needs_support_message' => 'Học viên này cần được hỗ trợ thêm về mặt học tập. Vui lòng liên hệ với giáo viên để có biện pháp hỗ trợ phù hợp.',
+    'student_is_stable_message' => 'Học viên này đang học tập ổn định. Tiếp tục theo dõi và khuyến khích để duy trì kết quả tốt.',
+
+    // Finance Overview
+    'finance_overview' => 'Tổng quan tài chính',
+    'finance_overview_description' => 'Theo dõi thu chi, lợi nhuận và quản lý học phí học viên',
+    'manage_expenses_button' => 'Quản lý chi phí',
+    'time_filter' => 'Bộ lọc thời gian',
+    'from_date' => 'Từ ngày',
+    'to_date' => 'Đến ngày',
+    'data_auto_update_on_date_change' => 'Dữ liệu sẽ tự động cập nhật khi thay đổi ngày',
+    'total_income' => 'Tổng thu nhập',
+    'income_from_tuition_materials' => 'Từ học phí và tài liệu',
+    'total_expense' => 'Tổng chi phí',
+    'expense_operations_salary' => 'Vận hành và lương',
+    'profit' => 'Lợi nhuận',
+    'loss' => 'Thua lỗ',
+    'business_good' => 'Kinh doanh tốt',
+    'need_to_review_costs' => 'Cần xem xét lại chi phí',
+
+    // Student Finance Stats
+    'student_filter_title' => 'Bộ lọc học viên',
+    'tuition_status_label' => 'Trạng thái học phí',
+    'all_statuses' => 'Tất cả trạng thái',
+    'paid_full' => 'Đã thanh toán đầy đủ',
+    'partial' => 'Thanh toán một phần',
+    'unpaid' => 'Chưa thanh toán',
+    'student_list_and_tuition_status' => 'Danh sách học viên và trạng thái học phí',
+    'joined_classes' => 'Lớp đã tham gia',
+    'tuition_status' => 'Trạng thái học phí',
+    'try_change_filters' => 'Thử thay đổi bộ lọc để xem kết quả khác',
+
+    // Transaction List
+    'recent_transactions' => 'Giao dịch gần đây',
+    'type' => 'Loại',
+    'code' => 'Mã',
+    'item_category' => 'Danh mục',
+    'amount' => 'Số tiền',
+    'operator' => 'Người thực hiện',
+    'note' => 'Ghi chú',
+    'income_label' => 'Thu nhập',
+    'expense_label' => 'Chi phí',
+    'finance_item_tuition' => 'Học phí',
+    'finance_item_material' => 'Tài liệu',
+    'finance_item_other' => 'Khác',
+    'no_transactions' => 'Không có giao dịch nào',
+    'transactions_will_appear_here' => 'Các giao dịch sẽ xuất hiện ở đây',
+    'transaction_list_table' => 'Bảng danh sách giao dịch',
+
+    // Comments
+    'date_filter_section' => 'Bộ lọc ngày tháng',
+    'overview_statistics' => 'Thống kê tổng quan',
+    'student_list_section' => 'Bảng danh sách học viên',
+
+    // Expense Categories
+    'expense_rent' => 'Thuê mướn',
+    'expense_utility' => 'Tiện ích',
+    'expense_marketing' => 'Marketing',
+    'expense_certificate' => 'Chứng chỉ',
+    'expense_exam' => 'Thi cử',
 ];

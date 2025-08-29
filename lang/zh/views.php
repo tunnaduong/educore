@@ -597,4 +597,69 @@ return [
         'no_question_bank_created_yet' => '尚未创建题库',
         'fill_info_and_create_question_bank_ai' => '填写信息并使用AI创建中文题库',
     ],
+
+    // Student Report
+    'detailed_student_report' => '学生详细报告',
+    'unsubmitted_assignments' => '未提交的作业',
+    'all_assignments_submitted' => '所有作业已提交',
+    'student_needs_support_message' => '该学生需要额外的学习支持。请联系老师制定适当的支持措施。',
+    'student_is_stable_message' => '该学生学习表现良好。继续关注和鼓励以保持良好成绩。',
+
+    // Finance Overview
+    'finance_overview' => '财务概览',
+    'finance_overview_description' => '跟踪收入、支出、利润并管理学生学费',
+    'manage_expenses_button' => '管理支出',
+    'time_filter' => '时间筛选',
+    'from_date' => '开始日期',
+    'to_date' => '结束日期',
+    'data_auto_update_on_date_change' => '更改日期时数据将自动更新',
+    'total_income' => '总收入',
+    'income_from_tuition_materials' => '来自学费和教材',
+    'total_expense' => '总支出',
+    'expense_operations_salary' => '运营和薪资',
+    'profit' => '利润',
+    'loss' => '亏损',
+    'business_good' => '经营良好',
+    'need_to_review_costs' => '需要审查成本',
+
+    // Student Finance Stats
+    'student_filter_title' => '学生筛选',
+    'tuition_status_label' => '学费状态',
+    'all_statuses' => '所有状态',
+    'paid_full' => '已全额支付',
+    'partial' => '部分支付',
+    'unpaid' => '未支付',
+    'student_list_and_tuition_status' => '学生名单和学费状态',
+    'joined_classes' => '已加入班级',
+    'tuition_status' => '学费状态',
+    'try_change_filters' => '尝试更改筛选条件以查看不同结果',
+
+    // Transaction List
+    'recent_transactions' => '最近交易',
+    'type' => '类型',
+    'code' => '代码',
+    'item_category' => '类别',
+    'amount' => '金额',
+    'operator' => '操作员',
+    'note' => '备注',
+    'income_label' => '收入',
+    'expense_label' => '支出',
+    'finance_item_tuition' => '学费',
+    'finance_item_material' => '教材',
+    'finance_item_other' => '其他',
+    'no_transactions' => '暂无交易',
+    'transactions_will_appear_here' => '交易将在此处显示',
+    'transaction_list_table' => '交易列表表',
+
+    // Comments
+    'date_filter_section' => '日期筛选部分',
+    'overview_statistics' => '概览统计',
+    'student_list_section' => '学生列表部分',
+
+    // Expense Categories
+    'expense_rent' => '租金',
+    'expense_utility' => '公用事业',
+    'expense_marketing' => '营销',
+    'expense_certificate' => '证书',
+    'expense_exam' => '考试',
 ];
