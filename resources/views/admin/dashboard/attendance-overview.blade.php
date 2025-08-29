@@ -106,6 +106,15 @@
                             $lateRate = 100 - $presentRate - $absentRate;
                         @endphp
 
+                        <div class="mb-3 d-flex justify-content-center">
+                            <canvas id="attendance-status-chart"
+                                width="320" height="180"
+                                data-present="{{ (int) ($status['present'] ?? 0) }}"
+                                data-absent="{{ (int) ($status['absent'] ?? 0) }}"
+                                data-late="{{ (int) ($status['late'] ?? 0) }}"
+                            ></canvas>
+                        </div>
+
                         <div class="mb-3">
                             <div class="d-flex justify-content-between align-items-center mb-1">
                                 <span class="fw-medium">Có mặt</span>
@@ -135,6 +144,66 @@
                                 <div class="progress-bar bg-warning" role="progressbar" style="width: {{ $lateRate }}%"></div>
                             </div>
                         </div>
+                        <script>
+                            (function () {
+                                function ensureChartJsLoaded(callback) {
+                                    if (window.Chart) return callback();
+                                    var s = document.createElement('script');
+                                    s.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+                                    s.onload = callback;
+                                    document.head.appendChild(s);
+                                }
+
+                                function renderAttendanceStatusChart() {
+                                    var canvas = document.getElementById('attendance-status-chart');
+                                    if (!canvas) return;
+
+                                    var ctx = canvas.getContext('2d');
+                                    var present = parseInt(canvas.getAttribute('data-present') || '0', 10);
+                                    var absent = parseInt(canvas.getAttribute('data-absent') || '0', 10);
+                                    var late = parseInt(canvas.getAttribute('data-late') || '0', 10);
+
+                                    // Destroy previous instance if exists
+                                    if (canvas._chartInstance) {
+                                        canvas._chartInstance.destroy();
+                                        canvas._chartInstance = null;
+                                    }
+
+                                    canvas._chartInstance = new Chart(ctx, {
+                                        type: 'doughnut',
+                                        data: {
+                                            labels: ['Có mặt', 'Vắng', 'Trễ'],
+                                            datasets: [{
+                                                data: [present, absent, late],
+                                                backgroundColor: ['#28a745', '#dc3545', '#ffc107'],
+                                                borderWidth: 0
+                                            }]
+                                        },
+                                        options: {
+                                            responsive: true,
+                                            maintainAspectRatio: false,
+                                            cutout: '60%',
+                                            plugins: { legend: { position: 'bottom' } }
+                                        }
+                                    });
+                                }
+
+                                function init() { ensureChartJsLoaded(renderAttendanceStatusChart); }
+
+                                // Initial render
+                                document.addEventListener('DOMContentLoaded', init);
+                                // Livewire v2 hook
+                                document.addEventListener('livewire:load', function () {
+                                    if (window.Livewire) {
+                                        window.Livewire.hook('message.processed', function () { init(); });
+                                    }
+                                });
+                                // Livewire v3 morph hook (fallback)
+                                if (window.Livewire && window.Livewire.hook) {
+                                    window.Livewire.hook('morph.updated', function () { init(); });
+                                }
+                            })();
+                        </script>
                     </div>
                 </div>
             </div>
