@@ -6,7 +6,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-calendar3 mr-2"></i>Lịch giảng dạy
+                        <i class="bi bi-calendar3 mr-2"></i>{{ __('views.teaching_schedule') }}
                     </h4>
                     <p class="text-muted mb-0">{{ __('views.view_teaching_schedule') }}</p>
                 </div>
@@ -70,21 +70,21 @@
             var events = @json($events);
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'listWeek',
-                locale: 'vi',
+                locale: '{{ app()->getLocale() }}',
                 buttonText: {
-                    today: 'Hôm nay',
-                    month: 'Tháng',
-                    week: 'Tuần',
-                    day: 'Ngày',
-                    list: 'Danh sách'
+                    today: '{{ __('general.today') }}',
+                    month: '{{ __('general.month') }}',
+                    week: '{{ __('general.week') }}',
+                    day: '{{ __('general.day') }}',
+                    list: '{{ __('general.list') }}'
                 },
                 titleFormat: {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric'
                 },
-                allDayText: 'Cả ngày',
-                noEventsText: 'Không có sự kiện để hiển thị',
+                allDayText: '{{ __('general.all_day') }}',
+                noEventsText: '{{ __('general.no_events_to_display') }}',
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
@@ -100,7 +100,7 @@
                     });
                     var html = '';
                     if (dayEvents.length === 0) {
-                        html = '<p class="text-center">Không có sự kiện nào trong ngày này.</p>';
+                        html = '<p class="text-center">{{ __('general.no_events_on_day') }}</p>';
                     } else {
                         html = '<ul class="list-group">';
                         dayEvents.forEach(function(ev) {
@@ -132,21 +132,21 @@
                                 .title + '</b></div>';
 
                             if (ev.extendedProps && ev.extendedProps.classroom) {
-                                html += '<small class="text-muted">Lớp: ' + ev.extendedProps
+                                html += '<small class="text-muted">{{ __('general.class') }}: ' + ev.extendedProps
                                     .classroom + '</small><br>';
                             }
 
                             if (ev.start && ev.end && !ev.allDay) {
                                 var start = ev.start.substring(11, 16);
                                 var end = ev.end.substring(11, 16);
-                                html += '<small class="text-muted">Thời gian: ' + start +
+                                html += '<small class="text-muted">{{ __('general.time') }}: ' + start +
                                     ' - ' + end + '</small>';
                             } else if (ev.allDay) {
-                                html += '<small class="text-muted">Cả ngày</small>';
+                                html += '<small class="text-muted">{{ __('general.all_day') }}</small>';
                             }
 
                             if (ev.extendedProps && ev.extendedProps.location) {
-                                html += '<br><small class="text-muted">Địa điểm: ' + ev
+                                html += '<br><small class="text-muted">{{ __('general.location') }}: ' + ev
                                     .extendedProps.location + '</small>';
                             }
 
@@ -176,7 +176,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalScheduleLabel">Lịch giảng dạy trong ngày</h5>
+                    <h5 class="modal-title" id="modalScheduleLabel">{{ __('views.schedule_for_day') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="modalScheduleBody">
@@ -191,7 +191,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalEventLabel">Chi tiết sự kiện</h5>
+                    <h5 class="modal-title" id="modalEventLabel">{{ __('views.event_details') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="modalEventBody">

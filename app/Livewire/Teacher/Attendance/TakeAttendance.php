@@ -12,8 +12,6 @@ class TakeAttendance extends Component
 {
     public Classroom $classroom;
 
-    public $selectedDate;
-
     public $attendanceData = [];
 
     public $showReasonModal = false;
@@ -29,7 +27,6 @@ class TakeAttendance extends Component
     protected function rules()
     {
         return [
-            'selectedDate' => 'required|date',
             'absenceReason' => 'nullable|string|max:255',
         ];
     }
@@ -37,8 +34,6 @@ class TakeAttendance extends Component
     protected function messages()
     {
         return [
-            'selectedDate.required' => 'Vui lòng chọn ngày điểm danh.',
-            'selectedDate.date' => 'Ngày không đúng định dạng.',
             'absenceReason.max' => 'Lý do nghỉ không được quá 255 ký tự.',
         ];
     }
@@ -58,14 +53,13 @@ class TakeAttendance extends Component
         }
 
         $this->classroom = $classroom;
-        $this->selectedDate = now()->format('Y-m-d');
         $this->loadAttendanceData();
         $this->checkAttendancePermission();
     }
 
     public function checkAttendancePermission()
     {
-        $result = Attendance::canTakeAttendance($this->classroom, $this->selectedDate);
+        $result = Attendance::canTakeAttendance($this->classroom, now()->format('Y-m-d'));
         $this->canTakeAttendance = $result['can'];
         $this->attendanceMessage = $result['message'];
     }
@@ -75,9 +69,9 @@ class TakeAttendance extends Component
         // Lấy danh sách học viên trong lớp
         $students = $this->classroom->students()->orderBy('name')->get();
 
-        // Lấy dữ liệu điểm danh đã có cho ngày này
+        // Lấy dữ liệu điểm danh đã có cho ngày hiện tại
         $existingAttendance = Attendance::forClass($this->classroom->id)
-            ->forDate($this->selectedDate)
+            ->forDate(now()->format('Y-m-d'))
             ->get()
             ->keyBy('student_id');
 
@@ -98,12 +92,6 @@ class TakeAttendance extends Component
                 ];
             }
         }
-    }
-
-    public function updatedSelectedDate()
-    {
-        $this->loadAttendanceData();
-        $this->checkAttendancePermission();
     }
 
     public function toggleAttendance($studentId)
@@ -162,14 +150,13 @@ class TakeAttendance extends Component
         }
 
         $this->dispatch('show-loading');
-        $this->validate();
 
         foreach ($this->attendanceData as $studentId => $data) {
             $attendance = Attendance::updateOrCreate(
                 [
                     'class_id' => $this->classroom->id,
                     'student_id' => $studentId,
-                    'date' => $this->selectedDate,
+                    'date' => now()->format('Y-m-d'),
                 ],
                 [
                     'present' => $data['present'],
