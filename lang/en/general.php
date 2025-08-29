@@ -970,5 +970,5 @@ return [
     'type_essay' => 'Essay',
     'type_image' => 'Upload image',
     'type_audio' => 'Record audio',
-    'type_video' => 'Record video'
+    'type_video' => 'Record video',
 ];
