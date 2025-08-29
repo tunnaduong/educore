@@ -35,6 +35,7 @@ return [
     'submission_list' => 'Danh sách bài nộp',
     'view_submission' => 'Xem bài nộp',
     'save' => 'Lưu',
+    'update' => 'Cập nhật',
     'close' => 'Đóng',
     'assignment_title' => 'Tiêu đề bài tập',
     'class' => 'Lớp',

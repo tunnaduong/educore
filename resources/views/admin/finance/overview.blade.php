@@ -4,27 +4,27 @@
     <div class="card shadow-sm mb-4">
         <div class="card-header bg-light">
             <h6 class="mb-0 text-primary">
-                <i class="bi bi-funnel-fill mr-2"></i>Bộ lọc thời gian
+                <i class="bi bi-funnel-fill mr-2"></i>{{ __('views.time_filter') }}
             </h6>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-3">
                     <label class="form-label fw-semibold">
-                        <i class="bi bi-calendar-event text-success mr-1"></i>Từ ngày
+                        <i class="bi bi-calendar-event text-success mr-1"></i>{{ __('views.from_date') }}
                     </label>
                     <input type="date" class="form-control form-control-lg" wire:model.lazy="fromDate">
                 </div>
                 <div class="col-md-3">
                     <label class="form-label fw-semibold">
-                        <i class="bi bi-calendar-event text-danger mr-1"></i>Đến ngày
+                        <i class="bi bi-calendar-event text-danger mr-1"></i>{{ __('views.to_date') }}
                     </label>
                     <input type="date" class="form-control form-control-lg" wire:model.lazy="toDate">
                 </div>
                 <div class="col-md-12">
                     <div class="text-muted small">
                         <i class="bi bi-info-circle mr-1"></i>
-                        Dữ liệu sẽ được cập nhật tự động khi thay đổi ngày
+                        {{ __('views.data_auto_update_on_date_change') }}
                     </div>
                 </div>
             </div>
@@ -38,7 +38,7 @@
                 <div class="card-body text-white p-4">
                     <div class="row align-items-center">
                         <div class="col">
-                            <div class="small fw-bold text-white-50 text-uppercase mb-1">Tổng thu</div>
+                            <div class="small fw-bold text-white-50 text-uppercase mb-1">{{ __('views.total_income') }}</div>
                             <div class="h4 mb-0 text-white">{{ number_format($totalIncome) }}₫</div>
                         </div>
                         <div class="col-auto">
@@ -48,7 +48,7 @@
                 </div>
                 <div class="card-footer bg-opacity-10 border-0 py-2">
                     <div class="small text-white-50">
-                        <i class="bi bi-arrow-up mr-1"></i>Doanh thu từ học phí, tài liệu
+                        <i class="bi bi-arrow-up mr-1"></i>{{ __('views.income_from_tuition_materials') }}
                     </div>
                 </div>
             </div>
@@ -59,7 +59,7 @@
                 <div class="card-body text-white p-4">
                     <div class="row align-items-center">
                         <div class="col">
-                            <div class="small fw-bold text-white-50 text-uppercase mb-1">Tổng chi</div>
+                            <div class="small fw-bold text-white-50 text-uppercase mb-1">{{ __('views.total_expense') }}</div>
                             <div class="h4 mb-0 text-white">{{ number_format($totalExpense) }}₫</div>
                         </div>
                         <div class="col-auto">
@@ -69,7 +69,7 @@
                 </div>
                 <div class="card-footer bg-opacity-10 border-0 py-2">
                     <div class="small text-white-50">
-                        <i class="bi bi-arrow-down mr-1"></i>Chi phí vận hành, lương
+                        <i class="bi bi-arrow-down mr-1"></i>{{ __('views.expense_operations_salary') }}
                     </div>
                 </div>
             </div>
@@ -82,7 +82,7 @@
                     <div class="row align-items-center">
                         <div class="col">
                             <div class="small fw-bold text-white-50 text-uppercase mb-1">
-                                {{ $profit >= 0 ? 'Lợi nhuận' : 'Thua lỗ' }}
+                                {{ $profit >= 0 ? __('views.profit') : __('views.loss') }}
                             </div>
                             <div class="h4 mb-0 text-white">{{ number_format(abs($profit)) }}₫</div>
                         </div>
@@ -95,7 +95,7 @@
                 <div class="card-footer bg-opacity-10 border-0 py-2">
                     <div class="small text-white-50">
                         <i class="bi {{ $profit >= 0 ? 'bi-trophy' : 'bi-exclamation-triangle' }} mr-1"></i>
-                        {{ $profit >= 0 ? 'Tình hình kinh doanh tốt' : 'Cần xem xét chi phí' }}
+                        {{ $profit >= 0 ? __('views.business_good') : __('views.need_to_review_costs') }}
                     </div>
                 </div>
             </div>

@@ -1,10 +1,10 @@
 <div class="container-fluid">
     @include('components.language')
-    <!-- Bảng danh sách giao dịch -->
+    <!-- {{ __('views.transaction_list_table') }} -->
     <div class="card shadow-sm">
         <div class="card-header bg-gradient-primary text-white">
             <h6 class="mb-0">
-                <i class="bi bi-list-ul mr-2"></i>Lịch sử giao dịch gần đây
+                <i class="bi bi-list-ul mr-2"></i>{{ __('views.recent_transactions') }}
             </h6>
         </div>
         <div class="table-responsive">
@@ -13,25 +13,25 @@
                     <tr>
                         <th class="text-center" width="8%">#</th>
                         <th width="12%">
-                            <i class="bi bi-arrow-down-up mr-1"></i>Loại
+                            <i class="bi bi-arrow-down-up mr-1"></i>{{ __('views.type') }}
                         </th>
                         <th width="12%">
-                            <i class="bi bi-person-badge mr-1"></i>Mã
+                            <i class="bi bi-person-badge mr-1"></i>{{ __('views.code') }}
                         </th>
                         <th width="18%">
-                            <i class="bi bi-tag-fill mr-1"></i>Khoản mục
+                            <i class="bi bi-tag-fill mr-1"></i>{{ __('views.item_category') }}
                         </th>
                         <th width="15%">
-                            <i class="bi bi-cash-stack mr-1"></i>Số tiền
+                            <i class="bi bi-cash-stack mr-1"></i>{{ __('views.amount') }}
                         </th>
                         <th width="15%">
-                            <i class="bi bi-calendar-event mr-1"></i>Ngày tạo
+                            <i class="bi bi-calendar-event mr-1"></i>{{ __('general.created_date') }}
                         </th>
                         <th width="12%">
-                            <i class="bi bi-person-fill mr-1"></i>Người thực hiện
+                            <i class="bi bi-person-fill mr-1"></i>{{ __('views.operator') }}
                         </th>
                         <th width="8%">
-                            <i class="bi bi-chat-left-text mr-1"></i>Ghi chú
+                            <i class="bi bi-chat-left-text mr-1"></i>{{ __('views.note') }}
                         </th>
                     </tr>
                 </thead>
@@ -42,11 +42,11 @@
                             <td>
                                 @if ($tran['type'] === 'income')
                                     <span class="badge bg-success bg-opacity-90 shadow-sm">
-                                        <i class="bi bi-arrow-down-circle-fill mr-1"></i>Thu
+                                        <i class="bi bi-arrow-down-circle-fill mr-1"></i>{{ __('views.income_label') }}
                                     </span>
                                 @else
                                     <span class="badge bg-danger bg-opacity-90 shadow-sm">
-                                        <i class="bi bi-arrow-up-circle-fill mr-1"></i>Chi
+                                        <i class="bi bi-arrow-up-circle-fill mr-1"></i>{{ __('views.expense_label') }}
                                     </span>
                                 @endif
                             </td>
@@ -57,17 +57,17 @@
                                 @php
                                     $typeMap = [
                                         'tuition' => [
-                                            'label' => 'Học phí',
+                                            'label' => __('views.finance_item_tuition'),
                                             'icon' => 'bi-mortarboard-fill',
                                             'color' => 'primary',
                                         ],
                                         'material' => [
-                                            'label' => 'Tài liệu',
+                                            'label' => __('views.finance_item_material'),
                                             'icon' => 'bi-book-fill',
                                             'color' => 'info',
                                         ],
                                         'other' => [
-                                            'label' => 'Khác',
+                                            'label' => __('views.finance_item_other'),
                                             'icon' => 'bi-three-dots',
                                             'color' => 'secondary',
                                         ],
@@ -110,8 +110,8 @@
                         <tr>
                             <td colspan="8" class="text-center py-5">
                                 <i class="bi bi-journal-x text-muted" style="font-size: 3rem;"></i>
-                                <div class="mt-2 text-muted fs-5">Chưa có giao dịch nào</div>
-                                <small class="text-muted">Các giao dịch thu chi sẽ hiển thị tại đây</small>
+                                <div class="mt-2 text-muted fs-5">{{ __('views.no_transactions') }}</div>
+                                <small class="text-muted">{{ __('views.transactions_will_appear_here') }}</small>
                             </td>
                         </tr>
                     @endforelse

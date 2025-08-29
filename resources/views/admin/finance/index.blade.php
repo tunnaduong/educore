@@ -1,18 +1,16 @@
-<x-layouts.dash-admin active="finance" title="Thống kê thu chi">
+<x-layouts.dash-admin active="finance" title="{{ __('views.finance_overview') }}">
     @include('components.language')
     <div class="container-fluid">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h4 class="mb-0 text-success fs-4">
-                    <i class="bi bi-cash-coin mr-2"></i>Thống kê thu chi
+                    <i class="bi bi-cash-coin mr-2"></i>{{ __('views.finance_overview') }}
                 </h4>
-                <p class="text-muted mb-0">Quản lý, tổng hợp và theo dõi các khoản thu (học phí, tài liệu...) và chi
-                    (lương,
-                    vận hành...) cho trung tâm.</p>
+                <p class="text-muted mb-0">{{ __('views.finance_overview_description') }}</p>
             </div>
             <div>
                 <a href="{{ route('admin.finance.expenses') }}" class="btn btn-danger btn-lg shadow-sm">
-                    <i class="bi bi-wallet2 mr-2"></i>Quản lý chi tiêu
+                    <i class="bi bi-wallet2 mr-2"></i>{{ __('views.manage_expenses_button') }}
                 </a>
             </div>
         </div>

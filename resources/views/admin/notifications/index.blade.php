@@ -4,19 +4,19 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-bell mr-2"></i>Thông báo & Nhắc lịch
+                <i class="bi bi-bell mr-2"></i>{{ __('general.notifications_reminders') }}
             </h4>
             <p class="text-muted mb-0">{{ __('views.create_and_manage_notifications') }}</p>
         </div>
         <div class="d-flex">
             <button wire:click="markAllAsRead" class="btn btn-outline-secondary mr-2">
-                <i class="bi bi-check-all mr-md-2"></i><span class="d-none d-md-inline">Đánh dấu tất cả đã đọc</span>
+                <i class="bi bi-check-all mr-md-2"></i><span class="d-none d-md-inline">{{ __('views.mark_all_as_read') }}</span>
             </button>
             <button wire:click="deleteExpired" class="btn btn-outline-warning mr-2">
-                <i class="bi bi-trash mr-md-2"></i><span class="d-none d-md-inline">Xóa hết hạn</span>
+                <i class="bi bi-trash mr-md-2"></i><span class="d-none d-md-inline">{{ __('views.delete_expired') }}</span>
             </button>
             <button wire:click="create" class="btn btn-primary">
-                <i class="bi bi-plus-circle mr-md-2"></i><span class="d-none d-md-inline">Tạo thông báo mới</span>
+                <i class="bi bi-plus-circle mr-md-2"></i><span class="d-none d-md-inline">{{ __('views.create_new_notification') }}</span>
             </button>
         </div>
     </div>
@@ -28,7 +28,7 @@
                 <div class="col-md-4">
                     <label class="form-label">{{ __('views.search') }}</label>
                     <input wire:model.live="search" type="text" class="form-control"
-                        placeholder="Tìm theo tiêu đề hoặc nội dung...">
+                        placeholder="{{ __('views.search_by_title_or_content') }}">
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">{{ __('views.notification_type') }}</label>
@@ -51,7 +51,7 @@
                 </div>
                 <div class="col-md-2 d-flex align-items-end">
                     <button wire:click="$set('search', '')" class="btn btn-outline-secondary w-100">
-                        <i class="bi bi-arrow-clockwise mr-1"></i>Reset
+                        <i class="bi bi-arrow-clockwise mr-1"></i>{{ __('general.reset') }}
                     </button>
                 </div>
             </div>
@@ -151,26 +151,26 @@
                                         <div class="btn-group" role="group">
                                             @if (!$notification->is_read)
                                                 <button wire:click="toggleRead({{ $notification->id }})"
-                                                    class="btn btn-sm btn-outline-success" title="Đánh dấu đã đọc">
+                                                    class="btn btn-sm btn-outline-success" title="{{ __('views.mark_as_read') }}">
                                                     <i class="bi bi-check"></i>
                                                 </button>
                                             @endif
                                             <button wire:click="edit({{ $notification->id }})"
-                                                class="btn btn-sm btn-outline-primary" title="Chỉnh sửa">
+                                                class="btn btn-sm btn-outline-primary" title="{{ __('general.edit') }}">
                                                 <i class="bi bi-pencil"></i>
                                             </button>
                                             <button wire:click="duplicate({{ $notification->id }})"
-                                                class="btn btn-sm btn-outline-info" title="Sao chép">
+                                                class="btn btn-sm btn-outline-info" title="{{ __('views.duplicate') }}">
                                                 <i class="bi bi-files"></i>
                                             </button>
                                             @if ($notification->scheduled_at && $notification->scheduled_at->isFuture())
                                                 <button wire:click="sendNow({{ $notification->id }})"
-                                                    class="btn btn-sm btn-outline-success" title="Gửi ngay">
+                                                    class="btn btn-sm btn-outline-success" title="{{ __('views.send_now') }}">
                                                     <i class="bi bi-send"></i>
                                                 </button>
                                             @endif
                                             <button wire:click="delete({{ $notification->id }})"
-                                                class="btn btn-sm btn-outline-danger" title="Xóa" onclick="return">
+                                                class="btn btn-sm btn-outline-danger" title="{{ __('general.delete') }}" onclick="return">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </div>
@@ -189,8 +189,7 @@
                     <h5 class="mt-3 text-muted">{{ __('views.no_notifications_found') }}</h5>
                     <p class="text-muted">{{ __('views.create_first_notification') }}</p>
                     <button wire:click="create" class="btn btn-primary">
-                        <i class="bi bi-plus-circle mr-2"></i><span class="d-none d-md-inline">Tạo thông báo
-                            mới</span>
+                        <i class="bi bi-plus-circle mr-2"></i><span class="d-none d-md-inline">{{ __('views.create_new_notification') }}</span>
                     </button>
                 </div>
             @endif
@@ -212,34 +211,34 @@
                         <div class="modal-body">
                             <div class="row g-3">
                                 <div class="col-12">
-                                    <label class="form-label">Tiêu đề <span class="text-danger">*</span></label>
+                                    <label class="form-label">{{ __('views.title_label') }} <span class="text-danger">*</span></label>
                                     <input wire:model="title" type="text"
                                         class="form-control @error('title') is-invalid @enderror"
-                                        placeholder="Nhập tiêu đề thông báo">
+                                        placeholder="{{ __('views.enter_notification_title') }}">
                                     @error('title')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 <div class="col-12">
-                                    <label class="form-label">Nội dung <span class="text-danger">*</span></label>
+                                    <label class="form-label">{{ __('views.content_label') }} <span class="text-danger">*</span></label>
                                     <textarea wire:model="message" rows="4" class="form-control @error('message') is-invalid @enderror"
-                                        placeholder="Nhập nội dung thông báo"></textarea>
+                                        placeholder="{{ __('views.enter_notification_content') }}"></textarea>
                                     @error('message')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="form-label">Loại thông báo <span
+                                    <label class="form-label">{{ __('views.notification_type') }} <span
                                             class="text-danger">*</span></label>
                                     <select wire:model="type"
                                         class="form-control @error('type') is-invalid @enderror">
-                                        <option value="info">Thông tin</option>
-                                        <option value="warning">Cảnh báo</option>
-                                        <option value="success">Thành công</option>
-                                        <option value="danger">Nguy hiểm</option>
-                                        <option value="reminder">Nhắc nhở</option>
+                                        <option value="info">{{ __('views.info') }}</option>
+                                        <option value="warning">{{ __('views.warning') }}</option>
+                                        <option value="success">{{ __('views.success') }}</option>
+                                        <option value="danger">{{ __('views.danger') }}</option>
+                                        <option value="reminder">{{ __('views.reminder') }}</option>
                                     </select>
                                     @error('type')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -269,9 +268,9 @@
                                 @endif
 
                                 <div class="col-md-6">
-                                    <label class="form-label">Lớp học</label>
+                                    <label class="form-label">{{ __('general.classroom') }}</label>
                                     <select wire:model="class_id" class="form-control">
-                                        <option value="">Chọn lớp học</option>
+                                        <option value="">{{ __('views.select_class_placeholder') }}</option>
                                         @foreach ($classrooms as $classroom)
                                             <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
                                         @endforeach
@@ -279,23 +278,23 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="form-label">Lịch gửi</label>
+                                    <label class="form-label">{{ __('views.schedule_label') }}</label>
                                     <input wire:model="scheduled_at" type="datetime-local"
                                         class="form-control @error('scheduled_at') is-invalid @enderror">
                                     @error('scheduled_at')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
-                                    <small class="text-muted">Để trống để gửi ngay</small>
+                                    <small class="text-muted">{{ __('views.leave_empty_to_send_now') }}</small>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="form-label">Hết hạn</label>
+                                    <label class="form-label">{{ __('views.expire_label') }}</label>
                                     <input wire:model="expires_at" type="datetime-local"
                                         class="form-control @error('expires_at') is-invalid @enderror">
                                     @error('expires_at')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
-                                    <small class="text-muted">Để trống để không hết hạn</small>
+                                    <small class="text-muted">{{ __('views.leave_empty_to_no_expire') }}</small>
                                 </div>
                             </div>
                         </div>
@@ -303,8 +302,7 @@
                             <button type="button" class="btn btn-secondary"
                                 wire:click="$set('showCreateModal', false)">{{ __('views.cancel') }}</button>
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-check-circle mr-2"></i><span class="d-none d-md-inline">Tạo thông
-                                    báo</span>
+                                <i class="bi bi-check-circle mr-2"></i><span class="d-none d-md-inline">{{ __('views.create_notification_button') }}</span>
                             </button>
                         </div>
                     </form>
@@ -327,34 +325,34 @@
                         <div class="modal-body">
                             <div class="row g-3">
                                 <div class="col-12">
-                                    <label class="form-label">Tiêu đề <span class="text-danger">*</span></label>
+                                    <label class="form-label">{{ __('views.title_label') }} <span class="text-danger">*</span></label>
                                     <input wire:model="title" type="text"
                                         class="form-control @error('title') is-invalid @enderror"
-                                        placeholder="Nhập tiêu đề thông báo">
+                                        placeholder="{{ __('views.enter_notification_title') }}">
                                     @error('title')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 <div class="col-12">
-                                    <label class="form-label">Nội dung <span class="text-danger">*</span></label>
+                                    <label class="form-label">{{ __('views.content_label') }} <span class="text-danger">*</span></label>
                                     <textarea wire:model="message" rows="4" class="form-control @error('message') is-invalid @enderror"
-                                        placeholder="Nhập nội dung thông báo"></textarea>
+                                        placeholder="{{ __('views.enter_notification_content') }}"></textarea>
                                     @error('message')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="form-label">Loại thông báo <span
+                                    <label class="form-label">{{ __('views.notification_type') }} <span
                                             class="text-danger">*</span></label>
                                     <select wire:model="type"
                                         class="form-control @error('type') is-invalid @enderror">
-                                        <option value="info">Thông tin</option>
-                                        <option value="warning">Cảnh báo</option>
-                                        <option value="success">Thành công</option>
-                                        <option value="danger">Nguy hiểm</option>
-                                        <option value="reminder">Nhắc nhở</option>
+                                        <option value="info">{{ __('views.info') }}</option>
+                                        <option value="warning">{{ __('views.warning') }}</option>
+                                        <option value="success">{{ __('views.success') }}</option>
+                                        <option value="danger">{{ __('views.danger') }}</option>
+                                        <option value="reminder">{{ __('views.reminder') }}</option>
                                     </select>
                                     @error('type')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -362,9 +360,9 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="form-label">Học viên</label>
+                                    <label class="form-label">{{ __('views.student') }}</label>
                                     <select wire:model="user_id" class="form-control">
-                                        <option value="">Chọn học viên</option>
+                                        <option value="">{{ __('views.choose_student') }}</option>
                                         @foreach ($users as $user)
                                             <option value="{{ $user->id }}">{{ $user->name }}</option>
                                         @endforeach
@@ -372,9 +370,9 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="form-label">Lớp học</label>
+                                    <label class="form-label">{{ __('general.classroom') }}</label>
                                     <select wire:model="class_id" class="form-control">
-                                        <option value="">Chọn lớp học</option>
+                                        <option value="">{{ __('views.select_class_placeholder') }}</option>
                                         @foreach ($classrooms as $classroom)
                                             <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
                                         @endforeach
@@ -382,23 +380,23 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="form-label">Lịch gửi</label>
+                                    <label class="form-label">{{ __('views.schedule_label') }}</label>
                                     <input wire:model="scheduled_at" type="datetime-local"
                                         class="form-control @error('scheduled_at') is-invalid @enderror">
                                     @error('scheduled_at')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
-                                    <small class="text-muted">Để trống để gửi ngay</small>
+                                    <small class="text-muted">{{ __('views.leave_empty_to_send_now') }}</small>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="form-label">Hết hạn</label>
+                                    <label class="form-label">{{ __('views.expire_label') }}</label>
                                     <input wire:model="expires_at" type="datetime-local"
                                         class="form-control @error('expires_at') is-invalid @enderror">
                                     @error('expires_at')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
-                                    <small class="text-muted">Để trống để không hết hạn</small>
+                                    <small class="text-muted">{{ __('views.leave_empty_to_no_expire') }}</small>
                                 </div>
                             </div>
                         </div>
@@ -406,8 +404,7 @@
                             <button type="button" class="btn btn-secondary"
                                 wire:click="$set('showEditModal', false)">{{ __('views.cancel') }}</button>
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-check-circle mr-2"></i><span class="d-none d-md-inline">Cập
-                                    nhật</span>
+                                <i class="bi bi-check-circle mr-2"></i><span class="d-none d-md-inline">{{ __('general.update') }}</span>
                             </button>
                         </div>
                     </form>
@@ -439,7 +436,7 @@
                         <button type="button" class="btn btn-secondary"
                             wire:click="$set('showDeleteModal', false)">{{ __('views.cancel') }}</button>
                         <button type="button" class="btn btn-danger" wire:click="confirmDelete">
-                            <i class="bi bi-trash mr-2"></i><span class="d-none d-md-inline">Xóa</span>
+                            <i class="bi bi-trash mr-2"></i><span class="d-none d-md-inline">{{ __('general.delete') }}</span>
                         </button>
                     </div>
                 </div>
@@ -472,11 +469,11 @@
         .modal-dialog {
             max-height: 90vh;
         }
-        
+
         .modal-content {
             max-height: 90vh;
         }
-        
+
         .modal-body {
             max-height: 60vh;
             overflow-y: auto;
