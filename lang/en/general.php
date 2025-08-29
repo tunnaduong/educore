@@ -897,5 +897,11 @@ return [
     'top_5_excellent_students' => 'Top 5 Excellent Students',
     'no_student_data' => 'No student data',
     'quick_actions' => 'Quick Actions',
-    'attendance_by_class' => 'Attendance by Class',
-];
+         'attendance_by_class' => 'Attendance by Class',
+     'not_available' => 'Not Available',
+     'attendance_overview' => 'Attendance Overview',
+     'manage_track_attendance' => 'Manage and track attendance',
+     'classes_teaching' => 'Classes Teaching',
+     'attendance_sessions' => 'Attendance Sessions',
+     'my_classes' => 'My Classes',
+ ];

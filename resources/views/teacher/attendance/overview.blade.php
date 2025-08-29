@@ -265,16 +265,16 @@
                                                 </td>
                                                 <td>
                                                     <div class="fw-medium">
-                                                        {{ $attendance->classroom?->name ?? 'N/A' }}</div>
+                                                        {{ $attendance->classroom?->name ?? __('general.not_available') }}</div>
                                                     <small
-                                                        class="text-muted">{{ $attendance->classroom?->level ?? 'N/A' }}</small>
+                                                        class="text-muted">{{ $attendance->classroom?->level ?? __('general.not_available') }}</small>
                                                 </td>
                                                 <td>
                                                     <div class="fw-medium">
-                                                        {{ $attendance->student?->user?->name ?? 'N/A' }}
+                                                        {{ $attendance->student?->user?->name ?? __('general.not_available') }}
                                                     </div>
                                                     <small
-                                                        class="text-muted">{{ $attendance->student?->user?->email ?? 'N/A' }}</small>
+                                                        class="text-muted">{{ $attendance->student?->user?->email ?? __('general.not_available') }}</small>
                                                 </td>
                                                 <td class="text-center">
                                                     @if ($attendance->present)
