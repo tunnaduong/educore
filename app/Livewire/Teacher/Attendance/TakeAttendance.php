@@ -34,7 +34,7 @@ class TakeAttendance extends Component
     protected function messages()
     {
         return [
-            'absenceReason.max' => 'Lý do nghỉ không được quá 255 ký tự.',
+            'absenceReason.max' => __('general.absence_reason_max_length'),
         ];
     }
 
@@ -49,7 +49,7 @@ class TakeAttendance extends Component
             ->exists();
 
         if (! $hasPermission) {
-            abort(403, 'Bạn không có quyền điểm danh lớp học này.');
+            abort(403, __('general.no_permission_attendance_class'));
         }
 
         $this->classroom = $classroom;
@@ -165,7 +165,7 @@ class TakeAttendance extends Component
             );
         }
 
-        session()->flash('message', 'Đã lưu điểm danh thành công!');
+        session()->flash('message', __('general.attendance_saved_successfully'));
         $this->loadAttendanceData();
     }
 

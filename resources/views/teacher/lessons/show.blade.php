@@ -42,16 +42,16 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-eye mr-2"></i>Chi tiết bài học
+                        <i class="bi bi-eye mr-2"></i>{{ __('general.lesson_details') }}
                     </h4>
                     <p class="text-muted mb-0">{{ __('general.lesson_detail_description') }}</p>
                 </div>
                 <div>
                     <a href="{{ route('teacher.lessons.edit', $lesson->id) }}" class="btn btn-warning mr-2">
-                        <i class="bi bi-pencil mr-1"></i>Chỉnh sửa
+                        <i class="bi bi-pencil mr-1"></i>{{ __('general.edit') }}
                     </a>
                     <a href="{{ route('teacher.lessons.index') }}" class="btn btn-outline-secondary">
-                        <i class="bi bi-arrow-left mr-1"></i>Quay lại
+                        <i class="bi bi-arrow-left mr-1"></i>{{ __('general.back') }}
                     </a>
                 </div>
             </div>
@@ -69,11 +69,11 @@
                     <div class="card-body">
                         <div class="row g-3">
                             <div class="col-md-8">
-                                <label class="form-label fw-bold">Tiêu đề</label>
+                                <label class="form-label fw-bold">{{ __('general.title') }}</label>
                                 <p class="mb-0">{{ $lesson->title }}</p>
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label fw-bold">Số bài học</label>
+                                <label class="form-label fw-bold">{{ __('general.lesson_number') }}</label>
                                 <p class="mb-0">
                                     @if ($lesson->number)
                                         <span class="badge bg-info">{{ $lesson->number }}</span>
@@ -83,18 +83,18 @@
                                 </p>
                             </div>
                             <div class="col-12">
-                                <label class="form-label fw-bold">Lớp học</label>
+                                <label class="form-label fw-bold">{{ __('general.class') }}</label>
                                 <p class="mb-0">
-                                    <span class="badge bg-primary">{{ $lesson->classroom->name ?? 'N/A' }}</span>
+                                    <span class="badge bg-primary">{{ $lesson->classroom->name ?? __('general.not_available') }}</span>
                                 </p>
                             </div>
                             <div class="col-12">
-                                <label class="form-label fw-bold">Mô tả</label>
+                                <label class="form-label fw-bold">{{ __('general.description') }}</label>
                                 <div class="mb-0">
                                     @if ($lesson->description)
                                         <div class="description-content">{!! $lesson->description !!}</div>
                                     @else
-                                        <span class="text-muted">Không có mô tả</span>
+                                        <span class="text-muted">{{ __('general.no_description') }}</span>
                                     @endif
                                 </div>
                             </div>
@@ -107,11 +107,11 @@
                     <div class="card shadow-sm mb-4">
                         <div class="card-header bg-light">
                             <h6 class="mb-0">
-                                <i class="bi bi-play-circle mr-2"></i>Video bài học
+                                <i class="bi bi-play-circle mr-2"></i>{{ __('general.lesson_video') }}
                             </h6>
                         </div>
                         <div class="card-body">
-                            <x-video-embed :url="$lesson->video" title="Video bài học" />
+                            <x-video-embed :url="$lesson->video" title="{{ __('general.lesson_video') }}" />
                         </div>
                     </div>
                 @endif
@@ -123,7 +123,7 @@
                     <div class="card shadow-sm mb-4">
                         <div class="card-header bg-light">
                             <h6 class="mb-0">
-                                <i class="bi bi-file-earmark mr-2"></i>Tài liệu đính kèm
+                                <i class="bi bi-file-earmark mr-2"></i>{{ __('general.attachment') }}
                             </h6>
                         </div>
                         <div class="card-body">
@@ -132,7 +132,7 @@
                                 <div class="flex-grow-1">
                                     <h6 class="mb-1" style="word-break: break-word;">
                                         {{ basename($lesson->attachment) }}</h6>
-                                    <small class="text-muted">Tài liệu bài học</small>
+                                    <small class="text-muted">{{ __('general.lesson_document') }}</small>
                                 </div>
                             </div>
                             <div class="mt-3 d-flex gap-2">
@@ -157,17 +157,17 @@
                 <div class="card shadow-sm">
                     <div class="card-header bg-light">
                         <h6 class="mb-0">
-                            <i class="bi bi-info-circle mr-2"></i>Thông tin khác
+                            <i class="bi bi-info-circle mr-2"></i>{{ __('general.other_info') }}
                         </h6>
                     </div>
                     <div class="card-body">
                         <div class="row g-3">
                             <div class="col-12">
-                                <label class="form-label fw-bold">Ngày tạo</label>
+                                <label class="form-label fw-bold">{{ __('general.created_date') }}</label>
                                 <p class="mb-0">{{ $lesson->created_at?->format('d/m/Y H:i') }}</p>
                             </div>
                             <div class="col-12">
-                                <label class="form-label fw-bold">Cập nhật lần cuối</label>
+                                <label class="form-label fw-bold">{{ __('general.last_updated') }}</label>
                                 <p class="mb-0">{{ $lesson->updated_at?->format('d/m/Y H:i') }}</p>
                             </div>
                         </div>
@@ -233,7 +233,7 @@
     <div id="previewModal" class="modal-custom">
         <div class="modal-content-custom">
             <div class="modal-header-custom">
-                <h5 class="modal-title">Xem trước tài liệu</h5>
+                <h5 class="modal-title">{{ __('general.preview_document_title') }}</h5>
                 <button type="button" class="close-custom" onclick="closePreviewModal()">&times;</button>
             </div>
             <div class="modal-body-custom">
@@ -242,14 +242,13 @@
                         <iframe src="{{ $fileUrl }}" width="100%" height="600px"
                             style="border:1px solid #ccc;"></iframe>
                     @elseif (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp']))
-                        <img src="{{ $fileUrl }}" alt="Tài liệu hình ảnh"
+                        <img src="{{ $fileUrl }}" alt="{{ __('general.image_document') }}"
                             class="img-fluid border rounded d-block mx-auto" style="max-height:600px;">
                     @elseif (in_array($ext, ['doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx']))
                         <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={{ urlencode($fileUrl) }}"
                             width="100%" height="600px" frameborder="0"></iframe>
                     @else
-                        <div class="alert alert-info m-3">Không hỗ trợ xem trước loại tệp này. Vui lòng tải về để xem
-                            chi tiết.</div>
+                        <div class="alert alert-info m-3">{{ __('general.file_not_supported') }}</div>
                     @endif
                 @endif
             </div>

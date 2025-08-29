@@ -318,7 +318,7 @@
                                                 <button wire:click="correctGrammarWithAI"
                                                     class="btn btn-outline-primary btn-sm" wire:loading.attr="disabled">
                                                     <i class="fas fa-magic"></i>
-                                                    Sửa lỗi ngữ pháp
+                                                    {{ __('general.fix_grammar_errors') }}
                                                 </button>
                                             </div>
                                         </div>
@@ -329,18 +329,18 @@
                                 <div class="col-md-6">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h5 class="card-title">Kết quả AI</h5>
+                                            <h5 class="card-title">{{ __('general.ai_results') }}</h5>
                                         </div>
                                         <div class="card-body">
                                             @if ($submission->hasAIGrading())
                                                 <div class="mb-3">
-                                                    <strong>Điểm AI:</strong>
+                                                    <strong>{{ __('general.ai_score') }}:</strong>
                                                     <span
                                                         class="badge bg-primary fs-6">{{ $submission->ai_score }}/10</span>
                                                 </div>
 
                                                 <div class="mb-3">
-                                                    <strong>Nhận xét AI:</strong>
+                                                    <strong>{{ __('general.ai_feedback') }}:</strong>
                                                     <div class="border rounded p-3 mt-2 bg-info bg-opacity-10">
                                                         {!! nl2br(e($submission->ai_feedback)) !!}
                                                     </div>
@@ -355,7 +355,7 @@
                                                 @endphp
                                                 @if (!empty($criteriaScores))
                                                     <div class="mb-3">
-                                                        <strong>Điểm chi tiết:</strong>
+                                                        <strong>{{ __('general.detailed_scores') }}:</strong>
                                                         <div class="row">
                                                             @foreach ($criteriaScores as $criteria => $score)
                                                                 <div class="col-6">
@@ -381,7 +381,7 @@
                                                 @endphp
                                                 @if (!empty($strengths))
                                                     <div class="mb-3">
-                                                        <strong>Điểm mạnh:</strong>
+                                                        <strong>{{ __('general.strengths') }}:</strong>
                                                         <ul class="list-group list-group-flush mt-2">
                                                             @foreach ($strengths as $strength)
                                                                 <li class="list-group-item text-success">
@@ -400,7 +400,7 @@
                                                 @endphp
                                                 @if (!empty($weaknesses))
                                                     <div class="mb-3">
-                                                        <strong>Điểm yếu:</strong>
+                                                        <strong>{{ __('general.weaknesses') }}:</strong>
                                                         <ul class="list-group list-group-flush mt-2">
                                                             @foreach ($weaknesses as $weakness)
                                                                 <li class="list-group-item text-warning">
@@ -414,11 +414,11 @@
                                             @else
                                                 <div class="text-center text-muted">
                                                     <i class="fas fa-robot fa-3x mb-3"></i>
-                                                    <p>Chưa có kết quả chấm từ AI</p>
+                                                    <p>{{ __('general.no_ai_grading_results') }}</p>
                                                     <button wire:click="gradeWithAI" class="btn btn-primary"
                                                         wire:loading.attr="disabled">
                                                         <i class="fas fa-magic"></i>
-                                                        Chấm bài bằng AI
+                                                        {{ __('general.grade_with_ai') }}
                                                     </button>
                                                 </div>
                                             @endif
@@ -426,7 +426,7 @@
                                             @if ($showAIFeedback && $aiResult)
                                                 <div class="mt-3">
                                                     <button wire:click="applyAIScore" class="btn btn-success">
-                                                        <i class="fas fa-check"></i> Áp dụng điểm từ AI
+                                                        <i class="fas fa-check"></i> {{ __('general.apply_ai_score') }}
                                                     </button>
                                                 </div>
                                             @endif
@@ -441,7 +441,7 @@
                                     <div class="col-12">
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5 class="card-title">Phân tích chi tiết từ AI</h5>
+                                                <h5 class="card-title">{{ __('general.detailed_ai_analysis') }}</h5>
                                             </div>
                                             <div class="card-body">
                                                 @php
@@ -470,7 +470,7 @@
                                                 @endphp
                                                 @if (!empty($improvementSuggestions))
                                                     <div class="mb-3">
-                                                        <strong>Gợi ý cải thiện:</strong>
+                                                        <strong>{{ __('general.improvement_suggestions') }}:</strong>
                                                         <ul class="list-group mt-2">
                                                             @foreach ($improvementSuggestions as $suggestion)
                                                                 <li class="list-group-item">
@@ -500,7 +500,7 @@
                                                 @endphp
                                                 @if (!empty($learningResources))
                                                     <div class="mb-3">
-                                                        <strong>Tài liệu học tập:</strong>
+                                                        <strong>{{ __('general.learning_resources') }}:</strong>
                                                         <div class="row mt-2">
                                                             @foreach ($learningResources as $resource)
                                                                 <div class="col-md-6 mb-2">
@@ -517,8 +517,7 @@
                                                                                 class="btn btn-sm btn-outline-primary">
                                                                                 <i
                                                                                     class="fas fa-external-link-alt"></i>
-                                                                                Xem tài
-                                                                                liệu
+                                                                                {{ __('general.view_material') }}
                                                                             </a>
                                                                         </div>
                                                                     </div>
@@ -539,7 +538,7 @@
                                                 <button wire:click="analyzeWithAI" class="btn btn-outline-info"
                                                     wire:loading.attr="disabled">
                                                     <i class="fas fa-chart-line"></i>
-                                                    Phân tích chi tiết bằng AI
+                                                    {{ __('general.detailed_analysis_with_ai') }}
                                                 </button>
                                             </div>
                                         </div>

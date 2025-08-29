@@ -112,6 +112,7 @@
                                 <a href="{{ asset('storage/' . $lesson->attachment) }}" target="_blank"
                                     class="btn btn-outline-success mb-2"><i class="bi bi-download"></i>
                                     {{ __('views.download_document') }}</a>
+
                                 <button class="btn btn-outline-primary mb-2 ml-2" type="button"
                                     onclick="openPreviewModal()">
                                     <i class="bi bi-eye"></i> {{ __('views.preview_document') }}

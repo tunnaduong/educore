@@ -23,11 +23,11 @@ class Create extends Component
     public $types = [];
 
     public $allTypes = [
-        'text' => 'Điền từ',
-        'essay' => 'Tự luận',
-        'image' => 'Nộp ảnh',
-        'audio' => 'Ghi âm',
-        'video' => 'Quay video',
+        'text' => 'general.text_type',
+        'essay' => 'general.essay',
+        'image' => 'general.image_type',
+        'audio' => 'general.audio_type',
+        'video' => 'general.video_type',
     ];
 
     public $classrooms = [];
@@ -41,6 +41,7 @@ class Create extends Component
     public function mount()
     {
         $user = Auth::user();
+        // Giữ key dịch để render theo locale hiện tại trong view
         // Nếu là admin thì lấy tất cả lớp, nếu là giáo viên thì chỉ lấy lớp mình dạy
         if ($user->role === 'admin') {
             $this->classrooms = Classroom::all();

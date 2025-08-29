@@ -443,8 +443,8 @@
                                     <div class="card">
                                         <div class="card-body text-center text-muted">
                                             <i class="fas fa-robot fa-5x mb-4"></i>
-                                            <h5>Chưa có quiz tiếng Trung được tạo</h5>
-                                            <p>Hãy chọn lớp học, bài học và cấu hình để tạo quiz tiếng Trung bằng AI</p>
+                                            <h5>{{ __('general.no_chinese_quiz_created') }}</h5>
+                                            <p>{{ __('general.select_class_lesson_config_to_create_quiz') }}</p>
                                         </div>
                                     </div>
                                 @endif
