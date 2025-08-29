@@ -6,16 +6,16 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-graph-up mr-2"></i>Kết quả bài kiểm tra
+                        <i class="bi bi-graph-up mr-2"></i>{{ __('general.quiz_results') }}
                     </h4>
-                    <p class="text-muted mb-0">{{ $quiz->title }} - {{ $quiz->classroom->name ?? 'N/A' }}</p>
+                    <p class="text-muted mb-0">{{ $quiz->title }} - {{ $quiz->classroom->name ?? __('general.not_available') }}</p>
                 </div>
                 <div class="btn-group">
                     <a href="{{ route('teacher.quizzes.show', $quiz) }}" class="btn btn-outline-primary">
-                        <i class="bi bi-eye mr-2"></i>Xem chi tiết
+                        <i class="bi bi-eye mr-2"></i>{{ __('general.view_details') }}
                     </a>
                     <a href="{{ route('teacher.quizzes.index') }}" class="btn btn-outline-secondary">
-                        <i class="bi bi-arrow-left mr-2"></i>Quay lại
+                        <i class="bi bi-arrow-left mr-2"></i>{{ __('general.back') }}
                     </a>
                 </div>
             </div>
@@ -28,7 +28,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title">Tổng số bài làm</h6>
+                                <h6 class="card-title">{{ __('general.total_results') }}</h6>
                                 <h3 class="mb-0">{{ $totalResults }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -43,7 +43,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title">Điểm trung bình</h6>
+                                <h6 class="card-title">{{ __('general.average_score') }}</h6>
                                 <h3 class="mb-0">{{ number_format($avgScore, 1) }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -58,7 +58,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div class="flex-fill d-flex flex-column">
-                                <h6 class="card-title">Tỷ lệ đạt</h6>
+                                <h6 class="card-title">{{ __('general.pass_rate') }}</h6>
                                 <h3 class="mb-0">{{ number_format($passRate, 1) }}%</h3>
                             </div>
                             <div class="align-self-center">
@@ -73,7 +73,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title">Điểm cao nhất</h6>
+                                <h6 class="card-title">{{ __('general.highest_score') }}</h6>
                                 <h3 class="mb-0">{{ $maxScore }}/{{ $quiz->getMaxScore() }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -90,23 +90,23 @@
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <label class="form-label">Tìm kiếm học sinh</label>
+                        <label class="form-label">{{ __('general.search_students') }}</label>
                         <input type="text" class="form-control" wire:model.live="search"
-                            placeholder="Tìm theo tên hoặc email...">
+                            placeholder="{{ __('general.search_by_name_or_email') }}">
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label">Lọc theo điểm</label>
+                        <label class="form-label">{{ __('general.filter_by_score') }}</label>
                         <select class="form-control" wire:model.live="filterScore">
-                            <option value="">Tất cả</option>
-                            <option value="excellent">Xuất sắc (≥90%)</option>
-                            <option value="good">Tốt (70-89%)</option>
-                            <option value="average">Trung bình (50-69%)</option>
-                            <option value="poor">Yếu (<50%)< /option>
+                            <option value="">{{ __('general.all') }}</option>
+                            <option value="excellent">{{ __('general.excellent_range') }}</option>
+                            <option value="good">{{ __('general.good_range') }}</option>
+                            <option value="average">{{ __('general.average_range') }}</option>
+                            <option value="poor">{{ __('general.poor_range') }}</option>
                         </select>
                     </div>
                     <div class="col-md-2 d-flex align-items-end">
                         <button class="btn btn-outline-secondary w-100" wire:click="$set('search', '')">
-                            <i class="bi bi-arrow-clockwise mr-2"></i>Reset
+                            <i class="bi bi-arrow-clockwise mr-2"></i>{{ __('general.reset') }}
                         </button>
                     </div>
                 </div>
@@ -117,7 +117,7 @@
         <div class="card shadow-sm">
             <div class="card-header bg-light">
                 <h6 class="mb-0">
-                    <i class="bi bi-list-ul mr-2"></i>Danh sách kết quả ({{ $totalResults }})
+                    <i class="bi bi-list-ul mr-2"></i>{{ __('general.results_list') }} ({{ $totalResults }})
                 </h6>
             </div>
             <div class="card-body">
@@ -126,13 +126,13 @@
                         <table class="table table-hover">
                             <thead class="table-light">
                                 <tr>
-                                    <th>STT</th>
-                                    <th>Học sinh</th>
-                                    <th>Điểm</th>
-                                    <th>Tỷ lệ</th>
-                                    <th>Thời gian làm</th>
-                                    <th>Ngày hoàn thành</th>
-                                    <th>Trạng thái</th>
+                                    <th>{{ __('general.no') }}</th>
+                                    <th>{{ __('general.student') }}</th>
+                                    <th>{{ __('general.score') }}</th>
+                                    <th>{{ __('general.percentage') }}</th>
+                                    <th>{{ __('general.duration') }}</th>
+                                    <th>{{ __('general.completed_date') }}</th>
+                                    <th>{{ __('general.status') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -143,10 +143,10 @@
                                                 ? ($result->score / $quiz->getMaxScore()) * 100
                                                 : 0;
                                         $status = match (true) {
-                                            $percentage >= 90 => ['text' => 'Xuất sắc', 'class' => 'bg-success'],
-                                            $percentage >= 70 => ['text' => 'Tốt', 'class' => 'bg-info'],
-                                            $percentage >= 50 => ['text' => 'Trung bình', 'class' => 'bg-warning'],
-                                            default => ['text' => 'Yếu', 'class' => 'bg-danger'],
+                                            $percentage >= 90 => ['text' => __('general.excellent'), 'class' => 'bg-success'],
+                                            $percentage >= 70 => ['text' => __('general.good'), 'class' => 'bg-info'],
+                                            $percentage >= 50 => ['text' => __('general.average'), 'class' => 'bg-warning'],
+                                            default => ['text' => __('general.poor'), 'class' => 'bg-danger'],
                                         };
                                     @endphp
                                     <tr>
@@ -169,9 +169,9 @@
                                         </td>
                                         <td>
                                             @if ($result->duration)
-                                                <div class="fw-medium">{{ $result->duration }} phút</div>
+                                                <div class="fw-medium">{{ $result->duration }} {{ __('general.minutes') }}</div>
                                             @else
-                                                <span class="text-muted">N/A</span>
+                                                <span class="text-muted">{{ __('general.not_available') }}</span>
                                             @endif
                                         </td>
                                         <td>
@@ -181,7 +181,7 @@
                                                 <small
                                                     class="text-muted">{{ $result->completed_at->format('H:i') }}</small>
                                             @else
-                                                <span class="text-muted">Chưa hoàn thành</span>
+                                                <span class="text-muted">{{ __('general.not_completed') }}</span>
                                             @endif
                                         </td>
                                         <td>
@@ -200,8 +200,8 @@
                 @else
                     <div class="text-center py-5">
                         <i class="bi bi-graph-down fs-1 text-muted mb-3"></i>
-                        <h5 class="text-muted">Không có kết quả nào</h5>
-                        <p class="text-muted">Chưa có học sinh nào làm bài kiểm tra này.</p>
+                        <h5 class="text-muted">{{ __('general.no_results') }}</h5>
+                        <p class="text-muted">{{ __('general.no_students_have_taken_quiz') }}</p>
                     </div>
                 @endif
             </div>

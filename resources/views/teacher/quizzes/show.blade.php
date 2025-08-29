@@ -5,21 +5,21 @@
         <div class="mb-4">
             <a href="{{ route('teacher.quizzes.index') }}"
                 class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left mr-2"></i>Quay lại danh sách bài kiểm tra
+                <i class="bi bi-arrow-left mr-2"></i>{{ __('general.back_to_list') }}
             </a>
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-journal-text mr-2"></i>Chi tiết bài kiểm tra
+                        <i class="bi bi-journal-text mr-2"></i>{{ __('general.quiz_details') }}
                     </h4>
                     <p class="text-muted mb-0">{{ $quiz->title }}</p>
                 </div>
                 <div class="btn-group">
                     <a href="{{ route('teacher.quizzes.edit', $quiz) }}" class="btn btn-warning">
-                        <i class="bi bi-pencil mr-2"></i>Sửa
+                        <i class="bi bi-pencil mr-2"></i>{{ __('general.edit') }}
                     </a>
                     <a href="{{ route('teacher.quizzes.results', $quiz) }}" class="btn btn-info">
-                        <i class="bi bi-graph-up mr-2"></i>Kết quả
+                        <i class="bi bi-graph-up mr-2"></i>{{ __('general.view_results') }}
                     </a>
                 </div>
             </div>
@@ -31,57 +31,57 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h6 class="mb-0">
-                            <i class="bi bi-info-circle mr-2"></i>Thông tin bài kiểm tra
+                            <i class="bi bi-info-circle mr-2"></i>{{ __('general.quiz_information') }}
                         </h6>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <label class="form-label text-muted small">Tiêu đề</label>
+                            <label class="form-label text-muted small">{{ __('general.title') }}</label>
                             <div class="fw-medium">{{ $quiz->title }}</div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small">Lớp học</label>
+                            <label class="form-label text-muted small">{{ __('general.classroom') }}</label>
                             <div class="fw-medium">{{ $quiz->classroom->name ?? 'N/A' }}</div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small">Thời gian làm bài</label>
+                            <label class="form-label text-muted small">{{ __('general.time_limit') }}</label>
                             <div class="fw-medium">
                                 @if ($quiz->time_limit)
-                                    <span class="badge bg-warning text-dark">{{ $quiz->time_limit }} phút</span>
+                                    <span class="badge bg-warning text-dark">{{ $quiz->time_limit }} {{ __('general.minutes') }}</span>
                                 @else
-                                    <span class="text-muted">Không giới hạn</span>
+                                    <span class="text-muted">{{ __('general.no_limit') }}</span>
                                 @endif
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small">Hạn nộp</label>
+                            <label class="form-label text-muted small">{{ __('general.deadline') }}</label>
                             <div class="fw-medium">
                                 @if ($quiz->deadline)
                                     {{ $quiz->deadline->format('d/m/Y H:i') }}
                                     @if ($quiz->isExpired())
-                                        <span class="badge bg-danger ml-2">Hết hạn</span>
+                                        <span class="badge bg-danger ml-2">{{ __('general.expired_status') }}</span>
                                     @else
-                                        <span class="badge bg-success ml-2">Còn hạn</span>
+                                        <span class="badge bg-success ml-2">{{ __('general.active') }}</span>
                                     @endif
                                 @else
-                                    <span class="text-muted">Không có hạn</span>
+                                    <span class="text-muted">{{ __('general.no_deadline') }}</span>
                                 @endif
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small">Ngày tạo</label>
+                            <label class="form-label text-muted small">{{ __('general.created_at') }}</label>
                             <div class="fw-medium">{{ $quiz->created_at->format('d/m/Y H:i') }}</div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small">Mô tả</label>
+                            <label class="form-label text-muted small">{{ __('general.description') }}</label>
                             <div class="fw-medium">{!! nl2br(e($quiz->description)) !!}</div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small">Số câu hỏi</label>
+                            <label class="form-label text-muted small">{{ __('general.question_count') }}</label>
                             <div class="fw-medium">{{ count($quiz->questions) }}</div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small">Tổng điểm tối đa</label>
+                            <label class="form-label text-muted small">{{ __('general.max_total_score') }}</label>
                             <div class="fw-medium">{{ $quiz->getMaxScore() }}</div>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">
                         <h6 class="mb-0">
-                            <i class="bi bi-list-ul mr-2"></i>Danh sách câu hỏi
+                            <i class="bi bi-list-ul mr-2"></i>{{ __('general.question_list', ['count' => count($quiz->questions)]) }}
                         </h6>
                     </div>
                     <div class="card-body">
@@ -102,10 +102,9 @@
                                 <div class="border rounded p-3 mb-3">
                                     <div class="d-flex justify-content-between align-items-start mb-2">
                                         <div>
-                                            <span class="badge bg-primary mr-2">Câu {{ $index + 1 }}</span>
+                                            <span class="badge bg-primary mr-2">{{ __('general.question') }} {{ $index + 1 }}</span>
                                             <span
-                                                class="badge bg-info">{{ $question['score'] ?? ($question['points'] ?? 1) }}
-                                                điểm</span>
+                                                class="badge bg-info">{{ $question['score'] ?? ($question['points'] ?? 1) }} {{ __('general.pts') }}</span>
                                         </div>
                                     </div>
                                     <div class="fw-medium mb-2">{{ $question['question'] }}</div>
@@ -125,7 +124,7 @@
                                                 </div>
                                             @endforeach
                                         @else
-                                            <div class="text-muted">Không có tùy chọn nào</div>
+                                            <div class="text-muted">{{ __('general.not_available') }}</div>
                                         @endif
                                     </div>
                                 </div>
@@ -133,8 +132,8 @@
                         @else
                             <div class="text-center py-4">
                                 <i class="bi bi-exclamation-triangle fs-1 text-warning mb-3"></i>
-                                <h5 class="text-muted">Không có câu hỏi nào</h5>
-                                <p class="text-muted">Bài kiểm tra này chưa có câu hỏi.</p>
+                                <h5 class="text-muted">{{ __('general.no_questions') }}</h5>
+                                <p class="text-muted">{{ __('general.quiz_has_no_questions_yet') }}</p>
                             </div>
                         @endif
                     </div>

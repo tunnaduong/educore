@@ -104,7 +104,7 @@
                                                     </h6>
                                                     <small
                                                         class="text-muted {{ $selectedUser && $selectedUser->id === $user->id ? 'text-white-50' : '' }}">
-                                                        {{ ucfirst($user->role) }}
+                                                        {{ __('general.' . strtolower($user->role)) }}
                                                     </small>
                                                 </div>
                                             </div>
@@ -157,7 +157,7 @@
                                     <div class="text-muted">
                                         <small>
                                             <i class="fas fa-circle text-success mr-1"></i>
-                                            {{ implode(', ', $typingUsers) }} đang nhập...
+                                            {{ implode(', ', $typingUsers) }} {{ __('general.is_typing') }}
                                         </small>
                                     </div>
                                 @endif
@@ -174,24 +174,24 @@
                                             style="max-width: 70%;">
 
                                             @if ($message->sender_id !== auth()->id())
-                                                <small class="text-muted d-block mb-1">
-                                                    {{ $message->sender->name }}
-                                                </small>
-                                            @endif
+                                                                                        <small class="text-muted d-block mb-1">
+                                            {{ $message->sender->name }}
+                                        </small>
+                                    @endif
 
-                                            <div class="message-content">
-                                                {{ $message->message }}
-                                            </div>
+                                    <div class="message-content">
+                                        {{ $message->message }}
+                                    </div>
 
-                                            @if ($message->attachment)
-                                                <div class="mt-2">
-                                                    <a href="{{ route('chat.download', $message->id) }}"
-                                                        class="btn btn-sm {{ $message->sender_id === auth()->id() ? 'btn-light' : 'btn-outline-primary' }}">
-                                                        <i class="fas fa-paperclip mr-1"></i>
-                                                        Tải file đính kèm
-                                                    </a>
-                                                </div>
-                                            @endif
+                                    @if ($message->attachment)
+                                        <div class="mt-2">
+                                            <a href="{{ route('chat.download', $message->id) }}"
+                                                class="btn btn-sm {{ $message->sender_id === auth()->id() ? 'btn-light' : 'btn-outline-primary' }}">
+                                                <i class="fas fa-paperclip mr-1"></i>
+                                                {{ __('general.download_attachment') }}
+                                            </a>
+                                        </div>
+                                    @endif
 
                                             <small class="text-muted d-block mt-1">
                                                 {{ $message->created_at->format('H:i') }}
@@ -201,7 +201,7 @@
                                 @empty
                                     <div class="text-center text-muted">
                                         <i class="fas fa-comments fa-2x mb-2"></i>
-                                        <p>Chưa có tin nhắn nào</p>
+                                        <p>{{ __('general.no_messages_yet') }}</p>
                                     </div>
                                 @endforelse
                             </div>
@@ -213,7 +213,7 @@
                                 <div class="row g-2">
                                     <div class="col">
                                         <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Nhập tin nhắn..."
+                                            <input type="text" class="form-control" placeholder="{{ __('general.enter_message') }}"
                                                 wire:model="messageText" wire:keydown="startTyping"
                                                 wire:keyup.debounce.1000ms="stopTyping">
 
@@ -254,8 +254,8 @@
                             style="height: 400px;">
                             <div class="text-center text-muted">
                                 <i class="fas fa-comments fa-3x mb-3"></i>
-                                <h5>Chọn một cuộc trò chuyện để bắt đầu</h5>
-                                <p>Chọn một lớp học hoặc người dùng từ danh sách bên trái</p>
+                                <h5>{{ __('general.select_conversation_to_start') }}</h5>
+                                <p>{{ __('general.select_class_or_user_from_left') }}</p>
                             </div>
                         </div>
                     @endif
@@ -270,7 +270,7 @@
         <div class="d-flex align-items-center justify-content-center h-100">
             <div class="text-center bg-white p-4 rounded shadow">
                 <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
-                <h5>Thả file để đính kèm</h5>
+                <h5>{{ __('general.drop_file_to_attach') }}</h5>
             </div>
         </div>
     </div>

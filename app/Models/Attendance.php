@@ -65,7 +65,7 @@ class Attendance extends Model
         if ($selectedDate->isFuture()) {
             return [
                 'can' => false,
-                'message' => 'Không thể điểm danh cho ngày trong tương lai.',
+                'message' => __('general.cannot_attendance_future_date'),
             ];
         }
 
@@ -73,7 +73,7 @@ class Attendance extends Model
         if ($selectedDate->isPast() && ! $selectedDate->isToday()) {
             return [
                 'can' => false,
-                'message' => 'Không thể điểm danh cho ngày trong quá khứ.',
+                'message' => __('general.cannot_attendance_past_date'),
             ];
         }
 
@@ -90,7 +90,7 @@ class Attendance extends Model
                 if (! in_array($dayOfWeek, $days)) {
                     return [
                         'can' => false,
-                        'message' => 'Ngày này không phải là ngày học của lớp.',
+                        'message' => __('general.not_class_day'),
                     ];
                 }
 
@@ -109,7 +109,7 @@ class Attendance extends Model
                         if ($now->isBefore($classStartTime)) {
                             return [
                                 'can' => false,
-                                'message' => 'Chưa đến thời gian học. Chỉ có thể điểm danh từ '.$startTime->format('H:i').' đến '.$endTime->format('H:i').'.',
+                                'message' => __('general.not_class_time_yet', ['start_time' => $startTime->format('H:i'), 'end_time' => $endTime->format('H:i')]),
                             ];
                         }
 
@@ -117,7 +117,7 @@ class Attendance extends Model
                         if ($now->isAfter($classEndTime)) {
                             return [
                                 'can' => false,
-                                'message' => 'Đã qua thời gian học. Không thể điểm danh lại.',
+                                'message' => __('general.class_time_passed'),
                             ];
                         }
                     }
