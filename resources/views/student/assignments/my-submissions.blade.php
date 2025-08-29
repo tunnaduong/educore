@@ -22,22 +22,22 @@
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <label class="form-label">Tìm kiếm</label>
+                        <label class="form-label">{{ __('general.search') }}</label>
                         <input type="text" class="form-control" wire:model.live="search"
-                            placeholder="Tìm theo tên bài tập...">
+                            placeholder="{{ __('general.search_by_name_description') }}">
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">{{ __('general.grading_status') }}</label>
                         <select class="form-control" wire:model.live="filterGraded">
-                            <option value="">Tất cả</option>
+                            <option value="">{{ __('general.all') }}</option>
                             <option value="graded">{{ __('general.graded') }}</option>
                             <option value="ungraded">{{ __('general.ungraded') }}</option>
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label">Lớp học</label>
+                        <label class="form-label">{{ __('general.classroom') }}</label>
                         <select class="form-control" wire:model.live="filterClassroom">
-                            <option value="">Tất cả lớp</option>
+                            <option value="">{{ __('general.all_classes') }}</option>
                             @foreach ($classrooms as $classroom)
                                 <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
                             @endforeach
@@ -60,7 +60,7 @@
                         <div class="card-body text-center">
                             <i class="bi bi-file-earmark-check fs-1 mb-2"></i>
                             <h5 class="card-title">{{ $totalSubmissions }}</h5>
-                            <p class="card-text">Tổng số bài nộp</p>
+                            <p class="card-text">{{ __('general.total_submissions') }}</p>
                         </div>
                     </div>
                 </div>
@@ -87,7 +87,7 @@
                         <div class="card-body text-center">
                             <i class="bi bi-star fs-1 mb-2"></i>
                             <h5 class="card-title">{{ number_format($averageScore, 1) }}</h5>
-                            <p class="card-text">Điểm trung bình</p>
+                            <p class="card-text">{{ __('general.average_score') }}</p>
                         </div>
                     </div>
                 </div>
@@ -98,7 +98,7 @@
         <div class="card shadow-sm">
             <div class="card-header bg-light">
                 <h6 class="mb-0">
-                    <i class="bi bi-list-ul mr-2"></i>Danh sách bài nộp
+                    <i class="bi bi-list-ul mr-2"></i>{{ __('general.submission_list') }}
                 </h6>
             </div>
             <div class="card-body">
@@ -107,13 +107,13 @@
                         <table class="table table-hover align-middle">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Bài tập</th>
-                                    <th>Lớp học</th>
-                                    <th>Loại bài nộp</th>
-                                    <th>Ngày nộp</th>
-                                    <th>Điểm số</th>
-                                    <th>Trạng thái</th>
-                                    <th>Thao tác</th>
+                                    <th>{{ __('general.assignment') }}</th>
+                                    <th>{{ __('general.classroom') }}</th>
+                                    <th>{{ __('general.submission_type') }}</th>
+                                    <th>{{ __('general.submission_date') }}</th>
+                                    <th>{{ __('general.score') }}</th>
+                                    <th>{{ __('general.status') }}</th>
+                                    <th>{{ __('general.actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -128,29 +128,29 @@
                                         </td>
                                         <td>
                                             <span
-                                                class="badge bg-info">{{ $submission->assignment?->classroom?->name ?? 'N/A' }}</span>
+                                                class="badge bg-info">{{ $submission->assignment?->classroom?->name ?? __('general.not_available') }}</span>
                                         </td>
                                         <td>
                                             <span class="badge bg-secondary">
                                                 @switch($submission->submission_type)
                                                     @case('text')
-                                                        Điền từ
+                                                        {{ __('general.text') }}
                                                     @break
 
                                                     @case('essay')
-                                                        Tự luận
+                                                        {{ __('general.essay') }}
                                                     @break
 
                                                     @case('image')
-                                                        Upload ảnh
+                                                        {{ __('general.image') }}
                                                     @break
 
                                                     @case('audio')
-                                                        Ghi âm
+                                                        {{ __('general.audio') }}
                                                     @break
 
                                                     @case('video')
-                                                        Video
+                                                        {{ __('general.video') }}
                                                     @break
 
                                                     @default
@@ -172,7 +172,7 @@
                                                         class="text-muted">{{ Str::limit($submission->feedback, 30) }}</small>
                                                 @endif
                                             @else
-                                                <span class="text-muted">Chưa chấm</span>
+                                                <span class="text-muted">{{ __('general.ungraded') }}</span>
                                             @endif
                                         </td>
                                         <td>
@@ -184,8 +184,8 @@
                                         </td>
                                         <td>
                                             <a href="{{ route('student.assignments.show', $submission->assignment->id) }}"
-                                                class="btn btn-sm btn-outline-primary" title="Xem chi tiết">
-                                                <i class="bi bi-eye"></i> Xem
+                                                class="btn btn-sm btn-outline-primary" title="{{ __('general.view_details') }}">
+                                                <i class="bi bi-eye"></i> {{ __('general.view') }}
                                             </a>
                                         </td>
                                     </tr>
@@ -200,10 +200,10 @@
                 @else
                     <div class="text-center py-5">
                         <i class="bi bi-folder-x fs-1 text-muted mb-3"></i>
-                        <h5 class="text-muted">Chưa có bài tập nào được nộp</h5>
-                        <p class="text-muted">Bạn chưa nộp bài tập nào hoặc không có bài tập nào phù hợp với bộ lọc.</p>
+                        <h5 class="text-muted">{{ __('general.no_submitted_assignments') }}</h5>
+                        <p class="text-muted">{{ __('general.no_submitted_assignments_filter') }}</p>
                         <a href="{{ route('student.assignments.overview') }}" class="btn btn-primary">
-                            <i class="bi bi-journal-text mr-2"></i>Xem danh sách bài tập
+                            <i class="bi bi-journal-text mr-2"></i>{{ __('general.assignment_list') }}
                         </a>
                     </div>
                 @endif

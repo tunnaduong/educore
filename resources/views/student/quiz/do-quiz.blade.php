@@ -101,10 +101,10 @@
                 <div class="col-md-8 text-center">
                     <div class="alert alert-warning py-5">
                         <i class="bi bi-exclamation-triangle display-4 mb-3"></i>
-                        <h3 class="mb-3">403 | Không thể truy cập bài kiểm tra</h3>
+                        <h3 class="mb-3">403 | {{ __('general.quiz_access_denied_title') }}</h3>
                         <p class="lead">{{ $accessDenied }}</p>
                         <a href="{{ route('student.quizzes.index') }}" class="btn btn-primary mt-3">
-                            <i class="bi bi-arrow-left mr-1"></i>Quay lại danh sách bài kiểm tra
+                            <i class="bi bi-arrow-left mr-1"></i>{{ __('general.back_to_quiz_list') }}
                         </a>
                     </div>
                 </div>
@@ -118,7 +118,7 @@
                     <div class="card shadow-sm">
                         <div class="card-header bg-success text-white">
                             <h4 class="mb-0">
-                                <i class="bi bi-check-circle mr-2"></i>Hoàn thành bài kiểm tra
+                                <i class="bi bi-check-circle mr-2"></i>{{ __('general.quiz_completed_title') }}
                             </h4>
                         </div>
                         <div class="card-body text-center py-5">
@@ -132,7 +132,7 @@
                                     <div class="card bg-light">
                                         <div class="card-body">
                                             <h3 class="text-primary mb-0">{{ $result->score }}</h3>
-                                            <small class="text-muted">Điểm số</small>
+                                            <small class="text-muted">{{ __('general.score') }}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -141,7 +141,7 @@
                                         <div class="card-body">
                                             <h3 class="text-info mb-0">
                                                 {{ $result->duration ? gmdate('H:i:s', $result->duration) : '-' }}</h3>
-                                            <small class="text-muted">Thời gian làm bài</small>
+                                            <small class="text-muted">{{ __('general.quiz_duration') }}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -149,7 +149,7 @@
                                     <div class="card bg-light">
                                         <div class="card-body">
                                             <h3 class="text-success mb-0">{{ count($questions) }}</h3>
-                                            <small class="text-muted">Tổng số câu hỏi</small>
+                                            <small class="text-muted">{{ __('general.total_questions') }}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -157,7 +157,7 @@
 
                             <div class="mt-4">
                                 <a href="{{ route('student.quizzes.index') }}" class="btn btn-primary">
-                                    <i class="bi bi-house mr-2"></i>Về trang chủ
+                                    <i class="bi bi-house mr-2"></i>{{ __('general.back_to_home') }}
                                 </a>
                             </div>
                         </div>
@@ -180,12 +180,12 @@
                                     @if ($quiz->time_limit)
                                         <small class="text-info">
                                             <i class="bi bi-clock-history mr-1"></i>
-                                            Thời gian làm bài: <strong>{{ $quiz->time_limit }} phút</strong>
+                                            {{ __('general.time_limit') }}: <strong>{{ $quiz->time_limit }} {{ __('general.minutes') }}</strong>
                                         </small>
                                     @else
                                         <small class="text-success">
                                             <i class="bi bi-infinity mr-1"></i>
-                                            Không giới hạn thời gian
+                                            {{ __('general.no_time_limit') }}
                                         </small>
                                     @endif
                                 </div>
@@ -200,13 +200,13 @@
                                             @if ($this->shouldShowWarning())
                                                 <span
                                                     class="badge bg-warning text-dark ml-2 animate__animated animate__pulse">
-                                                    <i class="bi bi-exclamation-triangle"></i> Cảnh báo
+                                                    <i class="bi bi-exclamation-triangle"></i> {{ __('general.warning_label') }}
                                                 </span>
                                             @endif
                                             @if ($this->shouldShowUrgentWarning())
                                                 <span
                                                     class="badge bg-danger text-white ml-2 animate__animated animate__pulse">
-                                                    <i class="bi bi-exclamation-triangle-fill"></i> Khẩn cấp
+                                                    <i class="bi bi-exclamation-triangle-fill"></i> {{ __('general.urgent_label') }}
                                                 </span>
                                             @endif
                                         </div>
@@ -217,7 +217,7 @@
                             <!-- Progress Bar -->
                             <div class="mt-3">
                                 <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <small class="text-muted">Tiến độ làm bài</small>
+                                    <small class="text-muted">{{ __('general.quiz_progress') }}</small>
                                     <small class="text-muted">{{ $currentQuestionIndex + 1 }} /
                                         {{ count($questions) }}</small>
                                 </div>
@@ -235,12 +235,12 @@
             </div>
 
             <div class="row">
-                <!-- Sidebar - Danh sách câu hỏi -->
+                <!-- Sidebar - Question list -->
                 <div class="col-lg-3">
                     <div class="card shadow-sm mb-4">
                         <div class="card-header bg-light">
                             <h6 class="mb-0">
-                                <i class="bi bi-list-ul mr-2"></i>Danh sách câu hỏi
+                                <i class="bi bi-list-ul mr-2"></i>{{ __('general.question_list') }}
                             </h6>
                         </div>
                         <div class="card-body">
@@ -267,17 +267,17 @@
                                 <div class="d-flex align-items-center mb-1">
                                     <div class="btn btn-sm btn-outline-secondary mr-2"
                                         style="width: 20px; height: 20px; padding: 0;"></div>
-                                    <small class="text-muted">Chưa trả lời</small>
+                                    <small class="text-muted">{{ __('general.unanswered') }}</small>
                                 </div>
                                 <div class="d-flex align-items-center mb-1">
                                     <div class="btn btn-sm btn-success mr-2"
                                         style="width: 20px; height: 20px; padding: 0;"></div>
-                                    <small class="text-muted">Đã trả lời</small>
+                                    <small class="text-muted">{{ __('general.answered') }}</small>
                                 </div>
                                 <div class="d-flex align-items-center">
                                     <div class="btn btn-sm btn-primary mr-2"
                                         style="width: 20px; height: 20px; padding: 0;"></div>
-                                    <small class="text-muted">Câu hiện tại</small>
+                                    <small class="text-muted">{{ __('general.current_question') }}</small>
                                 </div>
                             </div>
                         </div>
@@ -294,7 +294,7 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h6 class="mb-0">
                                         <i class="bi bi-question-circle mr-2"></i>
-                                        Câu hỏi {{ $currentQuestionIndex + 1 }} / {{ count($questions) }}
+                                        {{ __('general.question') }} {{ $currentQuestionIndex + 1 }} / {{ count($questions) }}
                                     </h6>
                                     <span class="badge bg-primary">{{ ucfirst($currentQuestion['type']) }}</span>
                                 </div>
@@ -309,7 +309,7 @@
                                             <audio controls class="w-100">
                                                 <source src="{{ asset('storage/' . $currentQuestion['audio']) }}"
                                                     type="audio/mpeg">
-                                                Trình duyệt không hỗ trợ audio.
+                                                {{ __('general.browser_not_support') }}
                                             </audio>
                                         </div>
                                     @endif
@@ -335,17 +335,17 @@
                                 <div class="d-flex justify-content-between">
                                     <button class="btn btn-outline-secondary" wire:click="previousQuestion"
                                         {{ $currentQuestionIndex === 0 ? 'disabled' : '' }}>
-                                        <i class="bi bi-arrow-left mr-2"></i>Câu trước
+                                        <i class="bi bi-arrow-left mr-2"></i>{{ __('general.prev_question') }}
                                     </button>
 
                                     @if ($currentQuestionIndex === count($questions) - 1)
                                         <button class="btn btn-success" wire:click="submitQuiz"
-                                            wire:confirm="Bạn có chắc chắn muốn nộp bài?">
-                                            <i class="bi bi-check-circle mr-2"></i>Nộp bài
+                                            wire:confirm="{{ __('general.submit_quiz_confirm') }}">
+                                            <i class="bi bi-check-circle mr-2"></i>{{ __('general.submit_quiz') }}
                                         </button>
                                     @else
                                         <button type="button" class="btn btn-primary" wire:click="nextQuestion">
-                                            Câu tiếp<i class="bi bi-arrow-right ml-2"></i>
+                                            {{ __('general.next_question') }}<i class="bi bi-arrow-right ml-2"></i>
                                         </button>
                                     @endif
                                 </div>
@@ -355,8 +355,8 @@
                         <div class="card shadow-sm">
                             <div class="card-body text-center py-5">
                                 <i class="bi bi-exclamation-triangle fs-1 text-warning mb-3"></i>
-                                <h5>Không có câu hỏi nào</h5>
-                                <p class="text-muted">Bài kiểm tra này chưa có câu hỏi.</p>
+                                <h5>{{ __('general.no_questions') }}</h5>
+                                <p class="text-muted">{{ __('general.quiz_has_no_questions') }}</p>
                             </div>
                         </div>
                     @endif
@@ -400,7 +400,7 @@
                         if (window.quizTimer.timeRemaining > 0 && !window.quizSubmitted) {
                             e.preventDefault();
                             e.returnValue =
-                                'Nếu bạn tải lại hoặc rời khỏi trang, bài kiểm tra sẽ bị nộp tự động và bạn không thể tiếp tục làm tiếp!';
+                                '{{ __('general.leave_quiz_warning') }}';
                             return e.returnValue;
                         }
                     };
@@ -438,25 +438,25 @@
                         // Cảnh báo khi còn 5 phút
                         if (window.quizTimer.timeRemaining === 300) {
                             if (Notification.permission === 'granted') {
-                                new Notification('Cảnh báo thời gian', {
-                                    body: 'Chỉ còn 5 phút để hoàn thành bài kiểm tra!',
+                                new Notification('{{ __('general.time_warning_title') }}', {
+                                    body: '{{ __('general.five_minutes_left') }}',
                                     icon: '/favicon.ico'
                                 });
                             }
                             // Hiển thị alert
-                            alert('⚠️ CẢNH BÁO: Chỉ còn 5 phút để hoàn thành bài kiểm tra!');
+                            alert('⚠️ ' + '{{ __('general.five_minutes_left') }}');
                         }
 
                         // Cảnh báo khi còn 1 phút
                         if (window.quizTimer.timeRemaining === 60) {
                             if (Notification.permission === 'granted') {
-                                new Notification('Cảnh báo thời gian', {
-                                    body: 'Chỉ còn 1 phút để hoàn thành bài kiểm tra!',
+                                new Notification('{{ __('general.time_warning_title') }}', {
+                                    body: '{{ __('general.one_minute_left') }}',
                                     icon: '/favicon.ico'
                                 });
                             }
                             // Hiển thị alert
-                            alert('🚨 KHẨN CẤP: Chỉ còn 1 phút để hoàn thành bài kiểm tra!');
+                            alert('🚨 ' + '{{ __('general.one_minute_left') }}');
                         }
                     }
 
@@ -479,7 +479,7 @@
                             if (timerContainer) {
                                 timerContainer.className =
                                     'd-inline-block bg-danger text-white px-3 py-2 rounded animate__animated animate__shakeX';
-                                timerElement.textContent = 'HẾT THỜI GIAN!';
+                                timerElement.textContent = '{{ __('general.time_up') }}';
                             }
 
                             // Tự động nộp bài sau 2 giây

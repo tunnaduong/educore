@@ -75,21 +75,21 @@ class Review extends Component
     public function getQuestionStatusText($questionIndex)
     {
         if (! $this->result) {
-            return 'Không xác định';
+            return __('general.undefined');
         }
         $status = $this->getQuestionStatus($questionIndex);
 
         switch ($status) {
             case 'correct':
-                return 'Đúng';
+                return __('general.correct');
             case 'incorrect':
-                return 'Sai';
+                return __('general.incorrect');
             case 'unanswered':
-                return 'Chưa trả lời';
+                return __('general.unanswered');
             case 'pending':
-                return 'Chờ chấm';
+                return __('general.pending_grading');
             default:
-                return 'Không xác định';
+                return __('general.undefined');
         }
     }
 

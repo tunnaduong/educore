@@ -6,18 +6,18 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary">
-                        <i class="bi bi-pencil mr-2"></i>Làm bài tập: {{ $assignment->title }}
+                        <i class="bi bi-pencil mr-2"></i>{{ __('general.do_assignment') }}: {{ $assignment->title }}
                     </h4>
-                    <p class="text-muted mb-0">{{ $assignment->classroom?->name ?? 'N/A' }} -
+                    <p class="text-muted mb-0">{{ $assignment->classroom?->name ?? __('general.not_available') }} -
                         @if ($assignment->classroom->teachers->count())
                             {{ $assignment->classroom->teachers->pluck('name')->join(', ') }}
                         @else
-                            Chưa có giáo viên
+                            {{ __('general.no_teacher') }}
                         @endif
                     </p>
                 </div>
                 <div class="text-right">
-                    <div class="badge badge-warning">Hạn nộp: {{ $assignment->deadline->format('d/m/Y H:i') }}
+                    <div class="badge badge-warning">{{ __('general.deadline') }}: {{ $assignment->deadline->format('d/m/Y H:i') }}
                     </div>
                     <div class="small text-muted mt-1">{{ $this->getTimeRemaining() }}</div>
                 </div>
@@ -28,14 +28,14 @@
         <div class="card shadow-sm mb-4">
             <div class="card-header bg-light">
                 <h6 class="mb-0">
-                    <i class="bi bi-info-circle mr-2"></i>Thông tin bài tập
+                    <i class="bi bi-info-circle mr-2"></i>{{ __('views.assignment_information') }}
                 </h6>
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-8">
                         <div class="mb-3">
-                            <h6>Mô tả bài tập:</h6>
+                            <h6>{{ __('general.description') }}:</h6>
                             <div class="border rounded p-3 bg-light">
                                 {!! nl2br(e($assignment->description)) !!}
                             </div>
@@ -43,29 +43,29 @@
 
                         @if ($assignment->types)
                             <div class="mb-3">
-                                <h6>Loại bài tập cần làm:</h6>
+                                <h6>{{ __('general.assignment_type') }}:</h6>
                                 <div class="d-flex flex-wrap">
                                     @foreach ($assignment->types as $type)
                                         <span class="badge badge-primary mr-2 mb-2">
                                             @switch($type)
                                                 @case('text')
-                                                    Điền từ
+                                                    {{ __('general.text') }}
                                                 @break
 
                                                 @case('essay')
-                                                    Tự luận
+                                                    {{ __('general.essay') }}
                                                 @break
 
                                                 @case('image')
-                                                    Upload ảnh (bài viết tay)
+                                                    {{ __('general.image') }}
                                                 @break
 
                                                 @case('audio')
-                                                    Ghi âm luyện nói
+                                                    {{ __('general.audio') }}
                                                 @break
 
                                                 @case('video')
-                                                    Video luyện nói
+                                                    {{ __('general.video') }}
                                                 @break
 
                                                 @default
@@ -81,11 +81,11 @@
                         @if ($assignment->attachment_path)
                             <div class="card bg-light">
                                 <div class="card-body">
-                                    <h6 class="card-title">Tài liệu đính kèm</h6>
+                                    <h6 class="card-title">{{ __('general.attachment') }}</h6>
                                     <br>
                                     <a href="{{ Storage::url($assignment->attachment_path) }}" target="_blank"
                                         class="btn btn-outline-primary btn-sm">
-                                        <i class="bi bi-download mr-2"></i>Tải xuống tài liệu
+                                        <i class="bi bi-download mr-2"></i>{{ __('general.download_file') }}
                                     </a>
                                 </div>
                             </div>
@@ -94,11 +94,11 @@
                         @if ($assignment->video_path)
                             <div class="card mt-3">
                                 <div class="card-body">
-                                    <h6 class="card-title">Video hướng dẫn</h6>
+                                    <h6 class="card-title">{{ __('general.lesson_video') }}</h6>
                                     <br>
                                     <video controls class="w-100 rounded">
                                         <source src="{{ Storage::url($assignment->video_path) }}" type="video/mp4">
-                                        Trình duyệt của bạn không hỗ trợ video.
+                                        {{ __('general.browser_not_support') }}
                                     </video>
                                 </div>
                             </div>
@@ -112,7 +112,7 @@
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
                 <h6 class="mb-0">
-                    <i class="bi bi-upload mr-2"></i>Nộp bài tập
+                    <i class="bi bi-upload mr-2"></i>{{ __('general.submit_assignment') }}
                 </h6>
             </div>
             <div class="card-body">
@@ -143,30 +143,29 @@
                 @if ($status['required_count'] > 1)
                     <div class="alert alert-info mb-4">
                         <h6 class="alert-heading">
-                            <i class="bi bi-info-circle mr-2"></i>Trạng thái nộp bài hiện tại
+                            <i class="bi bi-info-circle mr-2"></i>{{ __('general.current_submission_status') }}
                         </h6>
                         <div class="mb-2">
-                            <strong>Tiến độ:</strong> {{ $status['submitted_count'] }}/{{ $status['required_count'] }}
-                            loại bài tập
+                            <strong>{{ __('general.progress') }}:</strong> {{ $status['submitted_count'] }}/{{ $status['required_count'] }} {{ __('general.assignment_types') }}
                         </div>
                         <div class="mb-2">
-                            <strong>Đã nộp:</strong>
+                            <strong>{{ __('general.submitted') }}:</strong>
                             @if (count($status['submitted_types']) > 0)
                                 @foreach ($status['submitted_types'] as $type)
                                     <span class="badge bg-success mr-1">{{ $this->getTypeLabel($type) }}</span>
                                 @endforeach
                             @else
-                                <span class="text-white">Chưa nộp loại nào</span>
+                                <span class="text-white">{{ __('general.no_type_submitted') }}</span>
                             @endif
                         </div>
                         <div>
-                            <strong>Còn thiếu:</strong>
+                            <strong>{{ __('general.missing') }}:</strong>
                             @if (count($status['missing_types']) > 0)
                                 @foreach ($status['missing_types'] as $type)
                                     <span class="badge bg-warning mr-1">{{ $this->getTypeLabel($type) }}</span>
                                 @endforeach
                             @else
-                                <span class="text-success">Đã nộp đủ tất cả loại bài tập!</span>
+                                <span class="text-success">{{ __('general.submitted_all_types') }}</span>
                             @endif
                         </div>
                     </div>
@@ -176,7 +175,7 @@
                     <!-- Submission Type Selection -->
                     @if (count($status['missing_types']) > 0)
                         <div class="mb-4">
-                            <label class="font-weight-bold">Chọn loại bài nộp:</label>
+                            <label class="font-weight-bold">{{ __('general.select_submission_type') }}</label>
                             <div class="row">
                                 @if (in_array('text', $assignment->types))
                                     <div class="col-md-4 mb-3">
@@ -188,11 +187,11 @@
                                                 {{ $this->isTypeSubmitted('text') ? 'disabled' : '' }}>
                                             <label class="form-check-label d-block pl-3" for="type_text">
                                                 <i class="bi bi-pencil-square text-primary mr-2"></i>
-                                                <strong>Điền từ</strong>
-                                                <div class="small text-muted mt-1">Nhập câu trả lời ngắn</div>
+                                                <strong>{{ __('general.text') }}</strong>
+                                                <div class="small text-muted mt-1">{{ __('general.short_answer') }}</div>
                                                 @if ($this->isTypeSubmitted('text'))
                                                     <div class="small text-success mt-1">
-                                                        <i class="bi bi-check-circle"></i> Đã nộp
+                                                        <i class="bi bi-check-circle"></i> {{ __('general.submitted') }}
                                                     </div>
                                                 @endif
                                             </label>
@@ -210,11 +209,11 @@
                                                 {{ $this->isTypeSubmitted('essay') ? 'disabled' : '' }}>
                                             <label class="form-check-label d-block pl-3" for="type_essay">
                                                 <i class="bi bi-file-text text-success mr-2"></i>
-                                                <strong>Bài luận</strong>
-                                                <div class="small text-muted mt-1">Viết bài luận dài</div>
+                                                <strong>{{ __('general.essay') }}</strong>
+                                                <div class="small text-muted mt-1">{{ __('general.long_essay') }}</div>
                                                 @if ($this->isTypeSubmitted('essay'))
                                                     <div class="small text-success mt-1">
-                                                        <i class="bi bi-check-circle"></i> Đã nộp
+                                                        <i class="bi bi-check-circle"></i> {{ __('general.submitted') }}
                                                     </div>
                                                 @endif
                                             </label>
@@ -232,11 +231,11 @@
                                                 {{ $this->isTypeSubmitted('image') ? 'disabled' : '' }}>
                                             <label class="form-check-label d-block pl-3" for="type_image">
                                                 <i class="bi bi-image text-info mr-2"></i>
-                                                <strong>Upload ảnh</strong>
-                                                <div class="small text-muted mt-1">Tải lên ảnh bài viết tay</div>
+                                                <strong>{{ __('general.image') }}</strong>
+                                                <div class="small text-muted mt-1">{{ __('general.image_file_hint') }}</div>
                                                 @if ($this->isTypeSubmitted('image'))
                                                     <div class="small text-success mt-1">
-                                                        <i class="bi bi-check-circle"></i> Đã nộp
+                                                        <i class="bi bi-check-circle"></i> {{ __('general.submitted') }}
                                                     </div>
                                                 @endif
                                             </label>
@@ -254,11 +253,11 @@
                                                 {{ $this->isTypeSubmitted('audio') ? 'disabled' : '' }}>
                                             <label class="form-check-label d-block pl-3" for="type_audio">
                                                 <i class="bi bi-mic text-warning mr-2"></i>
-                                                <strong>Ghi âm</strong>
-                                                <div class="small text-muted mt-1">Thu âm luyện nói</div>
+                                                <strong>{{ __('general.audio') }}</strong>
+                                                <div class="small text-muted mt-1">{{ __('general.audio_file_hint_short') }}</div>
                                                 @if ($this->isTypeSubmitted('audio'))
                                                     <div class="small text-success mt-1">
-                                                        <i class="bi bi-check-circle"></i> Đã nộp
+                                                        <i class="bi bi-check-circle"></i> {{ __('general.submitted') }}
                                                     </div>
                                                 @endif
                                             </label>
@@ -276,8 +275,8 @@
                                                 {{ $this->isTypeSubmitted('video') ? 'disabled' : '' }}>
                                             <label class="form-check-label d-block pl-3" for="type_video">
                                                 <i class="bi bi-camera-video text-danger mr-2"></i>
-                                                <strong>Video</strong>
-                                                <div class="small text-muted mt-1">Quay video luyện nói</div>
+                                                <strong>{{ __('general.video') }}</strong>
+                                                <div class="small text-muted mt-1">{{ __('general.video_file_hint_short') }}</div>
                                                 @if ($this->isTypeSubmitted('video'))
                                                     <div class="small text-success mt-1">
                                                         <i class="bi bi-check-circle"></i> Đã nộp
@@ -299,30 +298,29 @@
                         <div class="mb-4">
                             @switch($submissionType)
                                 @case('text')
-                                    <label for="content" class="font-weight-bold">Nội dung bài làm:</label>
+                                    <label for="content" class="font-weight-bold">{{ __('general.submission_content') }}:</label>
                                     <textarea wire:model.live="content" id="content" rows="4"
-                                        class="form-control @error('content') is-invalid @enderror" placeholder="Nhập câu trả lời của bạn..."></textarea>
+                                        class="form-control @error('content') is-invalid @enderror" placeholder="{{ __('general.enter_your_answer') }}"></textarea>
                                     @error('content')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 @break
 
                                 @case('essay')
-                                    <label for="essay" class="font-weight-bold">Bài luận:</label>
+                                    <label for="essay" class="font-weight-bold">{{ __('general.essay') }}:</label>
                                     <textarea wire:model.live="essay" id="essay" rows="12"
-                                        class="form-control @error('essay') is-invalid @enderror" placeholder="Viết bài luận của bạn..."></textarea>
-                                    <div class="form-text">Viết bài luận chi tiết theo yêu cầu của bài tập.</div>
+                                        class="form-control @error('essay') is-invalid @enderror" placeholder="{{ __('general.write_your_essay') }}"></textarea>
+                                    <div class="form-text">{{ __('general.essay_detail_hint') }}</div>
                                     @error('essay')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 @break
 
                                 @case('image')
-                                    <label for="imageFile" class="font-weight-bold">Upload ảnh bài viết:</label>
+                                    <label for="imageFile" class="font-weight-bold">{{ __('general.upload_image_submission') }}</label>
                                     <input type="file" wire:model.live="imageFile" id="imageFile" accept="image/*"
                                         class="form-control @error('imageFile') is-invalid @enderror">
-                                    <div class="form-text">Chỉ chấp nhận file ảnh (JPG, PNG, GIF, WEBP). Kích thước tối đa
-                                        10MB.</div>
+                                    <div class="form-text">{{ __('general.image_file_hint_long') }}</div>
                                     @error('imageFile')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -335,12 +333,10 @@
                                 @break
 
                                 @case('audio')
-                                    <label for="audioFile" class="font-weight-bold">Upload file âm thanh:</label>
+                                    <label for="audioFile" class="font-weight-bold">{{ __('general.upload_audio_file') }}</label>
                                     <input type="file" wire:model.live="audioFile" id="audioFile" accept="audio/*"
                                         class="form-control @error('audioFile') is-invalid @enderror">
-                                    <div class="form-text">Chỉ chấp nhận file âm thanh (MP3, WAV, M4A). Kích thước tối đa
-                                        10MB.
-                                    </div>
+                                    <div class="form-text">{{ __('general.audio_file_hint_long') }}</div>
                                     @error('audioFile')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -349,19 +345,17 @@
                                             <audio controls class="w-100">
                                                 <source src="{{ $audioFile->temporaryUrl() }}"
                                                     type="audio/{{ $audioFile->getClientOriginalExtension() }}">
-                                                Trình duyệt của bạn không hỗ trợ âm thanh.
+                                                {{ __('general.browser_not_support') }}
                                             </audio>
                                         </div>
                                     @endif
                                 @break
 
                                 @case('video')
-                                    <label for="videoFile" class="font-weight-bold">Upload file video:</label>
+                                    <label for="videoFile" class="font-weight-bold">{{ __('general.upload_video_file') }}</label>
                                     <input type="file" wire:model.live="videoFile" id="videoFile" accept="video/*"
                                         class="form-control @error('videoFile') is-invalid @enderror">
-                                    <div class="form-text">Chỉ chấp nhận file video (MP4, AVI, MOV). Kích thước tối đa
-                                        200MB.
-                                    </div>
+                                    <div class="form-text">{{ __('general.video_file_hint_long') }}</div>
                                     @error('videoFile')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -370,7 +364,7 @@
                                             <video controls class="w-100 rounded">
                                                 <source src="{{ $videoFile->temporaryUrl() }}"
                                                     type="video/{{ $videoFile->getClientOriginalExtension() }}">
-                                                Trình duyệt của bạn không hỗ trợ video.
+                                                {{ __('general.browser_not_support') }}
                                             </video>
                                         </div>
                                     @endif
@@ -383,25 +377,23 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <a href="{{ route('student.assignments.show', $assignment->id) }}"
                             class="btn btn-outline-secondary">
-                            <i class="bi bi-arrow-left mr-2"></i>Quay lại
+                            <i class="bi bi-arrow-left mr-2"></i>{{ __('general.back') }}
                         </a>
                         @if (count($status['missing_types']) > 0)
                             <button type="submit" class="btn btn-primary" wire:loading.attr="disabled">
                                 <span wire:loading.remove>
-                                    <i class="bi bi-upload mr-2"></i>Nộp bài
+                                    <i class="bi bi-upload mr-2"></i>{{ __('general.submit') }}
                                 </span>
                                 <span wire:loading>
-                                    <i class="bi bi-hourglass-split mr-2"></i>Đang tải...
+                                    <i class="bi bi-hourglass-split mr-2"></i>{{ __('general.loading') }}
                                 </span>
                             </button>
                         @else
                             <div class="text-center">
                                 <button type="button" class="btn btn-success" disabled>
-                                    <i class="bi bi-check-circle mr-2"></i>Đã nộp đủ tất cả bài tập!
+                                    <i class="bi bi-check-circle mr-2"></i>{{ __('general.submitted_all_assignments') }}
                                 </button>
-                                <div class="small text-muted mt-1">Bạn đã hoàn thành tất cả loại bài tập được yêu
-                                    cầu
-                                </div>
+                                <div class="small text-muted mt-1">{{ __('general.completed_all_required_types') }}</div>
                             </div>
                         @endif
                     </div>
