@@ -16,7 +16,7 @@
             <div class="row g-0 align-items-stretch">
                 <div class="col-md-7 p-4">
                     <form wire:submit="update" novalidate>
-                        <!-- Thông tin cá nhân -->
+                        <!-- {{ __('views.personal_info_comment') }} -->
                         <div class="mb-4">
                             <h5 class="text-primary mb-3">{{ __('views.personal_information') }}</h5>
                             <div class="mb-3">
@@ -46,7 +46,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <!-- Thông tin tài khoản -->
+                        <!-- {{ __('views.account_info_comment') }} -->
                         <div class="mb-4">
                             <h5 class="text-primary mb-3">{{ __('views.account_information') }}</h5>
                             <div class="mb-3">
