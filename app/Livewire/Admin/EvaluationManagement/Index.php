@@ -38,7 +38,7 @@ class Index extends Component
     public $questionForm = [
         'category' => '',
         'question' => '',
-        'order' => 0,
+        'order' => 1,
         'is_active' => true,
     ];
 
@@ -128,7 +128,7 @@ class Index extends Component
         $this->questionForm = [
             'category' => 'teacher',
             'question' => '',
-            'order' => 0,
+            'order' => 1,
             'is_active' => true,
         ];
         $this->showQuestionModal = true;
@@ -156,7 +156,7 @@ class Index extends Component
         $this->questionForm = [
             'category' => '',
             'question' => '',
-            'order' => 0,
+            'order' => 1,
             'is_active' => true,
         ];
     }

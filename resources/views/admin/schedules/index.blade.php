@@ -9,10 +9,12 @@
             </h2>
             <div class="d-flex gap-2">
                 <a href="{{ route('schedules.calendar') }}" class="btn btn-success">
-                    <i class="bi bi-calendar-week mr-2"></i>{{ __('views.view_teaching_schedule') }}
+                    <i class="bi bi-calendar-week mr-0 mr-md-2"></i><span
+                        class="d-none d-md-inline">{{ __('views.view_teaching_schedule') }}</span>
                 </a>
                 <a href="{{ route('schedules.create') }}" class="btn btn-primary">
-                    <i class="bi bi-plus-circle mr-2"></i>{{ __('general.add_schedule') }}
+                    <i class="bi bi-plus-circle mr-0 mr-md-2"></i><span
+                        class="d-none d-md-inline">{{ __('general.add_schedule') }}</span>
                 </a>
             </div>
         </div>
@@ -108,7 +110,8 @@
                                             @elseif($classroom->status === 'completed')
                                                 <span class="badge bg-info">{{ __('general.completed') }}</span>
                                             @else
-                                                <span class="badge bg-secondary">{{ __('general.' . $classroom->status) }}</span>
+                                                <span
+                                                    class="badge bg-secondary">{{ __('general.' . $classroom->status) }}</span>
                                             @endif
                                         </td>
                                         <td>

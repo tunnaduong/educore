@@ -109,13 +109,9 @@
                         <div class="mb-3">
                             <strong class="text-muted">{{ __('views.documents_label') }}:</strong><br>
                             @if ($lesson->attachment)
-                                <a href="{{ asset('storage/' . $lesson->attachment) }}" target="_blank" <<<<<<< HEAD
+                                <a href="{{ asset('storage/' . $lesson->attachment) }}" target="_blank"
                                     class="btn btn-outline-success mb-2"><i class="bi bi-download"></i>
                                     {{ __('views.download_document') }}</a>
-                                =======
-                                class="btn btn-outline-success mb-2"><i class="bi bi-download"></i>
-                                {{ __('views.download_document') }}</a>
-                                >>>>>>> c67aedb6000b2fdc0db04c3b07d51caeb003cf11
                                 <button class="btn btn-outline-primary mb-2 ml-2" type="button"
                                     onclick="openPreviewModal()">
                                     <i class="bi bi-eye"></i> {{ __('views.preview_document') }}
