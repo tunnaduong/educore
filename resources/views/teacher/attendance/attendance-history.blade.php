@@ -5,10 +5,10 @@
         <div class="mb-4">
             <a href="{{ route('teacher.my-class.show', $classroom) }}"
                 class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left mr-2"></i>Quay lại lớp học
+                <i class="bi bi-arrow-left mr-2"></i>{{ __('general.back_to_classes') }}
             </a>
             <h4 class="mb-0 text-primary fs-4">
-                <i class="bi bi-calendar-week mr-2"></i>Lịch sử điểm danh - {{ $classroom->name }}
+                <i class="bi bi-calendar-week mr-2"></i>{{ __('general.attendance_history') }} - {{ $classroom->name }}
             </h4>
         </div>
 
@@ -18,7 +18,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-6">
                         <h5 class="mb-0 text-primary">
-                            <i class="bi bi-funnel mr-2"></i>Lọc theo tháng
+                            <i class="bi bi-funnel mr-2"></i>{{ __('general.filter_by_month') }}
                         </h5>
                     </div>
                     <div class="col-md-6">
@@ -46,7 +46,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">Tổng học viên</h6>
+                                <h6 class="card-title mb-0">{{ __('general.total_students') }}</h6>
                                 <h3 class="mb-0">{{ $monthlyStats['total_students'] }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -61,7 +61,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">Tổng lần có mặt</h6>
+                                <h6 class="card-title mb-0">{{ __('general.total_present') }}</h6>
                                 <h3 class="mb-0">{{ $monthlyStats['total_present'] }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -76,7 +76,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">Tổng lần vắng</h6>
+                                <h6 class="card-title mb-0">{{ __('general.total_absent') }}</h6>
                                 <h3 class="mb-0">{{ $monthlyStats['total_absent'] }}</h3>
                             </div>
                             <div class="align-self-center">
@@ -91,7 +91,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="card-title mb-0">Tỷ lệ trung bình</h6>
+                                <h6 class="card-title mb-0">{{ __('general.average_rate') }}</h6>
                                 <h3 class="mb-0">{{ $monthlyStats['average_rate'] }}%</h3>
                             </div>
                             <div class="align-self-center">
@@ -107,7 +107,7 @@
         <div class="card shadow-sm">
             <div class="card-header bg-light">
                 <h5 class="mb-0 text-primary">
-                    <i class="bi bi-table mr-2"></i>Thống kê điểm danh chi tiết -
+                    <i class="bi bi-table mr-2"></i>{{ __('general.detailed_attendance_statistics') }} -
                     {{ $this->getMonthName($selectedMonth) }} {{ $selectedYear }}
                 </h5>
             </div>
@@ -115,21 +115,20 @@
                 @if (empty($attendanceHistory))
                     <div class="text-center py-5">
                         <i class="bi bi-calendar-x fs-1 text-muted mb-3"></i>
-                        <h5 class="text-muted">Chưa có dữ liệu điểm danh</h5>
-                        <p class="text-muted">Chưa có dữ liệu điểm danh cho tháng
-                            {{ $this->getMonthName($selectedMonth) }} {{ $selectedYear }}.</p>
+                        <h5 class="text-muted">{{ __('general.no_attendance_data') }}</h5>
+                        <p class="text-muted">{{ __('general.no_attendance_data_month', ['month' => $this->getMonthName($selectedMonth), 'year' => $selectedYear]) }}</p>
                     </div>
                 @else
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Học viên</th>
-                                    <th class="text-center">Tổng số</th>
-                                    <th class="text-center">Có mặt</th>
-                                    <th class="text-center">Vắng</th>
-                                    <th class="text-center">Tỷ lệ</th>
-                                    <th class="text-center">Trạng thái</th>
+                                    <th>{{ __('general.student') }}</th>
+                                    <th class="text-center">{{ __('general.total_count') }}</th>
+                                    <th class="text-center">{{ __('general.present') }}</th>
+                                    <th class="text-center">{{ __('general.absent') }}</th>
+                                    <th class="text-center">{{ __('general.rate') }}</th>
+                                    <th class="text-center">{{ __('general.status') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -169,11 +168,11 @@
                                         </td>
                                         <td class="text-center">
                                             @if ($data['stats']['attendance_rate'] >= 90)
-                                                <span class="badge bg-success">Tốt</span>
+                                                <span class="badge bg-success">{{ __('general.good') }}</span>
                                             @elseif ($data['stats']['attendance_rate'] >= 70)
-                                                <span class="badge bg-warning">Khá</span>
+                                                <span class="badge bg-warning">{{ __('general.fair') }}</span>
                                             @else
-                                                <span class="badge bg-danger">Cần cải thiện</span>
+                                                <span class="badge bg-danger">{{ __('general.needs_improvement') }}</span>
                                             @endif
                                         </td>
                                     </tr>

@@ -911,4 +911,8 @@ return [
     'classes_teaching' => 'Classes Teaching',
     'attendance_sessions' => 'Attendance Sessions',
     'my_classes' => 'My Classes',
+    'back_to_classes' => 'Back to Classes',
+    'no_lessons_resources_yet' => 'You don\'t have any lessons or resources yet.',
+    'confirm_delete_lesson' => 'Confirm Delete Lesson',
+    'confirm_delete_lesson_message' => 'Are you sure you want to delete lesson ":title"? This action cannot be undone.',
 ];

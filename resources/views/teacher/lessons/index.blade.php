@@ -81,7 +81,7 @@
                                         <td>
                                             @if ($lesson->video)
                                                 <a href="{{ $lesson->video }}" target="_blank"
-                                                    class="badge bg-warning text-dark">Video</a>
+                                                    class="badge bg-warning text-dark">{{ __('general.video') }}</a>
                                             @else
                                                 <span class="text-muted">-</span>
                                             @endif
@@ -89,7 +89,7 @@
                                         <td>
                                             @if ($lesson->attachment)
                                                 <a href="{{ asset('storage/' . $lesson->attachment) }}" target="_blank"
-                                                    class="badge bg-success">Tài liệu</a>
+                                                    class="badge bg-success">{{ __('general.document') }}</a>
                                             @else
                                                 <span class="text-muted">-</span>
                                             @endif
@@ -118,8 +118,8 @@
                 @else
                     <div class="text-center py-5">
                         <i class="bi bi-folder-x fs-1 text-muted mb-3"></i>
-                        <h5 class="text-muted">Không có bài học nào</h5>
-                        <p class="text-muted">Bạn chưa có bài học hoặc tài nguyên nào.</p>
+                        <h5 class="text-muted">{{ __('general.no_lessons_yet') }}</h5>
+                        <p class="text-muted">{{ __('general.no_lessons_resources_yet') }}</p>
                     </div>
                 @endif
             </div>
@@ -133,16 +133,15 @@
             <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Xác nhận xoá bài học</h5>
+                        <h5 class="modal-title">{{ __('general.confirm_delete_lesson') }}</h5>
                         <button type="button" class="btn-close" wire:click="cancelDelete"></button>
                     </div>
                     <div class="modal-body">
-                        <p>Bạn có chắc chắn muốn xoá bài học "<strong>{{ $lessonTitleToDelete }}</strong>"?<br>Hành
-                            động này không thể hoàn tác.</p>
+                        <p>{{ __('general.confirm_delete_lesson_message', ['title' => $lessonTitleToDelete]) }}</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" wire:click="cancelDelete">Huỷ</button>
-                        <button type="button" class="btn btn-danger" wire:click="deleteLesson">Xoá</button>
+                        <button type="button" class="btn btn-secondary" wire:click="cancelDelete">{{ __('general.cancel') }}</button>
+                        <button type="button" class="btn btn-danger" wire:click="deleteLesson">{{ __('general.delete') }}</button>
                     </div>
                 </div>
             </div>
