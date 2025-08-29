@@ -657,7 +657,7 @@
                                 <div class="mb-3">
                                     <label for="order" class="form-label">{{ __('views.display_order') }}</label>
                                     <input type="number" wire:model="questionForm.order" class="form-control"
-                                        id="order" min="0" placeholder="0">
+                                        id="order" min="1" placeholder="1">
                                     @error('questionForm.order')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
