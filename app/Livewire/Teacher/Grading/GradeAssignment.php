@@ -119,11 +119,11 @@ class GradeAssignment extends Component
     public function getSubmissionTypeLabel($type)
     {
         return match ($type) {
-            'text' => 'Điền từ',
-            'essay' => 'Tự luận',
-            'image' => 'Upload ảnh',
-            'audio' => 'Ghi âm',
-            'video' => 'Video',
+            'text' => __('general.text_type'),
+            'essay' => __('general.essay_type'),
+            'image' => __('general.image_type'),
+            'audio' => __('general.audio_type'),
+            'video' => __('general.video_type'),
             default => $type
         };
     }
