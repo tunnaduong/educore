@@ -80,16 +80,14 @@
         <div class="card shadow-sm">
             <div class="card-header bg-light">
                 <div class="row align-items-center">
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <h5 class="mb-0 text-primary">
                             <i class="bi bi-calendar-event mr-2"></i>Điểm danh ngày
-                            {{ \Carbon\Carbon::parse($selectedDate)->format('d/m/Y') }}
+                            {{ \Carbon\Carbon::now()->format('d/m/Y') }}
                         </h5>
                     </div>
-                    <div class="col-md-6">
-                        <div class="d-flex gap-2 justify-content-end">
-                            <input wire:model.live="selectedDate" type="date" class="form-control"
-                                style="max-width: 200px;">
+                    <div class="col-md-4">
+                        <div class="d-flex justify-content-end">
                             <button wire:click="saveAttendance" class="btn btn-primary"
                                 {{ !$canTakeAttendance ? 'disabled' : '' }}>
                                 <i class="bi bi-save mr-2"></i>Lưu điểm danh
@@ -147,7 +145,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($attendanceData as $index => $data)
-                                    <tr wire:key="attendance-{{ $selectedDate }}-{{ $data['student_record']->id }}">
+                                    <tr wire:key="attendance-{{ $data['student_record']->id }}">
                                         <td class="text-center">{{ $index + 1 }}</td>
                                         <td>
                                             <div class="d-flex align-items-center">
