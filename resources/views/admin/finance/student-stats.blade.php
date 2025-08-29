@@ -1,20 +1,20 @@
 <div class="container-fluid">
     @include('components.language')
-    <!-- Bộ lọc học viên -->
+    <!-- {{ __('views.student_filter_title') }} -->
     <div class="card shadow-sm mb-4">
         <div class="card-header bg-light">
             <h6 class="mb-0 text-primary">
-                <i class="bi bi-filter-circle-fill mr-2"></i>Bộ lọc học viên
+                <i class="bi bi-filter-circle-fill mr-2"></i>{{ __('views.student_filter_title') }}
             </h6>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-4">
                     <label class="form-label fw-semibold">
-                        <i class="bi bi-building text-primary mr-1"></i>Lọc theo lớp
+                        <i class="bi bi-building text-primary mr-1"></i>{{ __('general.filter_by_class') }}
                     </label>
                     <select class="form-control form-control-lg" wire:model="filterClass">
-                        <option value="">Tất cả lớp học</option>
+                        <option value="">{{ __('general.all_classes') }}</option>
                         @foreach ($students->flatMap(fn($s) => $s['classes'])->unique('class_id') as $class)
                             <option value="{{ $class['class_name'] }}">{{ $class['class_name'] }}</option>
                         @endforeach
@@ -22,25 +22,25 @@
                 </div>
                 <div class="col-md-4">
                     <label class="form-label fw-semibold">
-                        <i class="bi bi-cash text-success mr-1"></i>Trạng thái học phí
+                        <i class="bi bi-cash text-success mr-1"></i>{{ __('views.tuition_status_label') }}
                     </label>
                     <select class="form-control form-control-lg" wire:model="filterStatus">
-                        <option value="">Tất cả trạng thái</option>
+                        <option value="">{{ __('views.all_statuses') }}</option>
                         <option value="paid">
-                            <i class="bi bi-check-circle-fill"></i> Đã đóng đủ
+                            <i class="bi bi-check-circle-fill"></i> {{ __('views.paid_full') }}
                         </option>
                         <option value="partial">
-                            <i class="bi bi-exclamation-triangle-fill"></i> Còn thiếu
+                            <i class="bi bi-exclamation-triangle-fill"></i> {{ __('views.partial') }}
                         </option>
                         <option value="unpaid">
-                            <i class="bi bi-x-circle-fill"></i> Chưa đóng
+                            <i class="bi bi-x-circle-fill"></i> {{ __('views.unpaid') }}
                         </option>
                     </select>
                 </div>
                 <div class="col-md-12 d-flex align-items-end">
                     <div class="text-muted small">
                         <i class="bi bi-info-circle mr-1"></i>
-                        Tổng cộng {{ count($students) }} học viên
+                        {{ __('views.total_students', ['count' => count($students)]) }}
                     </div>
                 </div>
             </div>
@@ -51,7 +51,7 @@
     <div class="card shadow-sm">
         <div class="card-header bg-primary text-white">
             <h6 class="mb-0">
-                <i class="bi bi-people-fill mr-2"></i>Danh sách học viên và trạng thái học phí
+                <i class="bi bi-people-fill mr-2"></i>{{ __('views.student_list_and_tuition_status') }}
             </h6>
         </div>
         <div class="table-responsive">
@@ -60,16 +60,16 @@
                     <tr>
                         <th class="text-center" width="8%">#</th>
                         <th width="25%">
-                            <i class="bi bi-person-fill mr-1"></i>Học viên
+                            <i class="bi bi-person-fill mr-1"></i>{{ __('general.student') }}
                         </th>
                         <th width="30%">
-                            <i class="bi bi-building mr-1"></i>Lớp tham gia
+                            <i class="bi bi-building mr-1"></i>{{ __('views.joined_classes') }}
                         </th>
                         <th width="27%">
-                            <i class="bi bi-cash mr-1"></i>Trạng thái học phí
+                            <i class="bi bi-cash mr-1"></i>{{ __('views.tuition_status') }}
                         </th>
                         <th class="text-center" width="10%">
-                            <i class="bi bi-gear mr-1"></i>Thao tác
+                            <i class="bi bi-gear mr-1"></i>{{ __('general.actions') }}
                         </th>
                     </tr>
                 </thead>
@@ -102,18 +102,17 @@
                                         @if ($class['status'] === 'paid')
                                             <span class="badge bg-success">
                                                 <i class="bi bi-check-circle-fill mr-1"></i>{{ $class['class_name'] }}:
-                                                Đã đóng đủ
+                                                {{ __('views.paid_full') }}
                                             </span>
                                         @elseif ($class['status'] === 'partial')
                                             <span class="badge bg-warning">
                                                 <i
                                                     class="bi bi-exclamation-triangle-fill mr-1"></i>{{ $class['class_name'] }}:
-                                                Còn thiếu
+                                                {{ __('views.partial') }}
                                             </span>
                                         @else
                                             <span class="badge bg-danger">
-                                                <i class="bi bi-x-circle-fill mr-1"></i>{{ $class['class_name'] }}: Chưa
-                                                đóng
+                                                <i class="bi bi-x-circle-fill mr-1"></i>{{ $class['class_name'] }}: {{ __('views.unpaid') }}
                                             </span>
                                         @endif
                                     </div>
@@ -122,7 +121,7 @@
                             <td class="text-center">
                                 <a href="{{ route('admin.finance.payment.show', $student['id']) }}"
                                     class="btn btn-primary btn-sm shadow-sm">
-                                    <i class="bi bi-eye-fill mr-1"></i>Chi tiết
+                                    <i class="bi bi-eye-fill mr-1"></i>{{ __('general.details') }}
                                 </a>
                             </td>
                         </tr>
@@ -130,8 +129,8 @@
                         <tr>
                             <td colspan="5" class="text-center py-5">
                                 <i class="bi bi-people text-muted" style="font-size: 3rem;"></i>
-                                <div class="mt-2 text-muted fs-5">Không có học viên nào</div>
-                                <small class="text-muted">Thử thay đổi bộ lọc để xem kết quả khác</small>
+                                <div class="mt-2 text-muted fs-5">{{ __('views.no_students') }}</div>
+                                <small class="text-muted">{{ __('views.try_change_filters') }}</small>
                             </td>
                         </tr>
                     @endforelse
