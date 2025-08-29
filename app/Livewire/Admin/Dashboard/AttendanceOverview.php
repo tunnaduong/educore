@@ -38,6 +38,33 @@ class AttendanceOverview extends Component
         // Tính tỷ lệ điểm danh
         $attendanceRate = $totalAttendanceDays > 0 ? round(($totalPresent / $totalAttendanceDays) * 100, 1) : 0;
 
+        // Phân bố trạng thái trong tháng
+        // Hệ thống hiện mới lưu 'present' (boolean), chưa có cột 'late' -> mặc định 0
+        $statusCounts = [
+            'present' => $totalPresent,
+            'absent' => $totalAbsent,
+            'late' => 0,
+        ];
+
+        // Xu hướng theo ngày: mỗi ngày gồm present/total/rate
+        $dailyTrend = $monthlyAttendances
+            ->groupBy(function ($attendance) {
+                return Carbon::parse($attendance->date)->toDateString();
+            })
+            ->map(function ($items, $date) {
+                $present = $items->where('present', true)->count();
+                $total = $items->count();
+                $rate = $total > 0 ? round(($present / $total) * 100, 1) : 0;
+                return [
+                    'date' => $date,
+                    'present' => $present,
+                    'total' => $total,
+                    'rate' => $rate,
+                ];
+            })
+            ->sortBy('date')
+            ->values();
+
         // Top 5 học viên có điểm danh tốt nhất
         $topStudents = Attendance::forMonth($this->selectedYear, $this->selectedMonth)
             ->with('student.user')
@@ -83,6 +110,8 @@ class AttendanceOverview extends Component
             'total_present' => $totalPresent,
             'total_absent' => $totalAbsent,
             'attendance_rate' => $attendanceRate,
+            'status_counts' => $statusCounts,
+            'daily_trend' => $dailyTrend,
             'top_students' => $topStudents,
             'top_classes' => $topClasses,
         ];
