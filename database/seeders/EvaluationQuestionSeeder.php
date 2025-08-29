@@ -136,8 +136,8 @@ class EvaluationQuestionSeeder extends Seeder
             EvaluationQuestion::create($questionData);
         }
 
-        $this->command->info('Đã tạo ' . count($questions) . ' câu hỏi đánh giá.');
-        $this->command->info('- Câu hỏi hoạt động: ' . collect($questions)->where('is_active', true)->count());
-        $this->command->info('- Câu hỏi không hoạt động: ' . collect($questions)->where('is_active', false)->count());
+        $this->command->info('Đã tạo '.count($questions).' câu hỏi đánh giá.');
+        $this->command->info('- Câu hỏi hoạt động: '.collect($questions)->where('is_active', true)->count());
+        $this->command->info('- Câu hỏi không hoạt động: '.collect($questions)->where('is_active', false)->count());
     }
 }

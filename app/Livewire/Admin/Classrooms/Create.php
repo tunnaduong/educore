@@ -88,7 +88,7 @@ class Create extends Component
         $tempClassroom = new Classroom([
             'schedule' => [
                 'days' => $this->days,
-                'time' => $this->startTime . ' - ' . $this->endTime,
+                'time' => $this->startTime.' - '.$this->endTime,
             ],
         ]);
 
@@ -115,7 +115,7 @@ class Create extends Component
             $tempClassroom = new Classroom([
                 'schedule' => [
                     'days' => $this->days,
-                    'time' => $this->startTime . ' - ' . $this->endTime,
+                    'time' => $this->startTime.' - '.$this->endTime,
                 ],
             ]);
 
@@ -134,8 +134,8 @@ class Create extends Component
             // Nếu không có trùng lịch, tiến hành tạo lớp
             $this->performCreate();
         } catch (\Exception $e) {
-            session()->flash('error', 'Không thể tạo lớp học. Vui lòng thử lại sau. Lỗi: ' . $e->getMessage());
-            Log::error('Create Classroom Error: ' . $e->getMessage(), [
+            session()->flash('error', 'Không thể tạo lớp học. Vui lòng thử lại sau. Lỗi: '.$e->getMessage());
+            Log::error('Create Classroom Error: '.$e->getMessage(), [
                 'user_id' => Auth::id(),
                 'data' => $this->only(['name', 'level', 'status']),
             ]);
@@ -149,7 +149,7 @@ class Create extends Component
             'level' => $this->level,
             'schedule' => [
                 'days' => $this->days,
-                'time' => $this->startTime . ' - ' . $this->endTime,
+                'time' => $this->startTime.' - '.$this->endTime,
             ],
             'notes' => $this->notes,
             'status' => $this->status,
