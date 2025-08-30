@@ -318,8 +318,8 @@ return [
     'submissions' => 'Nộp bài',
 
     // Evaluation Management Page
-    'evaluation_management' => 'Quản lý đánh giá chất lượng học viên',
-    'view_evaluations_and_manage_questions' => 'Xem đánh giá và quản lý câu hỏi đánh giá',
+    'evaluation_management' => 'Feedback từ học viên',
+    'view_evaluations_and_manage_questions' => 'Xem feedback và quản lý câu hỏi feedback',
     'evaluation_list' => 'Danh sách đánh giá',
     'question_management' => 'Quản lý câu hỏi',
     'round_management' => 'Quản lý đợt đánh giá',

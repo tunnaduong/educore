@@ -290,7 +290,7 @@ return [
     'total_students' => 'Tổng số học sinh',
     'total_teachers' => 'Tổng số giáo viên',
     'financial_statistics' => 'Thống kê thu chi',
-    'evaluation_management' => 'Quản lý đánh giá',
+    'evaluation_management' => 'Feedback từ học viên',
     'today' => 'Hôm nay',
     'new_teacher_message' => 'Tin nhắn mới từ giáo viên',
     'unread_messages_count' => 'Có tin nhắn chưa đọc cần xem xét.',
@@ -632,7 +632,7 @@ return [
     'no_quizzes_yet' => 'Bạn chưa có bài kiểm tra nào cần làm.',
     // Admin Sidebar translations
     'financial_statistics' => 'Thống kê thu chi',
-    'evaluation_management' => 'Quản lý đánh giá',
+    'evaluation_management' => 'Feedback từ học viên',
     // Evaluation Component translations
     'evaluation_required' => 'Yêu cầu đánh giá chất lượng học tập',
     'function_locked' => 'Chức năng đã bị khóa',
