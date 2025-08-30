@@ -6,9 +6,9 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="mb-0 text-primary fs-4">
-                        <i class="bi bi-bar-chart-fill mr-2"></i>Kết quả học tập
+                        <i class="bi bi-bar-chart-fill mr-2"></i>{{ __('views.student_pages.reports.index.title') }}
                     </h4>
-                    <p class="text-muted mb-0">Tổng quan điểm số và điểm danh của bạn trong quá trình học</p>
+                    <p class="text-muted mb-0">{{ __('views.student_pages.reports.index.subtitle') }}</p>
                 </div>
             </div>
         </div>
@@ -19,7 +19,7 @@
                         <div class="mb-2">
                             <i class="bi bi-journal-text" style="font-size:2.5rem; color:#fd7e14;"></i>
                         </div>
-                        <div class="fw-bold">Điểm TB Bài tập</div>
+                        <div class="fw-bold">{{ __('views.student_pages.reports.index.avg_assignment_score') }}</div>
                         <div class="fs-4 text-primary">{{ $avgAssignmentScore }}</div>
                     </div>
                 </div>
@@ -30,7 +30,7 @@
                         <div class="mb-2">
                             <i class="bi bi-clipboard-check-fill" style="font-size:2.5rem; color:#6f42c1;"></i>
                         </div>
-                        <div class="fw-bold">Điểm TB Kiểm tra</div>
+                        <div class="fw-bold">{{ __('views.student_pages.reports.index.avg_quiz_score') }}</div>
                         <div class="fs-4 text-success">{{ $avgQuizScore }}</div>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                         <div class="mb-2">
                             <i class="bi bi-person-check-fill" style="font-size:2.5rem; color:#20c997;"></i>
                         </div>
-                        <div class="fw-bold">Số lần có mặt</div>
+                        <div class="fw-bold">{{ __('views.student_pages.reports.index.attendance_present') }}</div>
                         <div class="fs-4 text-info">{{ $attendancePresent }}</div>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                         <div class="mb-2">
                             <i class="bi bi-person-x-fill" style="font-size:2.5rem; color:#dc3545;"></i>
                         </div>
-                        <div class="fw-bold">Số lần vắng</div>
+                        <div class="fw-bold">{{ __('views.student_pages.reports.index.attendance_absent') }}</div>
                         <div class="fs-4 text-danger">{{ $attendanceAbsent }}</div>
                     </div>
                 </div>
@@ -62,18 +62,18 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header bg-primary text-white">
-                        <i class="bi bi-journal-check mr-2"></i>Điểm bài tập
+                        <i class="bi bi-journal-check mr-2"></i>{{ __('views.student_pages.reports.index.assignments_scores') }}
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
                             <table class="table table-bordered mb-0">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>Bài tập</th>
-                                        <th>Lớp</th>
-                                        <th>Điểm</th>
-                                        <th>Nhận xét</th>
-                                        <th>Ngày nộp</th>
+                                        <th>{{ __('views.student_pages.reports.index.assignment') }}</th>
+                                        <th>{{ __('views.student_pages.reports.index.class') }}</th>
+                                        <th>{{ __('views.student_pages.reports.index.score') }}</th>
+                                        <th>{{ __('views.student_pages.reports.index.feedback') }}</th>
+                                        <th>{{ __('views.student_pages.reports.index.submission_date') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -88,7 +88,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="5" class="text-center">Chưa có bài tập nào</td>
+                                            <td colspan="5" class="text-center">{{ __('views.student_pages.reports.index.no_assignments') }}</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
@@ -98,18 +98,18 @@
                 </div>
                 <div class="card mb-4">
                     <div class="card-header bg-success text-white">
-                        <i class="bi bi-clipboard-check mr-2"></i>Điểm kiểm tra
+                        <i class="bi bi-clipboard-check mr-2"></i>{{ __('views.student_pages.reports.index.quiz_scores') }}
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
                             <table class="table table-bordered mb-0">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>Đề kiểm tra</th>
-                                        <th>Lớp</th>
-                                        <th>Điểm</th>
-                                        <th>Thời gian làm</th>
-                                        <th>Ngày nộp</th>
+                                        <th>{{ __('views.student_pages.reports.index.quiz_title') }}</th>
+                                        <th>{{ __('views.student_pages.reports.index.class') }}</th>
+                                        <th>{{ __('views.student_pages.reports.index.score') }}</th>
+                                        <th>{{ __('views.student_pages.reports.index.duration') }}</th>
+                                        <th>{{ __('views.student_pages.reports.index.submission_date') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -124,7 +124,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="5" class="text-center">Chưa có bài kiểm tra nào</td>
+                                            <td colspan="5" class="text-center">{{ __('views.student_pages.reports.index.no_quizzes') }}</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
@@ -134,17 +134,17 @@
                 </div>
                 <div class="card">
                     <div class="card-header bg-info text-white">
-                        <i class="bi bi-calendar-check mr-2"></i>Thống kê điểm danh
+                        <i class="bi bi-calendar-check mr-2"></i>{{ __('views.student_pages.reports.index.attendance_stats') }}
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
                             <table class="table table-bordered mb-0">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>Ngày</th>
-                                        <th>Lớp</th>
-                                        <th>Trạng thái</th>
-                                        <th>Lý do vắng (nếu có)</th>
+                                        <th>{{ __('views.student_pages.reports.index.date') }}</th>
+                                        <th>{{ __('views.student_pages.reports.index.class') }}</th>
+                                        <th>{{ __('views.student_pages.reports.index.status') }}</th>
+                                        <th>{{ __('views.student_pages.reports.index.absence_reason') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -155,16 +155,16 @@
                                             <td>{{ $attendance->classroom->name ?? '-' }}</td>
                                             <td>
                                                 @if ($attendance->present)
-                                                    <span class="badge bg-success">Có mặt</span>
+                                                    <span class="badge bg-success">{{ __('views.student_pages.reports.index.present') }}</span>
                                                 @else
-                                                    <span class="badge bg-danger">Vắng</span>
+                                                    <span class="badge bg-danger">{{ __('views.student_pages.reports.index.absent') }}</span>
                                                 @endif
                                             </td>
                                             <td>{{ $attendance->reason ?? '-' }}</td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="4" class="text-center">Chưa có dữ liệu điểm danh</td>
+                                            <td colspan="4" class="text-center">{{ __('views.student_pages.reports.index.no_attendance_data') }}</td>
                                         </tr>
                                     @endforelse
                                 </tbody>

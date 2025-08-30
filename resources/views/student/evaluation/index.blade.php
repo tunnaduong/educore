@@ -4,7 +4,7 @@
     <div class="text-center mb-4">
         <h4 class="text-primary fw-bold">
             <i class="bi bi-star-fill text-warning mr-2"></i>
-            Đánh giá chất lượng học tập
+            {{ __('views.student_pages.evaluation.index.title') }}
         </h4>
         @php
             $student = Auth::user()->student;
@@ -55,7 +55,7 @@
         @if ($currentRound)
             <div class="alert alert-primary">
                 <i class="bi bi-calendar-event mr-2"></i>
-                <strong>Đợt đánh giá:</strong> {{ $currentRound->name }}
+                <strong>{{ __('views.student_pages.evaluation.index.evaluation_round') }}:</strong> {{ $currentRound->name }}
                 @if ($currentRound->description)
                     <br><small class="text-white">{{ $currentRound->description }}</small>
                 @endif
@@ -64,8 +64,7 @@
 
         <div class="alert alert-info">
             <i class="bi bi-info-circle mr-2"></i>
-            <strong>Lưu ý:</strong> Bạn cần hoàn thành đánh giá này để có thể tiếp tục sử dụng các tính năng của hệ
-            thống.
+            <strong>{{ __('views.student_pages.evaluation.index.note') }}:</strong> {{ __('views.student_pages.evaluation.index.note_content') }}
         </div>
 
         @if (session()->has('success'))
@@ -103,10 +102,10 @@
         @if ($isSubmitted && $remainingCountView === 0)
             <div class="alert alert-success">
                 <i class="bi bi-check2-circle mr-2"></i>
-                <strong>Cảm ơn bạn!</strong> Bạn đã hoàn thành đánh giá cho tất cả đợt hiện tại.
+                <strong>{{ __('views.student_pages.evaluation.index.thank_you') }}</strong> {{ __('views.student_pages.evaluation.index.completed_message') }}
                 <div class="mt-3">
                     <button type="button" class="btn btn-success" onclick="location.reload()">
-                        <i class="bi bi-arrow-right mr-2"></i>Tiếp tục sử dụng hệ thống
+                        <i class="bi bi-arrow-right mr-2"></i>{{ __('views.student_pages.evaluation.index.continue_system') }}
                     </button>
                 </div>
             </div>
@@ -117,9 +116,8 @@
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0">
                             <i class="bi bi-person-workspace mr-2"></i>
-                            Nhóm 1: Đánh giá về giáo viên
-                            <span class="badge bg-light text-primary ml-2">{{ count($teacherQuestions) }} câu
-                                hỏi</span>
+                            {{ __('views.student_pages.evaluation.index.group1_title') }}
+                            <span class="badge bg-light text-primary ml-2">{{ count($teacherQuestions) }} {{ __('views.student_pages.evaluation.index.questions') }}</span>
                         </h5>
                     </div>
                     <div class="card-body">
@@ -129,7 +127,7 @@
                                     {{ $loop->iteration }}. {{ $question }}
                                 </label>
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <span class="text-muted small">Rất không đồng ý</span>
+                                    <span class="text-muted small">{{ __('views.student_pages.evaluation.index.strongly_disagree') }}</span>
                                     <div class="star-rating" data-question="teacher_{{ $key }}">
                                         @for ($i = 1; $i <= 5; $i++)
                                             <input type="radio" class="star-input"
@@ -143,7 +141,7 @@
                                             </label>
                                         @endfor
                                     </div>
-                                    <span class="text-muted small">Rất đồng ý</span>
+                                    <span class="text-muted small">{{ __('views.student_pages.evaluation.index.strongly_agree') }}</span>
                                 </div>
                                 @error("teacher_ratings.{$key}")
                                     <div class="text-danger small mt-1">{{ $message }}</div>
@@ -158,9 +156,8 @@
                     <div class="card-header bg-success text-white">
                         <h5 class="mb-0">
                             <i class="bi bi-book mr-2"></i>
-                            Nhóm 2: Đánh giá về chất lượng khóa học
-                            <span class="badge bg-light text-success ml-2">{{ count($courseQuestions) }} câu
-                                hỏi</span>
+                            {{ __('views.student_pages.evaluation.index.group2_title') }}
+                            <span class="badge bg-light text-success ml-2">{{ count($courseQuestions) }} {{ __('views.student_pages.evaluation.index.questions') }}</span>
                         </h5>
                     </div>
                     <div class="card-body">
@@ -170,7 +167,7 @@
                                     {{ $loop->iteration + count($teacherQuestions) }}. {{ $question }}
                                 </label>
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <span class="text-muted small">Rất không đồng ý</span>
+                                    <span class="text-muted small">{{ __('views.student_pages.evaluation.index.strongly_disagree') }}</span>
                                     <div class="star-rating" data-question="course_{{ $key }}">
                                         @for ($i = 1; $i <= 5; $i++)
                                             <input type="radio" class="star-input"
@@ -184,7 +181,7 @@
                                             </label>
                                         @endfor
                                     </div>
-                                    <span class="text-muted small">Rất đồng ý</span>
+                                    <span class="text-muted small">{{ __('views.student_pages.evaluation.index.strongly_agree') }}</span>
                                 </div>
                                 @error("course_ratings.{$key}")
                                     <div class="text-danger small mt-1">{{ $message }}</div>
@@ -199,9 +196,8 @@
                     <div class="card-header bg-warning text-dark">
                         <h5 class="mb-0">
                             <i class="bi bi-emoji-smile mr-2"></i>
-                            Nhóm 3: Cảm nhận cá nhân
-                            <span class="badge bg-light text-warning ml-2">{{ count($personalQuestions) }} câu
-                                hỏi</span>
+                            {{ __('views.student_pages.evaluation.index.group3_title') }}
+                            <span class="badge bg-light text-warning ml-2">{{ count($personalQuestions) }} {{ __('views.student_pages.evaluation.index.questions') }}</span>
                         </h5>
                     </div>
                     <div class="card-body">
@@ -212,7 +208,7 @@
                                     {{ $question }}
                                 </label>
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <span class="text-muted small">Rất không hài lòng</span>
+                                    <span class="text-muted small">{{ __('views.student_pages.evaluation.index.very_dissatisfied') }}</span>
                                     <div class="star-rating" data-question="personal_{{ $key }}">
                                         @for ($i = 1; $i <= 5; $i++)
                                             <input type="radio" class="star-input" wire:model="personal_satisfaction"
@@ -225,7 +221,7 @@
                                             </label>
                                         @endfor
                                     </div>
-                                    <span class="text-muted small">Rất hài lòng</span>
+                                    <span class="text-muted small">{{ __('views.student_pages.evaluation.index.very_satisfied') }}</span>
                                 </div>
                                 @error('personal_satisfaction')
                                     <div class="text-danger small mt-1">{{ $message }}</div>
@@ -236,10 +232,10 @@
                         <div class="mb-3">
                             <label for="suggestions" class="form-label fw-bold">
                                 {{ count($teacherQuestions) + count($courseQuestions) + count($personalQuestions) + 1 }}.
-                                Bạn có đề xuất gì để cải thiện chất lượng giảng dạy hoặc môn học không?
+                                {{ __('views.student_pages.evaluation.index.suggestions_label') }}
                             </label>
                             <textarea wire:model="suggestions" class="form-control" id="suggestions" rows="4"
-                                placeholder="Nhập đề xuất của bạn (không bắt buộc)..."></textarea>
+                                placeholder="{{ __('views.student_pages.evaluation.index.suggestions_placeholder') }}"></textarea>
                             @error('suggestions')
                                 <div class="text-danger small mt-1">{{ $message }}</div>
                             @enderror
@@ -250,7 +246,7 @@
                 <!-- Buttons -->
                 <div class="d-flex justify-content-between">
                     <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-save mr-2"></i>Lưu đánh giá
+                        <i class="bi bi-save mr-2"></i>{{ __('views.student_pages.evaluation.index.save_evaluation') }}
                     </button>
                     @php
                         $teacherAnswered = count($teacher_ratings) >= count($teacherQuestions);
@@ -261,23 +257,22 @@
                     <button type="button" wire:click="submitEvaluation"
                         class="btn btn-success {{ !$allAnswered ? 'disabled' : '' }}"
                         {{ !$allAnswered ? 'disabled' : '' }}>
-                        <i class="bi bi-send mr-2"></i>Gửi đánh giá
+                        <i class="bi bi-send mr-2"></i>{{ __('views.student_pages.evaluation.index.submit_evaluation') }}
                     </button>
                 </div>
 
                 @if (!$allAnswered)
                     <div class="alert alert-warning mt-3">
                         <i class="bi bi-exclamation-triangle mr-2"></i>
-                        <strong>Lưu ý:</strong> Bạn cần trả lời đầy đủ tất cả câu hỏi bắt buộc trước khi có thể
-                        gửi đánh giá.
+                        <strong>{{ __('views.student_pages.evaluation.index.warning_note') }}:</strong> {{ __('views.student_pages.evaluation.index.warning_content') }}
                         @if (!$teacherAnswered)
-                            <br><small class="text-muted">• Chưa trả lời đầy đủ câu hỏi về giáo viên</small>
+                            <br><small class="text-muted">{{ __('views.student_pages.evaluation.index.incomplete_teacher') }}</small>
                         @endif
                         @if (!$courseAnswered)
-                            <br><small class="text-muted">• Chưa trả lời đầy đủ câu hỏi về khóa học</small>
+                            <br><small class="text-muted">{{ __('views.student_pages.evaluation.index.incomplete_course') }}</small>
                         @endif
                         @if (!$personalAnswered)
-                            <br><small class="text-muted">• Chưa đánh giá mức độ hài lòng cá nhân</small>
+                            <br><small class="text-muted">{{ __('views.student_pages.evaluation.index.incomplete_personal') }}</small>
                         @endif
                     </div>
                 @endif
