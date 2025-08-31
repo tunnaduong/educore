@@ -59,10 +59,10 @@ class DuskTestSeeder extends Seeder
         Assignment::create([
             'title' => 'Bài tập về nhà số 1',
             'description' => 'Làm bài tập 1-10 trong sách giáo khoa',
-            'classroom_id' => $classroom->id,
-            'teacher_id' => $teacher->id,
-            'due_date' => now()->addDays(7),
-            'max_score' => 100,
+            'class_id' => $classroom->id,
+            'deadline' => now()->addDays(7),
+            'types' => ['text', 'essay'],
+            'max_score' => 10.0,
         ]);
 
         // Tạo thêm một số user để test

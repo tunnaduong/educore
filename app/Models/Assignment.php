@@ -49,4 +49,12 @@ class Assignment extends Model
     {
         return $this->deadline && now()->isAfter($this->deadline);
     }
+
+    /**
+     * Set the max_score attribute.
+     */
+    public function setMaxScoreAttribute($value)
+    {
+        $this->attributes['max_score'] = $value === '' || $value === null ? null : $value;
+    }
 }

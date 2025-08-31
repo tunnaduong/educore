@@ -13,8 +13,19 @@
         <!-- Form -->
         <div class="card shadow-sm">
             <div class="card-body">
+                <!-- Success/Error Messages -->
                 @if (session()->has('success'))
-                    <div class="alert alert-success">{{ session('success') }}</div>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="bi bi-check-circle-fill me-2"></i>{{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
+                @if (session()->has('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 @endif
 
                 <form wire:submit.prevent="updateAssignment">
@@ -49,18 +60,22 @@
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <label for="deadline" class="form-label fw-semibold">{{ __('general.deadline') }} *</label>
-                            <input wire:model.defer="deadline" type="datetime-local"
-                                class="form-control @error('deadline') is-invalid @enderror" id="deadline">
+                            <input wire:model.live="deadline" type="datetime-local"
+                                class="form-control @error('deadline') is-invalid @enderror" id="deadline"
+                                min="{{ now()->format('Y-m-d\TH:i') }}">
                             @error('deadline')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="col-md-6">
                             <label for="max_score" class="form-label fw-semibold">{{ __('general.max_score_optional') }}</label>
-                            <input wire:model.defer="max_score" type="number" class="form-control" id="max_score"
+                            <input wire:model.defer="max_score" type="number" class="form-control @error('max_score') is-invalid @enderror" id="max_score"
                                 placeholder="{{ __('general.eg_10') }}" min="0" max="10" step="0.1"
                                 oninput="if(this.value > 10) this.value = 10; if(this.value < 0) this.value = 0;"
                                 onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 46 || event.charCode === 8 || event.charCode === 9">
+                            @error('max_score')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
 

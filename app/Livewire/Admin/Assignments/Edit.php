@@ -63,16 +63,40 @@ class Edit extends Component
         $this->classrooms = Classroom::all();
     }
 
+    public function updatedDeadline()
+    {
+        $this->validateOnly('deadline', [
+            'deadline' => 'required|date|after:now',
+        ], [
+            'deadline.required' => 'Vui lòng chọn hạn nộp',
+            'deadline.after' => 'Hạn nộp không được trong quá khứ',
+        ]);
+    }
+
     public function updateAssignment()
     {
         $this->validate([
             'title' => 'required|string|max:255',
             'class_id' => 'required|exists:classrooms,id',
-            'deadline' => 'required|date',
+            'deadline' => 'required|date|after:now',
             'types' => 'required|array|min:1',
             'attachment' => 'nullable|file|mimes:doc,docx,pdf,zip,rar,txt|max:10240',
             'video' => 'nullable|mimetypes:video/mp4,video/avi,video/mpeg,video/quicktime|max:102400',
             'max_score' => 'nullable|numeric|min:0|max:10',
+        ], [
+            'title.required' => 'Vui lòng nhập tiêu đề bài tập',
+            'class_id.required' => 'Vui lòng chọn lớp',
+            'deadline.required' => 'Vui lòng chọn hạn nộp',
+            'deadline.after' => 'Hạn nộp không được trong quá khứ',
+            'types.required' => 'Vui lòng chọn ít nhất một loại bài tập',
+            'types.min' => 'Vui lòng chọn ít nhất một loại bài tập',
+            'attachment.max' => 'Tệp đính kèm tối đa 10MB',
+            'attachment.mimes' => 'Chỉ chấp nhận file doc, docx, pdf, zip, rar, txt',
+            'video.max' => 'Video tối đa 100MB',
+            'video.mimetypes' => 'Chỉ chấp nhận video mp4, avi, mpeg, mov',
+            'max_score.numeric' => 'Điểm tối đa phải là số',
+            'max_score.min' => 'Điểm tối đa phải lớn hơn hoặc bằng 0',
+            'max_score.max' => 'Điểm tối đa không được vượt quá 10',
         ]);
 
         $attachmentPath = $this->old_attachment_path;
@@ -90,20 +114,28 @@ class Edit extends Component
             $videoPath = $this->video->store('assignments/videos', 'public');
         }
 
-        $this->assignment->update([
+        $data = [
             'class_id' => $this->class_id,
             'title' => $this->title,
             'description' => $this->description,
             'deadline' => $this->deadline,
-            'max_score' => $this->max_score,
             'types' => $this->types,
             'attachment_path' => $attachmentPath,
             'video_path' => $videoPath,
-        ]);
+        ];
 
-        session()->flash('success', 'Cập nhật bài tập thành công!');
+        // Chỉ thêm max_score nếu có giá trị
+        if (!empty($this->max_score)) {
+            $data['max_score'] = $this->max_score;
+        }
 
-        return redirect()->route('assignments.overview');
+        try {
+            $this->assignment->update($data);
+            session()->flash('success', 'Cập nhật bài tập thành công!');
+            return redirect()->route('assignments.overview');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Có lỗi xảy ra khi cập nhật bài tập: ' . $e->getMessage());
+        }
     }
 
     public function render()

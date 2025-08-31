@@ -139,6 +139,7 @@ class AssignmentSeeder extends Seeder
                     'types' => $types,
                     'attachment_path' => $attachmentPath,
                     'video_path' => $videoPath,
+                    'max_score' => $faker->randomFloat(1, 5, 10),
                 ]);
             }
         }
