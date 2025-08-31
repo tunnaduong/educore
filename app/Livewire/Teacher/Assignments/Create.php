@@ -109,7 +109,7 @@ class Create extends Component
         ];
 
         // Chỉ thêm max_score nếu có giá trị
-        if (!empty($this->max_score)) {
+        if (! empty($this->max_score)) {
             $data['max_score'] = $this->max_score;
         }
 
@@ -118,7 +118,7 @@ class Create extends Component
             session()->flash('success', 'Tạo bài tập thành công!');
             $this->reset(['title', 'description', 'class_id', 'deadline', 'types', 'attachment', 'video', 'max_score']);
         } catch (\Exception $e) {
-            session()->flash('error', 'Có lỗi xảy ra khi tạo bài tập: ' . $e->getMessage());
+            session()->flash('error', 'Có lỗi xảy ra khi tạo bài tập: '.$e->getMessage());
         }
     }
 

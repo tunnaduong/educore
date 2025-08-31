@@ -90,7 +90,7 @@ class Show extends Component
             // Làm mới submissions để cập nhật giao diện
             $this->submissions = AssignmentSubmission::where('assignment_id', $this->assignmentId)->with(['student'])->get();
         } catch (\Exception $e) {
-            session()->flash('error', 'Có lỗi xảy ra khi lưu điểm: ' . $e->getMessage());
+            session()->flash('error', 'Có lỗi xảy ra khi lưu điểm: '.$e->getMessage());
         }
     }
 

@@ -125,16 +125,17 @@ class Edit extends Component
         ];
 
         // Chỉ thêm max_score nếu có giá trị
-        if (!empty($this->max_score)) {
+        if (! empty($this->max_score)) {
             $data['max_score'] = $this->max_score;
         }
 
         try {
             $this->assignment->update($data);
             session()->flash('success', 'Cập nhật bài tập thành công!');
+
             return redirect()->route('assignments.overview');
         } catch (\Exception $e) {
-            session()->flash('error', 'Có lỗi xảy ra khi cập nhật bài tập: ' . $e->getMessage());
+            session()->flash('error', 'Có lỗi xảy ra khi cập nhật bài tập: '.$e->getMessage());
         }
     }
 

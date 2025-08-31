@@ -149,7 +149,7 @@ class CreateEvent extends Component
                     ];
 
                     // Chỉ thêm max_score nếu có giá trị
-                    if (!empty($this->maxScore)) {
+                    if (! empty($this->maxScore)) {
                         $data['max_score'] = $this->maxScore;
                     }
 
