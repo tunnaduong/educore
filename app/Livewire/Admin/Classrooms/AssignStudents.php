@@ -119,12 +119,7 @@ class AssignStudents extends Component
         session()->flash('message', 'Đã cập nhật danh sách học viên thành công!');
     }
 
-    public function forceAssignStudents()
-    {
-        // Gán học sinh bất chấp trùng lịch
-        $this->performAssignment();
-        session()->flash('warning', 'Đã gán học sinh bất chấp trùng lịch. Vui lòng kiểm tra lại lịch học!');
-    }
+
 
     public function closeConflictModal()
     {

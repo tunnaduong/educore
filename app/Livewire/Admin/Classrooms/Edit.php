@@ -231,11 +231,7 @@ class Edit extends Component
         return $this->redirect(route('classrooms.index'));
     }
 
-    public function forceUpdate()
-    {
-        // Cập nhật lớp bất chấp trùng lịch
-        $this->performUpdate();
-    }
+
 
     public function closeConflictModal()
     {

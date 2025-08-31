@@ -274,49 +274,57 @@
     @if ($showConflictModal)
         <div class="modal fade show" style="display: block;" tabindex="-1">
             <div class="modal-dialog modal-dialog-scrollable modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header bg-warning text-dark">
-                        <h5 class="modal-title">
-                            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
-                            @lang('general.detected_schedule_conflicts_title')
+                <div class="modal-content border-0 shadow-lg">
+                    <div class="modal-header bg-danger text-white border-0">
+                        <h5 class="modal-title fw-bold">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            Cảnh báo xung đột lịch học
                         </h5>
-                        <button type="button" class="btn-close" wire:click="closeConflictModal"></button>
+                        <button type="button" class="btn-close btn-close-white" wire:click="closeConflictModal"></button>
                     </div>
-                    <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
-                        <div class="alert alert-warning">
-                            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
-                            <strong>@lang('general.warning')</strong> @lang('general.selected_students_schedule_conflict_message')
+                    <div class="modal-body p-4" style="max-height: 70vh; overflow-y: auto;">
+                        <div class="alert alert-danger border-0 mb-4">
+                            <div class="d-flex align-items-start">
+                                <i class="bi bi-exclamation-triangle-fill fs-4 me-3 mt-1"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-2">Phát hiện xung đột lịch học!</h6>
+                                    <p class="mb-0">Học sinh đã chọn có lịch học trùng với thời gian và ngày học của lớp học này.</p>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row mb-4">
                             <div class="col-12">
-                                <h6 class="text-danger mb-3">
-                                    <i class="bi bi-people-fill mr-2"></i>
-                                    @lang('general.conflicting_students_list', ['count' => count($scheduleConflicts)])
+                                <h6 class="text-danger fw-bold mb-3">
+                                    <i class="bi bi-people-fill me-2"></i>
+                                    Danh sách học sinh xung đột lịch ({{ count($scheduleConflicts) }} học sinh)
                                 </h6>
                             </div>
                         </div>
 
                         @foreach ($scheduleConflicts as $studentId => $conflictData)
-                            <div class="card mb-3 border-warning">
-                                <div class="card-header bg-light">
-                                    <h6 class="mb-0 text-danger">
-                                        <i class="bi bi-person-circle mr-2"></i>
+                            <div class="card mb-4 border-danger shadow-sm">
+                                <div class="card-header bg-danger bg-opacity-10 border-danger">
+                                    <h6 class="mb-0 text-danger fw-bold">
+                                        <i class="bi bi-person-circle me-2"></i>
                                         {{ $conflictData['student']->name }}
-                                        <small class="text-muted">({{ $conflictData['student']->email }})</small>
+                                        <small class="text-muted ms-2">({{ $conflictData['student']->email }})</small>
                                     </h6>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <strong class="text-primary">@lang('general.current_classes')</strong>
+                                            <strong class="text-primary fw-bold mb-3 d-block">
+                                                <i class="bi bi-calendar-event me-2"></i>
+                                                Lớp học hiện tại
+                                            </strong>
                                             <div class="mt-2" style="max-height: 150px; overflow-y: auto;">
                                                 @foreach ($conflictData['conflicts'] as $conflict)
-                                                    <div class="border-start border-primary ps-3 mb-2">
+                                                    <div class="border-start border-primary ps-3 mb-3 py-2">
                                                         <div class="d-flex align-items-start">
-                                                            <i class="bi bi-calendar-event text-primary mr-2 mt-1"></i>
+                                                            <i class="bi bi-calendar-event text-primary me-2 mt-1"></i>
                                                             <div class="flex-grow-1">
-                                                                <strong>{{ $conflict['classroom']->name }}</strong><br>
+                                                                <strong class="text-primary">{{ $conflict['classroom']->name }}</strong><br>
                                                                 <small class="text-muted">
                                                                     {{ $conflict['message'] }}
                                                                 </small>
@@ -327,19 +335,22 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <strong class="text-success">@lang('general.new_class')</strong>
+                                            <strong class="text-success fw-bold mb-3 d-block">
+                                                <i class="bi bi-calendar-event me-2"></i>
+                                                Lớp học mới
+                                            </strong>
                                             <div class="mt-2">
                                                 <div class="d-flex align-items-start">
-                                                    <i class="bi bi-calendar-event text-success mr-2 mt-1"></i>
+                                                    <i class="bi bi-calendar-event text-success me-2 mt-1"></i>
                                                     <div class="flex-grow-1">
-                                                        <strong>{{ $classroom->name }}</strong><br>
+                                                        <strong class="text-success">{{ $classroom->name }}</strong><br>
                                                         <small class="text-muted">
                                                             @if ($classroom->schedule)
                                                                 {{ implode(', ', $classroom->schedule['days'] ?? []) }}
                                                                 -
                                                                 {{ $classroom->schedule['time'] ?? '' }}
                                                             @else
-                                                                @lang('general.no_schedule')
+                                                                Chưa có lịch học
                                                             @endif
                                                         </small>
                                                     </div>
@@ -352,21 +363,19 @@
                         @endforeach
 
                         @if (count($scheduleConflicts) > 5)
-                            <div class="alert alert-info">
-                                <i class="bi bi-info-circle mr-2"></i>
-                                <strong>@lang('general.note')</strong> @lang('general.conflicting_students_count', ['count' => count($scheduleConflicts)])
-                                @lang('general.scroll_to_view_all')
+                            <div class="alert alert-info border-0 mt-4">
+                                <div class="d-flex align-items-start">
+                                    <i class="bi bi-info-circle fs-4 me-3 mt-1"></i>
+                                    <div>
+                                        <strong>Lưu ý:</strong> Có {{ count($scheduleConflicts) }} học sinh bị xung đột lịch. Vui lòng cuộn xuống để xem tất cả.
+                                    </div>
+                                </div>
                             </div>
                         @endif
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" wire:click="closeConflictModal">
-                            <i class="bi bi-x-circle mr-2"></i>
-                            @lang('general.cancel')
-                        </button>
-                        <button type="button" class="btn btn-warning" wire:click="forceAssignStudents">
-                            <i class="bi bi-exclamation-triangle mr-2"></i>
-                            @lang('general.force_assign_despite_conflicts')
+                    <div class="modal-footer border-0 bg-light">
+                        <button type="button" class="btn btn-secondary px-4" wire:click="closeConflictModal">
+                            <i class="bi bi-x-circle me-2"></i>Đóng
                         </button>
                     </div>
                 </div>
