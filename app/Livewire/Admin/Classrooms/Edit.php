@@ -231,8 +231,6 @@ class Edit extends Component
         return $this->redirect(route('classrooms.index'));
     }
 
-
-
     public function closeConflictModal()
     {
         $this->showConflictModal = false;
