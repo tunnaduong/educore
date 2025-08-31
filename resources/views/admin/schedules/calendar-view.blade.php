@@ -11,7 +11,7 @@
                     <p class="text-muted mb-0">{{ __('views.view_all_schedules_assignments_quizzes') }}</p>
                 </div>
                 <a href="{{ route('schedules.index') }}" class="btn btn-outline-primary">
-                    <i class="bi bi-arrow-left mr-2"></i>{{ __('views.back_to_list') }}
+                    <i class="bi bi-arrow-left mr-2"></i>{{ __('general.back_to_list') }}
                 </a>
             </div>
         </div>
@@ -74,6 +74,7 @@
             var events = @json($events);
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'listWeek',
+                initialDate: new Date(),
                 locale: 'vi',
                 buttonText: {
                     today: '{{ __('views.today') }}',
@@ -96,6 +97,7 @@
                 },
                 events: events,
                 height: 650,
+                noEventsMessage: '{{ __('views.no_events_to_display') }}',
                 dateClick: function(info) {
                     // Lọc các event của ngày được click
                     var clickedDate = info.dateStr;
@@ -166,6 +168,77 @@
 
                     // Gọi Livewire component để hiển thị chi tiết
                     @this.call('showEventDetail', eventId, eventType);
+                },
+                todayClick: function() {
+                    // Xử lý khi nhấn nút "Hôm nay"
+                    var today = new Date();
+                    var todayStr = today.toISOString().split('T')[0];
+                    
+                    // Chuyển calendar đến ngày hôm nay
+                    calendar.gotoDate(today);
+                    
+                    // Lọc các event của ngày hôm nay
+                    var todayEvents = events.filter(function(ev) {
+                        return ev.start.startsWith(todayStr);
+                    });
+                    
+                    var html = '';
+                    if (todayEvents.length === 0) {
+                        html = '<p class="text-center">{{ __('views.no_events_today') }}</p>';
+                    } else {
+                        html = '<ul class="list-group">';
+                        todayEvents.forEach(function(ev) {
+                            var typeIcon = '';
+                            var typeClass = '';
+
+                            if (ev.extendedProps && ev.extendedProps.type === 'schedule') {
+                                typeIcon = '<i class="bi bi-calendar3 mr-2"></i>';
+                                typeClass = 'text-primary';
+                            } else if (ev.extendedProps && ev.extendedProps.type === 'assignment') {
+                                typeIcon = '<i class="bi bi-journal-text mr-2"></i>';
+                                typeClass = 'text-warning';
+                            } else if (ev.extendedProps && ev.extendedProps.type === 'quiz') {
+                                typeIcon = '<i class="bi bi-patch-question mr-2"></i>';
+                                typeClass = 'text-success';
+                            }
+
+                            html += '<li class="list-group-item">' +
+                                '<div class="d-flex align-items-start">' +
+                                '<span style="display:inline-block;width:12px;height:12px;background:' +
+                                ev.backgroundColor +
+                                ';border-radius:50%;margin-right:8px;margin-top:4px;"></span>' +
+                                '<div class="flex-grow-1">' +
+                                '<div class="' + typeClass + '">' + typeIcon + '<b>' + ev
+                                .title + '</b></div>';
+
+                            if (ev.extendedProps && ev.extendedProps.classroom) {
+                                html += '<small class="text-muted">{{ __('views.class_label') }}: ' + ev.extendedProps
+                                    .classroom + '</small><br>';
+                            }
+
+                            if (ev.start && ev.end) {
+                                var start = ev.start.substring(11, 16);
+                                var end = ev.end.substring(11, 16);
+                                html += '<small class="text-muted">{{ __('views.time_label') }}: ' + start +
+                                    ' - ' + end + '</small>';
+                            } else if (ev.start) {
+                                var start = ev.start.substring(11, 16);
+                                html += '<small class="text-muted">{{ __('views.time_label') }}: ' + start + '</small>';
+                            }
+
+                            if (ev.extendedProps && ev.extendedProps.location) {
+                                html += '<br><small class="text-muted">{{ __('views.location_label') }}: ' + ev
+                                    .extendedProps.location + '</small>';
+                            }
+
+                            html += '</div></div></li>';
+                        });
+                        html += '</ul>';
+                    }
+                    
+                    document.getElementById('modalScheduleBody').innerHTML = html;
+                    var modal = new bootstrap.Modal(document.getElementById('modalSchedule'));
+                    modal.show();
                 }
             });
             calendar.render();
