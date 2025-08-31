@@ -70,7 +70,7 @@ class Edit extends Component
         ]);
 
         session()->flash('success_message', 'Lịch học đã được cập nhật thành công!');
-        
+
         return redirect()->route('schedules.index');
     }
 
