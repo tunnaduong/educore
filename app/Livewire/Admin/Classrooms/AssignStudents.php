@@ -119,8 +119,6 @@ class AssignStudents extends Component
         session()->flash('message', 'Đã cập nhật danh sách học viên thành công!');
     }
 
-
-
     public function closeConflictModal()
     {
         $this->showConflictModal = false;
