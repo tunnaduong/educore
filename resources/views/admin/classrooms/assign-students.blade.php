@@ -304,20 +304,53 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <strong class="text-primary fw-bold mb-3 d-block">
-                                                <i class="bi bi-calendar-event me-3"></i>
-                                                Lớp học hiện tại
-                                            </strong>
-                                            <div class="mt-2" style="max-height: 150px; overflow-y: auto;">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <i class="bi bi-calendar-event text-primary" style="margin-right: 12px;"></i>
+                                                <strong class="text-primary fw-bold">Lớp học hiện tại: {{ $conflictData['conflicts'][0]['classroom']->name }}</strong>
+                                            </div>
+                                            <div class="mt-2">
+                                                <div class="d-flex align-items-start">
+                                                    <div class="flex-grow-1">
+                                                        <small class="text-muted">
+                                                            @if ($conflictData['conflicts'][0]['classroom']->schedule)
+                                                                @php
+                                                                    $days = $conflictData['conflicts'][0]['classroom']->schedule['days'] ?? [];
+                                                                    $vietnameseDays = [];
+                                                                    foreach ($days as $day) {
+                                                                        switch (strtolower($day)) {
+                                                                            case 'monday': $vietnameseDays[] = 'Thứ 2'; break;
+                                                                            case 'tuesday': $vietnameseDays[] = 'Thứ 3'; break;
+                                                                            case 'wednesday': $vietnameseDays[] = 'Thứ 4'; break;
+                                                                            case 'thursday': $vietnameseDays[] = 'Thứ 5'; break;
+                                                                            case 'friday': $vietnameseDays[] = 'Thứ 6'; break;
+                                                                            case 'saturday': $vietnameseDays[] = 'Thứ 7'; break;
+                                                                            case 'sunday': $vietnameseDays[] = 'Chủ nhật'; break;
+                                                                            default: $vietnameseDays[] = $day;
+                                                                        }
+                                                                    }
+                                                                @endphp
+                                                                {{ implode(', ', $vietnameseDays) }}
+                                                                -
+                                                                {{ $conflictData['conflicts'][0]['classroom']->schedule['time'] ?? '' }}
+                                                            @else
+                                                                Chưa có lịch học
+                                                            @endif
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="mt-3" style="max-height: 150px; overflow-y: auto;">
                                                 @foreach ($conflictData['conflicts'] as $conflict)
                                                     <div class="border-start border-primary ps-4 mb-3 py-3">
                                                         <div class="d-flex align-items-start">
-                                                            <i class="bi bi-calendar-event text-primary me-3 mt-1"></i>
                                                             <div class="flex-grow-1">
-                                                                <strong class="text-primary">{{ $conflict['classroom']->name }}</strong><br>
-                                                                <small class="text-muted">
-                                                                    {{ $conflict['message'] }}
-                                                                </small>
+                                                                <div class="d-flex align-items-center">
+                                                                    <i class="bi bi-exclamation-triangle-fill text-danger" style="margin-right: 10px;"></i>
+                                                                    <span class="text-danger fw-semibold">
+                                                                        {{ $conflict['message'] }}
+                                                                    </span>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -325,18 +358,32 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <strong class="text-success fw-bold mb-3 d-block">
-                                                <i class="bi bi-calendar-event me-3"></i>
-                                                Lớp học mới
-                                            </strong>
+                                            <div class="d-flex align-items-center mb-3">
+                                                <i class="bi bi-calendar-event text-success" style="margin-right: 12px;"></i>
+                                                <strong class="text-success fw-bold">Lớp học mới: {{ $classroom->name }}</strong>
+                                            </div>
                                             <div class="mt-2">
                                                 <div class="d-flex align-items-start">
-                                                    <i class="bi bi-calendar-event text-success me-3 mt-1"></i>
                                                     <div class="flex-grow-1">
-                                                        <strong class="text-success">{{ $classroom->name }}</strong><br>
                                                         <small class="text-muted">
                                                             @if ($classroom->schedule)
-                                                                {{ implode(', ', $classroom->schedule['days'] ?? []) }}
+                                                                @php
+                                                                    $days = $classroom->schedule['days'] ?? [];
+                                                                    $vietnameseDays = [];
+                                                                    foreach ($days as $day) {
+                                                                        switch (strtolower($day)) {
+                                                                            case 'monday': $vietnameseDays[] = 'Thứ 2'; break;
+                                                                            case 'tuesday': $vietnameseDays[] = 'Thứ 3'; break;
+                                                                            case 'wednesday': $vietnameseDays[] = 'Thứ 4'; break;
+                                                                            case 'thursday': $vietnameseDays[] = 'Thứ 5'; break;
+                                                                            case 'friday': $vietnameseDays[] = 'Thứ 6'; break;
+                                                                            case 'saturday': $vietnameseDays[] = 'Thứ 7'; break;
+                                                                            case 'sunday': $vietnameseDays[] = 'Chủ nhật'; break;
+                                                                            default: $vietnameseDays[] = $day;
+                                                                        }
+                                                                    }
+                                                                @endphp
+                                                                {{ implode(', ', $vietnameseDays) }}
                                                                 -
                                                                 {{ $classroom->schedule['time'] ?? '' }}
                                                             @else
