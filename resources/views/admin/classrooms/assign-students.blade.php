@@ -283,46 +283,36 @@
                         <button type="button" class="btn-close btn-close-white" wire:click="closeConflictModal"></button>
                     </div>
                     <div class="modal-body p-4" style="max-height: 70vh; overflow-y: auto;">
-                        <div class="alert alert-danger border-0 mb-4">
-                            <div class="d-flex align-items-start">
-                                <i class="bi bi-exclamation-triangle-fill fs-4 me-3 mt-1"></i>
-                                <div>
-                                    <h6 class="fw-bold mb-2">Phát hiện xung đột lịch học!</h6>
-                                    <p class="mb-0">Học sinh đã chọn có lịch học trùng với thời gian và ngày học của lớp học này.</p>
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="row mb-4">
                             <div class="col-12">
-                                <h6 class="text-danger fw-bold mb-3">
-                                    <i class="bi bi-people-fill me-2"></i>
+                                <h6 class="text-dark fw-bold mb-3">
+                                    <i class="bi bi-people-fill me-3 text-warning"></i>
                                     Danh sách học sinh xung đột lịch ({{ count($scheduleConflicts) }} học sinh)
                                 </h6>
                             </div>
                         </div>
 
                         @foreach ($scheduleConflicts as $studentId => $conflictData)
-                            <div class="card mb-4 border-danger shadow-sm">
-                                <div class="card-header bg-danger bg-opacity-10 border-danger">
-                                    <h6 class="mb-0 text-danger fw-bold">
-                                        <i class="bi bi-person-circle me-2"></i>
-                                        {{ $conflictData['student']->name }}
+                            <div class="card mb-4 border-warning shadow-sm">
+                                <div class="card-header bg-light border-warning">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <i class="bi bi-person-circle text-primary"></i>
+                                        <span class="text-dark">Học sinh: <strong>{{ $conflictData['student']->name }}</strong></span>
                                         <small class="text-muted ms-2">({{ $conflictData['student']->email }})</small>
-                                    </h6>
+                                    </div>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <strong class="text-primary fw-bold mb-3 d-block">
-                                                <i class="bi bi-calendar-event me-2"></i>
+                                                <i class="bi bi-calendar-event me-3"></i>
                                                 Lớp học hiện tại
                                             </strong>
                                             <div class="mt-2" style="max-height: 150px; overflow-y: auto;">
                                                 @foreach ($conflictData['conflicts'] as $conflict)
-                                                    <div class="border-start border-primary ps-3 mb-3 py-2">
+                                                    <div class="border-start border-primary ps-4 mb-3 py-3">
                                                         <div class="d-flex align-items-start">
-                                                            <i class="bi bi-calendar-event text-primary me-2 mt-1"></i>
+                                                            <i class="bi bi-calendar-event text-primary me-3 mt-1"></i>
                                                             <div class="flex-grow-1">
                                                                 <strong class="text-primary">{{ $conflict['classroom']->name }}</strong><br>
                                                                 <small class="text-muted">
@@ -336,12 +326,12 @@
                                         </div>
                                         <div class="col-md-6">
                                             <strong class="text-success fw-bold mb-3 d-block">
-                                                <i class="bi bi-calendar-event me-2"></i>
+                                                <i class="bi bi-calendar-event me-3"></i>
                                                 Lớp học mới
                                             </strong>
                                             <div class="mt-2">
                                                 <div class="d-flex align-items-start">
-                                                    <i class="bi bi-calendar-event text-success me-2 mt-1"></i>
+                                                    <i class="bi bi-calendar-event text-success me-3 mt-1"></i>
                                                     <div class="flex-grow-1">
                                                         <strong class="text-success">{{ $classroom->name }}</strong><br>
                                                         <small class="text-muted">
@@ -364,9 +354,9 @@
 
                         @if (count($scheduleConflicts) > 5)
                             <div class="alert alert-info border-0 mt-4">
-                                <div class="d-flex align-items-start">
-                                    <i class="bi bi-info-circle fs-4 me-3 mt-1"></i>
-                                    <div>
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="bi bi-info-circle fs-4"></i>
+                                    <div class="flex-grow-1">
                                         <strong>Lưu ý:</strong> Có {{ count($scheduleConflicts) }} học sinh bị xung đột lịch. Vui lòng cuộn xuống để xem tất cả.
                                     </div>
                                 </div>
@@ -375,7 +365,7 @@
                     </div>
                     <div class="modal-footer border-0 bg-light">
                         <button type="button" class="btn btn-secondary px-4" wire:click="closeConflictModal">
-                            <i class="bi bi-x-circle me-2"></i>Đóng
+                            Đóng
                         </button>
                     </div>
                 </div>
