@@ -56,6 +56,14 @@ class Index extends Component
     {
         $this->loadQuestions();
         $this->loadCurrentEvaluation();
+
+        // Đảm bảo dữ liệu được khởi tạo đúng cách
+        if (empty($this->teacher_ratings)) {
+            $this->teacher_ratings = [];
+        }
+        if (empty($this->course_ratings)) {
+            $this->course_ratings = [];
+        }
     }
 
     public function loadQuestions()
@@ -125,6 +133,14 @@ class Index extends Component
             $this->personal_satisfaction = $this->currentEvaluation->personal_satisfaction;
             $this->suggestions = $this->currentEvaluation->suggestions;
             $this->isSubmitted = $this->currentEvaluation->isSubmitted();
+
+            // Log để debug
+            Log::info('Loaded evaluation data:', [
+                'teacher_ratings' => $this->teacher_ratings,
+                'course_ratings' => $this->course_ratings,
+                'personal_satisfaction' => $this->personal_satisfaction,
+                'isSubmitted' => $this->isSubmitted
+            ]);
         }
     }
 
@@ -193,7 +209,21 @@ class Index extends Component
                 }
             }
 
-            session()->flash('success', 'Đánh giá đã được lưu thành công!');
+            // Đảm bảo dữ liệu được cập nhật trong component
+            $this->teacher_ratings = $this->teacher_ratings;
+            $this->course_ratings = $this->course_ratings;
+            $this->personal_satisfaction = $this->personal_satisfaction;
+
+                        session()->flash('success', 'Đánh giá đã được lưu thành công!');
+
+            // Dispatch event để JavaScript cập nhật hiển thị sao ngay lập tức
+            $this->dispatch('evaluation-saved');
+
+            // Thêm script để cập nhật sao ngay lập tức
+            $this->dispatch('update-stars');
+
+            // Thêm script để cập nhật sao ngay lập tức
+            $this->dispatch('js', 'updateEvaluationStars()');
         } catch (\Exception $e) {
             session()->flash('error', 'Có lỗi xảy ra khi lưu đánh giá.');
         }

@@ -113,9 +113,14 @@
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
                 <i class="bi bi-check-circle mr-2"></i>{{ session('success') }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                <i class="bi bi-exclamation-triangle mr-2"></i>{{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
 
@@ -195,8 +200,10 @@
                         <div class="d-flex justify-content-end gap-2">
                             <a href="{{ route('lessons.index') }}"
                                 class="btn btn-light">{{ __('general.cancel') }}</a>
-                            <button type="submit" class="btn btn-success">
-                                <i class="bi bi-folder-plus mr-2"></i>{{ __('views.save_lesson') }}
+                            <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
+                                <i class="bi bi-folder-plus mr-2"></i>
+                                <span wire:loading.remove>{{ __('views.save_lesson') }}</span>
+                                <span wire:loading>{{ __('views.saving') }}...</span>
                             </button>
                         </div>
                     </form>
@@ -213,4 +220,25 @@
             </div>
         </div>
     </div>
+
+    <!-- Toast Notifications -->
+    @if (session()->has('success'))
+        <div class="position-fixed top-0 end-0 p-3" style="z-index: 1060;">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle mr-2"></i>
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    @endif
+
+    @if (session()->has('error'))
+        <div class="position-fixed top-0 end-0 p-3" style="z-index: 1060;">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle mr-2"></i>
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    @endif
 </x-layouts.dash-admin>
