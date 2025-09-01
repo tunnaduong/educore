@@ -49,12 +49,22 @@ class Create extends Component
         }
     }
 
+    public function updatedDeadline()
+    {
+        $this->validateOnly('deadline', [
+            'deadline' => 'required|date|after:now',
+        ], [
+            'deadline.required' => 'Vui lòng chọn hạn nộp',
+            'deadline.after' => 'Hạn nộp không được trong quá khứ',
+        ]);
+    }
+
     public function createAssignment()
     {
         $this->validate([
             'title' => 'required|string|max:255',
             'class_id' => 'required|exists:classrooms,id',
-            'deadline' => 'required|date',
+            'deadline' => 'required|date|after:now',
             'types' => 'required|array|min:1',
             'attachment' => 'nullable|file|mimes:doc,docx,pdf,zip,rar,txt|max:10240',
             'video' => 'nullable|mimetypes:video/mp4,video/avi,video/mpeg,video/quicktime|max:102400',
@@ -63,6 +73,7 @@ class Create extends Component
             'title.required' => 'Vui lòng nhập tiêu đề bài tập',
             'class_id.required' => 'Vui lòng chọn lớp',
             'deadline.required' => 'Vui lòng chọn hạn nộp',
+            'deadline.after' => 'Hạn nộp không được trong quá khứ',
             'types.required' => 'Vui lòng chọn ít nhất một loại bài tập',
             'types.min' => 'Vui lòng chọn ít nhất một loại bài tập',
             'attachment.max' => 'Tệp đính kèm tối đa 10MB',
@@ -83,7 +94,7 @@ class Create extends Component
             $videoPath = $this->video->store('assignments/videos', 'public');
         }
 
-        Assignment::create([
+        $data = [
             'class_id' => $this->class_id,
             'title' => $this->title,
             'description' => $this->description,
@@ -91,11 +102,20 @@ class Create extends Component
             'types' => $this->types,
             'attachment_path' => $attachmentPath,
             'video_path' => $videoPath,
-            'max_score' => $this->max_score,
-        ]);
+        ];
 
-        session()->flash('success', 'Tạo bài tập thành công!');
-        $this->reset(['title', 'description', 'class_id', 'deadline', 'types', 'attachment', 'video', 'max_score']);
+        // Chỉ thêm max_score nếu có giá trị
+        if (! empty($this->max_score)) {
+            $data['max_score'] = $this->max_score;
+        }
+
+        try {
+            Assignment::create($data);
+            session()->flash('success', 'Tạo bài tập thành công!');
+            $this->reset(['title', 'description', 'class_id', 'deadline', 'types', 'attachment', 'video', 'max_score']);
+        } catch (\Exception $e) {
+            session()->flash('error', 'Có lỗi xảy ra khi tạo bài tập: '.$e->getMessage());
+        }
     }
 
     public function render()
