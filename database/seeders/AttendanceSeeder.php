@@ -12,18 +12,19 @@ class AttendanceSeeder extends Seeder
     public function run()
     {
         $classroom = Classroom::where('name', 'HSK2')->first();
-        
-        if (!$classroom) {
+
+        if (! $classroom) {
             echo "Classroom HSK2 not found\n";
+
             return;
         }
 
         $students = $classroom->students;
-        echo "Found " . $students->count() . " students in HSK2\n";
+        echo 'Found '.$students->count()." students in HSK2\n";
 
         foreach ($students as $student) {
             $studentRecord = Student::where('user_id', $student->id)->first();
-            
+
             if ($studentRecord) {
                 // Tạo dữ liệu điểm danh cho tháng 9/2025
                 Attendance::create([
@@ -47,10 +48,10 @@ class AttendanceSeeder extends Seeder
                     'present' => true,
                 ]);
 
-                echo "Created attendance records for: " . $student->name . "\n";
+                echo 'Created attendance records for: '.$student->name."\n";
             }
         }
 
-        echo "Total attendance records: " . Attendance::count() . "\n";
+        echo 'Total attendance records: '.Attendance::count()."\n";
     }
 }

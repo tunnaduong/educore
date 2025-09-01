@@ -114,8 +114,8 @@ class Attendance extends Model
                             return [
                                 'can' => false,
                                 'message' => __('general.not_attendance_time_yet', [
-                                    'start_time' => $attendanceStartTime->format('H:i'), 
-                                    'end_time' => $attendanceEndTime->format('H:i')
+                                    'start_time' => $attendanceStartTime->format('H:i'),
+                                    'end_time' => $attendanceEndTime->format('H:i'),
                                 ]),
                             ];
                         }

@@ -53,25 +53,25 @@ class TakeAttendance extends Component
         }
 
         $this->classroom = $classroom;
-        
+
         \Log::info('Teacher TakeAttendance component mounted', [
             'classroom_id' => $classroom->id,
             'classroom_name' => $classroom->name,
             'selected_date' => now()->format('Y-m-d'),
         ]);
-        
+
         // Kiểm tra dữ liệu attendance hiện tại trước khi load
         $currentAttendance = Attendance::forClass($classroom->id)
             ->forDate(now()->format('Y-m-d'))
             ->get();
-        
+
         \Log::info('Current attendance before load', [
             'classroom_id' => $classroom->id,
             'selected_date' => now()->format('Y-m-d'),
             'total_current_attendance' => $currentAttendance->count(),
             'current_attendance_data' => $currentAttendance->toArray(),
         ]);
-        
+
         $this->loadAttendanceData();
         $this->checkAttendancePermission();
     }
@@ -111,7 +111,7 @@ class TakeAttendance extends Component
             ->where('class_id', $this->classroom->id)
             ->where('date', now()->format('Y-m-d'))
             ->get();
-        
+
         \Log::info('Direct query results', [
             'total_direct_query' => $directQuery->count(),
             'direct_query_data' => $directQuery->toArray(),
@@ -125,7 +125,7 @@ class TakeAttendance extends Component
             ->where('attendances.date', now()->format('Y-m-d'))
             ->select('attendances.*', 'users.name as student_name', 'users.email as student_email')
             ->get();
-        
+
         \Log::info('Direct query with student info', [
             'total_direct_query_with_student_info' => $directQueryWithStudentInfo->count(),
             'direct_query_with_student_info_data' => $directQueryWithStudentInfo->toArray(),
@@ -139,7 +139,7 @@ class TakeAttendance extends Component
 
             if ($studentRecord) {
                 $existing = $existingAttendance->get($studentRecord->id);
-                
+
                 // Log để debug student mapping
                 \Log::info('Student mapping debug', [
                     'user_id' => $student->id,
@@ -148,7 +148,7 @@ class TakeAttendance extends Component
                     'existing_attendance_found' => $existing ? true : false,
                     'existing_attendance_data' => $existing ? $existing->toArray() : null,
                 ]);
-                
+
                 // Nếu có dữ liệu điểm danh hiện tại, sử dụng dữ liệu đó
                 // Nếu không có, mặc định là có mặt (true) nhưng không lưu vào database
                 $this->attendanceData[$studentRecord->id] = [
@@ -158,7 +158,7 @@ class TakeAttendance extends Component
                     'reason' => $existing ? $existing->reason : '',
                     'hasExisting' => $existing ? true : false,
                 ];
-                
+
                 // Log để debug
                 \Log::info('Attendance data loaded', [
                     'student_id' => $studentRecord->id,
@@ -168,14 +168,14 @@ class TakeAttendance extends Component
                     'hasExisting' => $this->attendanceData[$studentRecord->id]['hasExisting'],
                     'existing_attendance' => $existing ? $existing->toArray() : null,
                 ]);
-                
+
                 // Kiểm tra thêm bằng cách query trực tiếp cho student này
                 $directStudentQuery = \DB::table('attendances')
                     ->where('class_id', $this->classroom->id)
                     ->where('student_id', $studentRecord->id)
                     ->where('date', now()->format('Y-m-d'))
                     ->first();
-                
+
                 \Log::info('Direct student query', [
                     'student_id' => $studentRecord->id,
                     'student_name' => $student->name,
@@ -183,9 +183,9 @@ class TakeAttendance extends Component
                     'present_from_direct_query' => $directStudentQuery ? (bool) $directStudentQuery->present : null,
                     'reason_from_direct_query' => $directStudentQuery ? $directStudentQuery->reason : null,
                 ]);
-                
+
                 // Nếu có sự khác biệt giữa Eloquent query và direct query, sử dụng direct query
-                if ($directStudentQuery && (!$existing || $existing->present != $directStudentQuery->present || $existing->reason != $directStudentQuery->reason)) {
+                if ($directStudentQuery && (! $existing || $existing->present != $directStudentQuery->present || $existing->reason != $directStudentQuery->reason)) {
                     \Log::warning('Data mismatch detected', [
                         'student_id' => $studentRecord->id,
                         'student_name' => $student->name,
@@ -194,7 +194,7 @@ class TakeAttendance extends Component
                         'direct_present' => $directStudentQuery->present,
                         'direct_reason' => $directStudentQuery->reason,
                     ]);
-                    
+
                     // Sử dụng dữ liệu từ direct query
                     $this->attendanceData[$studentRecord->id] = [
                         'student' => $student,
@@ -228,17 +228,17 @@ class TakeAttendance extends Component
         if (isset($this->attendanceData[$studentId])) {
             $oldPresent = $this->attendanceData[$studentId]['present'];
             $oldReason = $this->attendanceData[$studentId]['reason'];
-            
+
             $this->attendanceData[$studentId]['present'] = ! $oldPresent;
 
             // Nếu chuyển từ vắng sang có mặt, xóa lý do nghỉ
             if ($this->attendanceData[$studentId]['present']) {
                 $this->attendanceData[$studentId]['reason'] = '';
             }
-            
+
             // Cập nhật trạng thái hasExisting nếu đã thay đổi
             $this->attendanceData[$studentId]['hasExisting'] = true;
-            
+
             // Log để debug
             \Log::info('Attendance toggled', [
                 'student_id' => $studentId,
@@ -261,7 +261,7 @@ class TakeAttendance extends Component
         }
 
         // Chỉ cho phép mở modal cho học sinh vắng
-        if (isset($this->attendanceData[$studentId]) && !$this->attendanceData[$studentId]['present']) {
+        if (isset($this->attendanceData[$studentId]) && ! $this->attendanceData[$studentId]['present']) {
             $this->selectedStudentId = $studentId;
             $this->absenceReason = $this->attendanceData[$studentId]['reason'] ?? '';
             $this->showReasonModal = true;
@@ -276,15 +276,15 @@ class TakeAttendance extends Component
 
         if ($this->selectedStudentId && isset($this->attendanceData[$this->selectedStudentId])) {
             $this->attendanceData[$this->selectedStudentId]['reason'] = $this->absenceReason;
-            
+
             // Đảm bảo rằng khi có lý do nghỉ, trạng thái phải là vắng
-            if (!empty($this->absenceReason)) {
+            if (! empty($this->absenceReason)) {
                 $this->attendanceData[$this->selectedStudentId]['present'] = false;
             }
-            
+
             // Cập nhật trạng thái hasExisting
             $this->attendanceData[$this->selectedStudentId]['hasExisting'] = true;
-            
+
             // Log để debug
             \Log::info('Reason saved', [
                 'student_id' => $this->selectedStudentId,
@@ -319,7 +319,7 @@ class TakeAttendance extends Component
                     'hasExisting' => $data['hasExisting'],
                 ]);
             }
-            
+
             // Sử dụng transaction để đảm bảo tính nhất quán
             \DB::transaction(function () {
                 foreach ($this->attendanceData as $studentId => $data) {
@@ -334,7 +334,7 @@ class TakeAttendance extends Component
                             'reason' => $data['present'] ? null : $data['reason'],
                         ]
                     );
-                    
+
                     // Log để debug
                     \Log::info('Attendance saved', [
                         'student_id' => $studentId,
@@ -349,27 +349,27 @@ class TakeAttendance extends Component
             });
 
             session()->flash('message', __('general.attendance_saved_successfully'));
-            
+
             // Kiểm tra xem dữ liệu có được lưu đúng không bằng cách query lại
             $savedAttendance = Attendance::forClass($this->classroom->id)
                 ->forDate(now()->format('Y-m-d'))
                 ->get()
                 ->keyBy('student_id');
-            
+
             \Log::info('Attendance data after save', [
                 'total_saved_attendance' => $savedAttendance->count(),
                 'saved_attendance_data' => $savedAttendance->toArray(),
             ]);
-            
+
             // Không reload dữ liệu, chỉ cập nhật trạng thái hasExisting
             // để tránh việc reset trạng thái hiện tại
             foreach ($this->attendanceData as $studentId => $data) {
                 $this->attendanceData[$studentId]['hasExisting'] = true;
             }
-            
+
         } catch (\Exception $e) {
-            session()->flash('error', __('general.attendance_save_error') . ': ' . $e->getMessage());
-            \Log::error('Attendance save error: ' . $e->getMessage(), [
+            session()->flash('error', __('general.attendance_save_error').': '.$e->getMessage());
+            \Log::error('Attendance save error: '.$e->getMessage(), [
                 'classroom_id' => $this->classroom->id,
                 'date' => now()->format('Y-m-d'),
                 'user_id' => auth()->id(),

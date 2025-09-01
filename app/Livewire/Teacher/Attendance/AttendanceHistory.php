@@ -76,6 +76,7 @@ class AttendanceHistory extends Component
                     'user_id' => $student->id,
                     'user_name' => $student->name,
                 ]);
+
                 continue;
             }
 

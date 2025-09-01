@@ -1182,7 +1182,7 @@ return [
     'attendance_time_passed' => 'Attendance time has passed. Cannot take attendance again.',
     'attendance_saved_successfully' => 'Attendance saved successfully!',
     'attendance_save_error' => 'An error occurred while saving attendance',
-    
+
     // Quiz related translations
     'answered' => 'Answered',
     'current_question' => 'Current question',

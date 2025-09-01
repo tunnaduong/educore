@@ -171,7 +171,6 @@ return [
     'conflicting_classes' => 'Các lớp bị trùng lịch:',
     'note' => 'Lưu ý:',
 
-
     'ai_assistant' => 'Trợ lý AI',
     'ai_grading' => 'Chấm điểm tự động',
     'ai_quiz_generator' => 'Tạo Quiz bằng AI',
@@ -1207,7 +1206,7 @@ return [
     'members' => 'thành viên',
     'student' => 'Học sinh',
     'teacher' => 'Giáo viên',
-    
+
     // Quiz related translations
     'answered' => 'Đã trả lời',
     'current_question' => 'Câu hỏi hiện tại',

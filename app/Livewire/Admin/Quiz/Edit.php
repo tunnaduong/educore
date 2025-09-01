@@ -91,7 +91,7 @@ class Edit extends Component
         $this->deadline = $quiz->deadline ? $quiz->deadline->format('Y-m-d\TH:i') : '';
         $this->time_limit = $quiz->time_limit;
         $this->questions = $quiz->questions ?? [];
-        
+
         // Kiểm tra trạng thái khóa
         $this->checkLockStatus();
     }
@@ -102,9 +102,9 @@ class Edit extends Component
     private function checkLockStatus(): void
     {
         $lockStatus = $this->quiz->getLockStatus();
-        
-        if (!$lockStatus['can_edit']) {
-            session()->flash('warning', $lockStatus['message'] . ' - Quiz đã bị khóa chỉnh sửa.');
+
+        if (! $lockStatus['can_edit']) {
+            session()->flash('warning', $lockStatus['message'].' - Quiz đã bị khóa chỉnh sửa.');
         }
     }
 
@@ -127,8 +127,9 @@ class Edit extends Component
     public function addQuestion()
     {
         // Kiểm tra trạng thái khóa trước khi cho phép thêm/sửa
-        if (!$this->canEdit()) {
+        if (! $this->canEdit()) {
             session()->flash('error', 'Không thể chỉnh sửa quiz khi có học viên đang làm bài.');
+
             return;
         }
 
@@ -165,8 +166,9 @@ class Edit extends Component
     public function editQuestion($index)
     {
         // Kiểm tra trạng thái khóa
-        if (!$this->canEdit()) {
+        if (! $this->canEdit()) {
             session()->flash('error', 'Không thể chỉnh sửa quiz khi có học viên đang làm bài.');
+
             return;
         }
 
@@ -177,8 +179,9 @@ class Edit extends Component
     public function removeQuestion($index)
     {
         // Kiểm tra trạng thái khóa
-        if (!$this->canEdit()) {
+        if (! $this->canEdit()) {
             session()->flash('error', 'Không thể xóa câu hỏi khi có học viên đang làm bài.');
+
             return;
         }
 
@@ -192,8 +195,9 @@ class Edit extends Component
     public function moveQuestionUp($index)
     {
         // Kiểm tra trạng thái khóa
-        if (!$this->canEdit()) {
+        if (! $this->canEdit()) {
             session()->flash('error', 'Không thể di chuyển câu hỏi khi có học viên đang làm bài.');
+
             return;
         }
 
@@ -208,8 +212,9 @@ class Edit extends Component
     public function moveQuestionDown($index)
     {
         // Kiểm tra trạng thái khóa
-        if (!$this->canEdit()) {
+        if (! $this->canEdit()) {
             session()->flash('error', 'Không thể di chuyển câu hỏi khi có học viên đang làm bài.');
+
             return;
         }
 
@@ -224,8 +229,9 @@ class Edit extends Component
     public function addOption()
     {
         // Kiểm tra trạng thái khóa
-        if (!$this->canEdit()) {
+        if (! $this->canEdit()) {
             session()->flash('error', 'Không thể thêm đáp án khi có học viên đang làm bài.');
+
             return;
         }
 
@@ -235,8 +241,9 @@ class Edit extends Component
     public function removeOption($index)
     {
         // Kiểm tra trạng thái khóa
-        if (!$this->canEdit()) {
+        if (! $this->canEdit()) {
             session()->flash('error', 'Không thể xóa đáp án khi có học viên đang làm bài.');
+
             return;
         }
 
@@ -260,8 +267,9 @@ class Edit extends Component
     public function save()
     {
         // Kiểm tra trạng thái khóa
-        if (!$this->canEdit()) {
+        if (! $this->canEdit()) {
             session()->flash('error', 'Không thể lưu thay đổi khi có học viên đang làm bài.');
+
             return;
         }
 

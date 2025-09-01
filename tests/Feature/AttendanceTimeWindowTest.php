@@ -16,18 +16,18 @@ class AttendanceTimeWindowTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Tạo user admin
         $this->admin = User::factory()->create(['role' => 'admin']);
-        
+
         // Tạo lớp học với lịch học
         $this->classroom = Classroom::create([
             'name' => 'Test Class A1',
             'description' => 'Test class for attendance time window',
             'schedule' => [
                 'days' => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-                'time' => '08:25 - 11:00'
-            ]
+                'time' => '08:25 - 11:00',
+            ],
         ]);
     }
 

@@ -91,7 +91,6 @@ return [
     'conflicting_classes' => '冲突的班级：',
     'note' => '注意：',
 
-
     'browser_not_support' => '浏览器不支持此媒体类型',
     'add_classroom' => '添加教室',
     'search_and_filter' => '搜索和筛选',
@@ -1216,7 +1215,7 @@ return [
     'members' => '成员',
     'student' => '学生',
     'teacher' => '教师',
-    
+
     // Quiz related translations
     'answered' => '已回答',
     'current_question' => '当前题目',

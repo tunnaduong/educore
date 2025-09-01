@@ -147,7 +147,7 @@ class Quiz extends Model
     public function isEditable(): bool
     {
         // Không thể chỉnh sửa nếu có học viên đang làm bài
-        return !$this->isInProgress();
+        return ! $this->isInProgress();
     }
 
     /**
@@ -187,7 +187,7 @@ class Quiz extends Model
             return [
                 'status' => 'locked',
                 'message' => "Đang khóa: {$activeCount} học viên đang làm bài",
-                'can_edit' => false
+                'can_edit' => false,
             ];
         }
 
@@ -195,14 +195,14 @@ class Quiz extends Model
             return [
                 'status' => 'completed',
                 'message' => "Đã hoàn thành: {$completedCount}/{$totalCount} học viên",
-                'can_edit' => false
+                'can_edit' => false,
             ];
         }
 
         return [
             'status' => 'editable',
             'message' => 'Có thể chỉnh sửa',
-            'can_edit' => true
+            'can_edit' => true,
         ];
     }
 }

@@ -9,7 +9,7 @@ class DateHelper
      */
     public static function translateDays($days, $locale = null)
     {
-        if (!$locale) {
+        if (! $locale) {
             $locale = app()->getLocale();
         }
 
@@ -43,7 +43,7 @@ class DateHelper
             ],
         ];
 
-        if (!isset($dayTranslations[$locale])) {
+        if (! isset($dayTranslations[$locale])) {
             $locale = 'en';
         }
 
@@ -60,11 +60,12 @@ class DateHelper
      */
     public static function translateDaysString($daysString, $locale = null)
     {
-        if (!$daysString) {
+        if (! $daysString) {
             return [];
         }
 
         $days = is_array($daysString) ? $daysString : explode(', ', $daysString);
+
         return self::translateDays($days, $locale);
     }
 }
