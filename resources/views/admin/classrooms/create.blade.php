@@ -433,15 +433,12 @@
 
                     <div class="alert alert-info">
                         <i class="bi bi-info-circle mr-2"></i>
-                        <strong>{{ __('general.note') }}</strong> {{ __('general.you_may_force_create_warning') }}
+                        <strong>{{ __('general.note') }}</strong> Vui lòng điều chỉnh lịch học hoặc chọn giáo viên khác để tránh trùng lịch.
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" wire:click="closeConflictModal">
                         <i class="bi bi-x-circle mr-2"></i>{{ __('general.cancel') }}
-                    </button>
-                    <button type="button" class="btn btn-warning" wire:click="forceCreate">
-                        <i class="bi bi-exclamation-triangle mr-2"></i>{{ __('general.force_create_classroom') }}
                     </button>
                 </div>
             </div>

@@ -464,7 +464,7 @@
                                                                     {{ ucfirst($question['difficulty']) }}
                                                                 </span>
                                                                 <span
-                                                                    class="badge bg-secondary">{{ ucfirst($question['type']) }}</span>
+                                                                    class="badge bg-secondary">{{ __('general.' . $question['type']) }}</span>
                                                             </div>
                                                         </div>
                                                         <div class="card-body">

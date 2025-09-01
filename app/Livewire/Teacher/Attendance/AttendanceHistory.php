@@ -68,7 +68,20 @@ class AttendanceHistory extends Component
         $this->attendanceHistory = [];
 
         foreach ($students as $student) {
-            $studentAttendances = $monthlyAttendances->where('student_id', $student->id);
+            // Map từ user_id sang student_id trong bảng students
+            $studentRecord = \App\Models\Student::where('user_id', $student->id)->first();
+
+            if (! $studentRecord) {
+                \Log::warning('Teacher.AttendanceHistory: Missing student record for user', [
+                    'user_id' => $student->id,
+                    'user_name' => $student->name,
+                ]);
+                continue;
+            }
+
+            // Lọc attendance theo student_id (theo bảng students)
+            $studentAttendances = $monthlyAttendances->where('student_id', $studentRecord->id);
+
             $totalDays = $studentAttendances->count();
             $presentDays = $studentAttendances->where('present', true)->count();
             $absentDays = $studentAttendances->where('present', false)->count();
@@ -76,6 +89,7 @@ class AttendanceHistory extends Component
 
             $this->attendanceHistory[] = [
                 'student' => $student,
+                'student_record' => $studentRecord,
                 'stats' => [
                     'total_days' => $totalDays,
                     'present_days' => $presentDays,

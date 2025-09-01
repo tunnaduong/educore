@@ -14,10 +14,10 @@ Chức năng này đã được thêm vào để ngăn chặn việc điểm dan
 - Không thể điểm danh cho các ngày đã qua (trừ ngày hôm nay)
 - Hiển thị thông báo rõ ràng khi cố gắng điểm danh quá khứ
 
-### 3. Chỉ điểm danh trong thời gian học
-- Chỉ cho phép điểm danh trong thời gian học đã định
-- Không thể điểm danh trước khi bắt đầu giờ học
-- Không thể điểm danh sau khi kết thúc giờ học
+### 3. Điểm danh trong khung thời gian mở rộng
+- Cho phép điểm danh trước 15 phút trước giờ học
+- Cho phép điểm danh sau 15 phút sau giờ học
+- Ví dụ: Lớp học từ 8:25 - 11:00 thì có thể điểm danh từ 8:10 - 11:15
 - Kiểm tra ngày học theo lịch đã cấu hình
 
 ### 4. Validation theo lịch học
@@ -50,17 +50,21 @@ Chức năng này đã được thêm vào để ngăn chặn việc điểm dan
    }
    ```
 
-4. **Kiểm tra thời gian học**:
+4. **Kiểm tra thời gian điểm danh (mở rộng 15 phút)**:
    ```php
    if ($selectedDate->isToday()) {
-       // Kiểm tra xem đã đến thời gian học chưa
-       if ($now->isBefore($classStartTime)) {
-           return ['can' => false, 'message' => 'Chưa đến thời gian học. Chỉ có thể điểm danh từ ' . $startTime->format('H:i') . ' đến ' . $endTime->format('H:i') . '.'];
+       // Cho phép điểm danh trước 15 phút trước giờ học và sau 15 phút sau giờ học
+       $attendanceStartTime = $classStartTime->copy()->subMinutes(15);
+       $attendanceEndTime = $classEndTime->copy()->addMinutes(15);
+
+       // Kiểm tra xem đã đến thời gian điểm danh chưa
+       if ($now->isBefore($attendanceStartTime)) {
+           return ['can' => false, 'message' => 'Chưa đến thời gian điểm danh. Chỉ có thể điểm danh từ ' . $attendanceStartTime->format('H:i') . ' đến ' . $attendanceEndTime->format('H:i') . '.'];
        }
 
-       // Kiểm tra xem đã qua thời gian học chưa
-       if ($now->isAfter($classEndTime)) {
-           return ['can' => false, 'message' => 'Đã qua thời gian học. Không thể điểm danh lại.'];
+       // Kiểm tra xem đã qua thời gian điểm danh chưa
+       if ($now->isAfter($attendanceEndTime)) {
+           return ['can' => false, 'message' => 'Đã qua thời gian điểm danh. Không thể điểm danh lại.'];
        }
    }
    ```
@@ -121,25 +125,39 @@ public function checkAttendancePermission()
 ### Tình huống 2: Điểm danh trước giờ học
 - **Lịch học**: Thứ 2, 4, 6 từ 14:30 - 17:00
 - **Ngày**: 4/6/2025 (Thứ 2)
-- **Thời gian hiện tại**: 8:30 (trước giờ học)
+- **Thời gian hiện tại**: 14:10 (trước giờ học 20 phút)
 
-**Kết quả**: Không thể điểm danh vì chưa đến thời gian học. Chỉ có thể điểm danh từ 14:30 đến 17:00.
+**Kết quả**: Có thể điểm danh vì đã đến thời gian điểm danh (từ 14:15 - 17:15).
 
 ### Tình huống 3: Điểm danh sau giờ học
 - **Lịch học**: Thứ 2, 4, 6 từ 14:30 - 17:00
 - **Ngày**: 4/6/2025 (Thứ 2)
-- **Thời gian hiện tại**: 18:00 (sau giờ học)
+- **Thời gian hiện tại**: 17:10 (sau giờ học 10 phút)
 
-**Kết quả**: Không thể điểm danh vì đã qua thời gian học.
+**Kết quả**: Có thể điểm danh vì vẫn trong thời gian điểm danh (từ 14:15 - 17:15).
 
-### Tình huống 4: Điểm danh trong giờ học
+### Tình huống 4: Điểm danh quá sớm
+- **Lịch học**: Thứ 2, 4, 6 từ 14:30 - 17:00
+- **Ngày**: 4/6/2025 (Thứ 2)
+- **Thời gian hiện tại**: 14:00 (trước giờ học 30 phút)
+
+**Kết quả**: Không thể điểm danh vì chưa đến thời gian điểm danh. Chỉ có thể điểm danh từ 14:15 đến 17:15.
+
+### Tình huống 5: Điểm danh quá muộn
+- **Lịch học**: Thứ 2, 4, 6 từ 14:30 - 17:00
+- **Ngày**: 4/6/2025 (Thứ 2)
+- **Thời gian hiện tại**: 17:20 (sau giờ học 20 phút)
+
+**Kết quả**: Không thể điểm danh vì đã qua thời gian điểm danh.
+
+### Tình huống 6: Điểm danh trong giờ học
 - **Lịch học**: Thứ 2, 4, 6 từ 14:30 - 17:00
 - **Ngày**: 4/6/2025 (Thứ 2)
 - **Thời gian hiện tại**: 15:30 (trong giờ học)
 
 **Kết quả**: Có thể điểm danh bình thường.
 
-### Tình huống 5: Điểm danh ngày không phải ngày học
+### Tình huống 7: Điểm danh ngày không phải ngày học
 - **Lịch học**: Thứ 2, 4, 6 từ 14:30 - 17:00
 - **Ngày**: 3/6/2025 (Thứ 3)
 
@@ -149,11 +167,13 @@ public function checkAttendancePermission()
 
 ### Giáo viên và Admin
 - ✅ Điểm danh trong thời gian học (từ giờ bắt đầu đến giờ kết thúc)
-- ✅ Điểm danh ngày hôm nay (chỉ trong thời gian học)
+- ✅ Điểm danh trước 15 phút trước giờ học
+- ✅ Điểm danh sau 15 phút sau giờ học
+- ✅ Điểm danh ngày hôm nay (trong khung thời gian mở rộng)
 - ❌ Điểm danh quá khứ
 - ❌ Điểm danh tương lai
-- ❌ Điểm danh trước giờ học
-- ❌ Điểm danh sau giờ học
+- ❌ Điểm danh quá sớm (trước 15 phút trước giờ học)
+- ❌ Điểm danh quá muộn (sau 15 phút sau giờ học)
 - ❌ Điểm danh ngày không phải ngày học
 
 ## Lưu ý

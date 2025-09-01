@@ -285,7 +285,7 @@
                     <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
                         <div class="alert alert-warning">
                             <i class="bi bi-exclamation-triangle-fill mr-2"></i>
-                            <strong>@lang('general.warning')</strong> @lang('general.selected_students_schedule_conflict_message')
+                            <strong>@lang('general.warning')</strong> Một số học sinh đã được chọn có lịch học trùng với lớp này. Vui lòng điều chỉnh lịch học hoặc chọn học sinh khác để tránh trùng lịch.
                         </div>
 
                         <div class="row">
@@ -363,10 +363,6 @@
                         <button type="button" class="btn btn-secondary" wire:click="closeConflictModal">
                             <i class="bi bi-x-circle mr-2"></i>
                             @lang('general.cancel')
-                        </button>
-                        <button type="button" class="btn btn-warning" wire:click="forceAssignStudents">
-                            <i class="bi bi-exclamation-triangle mr-2"></i>
-                            @lang('general.force_assign_despite_conflicts')
                         </button>
                     </div>
                 </div>

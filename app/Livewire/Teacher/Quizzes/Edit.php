@@ -91,10 +91,47 @@ class Edit extends Component
         $this->deadline = $quiz->deadline ? $quiz->deadline->format('Y-m-d\TH:i') : '';
         $this->time_limit = $quiz->time_limit;
         $this->questions = $quiz->questions ?? [];
+        
+        // Kiểm tra trạng thái khóa
+        $this->checkLockStatus();
+    }
+
+    /**
+     * Kiểm tra trạng thái khóa của quiz
+     */
+    private function checkLockStatus(): void
+    {
+        $lockStatus = $this->quiz->getLockStatus();
+        
+        if (!$lockStatus['can_edit']) {
+            session()->flash('warning', $lockStatus['message'] . ' - Quiz đã bị khóa chỉnh sửa.');
+        }
+    }
+
+    /**
+     * Kiểm tra xem quiz có thể chỉnh sửa được không
+     */
+    public function canEdit(): bool
+    {
+        return $this->quiz->isEditable();
+    }
+
+    /**
+     * Lấy thông tin trạng thái khóa
+     */
+    public function getLockStatus(): array
+    {
+        return $this->quiz->getLockStatus();
     }
 
     public function addQuestion()
     {
+        // Kiểm tra trạng thái khóa trước khi cho phép thêm/sửa
+        if (!$this->canEdit()) {
+            session()->flash('error', 'Không thể chỉnh sửa quiz khi có học viên đang làm bài.');
+            return;
+        }
+
         $this->validate([
             'currentQuestion.question' => 'required|min:3',
             'currentQuestion.type' => 'required|in:multiple_choice',
@@ -114,10 +151,12 @@ class Edit extends Component
             $this->questions[$this->editingIndex] = $this->currentQuestion;
             $this->editingIndex = null;
             session()->flash('message', 'Câu hỏi đã được cập nhật thành công.');
+            $this->persistQuestions();
         } else {
             // Nếu thêm mới
             $this->questions[] = $this->currentQuestion;
             session()->flash('message', 'Câu hỏi đã được thêm thành công.');
+            $this->persistQuestions();
         }
 
         $this->resetCurrentQuestion();
@@ -125,43 +164,82 @@ class Edit extends Component
 
     public function editQuestion($index)
     {
+        // Kiểm tra trạng thái khóa
+        if (!$this->canEdit()) {
+            session()->flash('error', 'Không thể chỉnh sửa quiz khi có học viên đang làm bài.');
+            return;
+        }
+
         $this->currentQuestion = $this->questions[$index];
         $this->editingIndex = $index; // Đánh dấu câu hỏi đang được sửa
     }
 
     public function removeQuestion($index)
     {
+        // Kiểm tra trạng thái khóa
+        if (!$this->canEdit()) {
+            session()->flash('error', 'Không thể xóa câu hỏi khi có học viên đang làm bài.');
+            return;
+        }
+
         unset($this->questions[$index]);
         $this->questions = array_values($this->questions);
 
         session()->flash('message', 'Câu hỏi đã được xóa.');
+        $this->persistQuestions();
     }
 
     public function moveQuestionUp($index)
     {
+        // Kiểm tra trạng thái khóa
+        if (!$this->canEdit()) {
+            session()->flash('error', 'Không thể di chuyển câu hỏi khi có học viên đang làm bài.');
+            return;
+        }
+
         if ($index > 0) {
             $temp = $this->questions[$index];
             $this->questions[$index] = $this->questions[$index - 1];
             $this->questions[$index - 1] = $temp;
+            $this->persistQuestions();
         }
     }
 
     public function moveQuestionDown($index)
     {
+        // Kiểm tra trạng thái khóa
+        if (!$this->canEdit()) {
+            session()->flash('error', 'Không thể di chuyển câu hỏi khi có học viên đang làm bài.');
+            return;
+        }
+
         if ($index < count($this->questions) - 1) {
             $temp = $this->questions[$index];
             $this->questions[$index] = $this->questions[$index + 1];
             $this->questions[$index + 1] = $temp;
+            $this->persistQuestions();
         }
     }
 
     public function addOption()
     {
+        // Kiểm tra trạng thái khóa
+        if (!$this->canEdit()) {
+            session()->flash('error', 'Không thể thêm đáp án khi có học viên đang làm bài.');
+            return;
+        }
+
         $this->currentQuestion['options'][] = '';
     }
 
     public function removeOption($index)
     {
+        // Kiểm tra trạng thái khóa
+        if (!$this->canEdit()) {
+            session()->flash('error', 'Không thể xóa đáp án khi có học viên đang làm bài.');
+            return;
+        }
+
         unset($this->currentQuestion['options'][$index]);
         $this->currentQuestion['options'] = array_values($this->currentQuestion['options']);
     }
@@ -181,6 +259,12 @@ class Edit extends Component
 
     public function save()
     {
+        // Kiểm tra trạng thái khóa
+        if (!$this->canEdit()) {
+            session()->flash('error', 'Không thể lưu thay đổi khi có học viên đang làm bài.');
+            return;
+        }
+
         $this->validate();
 
         $this->quiz->update([
@@ -197,12 +281,25 @@ class Edit extends Component
         return redirect()->route('quizzes.show', $this->quiz);
     }
 
+    /**
+     * Lưu nhanh danh sách câu hỏi vào cơ sở dữ liệu sau khi thêm/sửa.
+     */
+    private function persistQuestions(): void
+    {
+        // Chỉ cập nhật trường questions để tránh ghi đè các trường khác khi người dùng đang chỉnh sửa
+        $this->quiz->update([
+            'questions' => $this->questions,
+        ]);
+    }
+
     public function render()
     {
         $classrooms = Classroom::orderBy('name')->get();
+        $lockStatus = $this->getLockStatus();
 
         return view('teacher.quizzes.edit', [
             'classrooms' => $classrooms,
+            'lockStatus' => $lockStatus,
         ]);
     }
 }

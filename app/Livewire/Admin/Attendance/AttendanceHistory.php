@@ -37,8 +37,15 @@ class AttendanceHistory extends Component
         $attendances = Attendance::forClass($this->classroom->id)
             ->forMonth($this->selectedYear, $this->selectedMonth)
             ->with('student.user')
-            ->get()
-            ->groupBy(['date', 'student_id']);
+            ->get();
+
+        \Log::info('Admin.AttendanceHistory: Loading data', [
+            'classroom_id' => $this->classroom->id,
+            'selected_month' => $this->selectedMonth,
+            'selected_year' => $this->selectedYear,
+            'total_students' => $students->count(),
+            'total_attendances' => $attendances->count(),
+        ]);
 
         $this->attendanceHistory = [];
         $this->monthlyStats = [];
@@ -49,46 +56,33 @@ class AttendanceHistory extends Component
             $studentRecord = Student::where('user_id', $student->id)->first();
 
             if ($studentRecord) {
-                $studentStats = [
-                    'total_days' => 0,
-                    'present_days' => 0,
-                    'absent_days' => 0,
-                    'attendance_rate' => 0,
-                ];
+                // Lọc attendance theo student_id
+                $studentAttendances = $attendances->where('student_id', $studentRecord->id);
 
-                $this->attendanceHistory[$studentRecord->id] = [
+                $totalDays = $studentAttendances->count();
+                $presentDays = $studentAttendances->where('present', true)->count();
+                $absentDays = $studentAttendances->where('present', false)->count();
+                $attendanceRate = $totalDays > 0 ? round(($presentDays / $totalDays) * 100, 1) : 0;
+
+                \Log::info('Admin.AttendanceHistory: Student stats', [
+                    'student_name' => $student->name,
+                    'student_id' => $studentRecord->id,
+                    'total_days' => $totalDays,
+                    'present_days' => $presentDays,
+                    'absent_days' => $absentDays,
+                    'attendance_rate' => $attendanceRate,
+                ]);
+
+                $this->attendanceHistory[] = [
                     'student' => $student,
                     'student_record' => $studentRecord,
-                    'attendance' => [],
-                    'stats' => $studentStats,
+                    'stats' => [
+                        'total_days' => $totalDays,
+                        'present_days' => $presentDays,
+                        'absent_days' => $absentDays,
+                        'attendance_rate' => $attendanceRate,
+                    ],
                 ];
-            }
-        }
-
-        // Điền dữ liệu điểm danh
-        foreach ($attendances as $date => $dateAttendances) {
-            foreach ($dateAttendances as $studentId => $attendance) {
-                if (isset($this->attendanceHistory[$studentId])) {
-                    $this->attendanceHistory[$studentId]['attendance'][$date] = $attendance->first();
-
-                    // Cập nhật thống kê
-                    $this->attendanceHistory[$studentId]['stats']['total_days']++;
-                    if ($attendance->first()->present) {
-                        $this->attendanceHistory[$studentId]['stats']['present_days']++;
-                    } else {
-                        $this->attendanceHistory[$studentId]['stats']['absent_days']++;
-                    }
-                }
-            }
-        }
-
-        // Tính tỷ lệ điểm danh
-        foreach ($this->attendanceHistory as $studentId => &$data) {
-            if ($data['stats']['total_days'] > 0) {
-                $data['stats']['attendance_rate'] = round(
-                    ($data['stats']['present_days'] / $data['stats']['total_days']) * 100,
-                    1
-                );
             }
         }
 

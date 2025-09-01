@@ -248,7 +248,7 @@
                                                 <strong>{{ $selectedConflict['classroom']->name }}</strong><br>
                                                 <small class="text-muted">
                                                     @if ($selectedConflict['classroom']->schedule)
-                                                        {{ implode(', ', $selectedConflict['classroom']->schedule['days'] ?? []) }}
+                                                        {{ implode(', ', \App\Helpers\DateHelper::translateDays($selectedConflict['classroom']->schedule['days'] ?? [])) }}
                                                         -
                                                         {{ $selectedConflict['classroom']->schedule['time'] ?? '' }}
                                                     @else

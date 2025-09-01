@@ -482,7 +482,7 @@
                                                             </td>
                                                             <td>
                                                                 <span class="badge bg-secondary">
-                                                                    {{ ucfirst(str_replace('_', ' ', $question['type'] ?? 'multiple_choice')) }}
+                                                                    {{ __('general.' . ($question['type'] ?? 'multiple_choice')) }}
                                                                 </span>
                                                             </td>
                                                             <td>

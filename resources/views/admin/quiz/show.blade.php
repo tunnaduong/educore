@@ -151,7 +151,7 @@
                                         <div>
                                             <span
                                                 class="badge bg-primary mr-2">{{ __('views.question_number', ['number' => $index + 1]) }}</span>
-                                            <span class="badge bg-secondary">{{ ucfirst($question['type']) }}</span>
+                                            <span class="badge bg-secondary">{{ __('general.' . $question['type']) }}</span>
                                             <span
                                                 class="badge bg-info">{{ $question['score'] ?? ($question['points'] ?? 1) }}
                                                 {{ __('views.points') }}</span>

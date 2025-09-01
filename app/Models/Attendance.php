@@ -105,19 +105,26 @@ class Attendance extends Model
                         $classStartTime = $selectedDate->copy()->setTime($startTime->hour, $startTime->minute);
                         $classEndTime = $selectedDate->copy()->setTime($endTime->hour, $endTime->minute);
 
-                        // Kiểm tra xem đã đến thời gian học chưa
-                        if ($now->isBefore($classStartTime)) {
+                        // Cho phép điểm danh trước 15 phút trước giờ học và sau 15 phút sau giờ học
+                        $attendanceStartTime = $classStartTime->copy()->subMinutes(15);
+                        $attendanceEndTime = $classEndTime->copy()->addMinutes(15);
+
+                        // Kiểm tra xem đã đến thời gian điểm danh chưa
+                        if ($now->isBefore($attendanceStartTime)) {
                             return [
                                 'can' => false,
-                                'message' => __('general.not_class_time_yet', ['start_time' => $startTime->format('H:i'), 'end_time' => $endTime->format('H:i')]),
+                                'message' => __('general.not_attendance_time_yet', [
+                                    'start_time' => $attendanceStartTime->format('H:i'), 
+                                    'end_time' => $attendanceEndTime->format('H:i')
+                                ]),
                             ];
                         }
 
-                        // Kiểm tra xem đã qua thời gian học chưa
-                        if ($now->isAfter($classEndTime)) {
+                        // Kiểm tra xem đã qua thời gian điểm danh chưa
+                        if ($now->isAfter($attendanceEndTime)) {
                             return [
                                 'can' => false,
-                                'message' => __('general.class_time_passed'),
+                                'message' => __('general.attendance_time_passed'),
                             ];
                         }
                     }
