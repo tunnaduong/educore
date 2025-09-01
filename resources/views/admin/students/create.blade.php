@@ -119,7 +119,6 @@
                                             <option value="new">{{ __('general.new_registration') }}</option>
                                             <option value="active">{{ __('general.studying') }}</option>
                                             <option value="paused">{{ __('general.paused') }}</option>
-                                            <option value="suspended">{{ __('general.suspended') }}</option>
                                             <option value="dropped">{{ __('general.reserved') }}</option>
                                         </select>
                                         @error('status')
