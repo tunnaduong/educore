@@ -139,7 +139,7 @@ class Index extends Component
                 'teacher_ratings' => $this->teacher_ratings,
                 'course_ratings' => $this->course_ratings,
                 'personal_satisfaction' => $this->personal_satisfaction,
-                'isSubmitted' => $this->isSubmitted
+                'isSubmitted' => $this->isSubmitted,
             ]);
         }
     }
@@ -214,7 +214,7 @@ class Index extends Component
             $this->course_ratings = $this->course_ratings;
             $this->personal_satisfaction = $this->personal_satisfaction;
 
-                        session()->flash('success', 'Đánh giá đã được lưu thành công!');
+            session()->flash('success', 'Đánh giá đã được lưu thành công!');
 
             // Dispatch event để JavaScript cập nhật hiển thị sao ngay lập tức
             $this->dispatch('evaluation-saved');
