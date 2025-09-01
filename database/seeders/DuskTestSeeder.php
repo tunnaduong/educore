@@ -45,7 +45,7 @@ class DuskTestSeeder extends Seeder
             'level' => 'HSK 1',
             'schedule' => [
                 'days' => ['Monday', 'Thursday', 'Saturday'], // Thứ 2, Thứ 5, Thứ 7
-                'time' => '19:00 - 20:30'
+                'time' => '19:00 - 20:30',
             ],
             'notes' => 'Lớp test cho hệ thống',
             'status' => 'active',
@@ -53,7 +53,7 @@ class DuskTestSeeder extends Seeder
 
         // Gán giáo viên cho lớp
         $classroom->users()->attach($teacher->id, ['role' => 'teacher']);
-        
+
         // Gán học viên cho lớp
         $classroom->users()->attach($student->id, ['role' => 'student']);
 
@@ -83,7 +83,7 @@ class DuskTestSeeder extends Seeder
             'level' => 'HSK 1',
             'schedule' => [
                 'days' => ['Monday', 'Wednesday', 'Saturday'], // Thứ 2, Thứ 4, Thứ 7
-                'time' => '19:00 - 20:30'
+                'time' => '19:00 - 20:30',
             ],
             'notes' => 'Lớp test cho việc kiểm tra lịch học',
             'status' => 'active',
@@ -91,7 +91,7 @@ class DuskTestSeeder extends Seeder
 
         // Gán giáo viên cho lớp test
         $testClassroom->users()->attach($teacher->id, ['role' => 'teacher']);
-        
+
         // Gán học viên cho lớp test
         $testClassroom->users()->attach($student->id, ['role' => 'student']);
 

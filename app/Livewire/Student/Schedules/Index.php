@@ -28,13 +28,13 @@ class Index extends Component
                 $currentYear = now()->year;
                 $startOfMonth = now()->startOfMonth();
                 $endOfMonth = now()->endOfMonth();
-                
+
                 // Tạo events cho từng ngày trong tháng
                 $currentDate = $startOfMonth->copy();
-                
+
                 while ($currentDate->lte($endOfMonth)) {
                     $dayName = $currentDate->format('l'); // Monday, Tuesday, etc.
-                    
+
                     // Kiểm tra xem ngày này có phải là ngày học không
                     if (in_array($dayName, $schedule['days'])) {
                         $teacherNames = $classroom->teachers->pluck('name')->join(', ');
@@ -48,7 +48,7 @@ class Index extends Component
                             'borderColor' => '#0d6efd',
                         ];
                     }
-                    
+
                     $currentDate->addDay();
                 }
             }
