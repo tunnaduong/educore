@@ -943,5 +943,4 @@ return [
     'student_creation_failed' => 'Không thể tạo học sinh. Vui lòng thử lại.',
     'student_update_failed' => 'Không thể cập nhật thông tin học sinh. Vui lòng thử lại.',
     'student_deletion_failed' => 'Không thể xóa học sinh. Vui lòng thử lại.',
-    'cannot_delete_active_or_suspended_student' => 'Không thể xóa học sinh đang học hoặc bảo lưu',
 ];

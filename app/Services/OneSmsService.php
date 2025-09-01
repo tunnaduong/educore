@@ -71,7 +71,7 @@ class OneSmsService
 
             return [
                 'success' => false,
-                'message' => 'Lỗi gửi tin nhắn: '.$e->getMessage(),
+                'message' => 'Lỗi gửi tin nhắn: ' . $e->getMessage(),
                 'code' => 'ERROR',
             ];
         }
@@ -80,12 +80,16 @@ class OneSmsService
     /**
      * Gửi OTP qua Zalo
      */
-    public function sendOTP($phone, $otp, $id = null)
+    public function sendOTP($phone, $otp, $customerName = null, $mahocvien = null, $id = null)
     {
         return $this->sendZalo(
             $phone,
             config('services.onesms.templates.otp_reset', '123456'),
-            ['otp_code' => $otp],
+            [
+                'customer_name' => $customerName ?? 'Học viên',
+                'mahocvien' => $mahocvien ?? 'N/A',
+                'otp_code' => $otp
+            ],
             $id,
             [
                 'type_send' => 2,
@@ -355,7 +359,7 @@ class OneSmsService
 
         // Nếu số điện thoại có 11 số và bắt đầu bằng 84, chuyển về 0
         if (strlen($phone) === 11 && substr($phone, 0, 2) === '84') {
-            return '0'.substr($phone, 2);
+            return '0' . substr($phone, 2);
         }
 
         return $phone;
@@ -382,7 +386,7 @@ class OneSmsService
 
             return [
                 'success' => false,
-                'message' => 'Lỗi kiểm tra tài khoản: '.$e->getMessage(),
+                'message' => 'Lỗi kiểm tra tài khoản: ' . $e->getMessage(),
             ];
         }
     }

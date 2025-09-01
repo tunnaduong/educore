@@ -764,6 +764,7 @@ return [
     'view_details' => 'Xem chi tiết',
     'edit_student' => 'Chỉnh sửa',
     'cannot_delete_active_student' => 'Không thể xóa học viên đang học',
+    'cannot_delete_active_or_suspended_student' => 'Không thể xóa học viên đang học',
     'confirm_delete_student' => 'Xác nhận xóa học viên',
     'confirm_delete_student_message' => 'Bạn có chắc chắn muốn xóa học viên ":name"? Hành động này không thể hoàn tác.',
     'action_irreversible' => 'Hành động này không thể hoàn tác.',
