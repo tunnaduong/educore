@@ -632,34 +632,40 @@
                         </div>
                         <form wire:submit.prevent="saveQuestion">
                             <div class="modal-body">
+                                @if (session()->has('error'))
+                                    <div class="alert alert-danger d-flex align-items-center" role="alert">
+                                        <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                                        <div>{{ session('error') }}</div>
+                                    </div>
+                                @endif
                                 <div class="mb-3">
                                     <label for="category" class="form-label">{{ __('views.category') }} <span
                                             class="text-danger">*</span></label>
-                                    <select wire:model="questionForm.category" class="form-control" id="category">
+                                    <select wire:model="questionForm.category" class="form-control @error('questionForm.category') is-invalid @enderror" id="category">
                                         <option value="">{{ __('views.select_category') }}</option>
                                         <option value="teacher">{{ __('views.teacher_category') }}</option>
                                         <option value="course">{{ __('views.course_category') }}</option>
                                         <option value="personal">{{ __('views.personal_category') }}</option>
                                     </select>
                                     @error('questionForm.category')
-                                        <span class="text-danger">{{ $message }}</span>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="question" class="form-label">{{ __('views.question') }} <span
                                             class="text-danger">*</span></label>
-                                    <textarea wire:model="questionForm.question" class="form-control" id="question" rows="3"
+                                    <textarea wire:model="questionForm.question" class="form-control @error('questionForm.question') is-invalid @enderror" id="question" rows="3"
                                         placeholder="{{ __('views.question_text') }}"></textarea>
                                     @error('questionForm.question')
-                                        <span class="text-danger">{{ $message }}</span>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="order" class="form-label">{{ __('views.display_order') }}</label>
-                                    <input type="number" wire:model="questionForm.order" class="form-control"
+                                    <input type="number" wire:model="questionForm.order" class="form-control @error('questionForm.order') is-invalid @enderror"
                                         id="order" min="1" placeholder="1">
                                     @error('questionForm.order')
-                                        <span class="text-danger">{{ $message }}</span>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
@@ -676,9 +682,10 @@
                                 <button type="button" class="btn btn-secondary" wire:click="closeQuestionModal">
                                     {{ __('views.cancel') }}
                                 </button>
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary" wire:loading.attr="disabled">
                                     <i class="bi bi-check-circle mr-2"></i>
-                                    {{ $editingQuestion ? __('views.update') : __('views.add_new') }}
+                                    <span wire:loading.remove>{{ $editingQuestion ? __('views.update') : __('views.add_new') }}</span>
+                                    <span wire:loading>{{ __('views.saving') }}...</span>
                                 </button>
                             </div>
                         </form>

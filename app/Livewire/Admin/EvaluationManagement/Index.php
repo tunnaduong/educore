@@ -64,7 +64,7 @@ class Index extends Component
         'questionForm.is_active' => 'boolean',
         'roundForm.name' => 'required|min:3',
         'roundForm.description' => 'nullable|max:500',
-        'roundForm.start_date' => 'required|date',
+        'roundForm.start_date' => 'required|date|after_or_equal:today',
         'roundForm.end_date' => 'required|date|after:start_date',
         'roundForm.is_active' => 'boolean',
     ];
@@ -154,7 +154,7 @@ class Index extends Component
         $this->showQuestionModal = false;
         $this->editingQuestion = null;
         $this->questionForm = [
-            'category' => '',
+            'category' => 'teacher',
             'question' => '',
             'order' => 1,
             'is_active' => true,
@@ -165,10 +165,18 @@ class Index extends Component
     {
         $category = $form['category'];
         $isActive = (bool) ($form['is_active'] ?? false);
-        $order = (int) ($form['order'] ?? 0);
+        $order = (int) ($form['order'] ?? 1);
+
+        Log::info('Validating question limits:', [
+            'category' => $category,
+            'isActive' => $isActive,
+            'order' => $order,
+            'excludeId' => $excludeId,
+        ]);
 
         if (! array_key_exists($category, $this->categoryLimits)) {
-            session()->flash('error', 'Danh mục câu hỏi không hợp lệ.');
+            session()->flash('error', __('views.validation_category_invalid'));
+            Log::warning('Invalid category:', ['category' => $category]);
 
             return false;
         }
@@ -179,8 +187,16 @@ class Index extends Component
                 ->where('is_active', true)
                 ->when($excludeId, fn ($q) => $q->where('id', '!=', $excludeId))
                 ->count();
+
+            Log::info('Active count for category:', [
+                'category' => $category,
+                'activeCount' => $activeCount,
+                'limit' => $this->categoryLimits[$category],
+            ]);
+
             if ($activeCount >= $this->categoryLimits[$category]) {
-                session()->flash('error', 'Đã đạt giới hạn câu hỏi hoạt động cho danh mục này.');
+                session()->flash('error', __('views.validation_question_limit_reached'));
+                Log::warning('Question limit reached for category:', ['category' => $category]);
 
                 return false;
             }
@@ -191,36 +207,56 @@ class Index extends Component
                 ->where('order', $order)
                 ->when($excludeId, fn ($q) => $q->where('id', '!=', $excludeId))
                 ->exists();
+
+            Log::info('Duplicate order check:', [
+                'category' => $category,
+                'order' => $order,
+                'hasDuplicate' => $dupOrder,
+            ]);
+
             if ($dupOrder) {
-                session()->flash('error', 'Thứ tự hiển thị đã tồn tại ở danh mục này.');
+                session()->flash('error', __('views.validation_order_duplicate'));
+                Log::warning('Duplicate order found for category:', ['category' => $category, 'order' => $order]);
 
                 return false;
             }
         }
+
+        Log::info('Question limits validation passed');
 
         return true;
     }
 
     public function saveQuestion()
     {
-        $this->validate();
+        try {
+            $this->validate();
 
-        // Kiểm tra giới hạn & thứ tự để đồng bộ với phần student
-        if ($this->editingQuestion) {
-            if (! $this->validateQuestionLimits($this->questionForm, $this->editingQuestion->id)) {
-                return;
+            // Kiểm tra giới hạn & thứ tự để đồng bộ với phần student
+            if ($this->editingQuestion) {
+                if (! $this->validateQuestionLimits($this->questionForm, $this->editingQuestion->id)) {
+                    return;
+                }
+                $this->editingQuestion->update($this->questionForm);
+                session()->flash('success', __('views.question_updated_success'));
+                Log::info('Question updated successfully', ['id' => $this->editingQuestion->id]);
+            } else {
+                if (! $this->validateQuestionLimits($this->questionForm, null)) {
+                    return;
+                }
+                $question = EvaluationQuestion::create($this->questionForm);
+                session()->flash('success', __('views.question_saved_success'));
+                Log::info('Question created successfully', ['id' => $question->id]);
             }
-            $this->editingQuestion->update($this->questionForm);
-            session()->flash('success', 'Câu hỏi đã được cập nhật thành công!');
-        } else {
-            if (! $this->validateQuestionLimits($this->questionForm, null)) {
-                return;
-            }
-            EvaluationQuestion::create($this->questionForm);
-            session()->flash('success', 'Câu hỏi đã được thêm thành công!');
+
+            $this->closeQuestionModal();
+        } catch (\Exception $e) {
+            Log::error('Error saving question: '.$e->getMessage(), [
+                'data' => $this->questionForm,
+                'trace' => $e->getTraceAsString(),
+            ]);
+            session()->flash('error', 'Có lỗi xảy ra khi lưu câu hỏi: '.$e->getMessage());
         }
-
-        $this->closeQuestionModal();
     }
 
     public function deleteQuestion(int $questionId)
@@ -229,6 +265,199 @@ class Index extends Component
         if ($question) {
             $question->delete();
             session()->flash('success', 'Câu hỏi đã được xóa thành công!');
+        }
+    }
+
+    public function loadDefaultQuestions()
+    {
+        try {
+            // Kiểm tra xem đã có câu hỏi mặc định chưa
+            $existingQuestions = EvaluationQuestion::count();
+
+            if ($existingQuestions > 0) {
+                session()->flash('error', 'Đã có câu hỏi trong hệ thống. Vui lòng xóa tất cả câu hỏi hiện tại trước khi tải câu hỏi mặc định.');
+
+                return;
+            }
+
+            // Kiểm tra xem có đợt đánh giá nào đang hoạt động không
+            $activeRounds = \App\Models\EvaluationRound::current()->get();
+            if ($activeRounds->count() > 0) {
+                session()->flash('error', 'Không thể tải câu hỏi mặc định khi có đợt đánh giá đang hoạt động. Vui lòng đợi đợt đánh giá kết thúc.');
+
+                return;
+            }
+
+            // Tạo câu hỏi mặc định từ seeder
+            $questions = [
+                // Câu hỏi đánh giá Khóa học - Hoạt động
+                [
+                    'category' => 'course',
+                    'question' => 'Nội dung khóa học có phù hợp với mục tiêu học tập không?',
+                    'order' => 1,
+                    'is_active' => true,
+                ],
+                [
+                    'category' => 'course',
+                    'question' => 'Tài liệu học tập có đầy đủ và chất lượng tốt không?',
+                    'order' => 2,
+                    'is_active' => true,
+                ],
+                [
+                    'category' => 'course',
+                    'question' => 'Thời gian học tập có hợp lý và hiệu quả không?',
+                    'order' => 3,
+                    'is_active' => true,
+                ],
+                [
+                    'category' => 'course',
+                    'question' => 'Cơ sở vật chất và trang thiết bị có đáp ứng nhu cầu học tập không?',
+                    'order' => 4,
+                    'is_active' => true,
+                ],
+
+                // Câu hỏi đánh giá Cá nhân - Hoạt động
+                [
+                    'category' => 'personal',
+                    'question' => 'Bạn có hài lòng với chất lượng học tập tại trung tâm không?',
+                    'order' => 1,
+                    'is_active' => true,
+                ],
+
+                // Câu hỏi đánh giá Giáo viên - Hoạt động
+                [
+                    'category' => 'teacher',
+                    'question' => 'Giáo viên có nhiệt tình và tạo không khí học tập tích cực không?',
+                    'order' => 1,
+                    'is_active' => true,
+                ],
+                [
+                    'category' => 'teacher',
+                    'question' => 'Giáo viên có sẵn sàng giải đáp thắc mắc và hỗ trợ học viên không?',
+                    'order' => 2,
+                    'is_active' => true,
+                ],
+                [
+                    'category' => 'teacher',
+                    'question' => 'Giáo viên có sử dụng phương pháp giảng dạy hiệu quả và phù hợp không?',
+                    'order' => 3,
+                    'is_active' => true,
+                ],
+                [
+                    'category' => 'teacher',
+                    'question' => 'Giáo viên có đánh giá công bằng và khách quan không?',
+                    'order' => 4,
+                    'is_active' => true,
+                ],
+
+                // Câu hỏi đánh giá Giáo viên - Không hoạt động
+                [
+                    'category' => 'teacher',
+                    'question' => 'Giáo viên có nhiệt tình và tạo môi trường học tích cực không?',
+                    'order' => 5,
+                    'is_active' => false,
+                ],
+                [
+                    'category' => 'teacher',
+                    'question' => 'Giáo viên có giải đáp thắc mắc kịp thời và đầy đủ không?',
+                    'order' => 6,
+                    'is_active' => false,
+                ],
+                [
+                    'category' => 'teacher',
+                    'question' => 'Phương pháp giảng dạy của giáo viên có phù hợp và hiệu quả không?',
+                    'order' => 7,
+                    'is_active' => false,
+                ],
+                [
+                    'category' => 'teacher',
+                    'question' => 'Giáo viên đánh giá kết quả học tập công bằng và khách quan chứ?',
+                    'order' => 8,
+                    'is_active' => false,
+                ],
+
+                // Câu hỏi đánh giá Khóa học - Không hoạt động
+                [
+                    'category' => 'course',
+                    'question' => 'Tài liệu và giáo trình có đầy đủ, dễ hiểu, cập nhật không?',
+                    'order' => 5,
+                    'is_active' => false,
+                ],
+                [
+                    'category' => 'course',
+                    'question' => 'Bài tập và kiểm tra có hợp lý, phản ánh đúng kiến thức không?',
+                    'order' => 6,
+                    'is_active' => false,
+                ],
+                [
+                    'category' => 'course',
+                    'question' => 'Cơ sở vật chất và hạ tầng kỹ thuật có đáp ứng nhu cầu học tập không?',
+                    'order' => 7,
+                    'is_active' => false,
+                ],
+                [
+                    'category' => 'course',
+                    'question' => 'Giáo trình và tài liệu học tập có rõ ràng, dễ hiểu không?',
+                    'order' => 8,
+                    'is_active' => false,
+                ],
+                [
+                    'category' => 'course',
+                    'question' => 'Cấu trúc buổi học có hợp lý và dễ theo dõi không?',
+                    'order' => 9,
+                    'is_active' => false,
+                ],
+            ];
+
+            foreach ($questions as $questionData) {
+                EvaluationQuestion::create($questionData);
+            }
+
+            session()->flash('success', 'Đã tải thành công '.count($questions).' câu hỏi mặc định vào hệ thống!');
+
+            // Log để debug
+            Log::info('Default questions loaded successfully', ['count' => count($questions)]);
+
+        } catch (\Exception $e) {
+            Log::error('Error loading default questions: '.$e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
+            ]);
+            session()->flash('error', 'Có lỗi xảy ra khi tải câu hỏi mặc định: '.$e->getMessage());
+        }
+    }
+
+    public function clearAllQuestions()
+    {
+        try {
+            // Kiểm tra xem có đợt đánh giá nào đang hoạt động không
+            $activeRounds = \App\Models\EvaluationRound::current()->get();
+            if ($activeRounds->count() > 0) {
+                session()->flash('error', 'Không thể xóa câu hỏi khi có đợt đánh giá đang hoạt động. Vui lòng đợi đợt đánh giá kết thúc.');
+
+                return;
+            }
+
+            // Kiểm tra xem có đánh giá nào đã được submit không
+            $submittedEvaluations = Evaluation::whereNotNull('submitted_at')->count();
+            if ($submittedEvaluations > 0) {
+                session()->flash('error', 'Không thể xóa câu hỏi khi đã có học viên đánh giá. Vui lòng xóa tất cả đánh giá trước.');
+
+                return;
+            }
+
+            $questionCount = EvaluationQuestion::count();
+            EvaluationQuestion::truncate();
+
+            session()->flash('success', 'Đã xóa thành công '.$questionCount.' câu hỏi khỏi hệ thống!');
+
+            // Log để debug
+            Log::info('All questions cleared successfully', ['count' => $questionCount]);
+
+        } catch (\Exception $e) {
+            Log::error('Error clearing all questions: '.$e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
+            ]);
+            session()->flash('error', 'Có lỗi xảy ra khi xóa câu hỏi: '.$e->getMessage());
         }
     }
 
@@ -276,8 +505,8 @@ class Index extends Component
             $this->roundForm = [
                 'name' => $round->name,
                 'description' => $round->description,
-                'start_date' => $round->start_date->format('Y-m-d'),
-                'end_date' => $round->end_date->format('Y-m-d'),
+                'start_date' => $round->start_date ? Carbon::parse($round->start_date)->format('Y-m-d') : '',
+                'end_date' => $round->end_date ? Carbon::parse($round->end_date)->format('Y-m-d') : '',
                 'is_active' => $round->is_active,
             ];
             $this->showRoundModal = true;
@@ -302,7 +531,7 @@ class Index extends Component
         // Kiểm tra nhanh để hiển thị thông báo lỗi rõ ràng (trước khi validate chuẩn)
         if (! empty($this->roundForm['start_date'])) {
             $start = Carbon::parse($this->roundForm['start_date'])->startOfDay();
-            if ($start->lt(Carbon::today())) {
+            if ($start->lt(Carbon::today()->startOfDay())) {
                 session()->flash('error', 'Không thể tạo đợt ở quá khứ. Ngày bắt đầu phải từ hôm nay trở đi.');
 
                 return;
@@ -310,23 +539,46 @@ class Index extends Component
         }
 
         // Validate cơ bản + cứng ràng buộc ngày bắt đầu >= hôm nay
-        $this->validate([
-            'roundForm.name' => 'required|min:3',
-            'roundForm.description' => 'nullable|max:500',
-            'roundForm.start_date' => 'required|date|after_or_equal:today',
-            'roundForm.end_date' => 'required|date|after:roundForm.start_date',
-            'roundForm.is_active' => 'boolean',
-        ], $this->messages);
+        $this->validate($this->rules, $this->messages);
 
-        $startDate = Carbon::parse($this->roundForm['start_date'])->toDateString();
+        $startDate = Carbon::parse($this->roundForm['start_date'])->startOfDay();
+        $endDate = Carbon::parse($this->roundForm['end_date'])->endOfDay();
 
-        // Chỉ chặn trùng lặp NGÀY BẮT ĐẦU với đợt khác (kể cả cùng ngày)
-        $duplicateStartQuery = EvaluationRound::whereDate('start_date', $startDate);
+        // Log để debug
+        Log::info('Processing round dates:', [
+            'input_start' => $this->roundForm['start_date'],
+            'input_end' => $this->roundForm['end_date'],
+            'parsed_start' => $startDate->toDateTimeString(),
+            'parsed_end' => $endDate->toDateTimeString(),
+        ]);
+
+        // Kiểm tra xung đột thời gian với các đợt đánh giá khác
+        $conflictingRounds = EvaluationRound::where(function ($query) use ($startDate, $endDate) {
+            // Kiểm tra xem có đợt nào có thời gian chồng chéo không
+            // Xung đột xảy ra khi:
+            // 1. Đợt mới bắt đầu trong thời gian của đợt cũ
+            // 2. Đợt mới kết thúc trong thời gian của đợt cũ
+            // 3. Đợt mới bao trọn đợt cũ
+            $query->where(function ($q) use ($startDate, $endDate) {
+                $q->where('start_date', '<=', $endDate)
+                    ->where('end_date', '>=', $startDate);
+            });
+        });
+
         if ($this->editingRound) {
-            $duplicateStartQuery->where('id', '!=', $this->editingRound->id);
+            $conflictingRounds = $conflictingRounds->where('id', '!=', $this->editingRound->id);
         }
-        if ($duplicateStartQuery->exists()) {
-            session()->flash('error', 'Ngày bắt đầu này đã tồn tại ở một đợt đánh giá khác. Vui lòng chọn ngày bắt đầu khác.');
+
+        if ($conflictingRounds->exists()) {
+            // Log để debug
+            $conflictingRoundsList = $conflictingRounds->get();
+            Log::info('Time conflict detected:', [
+                'new_start' => $startDate->toDateString(),
+                'new_end' => $endDate->toDateString(),
+                'conflicting_rounds' => $conflictingRoundsList->pluck('id', 'name')->toArray(),
+            ]);
+
+            session()->flash('error', 'Thời gian đợt đánh giá này xung đột với đợt đánh giá khác. Vui lòng chọn thời gian khác.');
 
             return;
         }

@@ -8,7 +8,7 @@
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0">
                             <i class="bi bi-chat-dots-fill mr-2"></i>
-                            {{ __('views.student_pages.chat.index.title') }}
+                            Chat & Tương tác
                         </h5>
                     </div>
                     <div class="card-body p-0">
@@ -19,7 +19,7 @@
                                     <i class="bi bi-search"></i>
                                 </span>
                                 <input type="text" wire:model.live="searchTerm" class="form-control"
-                                    placeholder="{{ __('views.student_pages.chat.index.search_placeholder') }}">
+                                    placeholder="Tìm kiếm...">
                             </div>
                         </div>
 
@@ -28,13 +28,13 @@
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link @if ($activeTab === 'classes') active @endif"
                                     wire:click="setActiveTab('classes')" id="classes-tab" type="button" role="tab">
-                                    <i class="bi bi-diagram-3-fill mr-1"></i>{{ __('views.student_pages.chat.index.classes') }}
+                                    <i class="bi bi-diagram-3-fill mr-1"></i>Lớp học
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link @if ($activeTab === 'users') active @endif"
                                     wire:click="setActiveTab('users')" id="users-tab" type="button" role="tab">
-                                    <i class="bi bi-people-fill mr-1"></i>{{ __('views.student_pages.chat.index.teachers') }}
+                                    <i class="bi bi-people-fill mr-1"></i>Giáo viên
                                 </button>
                             </li>
                         </ul>
@@ -71,7 +71,7 @@
                                         <div class="list-group-item text-center text-muted">
                                             <i class="bi bi-diagram-3-fill"
                                                 style="font-size: 2rem; color: #dee2e6;"></i>
-                                            <p class="mt-2">{{ __('views.student_pages.chat.index.no_classes') }}</p>
+                                            <p class="mt-2">Không có lớp học nào</p>
                                         </div>
                                     @endforelse
                                 </div>
@@ -103,7 +103,7 @@
                                     @empty
                                         <div class="list-group-item text-center text-muted">
                                             <i class="bi bi-people-fill" style="font-size: 2rem; color: #dee2e6;"></i>
-                                            <p class="mt-2">{{ __('views.student_pages.chat.index.no_teachers') }}</p>
+                                            <p class="mt-2">Không có giáo viên nào</p>
                                         </div>
                                     @endforelse
                                 </div>
@@ -137,7 +137,7 @@
                                     </div>
                                     <div>
                                         <h6 class="mb-0">{{ $selectedClass->name }}</h6>
-                                        <small class="text-muted">{{ __('views.student_pages.chat.index.class') }}</small>
+                                        <small class="text-muted">Lớp học</small>
                                     </div>
                                 @endif
                             </div>
@@ -185,7 +185,7 @@
                                                                     target="_blank"
                                                                     class="btn btn-sm {{ $isMine ? 'btn-light' : 'btn-outline-primary' }}">
                                                                     <i class="bi bi-paperclip mr-1"></i>
-                                                                    {{ __('views.student_pages.chat.index.attachment') }}
+                                                                    Tệp đính kèm
                                                                 </a>
                                                             </div>
                                                         @endif
@@ -202,8 +202,8 @@
                                 @empty
                                     <div class="text-center text-muted mt-5">
                                         <i class="bi bi-chat-dots" style="font-size: 3rem; color: #dee2e6;"></i>
-                                        <p class="mt-3">{{ __('views.student_pages.chat.index.no_messages') }}</p>
-                                        <p>{{ __('views.student_pages.chat.index.start_conversation') }}</p>
+                                        <p class="mt-3">Chưa có tin nhắn nào</p>
+                                        <p>Bắt đầu cuộc trò chuyện ngay!</p>
                                     </div>
                                 @endforelse
                             </div>
@@ -215,7 +215,7 @@
                                         <div class="col">
                                             <div class="input-group">
                                                 <input type="text" wire:model="messageText" class="form-control"
-                                                    placeholder="{{ __('views.student_pages.chat.index.message_placeholder') }}" maxlength="1000">
+                                                    placeholder="Nhập tin nhắn..." maxlength="1000">
                                                 <input type="file" wire:model="attachment" id="attachment" class="d-none" accept="image/*,audio/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar,.7z">
                                                 <button type="button" class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('attachment').click()">
                                                     <i class="bi bi-paperclip"></i>
@@ -245,7 +245,7 @@
                                     class="mt-2 p-3 border-2 border-dashed border-secondary rounded text-center"
                                     style="display: none; background-color: rgba(0,123,255,0.1);">
                                     <i class="bi bi-cloud-upload fs-1 text-primary"></i>
-                                    <p class="mb-0 mt-2">{{ __('views.student_pages.chat.index.drag_drop_message') }}</p>
+                                    <p class="mb-0 mt-2">Kéo thả file vào đây để đính kèm</p>
                                 </div>
                             </div>
                         </div>
@@ -255,8 +255,8 @@
                             style="height: 400px;">
                             <div class="text-center">
                                 <i class="bi bi-chat-dots-fill" style="font-size: 4rem; color: #0dcaf0;"></i>
-                                <h4 class="mt-3">{{ __('views.student_pages.chat.index.welcome_title') }}</h4>
-                                <p class="text-muted">{{ __('views.student_pages.chat.index.welcome_subtitle') }}</p>
+                                <h4 class="mt-3">Chào mừng đến với Chat & Tương tác</h4>
+                                <p class="text-muted">Chọn một lớp học hoặc giáo viên để bắt đầu cuộc trò chuyện</p>
                             </div>
                         </div>
                     @endif
@@ -297,8 +297,8 @@
                 Livewire.on('messageReceived', () => {
                     // Show notification
                     if (Notification.permission === 'granted') {
-                        new Notification('{{ __('views.student_pages.chat.index.new_message') }}', {
-                            body: '{{ __('views.student_pages.chat.index.new_message_body') }}',
+                        new Notification('Tin nhắn mới', {
+                            body: 'Bạn có tin nhắn mới',
                             icon: '/favicon.ico'
                         });
                     }

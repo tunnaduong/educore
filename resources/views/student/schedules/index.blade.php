@@ -64,16 +64,26 @@
                 var calendarEl = document.getElementById('calendar');
                 var events = @json($events ?? []);
                 var calendar = new FullCalendar.Calendar(calendarEl, {
-                    initialView: 'listWeek',
+                    initialView: 'dayGridMonth',
                     locale: '{{ app()->getLocale() }}',
+                    firstDay: 1, // Bắt đầu tuần từ Thứ 2
+                    fixedWeekCount: false, // Không cố định số tuần
+                    showNonCurrentDates: false, // Không hiển thị ngày không thuộc tháng hiện tại
+                    // Không dùng validRange để vẫn có thể điều hướng giữa các tháng
+                    eventDidMount: function(info) {
+                        // Lọc events chỉ hiển thị trong tháng hiện tại
+                        var eventDate = new Date(info.event.start);
+                        var currentDate = new Date();
+                        if (eventDate.getMonth() !== currentDate.getMonth() || eventDate.getFullYear() !== currentDate.getFullYear()) {
+                            info.el.style.display = 'none';
+                        }
+                    },
                     buttonText: {
                         today: '{{ __('views.student_pages.schedules.index.calendar_today') }}',
                         month: '{{ __('views.student_pages.schedules.index.calendar_month') }}',
                         week: '{{ __('views.student_pages.schedules.index.calendar_week') }}',
                         day: '{{ __('views.student_pages.schedules.index.calendar_day') }}',
-                        list: '{{ __('views.student_pages.schedules.index.calendar_list') }}',
-                        prev: '{{ __('views.student_pages.schedules.index.calendar_prev') }}',
-                        next: '{{ __('views.student_pages.schedules.index.calendar_next') }}'
+                        list: '{{ __('views.student_pages.schedules.index.calendar_list') }}'
                     },
                     titleFormat: {
                         year: 'numeric',
@@ -83,7 +93,7 @@
                     allDayText: '{{ __('views.student_pages.schedules.index.calendar_all_day') }}',
                     noEventsText: '{{ __('views.student_pages.schedules.index.calendar_no_events') }}',
                     headerToolbar: {
-                        left: 'prev,next today',
+                        left: 'prev,next',
                         center: 'title',
                         right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
                     },

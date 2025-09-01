@@ -29,24 +29,46 @@ class CalendarView extends Component
                 $time = $classroom->schedule['time'] ?? '';
 
                 if (! empty($days) && ! empty($time)) {
-                    // Tạo events cho mỗi ngày trong tuần
-                    foreach ($days as $day) {
-                        $events[] = [
-                            'id' => 'schedule_'.$classroom->id.'_'.$day,
-                            'title' => $classroom->name,
-                            'start' => $this->getNextOccurrence($day, $time),
-                            'end' => $this->getNextOccurrence($day, $time, 90), // 90 phút
-                            'backgroundColor' => '#0d6efd',
-                            'borderColor' => '#0d6efd',
-                            'extendedProps' => [
-                                'type' => 'schedule',
-                                'classroom' => $classroom->name,
-                                'level' => $classroom->level,
-                                'teachers' => $classroom->teachers->pluck('name')->join(', '),
-                                'location' => 'Chưa có địa điểm',
-                                'studentCount' => $classroom->students->count(),
-                            ],
-                        ];
+                    // Tạo events cho tháng hiện tại
+                    $currentMonth = now()->month;
+                    $currentYear = now()->year;
+                    $startOfMonth = now()->startOfMonth();
+                    $endOfMonth = now()->endOfMonth();
+
+                    // Tạo events cho từng ngày trong tháng
+                    $currentDate = $startOfMonth->copy();
+
+                    while ($currentDate->lte($endOfMonth)) {
+                        $dayName = $currentDate->format('l'); // Monday, Tuesday, etc.
+
+                        // Kiểm tra xem ngày này có phải là ngày học không
+                        if (in_array($dayName, $days)) {
+                            $timeParts = explode(':', $time);
+                            $hour = (int) $timeParts[0];
+                            $minute = (int) $timeParts[1];
+
+                            $startDateTime = $currentDate->copy()->setTime($hour, $minute);
+                            $endDateTime = $startDateTime->copy()->addMinutes(90); // 90 phút
+
+                            $events[] = [
+                                'id' => 'schedule_'.$classroom->id.'_'.$dayName.'_'.$currentDate->format('Y-m-d'),
+                                'title' => $classroom->name,
+                                'start' => $startDateTime->format('Y-m-d\TH:i:s'),
+                                'end' => $endDateTime->format('Y-m-d\TH:i:s'),
+                                'backgroundColor' => '#0d6efd',
+                                'borderColor' => '#0d6efd',
+                                'extendedProps' => [
+                                    'type' => 'schedule',
+                                    'classroom' => $classroom->name,
+                                    'level' => $classroom->level,
+                                    'teachers' => $classroom->teachers->pluck('name')->join(', '),
+                                    'location' => 'Chưa có địa điểm',
+                                    'studentCount' => $classroom->students->count(),
+                                ],
+                            ];
+                        }
+
+                        $currentDate->addDay();
                     }
                 }
             }
@@ -95,38 +117,20 @@ class CalendarView extends Component
         $this->events = $events;
     }
 
-    private function getNextOccurrence($day, $time, $addMinutes = 0)
+    private function getDayNumber($day)
     {
-        $dayMap = [
+        // Mapping theo Carbon's dayOfWeek: Sunday = 0, Monday = 1, ..., Saturday = 6
+        $days = [
+            'Sunday' => 0,
             'Monday' => 1,
             'Tuesday' => 2,
             'Wednesday' => 3,
             'Thursday' => 4,
             'Friday' => 5,
             'Saturday' => 6,
-            'Sunday' => 0,
         ];
 
-        $dayNumber = $dayMap[$day] ?? 1;
-        $currentDay = now()->dayOfWeek;
-        $daysUntilNext = ($dayNumber - $currentDay + 7) % 7;
-
-        if ($daysUntilNext === 0) {
-            $daysUntilNext = 7;
-        }
-
-        $nextDate = now()->addDays($daysUntilNext);
-        $timeParts = explode(':', $time);
-        $hour = (int) $timeParts[0];
-        $minute = (int) $timeParts[1];
-
-        $dateTime = $nextDate->setTime($hour, $minute);
-
-        if ($addMinutes > 0) {
-            $dateTime = $dateTime->addMinutes($addMinutes);
-        }
-
-        return $dateTime->format('Y-m-d\TH:i:s');
+        return $days[$day] ?? 1;
     }
 
     public function showEventDetail($eventId, $eventType)
