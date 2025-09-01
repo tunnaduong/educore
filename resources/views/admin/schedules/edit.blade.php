@@ -13,6 +13,15 @@
                         </div>
                     </div>
                     <div class="card-body">
+                        <!-- Thông báo thành công -->
+                        @if (session()->has('success_message'))
+                            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                                <i class="bi bi-check-circle-fill me-2"></i>
+                                {{ session('success_message') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
+
                         <div class="mb-4">
                             <h5 class="text-primary">{{ $classroom->name }}</h5>
                             <p class="text-muted mb-0">
@@ -82,24 +91,7 @@
                                 @enderror
                             </div>
 
-                            <!-- Preview lịch học -->
-                            @if ($selectedDays && $startTime && $endTime)
-                                <div class="alert alert-info mb-4">
-                                    <h6 class="alert-heading">
-                                        <i class="bi bi-calendar-check mr-2"></i>{{ __('general.schedule_preview') }}
-                                    </h6>
-                                    <p class="mb-0">
-                                        <strong>{{ __('general.study_days') }}:</strong>
-                                        @foreach ($selectedDays as $day)
-                                            <span class="badge bg-primary mr-1">{{ $availableDays[$day] }}</span>
-                                        @endforeach
-                                    </p>
-                                    <p class="mb-0">
-                                        <strong>{{ __('general.study_time') }}:</strong> {{ $startTime }} -
-                                        {{ $endTime }}
-                                    </p>
-                                </div>
-                            @endif
+
 
                             <!-- Nút thao tác -->
                             <div class="d-flex justify-content-end gap-2">
