@@ -1,5 +1,20 @@
 <x-layouts.dash-admin active="assignments" title="{{ __('views.assignment_overview') }}">
     @include('components.language')
+    <!-- Success/Error Messages -->
+    @if (session()->has('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>{{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if (session()->has('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <div class="d-flex justify-content-end mb-3">
         <a href="{{ route('assignments.create') }}" class="btn btn-primary">
             <i class="bi bi-plus-circle mr-2"></i>{{ __('views.create_new_assignment') }}

@@ -44,7 +44,7 @@ class CreateEvent extends Component
         'startTime' => 'required_if:eventType,lesson,quiz|date',
         'endTime' => 'required_if:eventType,lesson,quiz|date|after:startTime',
         'location' => 'nullable|string|max:255',
-        'dueDate' => 'required_if:eventType,assignment|date',
+        'dueDate' => 'required_if:eventType,assignment|date|after:now',
         'maxScore' => 'nullable|numeric|min:0|max:10',
         'duration' => 'required_if:eventType,quiz|numeric|min:1',
     ];
@@ -56,6 +56,7 @@ class CreateEvent extends Component
         'endTime.required_if' => 'Vui lòng nhập thời gian kết thúc.',
         'endTime.after' => 'Thời gian kết thúc phải sau thời gian bắt đầu.',
         'dueDate.required_if' => 'Vui lòng nhập hạn nộp.',
+        'dueDate.after' => 'Hạn nộp không được trong quá khứ.',
         'duration.required_if' => 'Vui lòng nhập thời gian làm bài.',
         'duration.min' => 'Thời gian làm bài phải lớn hơn 0.',
         'maxScore.numeric' => 'Điểm phải là số hợp lệ.',
@@ -139,13 +140,20 @@ class CreateEvent extends Component
                     break;
 
                 case 'assignment':
-                    $assignment = Assignment::create([
+                    $data = [
                         'class_id' => $this->classroomId,
                         'title' => $this->title,
                         'description' => $this->description,
                         'deadline' => $this->dueDate,
                         'types' => json_encode(['text']), // Default type
-                    ]);
+                    ];
+
+                    // Chỉ thêm max_score nếu có giá trị
+                    if (! empty($this->maxScore)) {
+                        $data['max_score'] = $this->maxScore;
+                    }
+
+                    $assignment = Assignment::create($data);
                     $this->dispatch('eventCreated', type: 'assignment', id: $assignment->id);
                     break;
 
