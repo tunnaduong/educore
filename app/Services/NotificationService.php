@@ -102,7 +102,7 @@ class NotificationService
                 $user->phone,
                 $templateConfig['template_id'],
                 $templateConfig['data'],
-                'notification_' . $notification->id . '_' . $user->id
+                'notification_'.$notification->id.'_'.$user->id
             );
 
             return array_merge($result, ['user_id' => $user->id]);
@@ -224,7 +224,7 @@ class NotificationService
             $otp,
             $user->name,
             $user->student_code ?? 'N/A',
-            'otp_' . $user->id
+            'otp_'.$user->id
         );
     }
 
@@ -249,7 +249,7 @@ class NotificationService
             $classroom->name,
             $schedule->start_time->format('H:i'),
             $schedule->date->format('d/m/Y'),
-            'schedule_' . $schedule->id . '_' . $user->id
+            'schedule_'.$schedule->id.'_'.$user->id
         );
     }
 
@@ -276,7 +276,7 @@ class NotificationService
             $submission->updated_at->format('d/m/Y'),
             $submission->score ?? 'N/A',
             $submission->feedback ?? 'Không có nhận xét',
-            'assignment_' . $submission->id
+            'assignment_'.$submission->id
         );
     }
 
@@ -301,7 +301,7 @@ class NotificationService
             $classroom->name,
             $payment->created_at->format('d/m/Y'),
             $payment->transaction_id ?? 'N/A',
-            'payment_' . $payment->id
+            'payment_'.$payment->id
         );
     }
 
@@ -322,8 +322,8 @@ class NotificationService
             $user->name,
             $classroom->name,
             now()->format('d/m/Y'),
-            'REG_' . $classroom->id . '_' . $user->id,
-            'registration_' . $classroom->id . '_' . $user->id
+            'REG_'.$classroom->id.'_'.$user->id,
+            'registration_'.$classroom->id.'_'.$user->id
         );
     }
 
@@ -347,7 +347,7 @@ class NotificationService
             $user->student_code ?? 'N/A',
             $classroom->name,
             $attendance->date->format('d/m/Y'),
-            'absent_' . $attendance->id
+            'absent_'.$attendance->id
         );
     }
 
@@ -371,7 +371,7 @@ class NotificationService
             $user->student_code ?? 'N/A',
             $classroom->name,
             $attendance->date->format('d/m/Y'),
-            'late_' . $attendance->id
+            'late_'.$attendance->id
         );
     }
 
@@ -396,7 +396,7 @@ class NotificationService
             $classroom->name,
             $assignment->due_date->format('H:i'),
             $assignment->due_date->format('d/m/Y'),
-            'deadline_' . $assignment->id . '_' . $user->id
+            'deadline_'.$assignment->id.'_'.$user->id
         );
     }
 
@@ -422,7 +422,7 @@ class NotificationService
             $oldDateTime,
             $newDateTime,
             $teacherName,
-            'change_' . $schedule->id . '_' . $user->id
+            'change_'.$schedule->id.'_'.$user->id
         );
     }
 
@@ -447,7 +447,7 @@ class NotificationService
             $classroom->name,
             $schedule->start_time->format('H:i'),
             $schedule->date->format('d/m/Y'),
-            'exam_' . $schedule->id . '_' . $user->id
+            'exam_'.$schedule->id.'_'.$user->id
         );
     }
 

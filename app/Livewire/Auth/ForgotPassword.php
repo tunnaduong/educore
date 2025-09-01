@@ -6,19 +6,26 @@ use App\Models\User;
 use App\Services\OneSmsService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Livewire\Component;
 
 class ForgotPassword extends Component
 {
     public $phone = '';
+
     public $otp = '';
+
     public $new_password = '';
+
     public $confirm_password = '';
+
     public $step = 1; // 1: nhập số điện thoại, 2: nhập OTP, 3: đặt mật khẩu mới
+
     public $message = '';
+
     public $messageType = ''; // success, error, warning
+
     public $countdown = 0;
+
     public $canResend = true;
 
     protected $rules = [
@@ -73,13 +80,15 @@ class ForgotPassword extends Component
 
         if ($recentAttempts >= 3) {
             $this->showMessage(__('auth.otp_limit_exceeded'), 'error');
+
             return;
         }
 
         // Kiểm tra số điện thoại có tồn tại không
         $user = User::where('phone', $this->phone)->first();
-        if (!$user) {
+        if (! $user) {
             $this->showMessage(__('auth.phone_not_found'), 'error');
+
             return;
         }
 
@@ -96,7 +105,7 @@ class ForgotPassword extends Component
         );
 
         // Gửi OTP qua ZNS
-        $smsService = new OneSmsService();
+        $smsService = new OneSmsService;
         $result = $smsService->sendOTP($this->phone, $otp, $user->name);
 
         if ($result['success']) {
@@ -122,9 +131,10 @@ class ForgotPassword extends Component
         ]);
 
         // Kiểm tra OTP có đúng không
-        if (!session()->has('reset_otp') || !session()->has('reset_expires')) {
+        if (! session()->has('reset_otp') || ! session()->has('reset_expires')) {
             $this->showMessage(__('auth.session_expired'), 'error');
             $this->resetForm();
+
             return;
         }
 
@@ -132,11 +142,13 @@ class ForgotPassword extends Component
             $this->showMessage(__('auth.otp_expired'), 'error');
             session()->forget(['reset_phone', 'reset_expires', 'reset_otp']);
             $this->resetForm();
+
             return;
         }
 
         if ($this->otp !== session('reset_otp')) {
             $this->showMessage(__('auth.otp_invalid'), 'error');
+
             return;
         }
 
@@ -153,22 +165,24 @@ class ForgotPassword extends Component
         ]);
 
         // Kiểm tra lại session
-        if (!session()->has('reset_phone')) {
+        if (! session()->has('reset_phone')) {
             $this->showMessage(__('auth.session_expired'), 'error');
             $this->resetForm();
+
             return;
         }
 
         // Cập nhật mật khẩu mới
         $user = User::where('phone', session('reset_phone'))->first();
-        if (!$user) {
+        if (! $user) {
             $this->showMessage(__('auth.account_not_found'), 'error');
             $this->resetForm();
+
             return;
         }
 
         $user->update([
-            'password' => Hash::make($this->new_password)
+            'password' => Hash::make($this->new_password),
         ]);
 
         // Xóa OTP khỏi database
@@ -185,7 +199,7 @@ class ForgotPassword extends Component
 
     public function resendOTP()
     {
-        if (!$this->canResend) {
+        if (! $this->canResend) {
             return;
         }
 
@@ -256,7 +270,7 @@ class ForgotPassword extends Component
 
         // Nếu số điện thoại có 11 số và bắt đầu bằng 84, chuyển về 0
         if (strlen($phone) === 11 && substr($phone, 0, 2) === '84') {
-            return '0' . substr($phone, 2);
+            return '0'.substr($phone, 2);
         }
 
         return $phone;
