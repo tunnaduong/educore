@@ -144,8 +144,6 @@ class AttendanceOverview extends Component
         $this->loadOverviewStats();
     }
 
-
-
     public function loadMonthlyTrendData()
     {
         $monthlyData = [];

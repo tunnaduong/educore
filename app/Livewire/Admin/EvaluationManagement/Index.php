@@ -171,12 +171,13 @@ class Index extends Component
             'category' => $category,
             'isActive' => $isActive,
             'order' => $order,
-            'excludeId' => $excludeId
+            'excludeId' => $excludeId,
         ]);
 
         if (! array_key_exists($category, $this->categoryLimits)) {
             session()->flash('error', __('views.validation_category_invalid'));
             Log::warning('Invalid category:', ['category' => $category]);
+
             return false;
         }
 
@@ -190,12 +191,13 @@ class Index extends Component
             Log::info('Active count for category:', [
                 'category' => $category,
                 'activeCount' => $activeCount,
-                'limit' => $this->categoryLimits[$category]
+                'limit' => $this->categoryLimits[$category],
             ]);
 
             if ($activeCount >= $this->categoryLimits[$category]) {
                 session()->flash('error', __('views.validation_question_limit_reached'));
                 Log::warning('Question limit reached for category:', ['category' => $category]);
+
                 return false;
             }
 
@@ -209,17 +211,19 @@ class Index extends Component
             Log::info('Duplicate order check:', [
                 'category' => $category,
                 'order' => $order,
-                'hasDuplicate' => $dupOrder
+                'hasDuplicate' => $dupOrder,
             ]);
 
             if ($dupOrder) {
                 session()->flash('error', __('views.validation_order_duplicate'));
                 Log::warning('Duplicate order found for category:', ['category' => $category, 'order' => $order]);
+
                 return false;
             }
         }
 
         Log::info('Question limits validation passed');
+
         return true;
     }
 
@@ -247,11 +251,11 @@ class Index extends Component
 
             $this->closeQuestionModal();
         } catch (\Exception $e) {
-            Log::error('Error saving question: ' . $e->getMessage(), [
+            Log::error('Error saving question: '.$e->getMessage(), [
                 'data' => $this->questionForm,
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
-            session()->flash('error', 'Có lỗi xảy ra khi lưu câu hỏi: ' . $e->getMessage());
+            session()->flash('error', 'Có lỗi xảy ra khi lưu câu hỏi: '.$e->getMessage());
         }
     }
 
@@ -272,6 +276,7 @@ class Index extends Component
 
             if ($existingQuestions > 0) {
                 session()->flash('error', 'Đã có câu hỏi trong hệ thống. Vui lòng xóa tất cả câu hỏi hiện tại trước khi tải câu hỏi mặc định.');
+
                 return;
             }
 
@@ -279,6 +284,7 @@ class Index extends Component
             $activeRounds = \App\Models\EvaluationRound::current()->get();
             if ($activeRounds->count() > 0) {
                 session()->flash('error', 'Không thể tải câu hỏi mặc định khi có đợt đánh giá đang hoạt động. Vui lòng đợi đợt đánh giá kết thúc.');
+
                 return;
             }
 
@@ -407,16 +413,16 @@ class Index extends Component
                 EvaluationQuestion::create($questionData);
             }
 
-            session()->flash('success', 'Đã tải thành công ' . count($questions) . ' câu hỏi mặc định vào hệ thống!');
+            session()->flash('success', 'Đã tải thành công '.count($questions).' câu hỏi mặc định vào hệ thống!');
 
             // Log để debug
             Log::info('Default questions loaded successfully', ['count' => count($questions)]);
 
         } catch (\Exception $e) {
-            Log::error('Error loading default questions: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString()
+            Log::error('Error loading default questions: '.$e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
             ]);
-            session()->flash('error', 'Có lỗi xảy ra khi tải câu hỏi mặc định: ' . $e->getMessage());
+            session()->flash('error', 'Có lỗi xảy ra khi tải câu hỏi mặc định: '.$e->getMessage());
         }
     }
 
@@ -427,6 +433,7 @@ class Index extends Component
             $activeRounds = \App\Models\EvaluationRound::current()->get();
             if ($activeRounds->count() > 0) {
                 session()->flash('error', 'Không thể xóa câu hỏi khi có đợt đánh giá đang hoạt động. Vui lòng đợi đợt đánh giá kết thúc.');
+
                 return;
             }
 
@@ -434,22 +441,23 @@ class Index extends Component
             $submittedEvaluations = Evaluation::whereNotNull('submitted_at')->count();
             if ($submittedEvaluations > 0) {
                 session()->flash('error', 'Không thể xóa câu hỏi khi đã có học viên đánh giá. Vui lòng xóa tất cả đánh giá trước.');
+
                 return;
             }
 
             $questionCount = EvaluationQuestion::count();
             EvaluationQuestion::truncate();
 
-            session()->flash('success', 'Đã xóa thành công ' . $questionCount . ' câu hỏi khỏi hệ thống!');
+            session()->flash('success', 'Đã xóa thành công '.$questionCount.' câu hỏi khỏi hệ thống!');
 
             // Log để debug
             Log::info('All questions cleared successfully', ['count' => $questionCount]);
 
         } catch (\Exception $e) {
-            Log::error('Error clearing all questions: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString()
+            Log::error('Error clearing all questions: '.$e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
             ]);
-            session()->flash('error', 'Có lỗi xảy ra khi xóa câu hỏi: ' . $e->getMessage());
+            session()->flash('error', 'Có lỗi xảy ra khi xóa câu hỏi: '.$e->getMessage());
         }
     }
 
@@ -541,19 +549,19 @@ class Index extends Component
             'input_start' => $this->roundForm['start_date'],
             'input_end' => $this->roundForm['end_date'],
             'parsed_start' => $startDate->toDateTimeString(),
-            'parsed_end' => $endDate->toDateTimeString()
+            'parsed_end' => $endDate->toDateTimeString(),
         ]);
 
         // Kiểm tra xung đột thời gian với các đợt đánh giá khác
-        $conflictingRounds = EvaluationRound::where(function($query) use ($startDate, $endDate) {
+        $conflictingRounds = EvaluationRound::where(function ($query) use ($startDate, $endDate) {
             // Kiểm tra xem có đợt nào có thời gian chồng chéo không
             // Xung đột xảy ra khi:
             // 1. Đợt mới bắt đầu trong thời gian của đợt cũ
             // 2. Đợt mới kết thúc trong thời gian của đợt cũ
             // 3. Đợt mới bao trọn đợt cũ
-            $query->where(function($q) use ($startDate, $endDate) {
+            $query->where(function ($q) use ($startDate, $endDate) {
                 $q->where('start_date', '<=', $endDate)
-                  ->where('end_date', '>=', $startDate);
+                    ->where('end_date', '>=', $startDate);
             });
         });
 
@@ -567,7 +575,7 @@ class Index extends Component
             Log::info('Time conflict detected:', [
                 'new_start' => $startDate->toDateString(),
                 'new_end' => $endDate->toDateString(),
-                'conflicting_rounds' => $conflictingRoundsList->pluck('id', 'name')->toArray()
+                'conflicting_rounds' => $conflictingRoundsList->pluck('id', 'name')->toArray(),
             ]);
 
             session()->flash('error', 'Thời gian đợt đánh giá này xung đột với đợt đánh giá khác. Vui lòng chọn thời gian khác.');
