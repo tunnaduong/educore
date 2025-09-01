@@ -77,8 +77,8 @@ class TeacherRouteTest extends TestCase
                         'type' => 'multiple_choice',
                         'options' => ['A', 'B', 'C', 'D'],
                         'correct_answer' => 'A',
-                        'score' => 1
-                    ]
+                        'score' => 1,
+                    ],
                 ],
                 'class_id' => $classroom->id,
             ]
