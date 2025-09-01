@@ -9,8 +9,11 @@ use Illuminate\Support\Facades\Log;
 class OneSmsService
 {
     protected string $endpoint = 'https://zaloapi.conek.vn/SendSMSZalo';
+
     protected string $username;
+
     protected string $password;
+
     protected string $brandname = 'EduCore';
 
     public function __construct()
@@ -47,7 +50,7 @@ class OneSmsService
             ]);
 
             $response = Http::timeout(30)->withHeaders([
-                'Content-Type' => 'application/json'
+                'Content-Type' => 'application/json',
             ])->post($this->endpoint, $payload);
 
             $result = $response->json();
@@ -68,8 +71,8 @@ class OneSmsService
 
             return [
                 'success' => false,
-                'message' => 'Lỗi gửi tin nhắn: ' . $e->getMessage(),
-                'code' => 'ERROR'
+                'message' => 'Lỗi gửi tin nhắn: '.$e->getMessage(),
+                'code' => 'ERROR',
             ];
         }
     }
@@ -87,7 +90,7 @@ class OneSmsService
             [
                 'type_send' => 2,
                 'resend_sms' => 1,
-                'message_sms' => "Ma OTP cua ban la: {$otp}"
+                'message_sms' => "Ma OTP cua ban la: {$otp}",
             ]
         );
     }
@@ -106,13 +109,13 @@ class OneSmsService
                 'class_name' => $className,
                 'time' => $time,
                 'date' => $date,
-                'language_center' => 'EduCore'
+                'language_center' => 'EduCore',
             ],
             $id,
             [
                 'type_send' => 2,
                 'resend_sms' => 1,
-                'message_sms' => "Nhac lich: {$className} luc {$time} ngay {$date}"
+                'message_sms' => "Nhac lich: {$className} luc {$time} ngay {$date}",
             ]
         );
     }
@@ -131,13 +134,13 @@ class OneSmsService
                 'assignment_name' => $assignmentName,
                 'date' => $date,
                 'score' => $score,
-                'comment' => $comment
+                'comment' => $comment,
             ],
             $id,
             [
                 'type_send' => 2,
                 'resend_sms' => 1,
-                'message_sms' => "Ket qua: {$assignmentName} - {$score} diem"
+                'message_sms' => "Ket qua: {$assignmentName} - {$score} diem",
             ]
         );
     }
@@ -156,13 +159,13 @@ class OneSmsService
                 'language_center' => 'EduCore',
                 'class_name' => $className,
                 'date' => $date,
-                'transaction_id' => $transactionId
+                'transaction_id' => $transactionId,
             ],
             $id,
             [
                 'type_send' => 2,
                 'resend_sms' => 1,
-                'message_sms' => "Xac nhan thanh toan: {$className} - {$transactionId}"
+                'message_sms' => "Xac nhan thanh toan: {$className} - {$transactionId}",
             ]
         );
     }
@@ -180,13 +183,13 @@ class OneSmsService
                 'class_name' => $className,
                 'language_center' => 'EduCore',
                 'date' => $date,
-                'ID' => $registrationId
+                'ID' => $registrationId,
             ],
             $id,
             [
                 'type_send' => 2,
                 'resend_sms' => 1,
-                'message_sms' => "Dang ky thanh cong: {$className}"
+                'message_sms' => "Dang ky thanh cong: {$className}",
             ]
         );
     }
@@ -203,13 +206,13 @@ class OneSmsService
                 'customer_name' => $studentName,
                 'mahocvien' => $studentCode,
                 'class_name' => $className,
-                'date' => $date
+                'date' => $date,
             ],
             $id,
             [
                 'type_send' => 2,
                 'resend_sms' => 1,
-                'message_sms' => "Vang mat: {$className} ngay {$date}"
+                'message_sms' => "Vang mat: {$className} ngay {$date}",
             ]
         );
     }
@@ -226,13 +229,13 @@ class OneSmsService
                 'customer_name' => $studentName,
                 'mahocvien' => $studentCode,
                 'class_name' => $className,
-                'date' => $date
+                'date' => $date,
             ],
             $id,
             [
                 'type_send' => 2,
                 'resend_sms' => 1,
-                'message_sms' => "Di muon: {$className} ngay {$date}"
+                'message_sms' => "Di muon: {$className} ngay {$date}",
             ]
         );
     }
@@ -250,13 +253,13 @@ class OneSmsService
                 'mahocvien' => $studentCode,
                 'class_name' => $className,
                 'time' => $time,
-                'date' => $date
+                'date' => $date,
             ],
             $id,
             [
                 'type_send' => 2,
                 'resend_sms' => 1,
-                'message_sms' => "Nop bai: {$className} truoc {$time} ngay {$date}"
+                'message_sms' => "Nop bai: {$className} truoc {$time} ngay {$date}",
             ]
         );
     }
@@ -275,13 +278,13 @@ class OneSmsService
                 'class_name' => $className,
                 'old_date_time' => $oldDateTime,
                 'new_date_time' => $newDateTime,
-                'teacher_name' => $teacherName
+                'teacher_name' => $teacherName,
             ],
             $id,
             [
                 'type_send' => 2,
                 'resend_sms' => 1,
-                'message_sms' => "Thay doi lich: {$className} - {$newDateTime}"
+                'message_sms' => "Thay doi lich: {$className} - {$newDateTime}",
             ]
         );
     }
@@ -299,13 +302,13 @@ class OneSmsService
                 'mahocvien' => $studentCode,
                 'class_name' => $className,
                 'time' => $time,
-                'date' => $date
+                'date' => $date,
             ],
             $id,
             [
                 'type_send' => 2,
                 'resend_sms' => 1,
-                'message_sms' => "Kiem tra online: {$className} luc {$time} ngay {$date}"
+                'message_sms' => "Kiem tra online: {$className} luc {$time} ngay {$date}",
             ]
         );
     }
@@ -333,7 +336,7 @@ class OneSmsService
             'success' => $success,
             'message' => $messages[$code] ?? 'Lỗi không xác định',
             'code' => $code,
-            'data' => $response
+            'data' => $response,
         ];
     }
 
@@ -352,7 +355,7 @@ class OneSmsService
 
         // Nếu số điện thoại có 11 số và bắt đầu bằng 84, chuyển về 0
         if (strlen($phone) === 11 && substr($phone, 0, 2) === '84') {
-            return '0' . substr($phone, 2);
+            return '0'.substr($phone, 2);
         }
 
         return $phone;
@@ -365,7 +368,7 @@ class OneSmsService
     {
         try {
             $response = Http::timeout(30)->withHeaders([
-                'Content-Type' => 'application/json'
+                'Content-Type' => 'application/json',
             ])->post('https://zaloapi.conek.vn/GetOaZalo', [
                 'username' => $this->username,
                 'password' => $this->password,
@@ -379,7 +382,7 @@ class OneSmsService
 
             return [
                 'success' => false,
-                'message' => 'Lỗi kiểm tra tài khoản: ' . $e->getMessage(),
+                'message' => 'Lỗi kiểm tra tài khoản: '.$e->getMessage(),
             ];
         }
     }

@@ -83,7 +83,7 @@ class TestZaloAPI extends Command
                         $code,
                         $class,
                         now()->format('d/m/Y'),
-                        'TXN' . rand(100000, 999999)
+                        'TXN'.rand(100000, 999999)
                     );
                     break;
 
@@ -93,7 +93,7 @@ class TestZaloAPI extends Command
                         $name,
                         $class,
                         now()->format('d/m/Y'),
-                        'REG' . rand(100000, 999999)
+                        'REG'.rand(100000, 999999)
                     );
                     break;
 
@@ -153,21 +153,22 @@ class TestZaloAPI extends Command
 
                 default:
                     $this->error("Type không hợp lệ: {$type}");
-                    $this->info("Các type có sẵn: otp, schedule, assignment, payment, registration, absent, late, deadline, change, exam");
+                    $this->info('Các type có sẵn: otp, schedule, assignment, payment, registration, absent, late, deadline, change, exam');
+
                     return 1;
             }
 
             if ($result['success']) {
-                $this->info("✓ Thành công!");
-                $this->info("Message: " . $result['message']);
+                $this->info('✓ Thành công!');
+                $this->info('Message: '.$result['message']);
             } else {
-                $this->error("✗ Thất bại!");
-                $this->error("Message: " . $result['message']);
+                $this->error('✗ Thất bại!');
+                $this->error('Message: '.$result['message']);
             }
 
-            $this->info("Response: " . json_encode($result, JSON_PRETTY_PRINT));
+            $this->info('Response: '.json_encode($result, JSON_PRETTY_PRINT));
         } catch (Exception $e) {
-            $this->error("Lỗi: " . $e->getMessage());
+            $this->error('Lỗi: '.$e->getMessage());
         }
     }
 }

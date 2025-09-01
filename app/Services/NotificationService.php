@@ -2,14 +2,10 @@
 
 namespace App\Services;
 
-use App\Models\Notification;
-use App\Models\User;
 use App\Models\Classroom;
+use App\Models\Notification;
 use App\Models\Schedule;
-use App\Models\Assignment;
-use App\Models\AssignmentSubmission;
-use App\Models\Attendance;
-use App\Models\Payment;
+use App\Models\User;
 use Illuminate\Support\Facades\Log;
 
 class NotificationService
@@ -28,7 +24,7 @@ class NotificationService
     {
         try {
             // Nếu không có users, lấy từ notification
-            if (!$users) {
+            if (! $users) {
                 $users = $this->getUsersForNotification($notification);
             }
 
@@ -37,12 +33,13 @@ class NotificationService
             $results = [];
 
             foreach ($users as $user) {
-                if (!$user->phone) {
+                if (! $user->phone) {
                     Log::warning('NotificationService: User has no phone number', [
                         'user_id' => $user->id,
                         'notification_id' => $notification->id,
                     ]);
                     $failedCount++;
+
                     continue;
                 }
 
@@ -92,7 +89,7 @@ class NotificationService
             // Xác định template và data dựa trên loại thông báo
             $templateConfig = $this->getTemplateForNotification($notification, $user);
 
-            if (!$templateConfig) {
+            if (! $templateConfig) {
                 return [
                     'success' => false,
                     'message' => 'Không tìm thấy template cho loại thông báo này',
@@ -104,7 +101,7 @@ class NotificationService
                 $user->phone,
                 $templateConfig['template_id'],
                 $templateConfig['data'],
-                'notification_' . $notification->id . '_' . $user->id
+                'notification_'.$notification->id.'_'.$user->id
             );
 
             return array_merge($result, ['user_id' => $user->id]);
@@ -163,7 +160,7 @@ class NotificationService
                         'class_name' => $notification->classroom?->name ?? 'Lớp học',
                         'time' => now()->format('H:i'),
                         'date' => now()->format('d/m/Y'),
-                        'language_center' => 'EduCore'
+                        'language_center' => 'EduCore',
                     ],
                 ];
 
@@ -176,7 +173,7 @@ class NotificationService
                         'assignment_name' => 'Bài tập',
                         'date' => now()->format('d/m/Y'),
                         'score' => 'Điểm',
-                        'comment' => 'Nhận xét'
+                        'comment' => 'Nhận xét',
                     ],
                 ];
 
@@ -189,7 +186,7 @@ class NotificationService
                         'language_center' => 'EduCore',
                         'class_name' => 'Khóa học',
                         'date' => now()->format('d/m/Y'),
-                        'transaction_id' => 'N/A'
+                        'transaction_id' => 'N/A',
                     ],
                 ];
 
@@ -203,7 +200,7 @@ class NotificationService
                         'class_name' => $notification->classroom?->name ?? 'Lớp học',
                         'time' => now()->format('H:i'),
                         'date' => now()->format('d/m/Y'),
-                        'language_center' => 'EduCore'
+                        'language_center' => 'EduCore',
                     ],
                 ];
         }
@@ -214,14 +211,14 @@ class NotificationService
      */
     public function sendOTP($user, $otp)
     {
-        if (!$user->phone) {
+        if (! $user->phone) {
             return [
                 'success' => false,
                 'message' => 'User không có số điện thoại',
             ];
         }
 
-        return $this->oneSmsService->sendOTP($user->phone, $otp, 'otp_' . $user->id);
+        return $this->oneSmsService->sendOTP($user->phone, $otp, 'otp_'.$user->id);
     }
 
     /**
@@ -229,7 +226,7 @@ class NotificationService
      */
     public function sendScheduleReminder($user, $schedule)
     {
-        if (!$user->phone) {
+        if (! $user->phone) {
             return [
                 'success' => false,
                 'message' => 'User không có số điện thoại',
@@ -245,7 +242,7 @@ class NotificationService
             $classroom->name,
             $schedule->start_time->format('H:i'),
             $schedule->date->format('d/m/Y'),
-            'schedule_' . $schedule->id . '_' . $user->id
+            'schedule_'.$schedule->id.'_'.$user->id
         );
     }
 
@@ -254,7 +251,7 @@ class NotificationService
      */
     public function sendAssignmentResult($user, $submission)
     {
-        if (!$user->phone) {
+        if (! $user->phone) {
             return [
                 'success' => false,
                 'message' => 'User không có số điện thoại',
@@ -272,7 +269,7 @@ class NotificationService
             $submission->updated_at->format('d/m/Y'),
             $submission->score ?? 'N/A',
             $submission->feedback ?? 'Không có nhận xét',
-            'assignment_' . $submission->id
+            'assignment_'.$submission->id
         );
     }
 
@@ -281,7 +278,7 @@ class NotificationService
      */
     public function sendPaymentConfirmation($user, $payment)
     {
-        if (!$user->phone) {
+        if (! $user->phone) {
             return [
                 'success' => false,
                 'message' => 'User không có số điện thoại',
@@ -297,7 +294,7 @@ class NotificationService
             $classroom->name,
             $payment->created_at->format('d/m/Y'),
             $payment->transaction_id ?? 'N/A',
-            'payment_' . $payment->id
+            'payment_'.$payment->id
         );
     }
 
@@ -306,7 +303,7 @@ class NotificationService
      */
     public function sendRegistrationSuccess($user, $classroom)
     {
-        if (!$user->phone) {
+        if (! $user->phone) {
             return [
                 'success' => false,
                 'message' => 'User không có số điện thoại',
@@ -318,8 +315,8 @@ class NotificationService
             $user->name,
             $classroom->name,
             now()->format('d/m/Y'),
-            'REG_' . $classroom->id . '_' . $user->id,
-            'registration_' . $classroom->id . '_' . $user->id
+            'REG_'.$classroom->id.'_'.$user->id,
+            'registration_'.$classroom->id.'_'.$user->id
         );
     }
 
@@ -328,7 +325,7 @@ class NotificationService
      */
     public function sendAbsentNotification($user, $attendance)
     {
-        if (!$user->phone) {
+        if (! $user->phone) {
             return [
                 'success' => false,
                 'message' => 'User không có số điện thoại',
@@ -343,7 +340,7 @@ class NotificationService
             $user->student_code ?? 'N/A',
             $classroom->name,
             $attendance->date->format('d/m/Y'),
-            'absent_' . $attendance->id
+            'absent_'.$attendance->id
         );
     }
 
@@ -352,7 +349,7 @@ class NotificationService
      */
     public function sendLateNotification($user, $attendance)
     {
-        if (!$user->phone) {
+        if (! $user->phone) {
             return [
                 'success' => false,
                 'message' => 'User không có số điện thoại',
@@ -367,7 +364,7 @@ class NotificationService
             $user->student_code ?? 'N/A',
             $classroom->name,
             $attendance->date->format('d/m/Y'),
-            'late_' . $attendance->id
+            'late_'.$attendance->id
         );
     }
 
@@ -376,7 +373,7 @@ class NotificationService
      */
     public function sendAssignmentDeadline($user, $assignment)
     {
-        if (!$user->phone) {
+        if (! $user->phone) {
             return [
                 'success' => false,
                 'message' => 'User không có số điện thoại',
@@ -392,7 +389,7 @@ class NotificationService
             $classroom->name,
             $assignment->due_date->format('H:i'),
             $assignment->due_date->format('d/m/Y'),
-            'deadline_' . $assignment->id . '_' . $user->id
+            'deadline_'.$assignment->id.'_'.$user->id
         );
     }
 
@@ -401,7 +398,7 @@ class NotificationService
      */
     public function sendScheduleChange($user, $schedule, $oldDateTime, $newDateTime, $teacherName)
     {
-        if (!$user->phone) {
+        if (! $user->phone) {
             return [
                 'success' => false,
                 'message' => 'User không có số điện thoại',
@@ -418,7 +415,7 @@ class NotificationService
             $oldDateTime,
             $newDateTime,
             $teacherName,
-            'change_' . $schedule->id . '_' . $user->id
+            'change_'.$schedule->id.'_'.$user->id
         );
     }
 
@@ -427,7 +424,7 @@ class NotificationService
      */
     public function sendOnlineExam($user, $schedule)
     {
-        if (!$user->phone) {
+        if (! $user->phone) {
             return [
                 'success' => false,
                 'message' => 'User không có số điện thoại',
@@ -443,7 +440,7 @@ class NotificationService
             $classroom->name,
             $schedule->start_time->format('H:i'),
             $schedule->date->format('d/m/Y'),
-            'exam_' . $schedule->id . '_' . $user->id
+            'exam_'.$schedule->id.'_'.$user->id
         );
     }
 

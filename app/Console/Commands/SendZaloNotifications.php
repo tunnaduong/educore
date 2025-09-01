@@ -53,7 +53,7 @@ class SendZaloNotifications extends Command
 
             $this->info('Hoàn thành gửi thông báo Zalo!');
         } catch (Exception $e) {
-            $this->error("Lỗi: " . $e->getMessage());
+            $this->error('Lỗi: '.$e->getMessage());
             Log::error('SendZaloNotifications: Command failed', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
@@ -73,7 +73,7 @@ class SendZaloNotifications extends Command
         if ($result['success']) {
             $this->info("✓ Nhắc lịch học: {$result['total_success']}/{$result['total_sent']} thành công");
         } else {
-            $this->error("✗ Nhắc lịch học thất bại: " . ($result['error'] ?? 'Lỗi không xác định'));
+            $this->error('✗ Nhắc lịch học thất bại: '.($result['error'] ?? 'Lỗi không xác định'));
         }
     }
 
@@ -114,15 +114,15 @@ class SendZaloNotifications extends Command
                     'is_read' => true,
                     'zalo_sent' => true,
                     'zalo_sent_at' => now(),
-                    'zalo_response' => json_encode($result)
+                    'zalo_response' => json_encode($result),
                 ]);
             } else {
                 $failedCount++;
-                $this->error("✗ Thất bại: " . ($result['error'] ?? 'Lỗi không xác định'));
+                $this->error('✗ Thất bại: '.($result['error'] ?? 'Lỗi không xác định'));
 
                 // Log lỗi
                 $notification->update([
-                    'zalo_response' => json_encode($result)
+                    'zalo_response' => json_encode($result),
                 ]);
             }
 
