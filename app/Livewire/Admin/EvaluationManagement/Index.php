@@ -64,7 +64,7 @@ class Index extends Component
         'questionForm.is_active' => 'boolean',
         'roundForm.name' => 'required|min:3',
         'roundForm.description' => 'nullable|max:500',
-        'roundForm.start_date' => 'required|date',
+        'roundForm.start_date' => 'required|date|after_or_equal:today',
         'roundForm.end_date' => 'required|date|after:start_date',
         'roundForm.is_active' => 'boolean',
     ];
@@ -225,7 +225,8 @@ class Index extends Component
 
     public function saveQuestion()
     {
-        $this->validate();
+        try {
+            $this->validate();
 
             // Kiểm tra giới hạn & thứ tự để đồng bộ với phần student
             if ($this->editingQuestion) {
@@ -452,8 +453,6 @@ class Index extends Component
         }
     }
 
-=======
->>>>>>> Stashed changes
     public function toggleQuestionStatus(int $questionId)
     {
         $question = EvaluationQuestion::find($questionId);
@@ -498,8 +497,8 @@ class Index extends Component
             $this->roundForm = [
                 'name' => $round->name,
                 'description' => $round->description,
-                'start_date' => $round->start_date->format('Y-m-d'),
-                'end_date' => $round->end_date->format('Y-m-d'),
+                'start_date' => $round->start_date ? Carbon::parse($round->start_date)->format('Y-m-d') : '',
+                'end_date' => $round->end_date ? Carbon::parse($round->end_date)->format('Y-m-d') : '',
                 'is_active' => $round->is_active,
             ];
             $this->showRoundModal = true;
@@ -524,7 +523,7 @@ class Index extends Component
         // Kiểm tra nhanh để hiển thị thông báo lỗi rõ ràng (trước khi validate chuẩn)
         if (! empty($this->roundForm['start_date'])) {
             $start = Carbon::parse($this->roundForm['start_date'])->startOfDay();
-            if ($start->lt(Carbon::today())) {
+            if ($start->lt(Carbon::today()->startOfDay())) {
                 session()->flash('error', 'Không thể tạo đợt ở quá khứ. Ngày bắt đầu phải từ hôm nay trở đi.');
 
                 return;
@@ -532,7 +531,7 @@ class Index extends Component
         }
 
         // Validate cơ bản + cứng ràng buộc ngày bắt đầu >= hôm nay
-        $this->validate($this->roundRules(), $this->messages);
+        $this->validate($this->rules, $this->messages);
 
         $startDate = Carbon::parse($this->roundForm['start_date'])->startOfDay();
         $endDate = Carbon::parse($this->roundForm['end_date'])->endOfDay();
@@ -559,7 +558,7 @@ class Index extends Component
         });
 
         if ($this->editingRound) {
-            $duplicateStartQuery->where('id', '!=', $this->editingRound->id);
+            $conflictingRounds = $conflictingRounds->where('id', '!=', $this->editingRound->id);
         }
 
         if ($conflictingRounds->exists()) {
