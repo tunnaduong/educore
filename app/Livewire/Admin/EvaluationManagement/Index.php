@@ -165,26 +165,18 @@ class Index extends Component
     {
         $category = $form['category'];
         $isActive = (bool) ($form['is_active'] ?? false);
-<<<<<<< Updated upstream
         $order = (int) ($form['order'] ?? 1);
 
         Log::info('Validating question limits:', [
             'category' => $category,
             'isActive' => $isActive,
             'order' => $order,
-            'excludeId' => $excludeId,
+            'excludeId' => $excludeId
         ]);
 
         if (! array_key_exists($category, $this->categoryLimits)) {
             session()->flash('error', __('views.validation_category_invalid'));
             Log::warning('Invalid category:', ['category' => $category]);
-=======
-        $order = (int) ($form['order'] ?? 0);
-
-        if (! array_key_exists($category, $this->categoryLimits)) {
-            session()->flash('error', __('views.validation_category_invalid'));
->>>>>>> Stashed changes
-
             return false;
         }
 
@@ -194,22 +186,16 @@ class Index extends Component
                 ->where('is_active', true)
                 ->when($excludeId, fn ($q) => $q->where('id', '!=', $excludeId))
                 ->count();
-<<<<<<< Updated upstream
 
             Log::info('Active count for category:', [
                 'category' => $category,
                 'activeCount' => $activeCount,
-                'limit' => $this->categoryLimits[$category],
+                'limit' => $this->categoryLimits[$category]
             ]);
 
             if ($activeCount >= $this->categoryLimits[$category]) {
                 session()->flash('error', __('views.validation_question_limit_reached'));
                 Log::warning('Question limit reached for category:', ['category' => $category]);
-=======
-            if ($activeCount >= $this->categoryLimits[$category]) {
-                session()->flash('error', __('views.validation_question_limit_reached'));
->>>>>>> Stashed changes
-
                 return false;
             }
 
@@ -219,31 +205,21 @@ class Index extends Component
                 ->where('order', $order)
                 ->when($excludeId, fn ($q) => $q->where('id', '!=', $excludeId))
                 ->exists();
-<<<<<<< Updated upstream
 
             Log::info('Duplicate order check:', [
                 'category' => $category,
                 'order' => $order,
-                'hasDuplicate' => $dupOrder,
+                'hasDuplicate' => $dupOrder
             ]);
 
             if ($dupOrder) {
                 session()->flash('error', __('views.validation_order_duplicate'));
                 Log::warning('Duplicate order found for category:', ['category' => $category, 'order' => $order]);
-=======
-            if ($dupOrder) {
-                session()->flash('error', __('views.validation_order_duplicate'));
->>>>>>> Stashed changes
-
                 return false;
             }
         }
 
-<<<<<<< Updated upstream
         Log::info('Question limits validation passed');
-
-=======
->>>>>>> Stashed changes
         return true;
     }
 
@@ -251,33 +227,31 @@ class Index extends Component
     {
         $this->validate();
 
-        // Kiểm tra giới hạn & thứ tự để đồng bộ với phần student
-        if ($this->editingQuestion) {
-            if (! $this->validateQuestionLimits($this->questionForm, $this->editingQuestion->id)) {
-                return;
+            // Kiểm tra giới hạn & thứ tự để đồng bộ với phần student
+            if ($this->editingQuestion) {
+                if (! $this->validateQuestionLimits($this->questionForm, $this->editingQuestion->id)) {
+                    return;
+                }
+                $this->editingQuestion->update($this->questionForm);
+                session()->flash('success', __('views.question_updated_success'));
+                Log::info('Question updated successfully', ['id' => $this->editingQuestion->id]);
+            } else {
+                if (! $this->validateQuestionLimits($this->questionForm, null)) {
+                    return;
+                }
+                $question = EvaluationQuestion::create($this->questionForm);
+                session()->flash('success', __('views.question_saved_success'));
+                Log::info('Question created successfully', ['id' => $question->id]);
             }
-<<<<<<< Updated upstream
 
             $this->closeQuestionModal();
         } catch (\Exception $e) {
-            Log::error('Error saving question: '.$e->getMessage(), [
+            Log::error('Error saving question: ' . $e->getMessage(), [
                 'data' => $this->questionForm,
-                'trace' => $e->getTraceAsString(),
+                'trace' => $e->getTraceAsString()
             ]);
-            session()->flash('error', 'Có lỗi xảy ra khi lưu câu hỏi: '.$e->getMessage());
-=======
-            $this->editingQuestion->update($this->questionForm);
-            session()->flash('success', __('views.question_updated_success'));
-        } else {
-            if (! $this->validateQuestionLimits($this->questionForm, null)) {
-                return;
-            }
-            EvaluationQuestion::create($this->questionForm);
-            session()->flash('success', __('views.question_saved_success'));
->>>>>>> Stashed changes
+            session()->flash('error', 'Có lỗi xảy ra khi lưu câu hỏi: ' . $e->getMessage());
         }
-
-        $this->closeQuestionModal();
     }
 
     public function deleteQuestion(int $questionId)
@@ -289,7 +263,6 @@ class Index extends Component
         }
     }
 
-<<<<<<< Updated upstream
     public function loadDefaultQuestions()
     {
         try {
@@ -298,7 +271,6 @@ class Index extends Component
 
             if ($existingQuestions > 0) {
                 session()->flash('error', 'Đã có câu hỏi trong hệ thống. Vui lòng xóa tất cả câu hỏi hiện tại trước khi tải câu hỏi mặc định.');
-
                 return;
             }
 
@@ -306,7 +278,6 @@ class Index extends Component
             $activeRounds = \App\Models\EvaluationRound::current()->get();
             if ($activeRounds->count() > 0) {
                 session()->flash('error', 'Không thể tải câu hỏi mặc định khi có đợt đánh giá đang hoạt động. Vui lòng đợi đợt đánh giá kết thúc.');
-
                 return;
             }
 
@@ -435,16 +406,16 @@ class Index extends Component
                 EvaluationQuestion::create($questionData);
             }
 
-            session()->flash('success', 'Đã tải thành công '.count($questions).' câu hỏi mặc định vào hệ thống!');
+            session()->flash('success', 'Đã tải thành công ' . count($questions) . ' câu hỏi mặc định vào hệ thống!');
 
             // Log để debug
             Log::info('Default questions loaded successfully', ['count' => count($questions)]);
 
         } catch (\Exception $e) {
-            Log::error('Error loading default questions: '.$e->getMessage(), [
-                'trace' => $e->getTraceAsString(),
+            Log::error('Error loading default questions: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
             ]);
-            session()->flash('error', 'Có lỗi xảy ra khi tải câu hỏi mặc định: '.$e->getMessage());
+            session()->flash('error', 'Có lỗi xảy ra khi tải câu hỏi mặc định: ' . $e->getMessage());
         }
     }
 
@@ -455,7 +426,6 @@ class Index extends Component
             $activeRounds = \App\Models\EvaluationRound::current()->get();
             if ($activeRounds->count() > 0) {
                 session()->flash('error', 'Không thể xóa câu hỏi khi có đợt đánh giá đang hoạt động. Vui lòng đợi đợt đánh giá kết thúc.');
-
                 return;
             }
 
@@ -463,23 +433,22 @@ class Index extends Component
             $submittedEvaluations = Evaluation::whereNotNull('submitted_at')->count();
             if ($submittedEvaluations > 0) {
                 session()->flash('error', 'Không thể xóa câu hỏi khi đã có học viên đánh giá. Vui lòng xóa tất cả đánh giá trước.');
-
                 return;
             }
 
             $questionCount = EvaluationQuestion::count();
             EvaluationQuestion::truncate();
 
-            session()->flash('success', 'Đã xóa thành công '.$questionCount.' câu hỏi khỏi hệ thống!');
+            session()->flash('success', 'Đã xóa thành công ' . $questionCount . ' câu hỏi khỏi hệ thống!');
 
             // Log để debug
             Log::info('All questions cleared successfully', ['count' => $questionCount]);
 
         } catch (\Exception $e) {
-            Log::error('Error clearing all questions: '.$e->getMessage(), [
-                'trace' => $e->getTraceAsString(),
+            Log::error('Error clearing all questions: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
             ]);
-            session()->flash('error', 'Có lỗi xảy ra khi xóa câu hỏi: '.$e->getMessage());
+            session()->flash('error', 'Có lỗi xảy ra khi xóa câu hỏi: ' . $e->getMessage());
         }
     }
 
@@ -563,15 +532,8 @@ class Index extends Component
         }
 
         // Validate cơ bản + cứng ràng buộc ngày bắt đầu >= hôm nay
-        $this->validate([
-            'roundForm.name' => 'required|min:3',
-            'roundForm.description' => 'nullable|max:500',
-            'roundForm.start_date' => 'required|date|after_or_equal:today',
-            'roundForm.end_date' => 'required|date|after:roundForm.start_date',
-            'roundForm.is_active' => 'boolean',
-        ], $this->messages);
+        $this->validate($this->roundRules(), $this->messages);
 
-<<<<<<< Updated upstream
         $startDate = Carbon::parse($this->roundForm['start_date'])->startOfDay();
         $endDate = Carbon::parse($this->roundForm['end_date'])->endOfDay();
 
@@ -580,31 +542,25 @@ class Index extends Component
             'input_start' => $this->roundForm['start_date'],
             'input_end' => $this->roundForm['end_date'],
             'parsed_start' => $startDate->toDateTimeString(),
-            'parsed_end' => $endDate->toDateTimeString(),
+            'parsed_end' => $endDate->toDateTimeString()
         ]);
 
         // Kiểm tra xung đột thời gian với các đợt đánh giá khác
-        $conflictingRounds = EvaluationRound::where(function ($query) use ($startDate, $endDate) {
+        $conflictingRounds = EvaluationRound::where(function($query) use ($startDate, $endDate) {
             // Kiểm tra xem có đợt nào có thời gian chồng chéo không
             // Xung đột xảy ra khi:
             // 1. Đợt mới bắt đầu trong thời gian của đợt cũ
             // 2. Đợt mới kết thúc trong thời gian của đợt cũ
             // 3. Đợt mới bao trọn đợt cũ
-            $query->where(function ($q) use ($startDate, $endDate) {
+            $query->where(function($q) use ($startDate, $endDate) {
                 $q->where('start_date', '<=', $endDate)
-                    ->where('end_date', '>=', $startDate);
+                  ->where('end_date', '>=', $startDate);
             });
         });
-=======
-        $startDate = Carbon::parse($this->roundForm['start_date'])->toDateString();
->>>>>>> Stashed changes
 
-        // Chỉ chặn trùng lặp NGÀY BẮT ĐẦU với đợt khác (kể cả cùng ngày)
-        $duplicateStartQuery = EvaluationRound::whereDate('start_date', $startDate);
         if ($this->editingRound) {
             $duplicateStartQuery->where('id', '!=', $this->editingRound->id);
         }
-<<<<<<< Updated upstream
 
         if ($conflictingRounds->exists()) {
             // Log để debug
@@ -612,14 +568,10 @@ class Index extends Component
             Log::info('Time conflict detected:', [
                 'new_start' => $startDate->toDateString(),
                 'new_end' => $endDate->toDateString(),
-                'conflicting_rounds' => $conflictingRoundsList->pluck('id', 'name')->toArray(),
+                'conflicting_rounds' => $conflictingRoundsList->pluck('id', 'name')->toArray()
             ]);
 
             session()->flash('error', 'Thời gian đợt đánh giá này xung đột với đợt đánh giá khác. Vui lòng chọn thời gian khác.');
-=======
-        if ($duplicateStartQuery->exists()) {
-            session()->flash('error', 'Ngày bắt đầu này đã tồn tại ở một đợt đánh giá khác. Vui lòng chọn ngày bắt đầu khác.');
->>>>>>> Stashed changes
 
             return;
         }
