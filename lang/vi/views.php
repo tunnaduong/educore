@@ -817,6 +817,7 @@ return [
             ],
         ],
     ],
+<<<<<<< Updated upstream
     'evaluation_management' => 'Quản lý đánh giá',
     'view_evaluations_and_manage_questions' => 'Xem đánh giá và quản lý câu hỏi',
     'evaluation_list' => 'Danh sách đánh giá',
@@ -944,4 +945,6 @@ return [
     'student_update_failed' => 'Không thể cập nhật thông tin học sinh. Vui lòng thử lại.',
     'student_deletion_failed' => 'Không thể xóa học sinh. Vui lòng thử lại.',
     'cannot_delete_active_or_suspended_student' => 'Không thể xóa học sinh đang học hoặc bảo lưu',
+=======
+>>>>>>> Stashed changes
 ];

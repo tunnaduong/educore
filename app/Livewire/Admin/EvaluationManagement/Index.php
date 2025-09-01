@@ -36,7 +36,7 @@ class Index extends Component
     ];
 
     public $questionForm = [
-        'category' => 'teacher',
+        'category' => '',
         'question' => '',
         'order' => 1,
         'is_active' => true,
@@ -57,26 +57,17 @@ class Index extends Component
 
     protected $queryString = ['classroomId', 'roundId', 'activeTab'];
 
-    protected function rules()
-    {
-        return [
-            'questionForm.category' => 'required|in:teacher,course,personal',
-            'questionForm.question' => 'required|min:10',
-            'questionForm.order' => 'required|integer|min:1',
-            'questionForm.is_active' => 'boolean',
-        ];
-    }
-
-    protected function roundRules()
-    {
-        return [
-            'roundForm.name' => 'required|min:3',
-            'roundForm.description' => 'nullable|max:500',
-            'roundForm.start_date' => 'required|date|after_or_equal:today',
-            'roundForm.end_date' => 'required|date|after:roundForm.start_date',
-            'roundForm.is_active' => 'boolean',
-        ];
-    }
+    protected $rules = [
+        'questionForm.category' => 'required|in:teacher,course,personal',
+        'questionForm.question' => 'required|min:10',
+        'questionForm.order' => 'required|integer|min:0',
+        'questionForm.is_active' => 'boolean',
+        'roundForm.name' => 'required|min:3',
+        'roundForm.description' => 'nullable|max:500',
+        'roundForm.start_date' => 'required|date',
+        'roundForm.end_date' => 'required|date|after:start_date',
+        'roundForm.is_active' => 'boolean',
+    ];
 
     protected $messages = [
         'questionForm.category.required' => 'Vui lòng chọn danh mục câu hỏi.',
@@ -85,7 +76,7 @@ class Index extends Component
         'questionForm.question.min' => 'Câu hỏi phải có ít nhất 10 ký tự.',
         'questionForm.order.required' => 'Vui lòng nhập thứ tự hiển thị.',
         'questionForm.order.integer' => 'Thứ tự phải là số nguyên.',
-        'questionForm.order.min' => 'Thứ tự phải lớn hơn hoặc bằng 1.',
+        'questionForm.order.min' => 'Thứ tự phải lớn hơn hoặc bằng 0.',
         'roundForm.name.required' => 'Tên đợt đánh giá không được bỏ trống.',
         'roundForm.name.min' => 'Tên đợt đánh giá phải có ít nhất 3 ký tự.',
         'roundForm.description.max' => 'Mô tả không được quá 500 ký tự.',
@@ -95,20 +86,17 @@ class Index extends Component
         'roundForm.end_date.required' => 'Ngày kết thúc không được bỏ trống.',
         'roundForm.end_date.date' => 'Ngày kết thúc không hợp lệ.',
         'roundForm.end_date.after' => 'Ngày kết thúc phải sau ngày bắt đầu.',
-        'roundForm.time_conflict' => 'Thời gian đợt đánh giá này xung đột với đợt đánh giá khác.',
     ];
 
     public function updatedClassroomId()
     {
         $this->resetPage();
-        $this->resetValidation();
         Log::info('Classroom filter changed to: '.($this->classroomId ?: 'null'));
     }
 
     public function updatedRoundId()
     {
         $this->resetPage();
-        $this->resetValidation();
         Log::info('Round filter changed to: '.($this->roundId ?: 'null'));
     }
 
@@ -117,13 +105,11 @@ class Index extends Component
         $this->classroomId = '';
         $this->roundId = '';
         $this->resetPage();
-        $this->resetValidation();
     }
 
     public function updatedActiveTab()
     {
         $this->resetPage();
-        $this->resetValidation();
     }
 
     public function showEvaluationDetail(int $evaluationId)
@@ -139,7 +125,6 @@ class Index extends Component
     public function showAddQuestionModal()
     {
         $this->editingQuestion = null;
-        $this->resetValidation();
         $this->questionForm = [
             'category' => 'teacher',
             'question' => '',
@@ -154,7 +139,6 @@ class Index extends Component
         $question = EvaluationQuestion::find($questionId);
         if ($question) {
             $this->editingQuestion = $question;
-            $this->resetValidation();
             $this->questionForm = [
                 'category' => $question->category,
                 'question' => $question->question,
@@ -169,7 +153,6 @@ class Index extends Component
     {
         $this->showQuestionModal = false;
         $this->editingQuestion = null;
-        $this->resetValidation();
         $this->questionForm = [
             'category' => 'teacher',
             'question' => '',
@@ -182,6 +165,7 @@ class Index extends Component
     {
         $category = $form['category'];
         $isActive = (bool) ($form['is_active'] ?? false);
+<<<<<<< Updated upstream
         $order = (int) ($form['order'] ?? 1);
 
         Log::info('Validating question limits:', [
@@ -194,6 +178,12 @@ class Index extends Component
         if (! array_key_exists($category, $this->categoryLimits)) {
             session()->flash('error', __('views.validation_category_invalid'));
             Log::warning('Invalid category:', ['category' => $category]);
+=======
+        $order = (int) ($form['order'] ?? 0);
+
+        if (! array_key_exists($category, $this->categoryLimits)) {
+            session()->flash('error', __('views.validation_category_invalid'));
+>>>>>>> Stashed changes
 
             return false;
         }
@@ -204,6 +194,7 @@ class Index extends Component
                 ->where('is_active', true)
                 ->when($excludeId, fn ($q) => $q->where('id', '!=', $excludeId))
                 ->count();
+<<<<<<< Updated upstream
 
             Log::info('Active count for category:', [
                 'category' => $category,
@@ -214,6 +205,10 @@ class Index extends Component
             if ($activeCount >= $this->categoryLimits[$category]) {
                 session()->flash('error', __('views.validation_question_limit_reached'));
                 Log::warning('Question limit reached for category:', ['category' => $category]);
+=======
+            if ($activeCount >= $this->categoryLimits[$category]) {
+                session()->flash('error', __('views.validation_question_limit_reached'));
+>>>>>>> Stashed changes
 
                 return false;
             }
@@ -224,6 +219,7 @@ class Index extends Component
                 ->where('order', $order)
                 ->when($excludeId, fn ($q) => $q->where('id', '!=', $excludeId))
                 ->exists();
+<<<<<<< Updated upstream
 
             Log::info('Duplicate order check:', [
                 'category' => $category,
@@ -234,43 +230,33 @@ class Index extends Component
             if ($dupOrder) {
                 session()->flash('error', __('views.validation_order_duplicate'));
                 Log::warning('Duplicate order found for category:', ['category' => $category, 'order' => $order]);
+=======
+            if ($dupOrder) {
+                session()->flash('error', __('views.validation_order_duplicate'));
+>>>>>>> Stashed changes
 
                 return false;
             }
         }
 
+<<<<<<< Updated upstream
         Log::info('Question limits validation passed');
 
+=======
+>>>>>>> Stashed changes
         return true;
     }
 
     public function saveQuestion()
     {
-        try {
-            // Đảm bảo dữ liệu được xử lý đúng cách
-            $this->questionForm['order'] = (int) $this->questionForm['order'];
-            $this->questionForm['is_active'] = (bool) ($this->questionForm['is_active'] ?? false);
+        $this->validate();
 
-            Log::info('Saving question with data:', $this->questionForm);
-
-            $this->validate($this->rules(), $this->messages);
-
-            // Kiểm tra giới hạn & thứ tự để đồng bộ với phần student
-            if ($this->editingQuestion) {
-                if (! $this->validateQuestionLimits($this->questionForm, $this->editingQuestion->id)) {
-                    return;
-                }
-                $this->editingQuestion->update($this->questionForm);
-                session()->flash('success', __('views.question_updated_success'));
-                Log::info('Question updated successfully', ['id' => $this->editingQuestion->id]);
-            } else {
-                if (! $this->validateQuestionLimits($this->questionForm, null)) {
-                    return;
-                }
-                $question = EvaluationQuestion::create($this->questionForm);
-                session()->flash('success', __('views.question_saved_success'));
-                Log::info('Question created successfully', ['id' => $question->id]);
+        // Kiểm tra giới hạn & thứ tự để đồng bộ với phần student
+        if ($this->editingQuestion) {
+            if (! $this->validateQuestionLimits($this->questionForm, $this->editingQuestion->id)) {
+                return;
             }
+<<<<<<< Updated upstream
 
             $this->closeQuestionModal();
         } catch (\Exception $e) {
@@ -279,7 +265,19 @@ class Index extends Component
                 'trace' => $e->getTraceAsString(),
             ]);
             session()->flash('error', 'Có lỗi xảy ra khi lưu câu hỏi: '.$e->getMessage());
+=======
+            $this->editingQuestion->update($this->questionForm);
+            session()->flash('success', __('views.question_updated_success'));
+        } else {
+            if (! $this->validateQuestionLimits($this->questionForm, null)) {
+                return;
+            }
+            EvaluationQuestion::create($this->questionForm);
+            session()->flash('success', __('views.question_saved_success'));
+>>>>>>> Stashed changes
         }
+
+        $this->closeQuestionModal();
     }
 
     public function deleteQuestion(int $questionId)
@@ -291,6 +289,7 @@ class Index extends Component
         }
     }
 
+<<<<<<< Updated upstream
     public function loadDefaultQuestions()
     {
         try {
@@ -484,6 +483,8 @@ class Index extends Component
         }
     }
 
+=======
+>>>>>>> Stashed changes
     public function toggleQuestionStatus(int $questionId)
     {
         $question = EvaluationQuestion::find($questionId);
@@ -562,8 +563,15 @@ class Index extends Component
         }
 
         // Validate cơ bản + cứng ràng buộc ngày bắt đầu >= hôm nay
-        $this->validate($this->roundRules(), $this->messages);
+        $this->validate([
+            'roundForm.name' => 'required|min:3',
+            'roundForm.description' => 'nullable|max:500',
+            'roundForm.start_date' => 'required|date|after_or_equal:today',
+            'roundForm.end_date' => 'required|date|after:roundForm.start_date',
+            'roundForm.is_active' => 'boolean',
+        ], $this->messages);
 
+<<<<<<< Updated upstream
         $startDate = Carbon::parse($this->roundForm['start_date'])->startOfDay();
         $endDate = Carbon::parse($this->roundForm['end_date'])->endOfDay();
 
@@ -587,10 +595,16 @@ class Index extends Component
                     ->where('end_date', '>=', $startDate);
             });
         });
+=======
+        $startDate = Carbon::parse($this->roundForm['start_date'])->toDateString();
+>>>>>>> Stashed changes
 
+        // Chỉ chặn trùng lặp NGÀY BẮT ĐẦU với đợt khác (kể cả cùng ngày)
+        $duplicateStartQuery = EvaluationRound::whereDate('start_date', $startDate);
         if ($this->editingRound) {
-            $conflictingRounds->where('id', '!=', $this->editingRound->id);
+            $duplicateStartQuery->where('id', '!=', $this->editingRound->id);
         }
+<<<<<<< Updated upstream
 
         if ($conflictingRounds->exists()) {
             // Log để debug
@@ -602,6 +616,10 @@ class Index extends Component
             ]);
 
             session()->flash('error', 'Thời gian đợt đánh giá này xung đột với đợt đánh giá khác. Vui lòng chọn thời gian khác.');
+=======
+        if ($duplicateStartQuery->exists()) {
+            session()->flash('error', 'Ngày bắt đầu này đã tồn tại ở một đợt đánh giá khác. Vui lòng chọn ngày bắt đầu khác.');
+>>>>>>> Stashed changes
 
             return;
         }
