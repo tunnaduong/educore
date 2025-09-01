@@ -15,6 +15,7 @@ class StudentStats extends Component
     public $filterStatus = '';
 
     public $filterCourse = '';
+
     public $searchTerm = '';
 
     public function mount()
@@ -56,7 +57,7 @@ class StudentStats extends Component
 
         // Tìm kiếm theo tên học viên
         if ($this->searchTerm) {
-            $query->where('name', 'like', '%' . $this->searchTerm . '%');
+            $query->where('name', 'like', '%'.$this->searchTerm.'%');
         }
 
         // Lọc theo lớp học
