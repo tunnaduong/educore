@@ -38,13 +38,24 @@ class DuskTestSeeder extends Seeder
             'password' => bcrypt('password'),
         ]);
 
-        // Tạo classroom test
+        // Tạo classroom test với lịch học
         $classroom = Classroom::create([
             'name' => 'Lớp 10A1',
             'description' => 'Lớp chuyên Toán',
-            'teacher_id' => $teacher->id,
-            'capacity' => 30,
+            'level' => 'HSK 1',
+            'schedule' => [
+                'days' => ['Monday', 'Thursday', 'Saturday'], // Thứ 2, Thứ 5, Thứ 7
+                'time' => '19:00 - 20:30',
+            ],
+            'notes' => 'Lớp test cho hệ thống',
+            'status' => 'active',
         ]);
+
+        // Gán giáo viên cho lớp
+        $classroom->users()->attach($teacher->id, ['role' => 'teacher']);
+
+        // Gán học viên cho lớp
+        $classroom->users()->attach($student->id, ['role' => 'student']);
 
         // Tạo lesson test
         Lesson::create([
@@ -64,6 +75,25 @@ class DuskTestSeeder extends Seeder
             'types' => ['text', 'essay'],
             'max_score' => 10.0,
         ]);
+
+        // Tạo lớp test chính xác như user mô tả
+        $testClassroom = Classroom::create([
+            'name' => 'Lớp học - test',
+            'description' => 'Lớp test để kiểm tra lịch học',
+            'level' => 'HSK 1',
+            'schedule' => [
+                'days' => ['Monday', 'Wednesday', 'Saturday'], // Thứ 2, Thứ 4, Thứ 7
+                'time' => '19:00 - 20:30',
+            ],
+            'notes' => 'Lớp test cho việc kiểm tra lịch học',
+            'status' => 'active',
+        ]);
+
+        // Gán giáo viên cho lớp test
+        $testClassroom->users()->attach($teacher->id, ['role' => 'teacher']);
+
+        // Gán học viên cho lớp test
+        $testClassroom->users()->attach($student->id, ['role' => 'student']);
 
         // Tạo thêm một số user để test
         User::factory()->admin()->count(2)->create();

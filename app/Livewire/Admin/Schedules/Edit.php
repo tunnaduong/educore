@@ -69,7 +69,7 @@ class Edit extends Component
             'notes' => $this->notes,
         ]);
 
-        session()->flash('message', 'Lịch học đã được cập nhật thành công!');
+        session()->flash('success_message', 'Lịch học đã được cập nhật thành công!');
 
         return redirect()->route('schedules.index');
     }

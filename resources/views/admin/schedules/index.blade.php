@@ -2,6 +2,15 @@
     @include('components.language')
 
     <div class="container-fluid">
+        <!-- Thông báo thành công -->
+        @if (session()->has('success_message'))
+            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert" id="successAlert">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                {{ session('success_message') }}
+                <button type="button" class="btn-close" onclick="closeAlert()" aria-label="Close"></button>
+            </div>
+        @endif
+
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="d-flex align-items-center fs-4 text-primary mb-0">
                 <i class="bi bi-calendar3 mr-2 text-primary"></i>
@@ -148,4 +157,13 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function closeAlert() {
+            const alert = document.getElementById('successAlert');
+            if (alert) {
+                alert.style.display = 'none';
+            }
+        }
+    </script>
 </x-layouts.dash-admin>
