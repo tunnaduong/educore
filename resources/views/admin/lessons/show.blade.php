@@ -56,6 +56,22 @@
         <a href="{{ route('lessons.index') }}" class="text-decoration-none text-secondary d-inline-block mb-3">
             <i class="bi bi-arrow-left mr-2"></i>{{ __('views.back_to_lessons_list') }}
         </a>
+
+        <!-- Success/Error Alerts -->
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                <i class="bi bi-check-circle mr-2"></i>{{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                <i class="bi bi-exclamation-triangle mr-2"></i>{{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
         <div class="card shadow-lg border-0">
             <div class="card-body p-4">
                 <div class="row g-4 align-items-start">
@@ -174,4 +190,25 @@
             }
         }
     </script>
+
+    <!-- Toast Notifications -->
+    @if (session()->has('success'))
+        <div class="position-fixed top-0 end-0 p-3" style="z-index: 1060;">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle mr-2"></i>
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    @endif
+
+    @if (session()->has('error'))
+        <div class="position-fixed top-0 end-0 p-3" style="z-index: 1060;">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle mr-2"></i>
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    @endif
 </x-layouts.dash-admin>
