@@ -382,67 +382,62 @@
     @if($showConflictModal)
     <div class="modal fade show" style="display: block;" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-warning text-dark">
-                    <h5 class="modal-title">
-                        <i class="bi bi-exclamation-triangle-fill mr-2"></i>
-                        @lang('general.teacher_conflict_warning_title')
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-danger text-white border-0">
+                    <h5 class="modal-title fw-bold">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        Cảnh báo xung đột lịch học
                     </h5>
-                    <button type="button" class="btn-close" wire:click="closeConflictModal"></button>
+                    <button type="button" class="btn-close btn-close-white" wire:click="closeConflictModal"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="alert alert-warning">
-                        <strong>@lang('general.detected_teacher_conflicts_title')</strong> @lang('general.detected_teacher_conflicts_desc')
-                    </div>
-
+                <div class="modal-body p-4">
                     <div class="conflicts-list" style="max-height: 400px; overflow-y: auto;">
                         @foreach($teacherConflicts as $teacherId => $conflictData)
-                            <div class="card border-warning mb-3">
-                                <div class="card-header bg-warning bg-opacity-10">
-                                    <div class="d-flex align-items-center">
-                                        <i class="bi bi-person-circle text-warning mr-2"></i>
-                                        <strong>{{ $conflictData['teacher']->name }}</strong>
-                                        <span class="badge bg-warning text-dark ml-auto">@lang('general.teacher')</span>
+                            <div class="card border-warning mb-4 shadow-sm">
+                                <div class="card-header bg-light border-warning">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <i class="bi bi-person-circle text-primary"></i>
+                                        <span class="text-dark">Giáo viên: <strong>{{ $conflictData['teacher']->name }}</strong></span>
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <h6 class="text-danger mb-2">@lang('general.conflicting_classes')</h6>
-                                    @foreach($conflictData['conflicts'] as $conflict)
-                                        <div class="alert alert-danger py-2 mb-2">
-                                            <div class="d-flex align-items-start">
-                                                <i class="bi bi-calendar-x text-danger mr-2 mt-1"></i>
-                                                <div>
-                                                    <strong>{{ $conflict['classroom']->name }}</strong>
-                                                    <div class="small text-muted mt-1">
-                                                        <i class="bi bi-clock mr-1"></i>
-                                                        {{ $conflict['message'] }}
-                                                    </div>
-                                                    @if($conflict['overlapTime'])
-                                                        <div class="small text-danger mt-1">
-                                                            <i class="bi bi-exclamation-circle mr-1"></i>
-                                                            @lang('general.overlap_time'): {{ $conflict['overlapTime'] }}
-                                                        </div>
-                                                    @endif
+                                    <div class="mb-3">
+                                        <i class="bi bi-calendar-x me-4 text-warning"></i>
+                                        <span class="text-dark">Các lớp học xung đột:</span> 
+                                        @foreach($conflictData['conflicts'] as $conflict)
+                                            <span class="text-dark">{{ $conflict['classroom']->name }}</span>
+                                            @if(!$loop->last), @endif
+                                        @endforeach
+                                    </div>
+                                                                            @foreach($conflictData['conflicts'] as $conflict)
+                                            @if($conflict['overlapTime'])
+                                                <div class="mb-3">
+                                                    <i class="bi bi-clock me-3 text-success"></i>
+                                                    <span class="text-success fw-semibold">Thời gian trùng: {{ $conflict['overlapTime'] }}</span>
                                                 </div>
+                                            @endif
+                                            <div class="mb-3">
+                                                <i class="bi bi-exclamation-triangle me-3 text-danger"></i>
+                                                <span class="text-danger">{{ $conflict['message'] }}</span>
                                             </div>
-                                        </div>
-                                    @endforeach
+                                        @endforeach
                                 </div>
                             </div>
                         @endforeach
                     </div>
 
-                    <div class="alert alert-info">
-                        <i class="bi bi-info-circle mr-2"></i>
-                        <strong>@lang('general.note')</strong> @lang('general.you_may_force_update_warning')
+                    <div class="alert alert-info border-0 mt-4">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-info-circle fs-4"></i>
+                            <div class="flex-grow-1">
+                                <strong>Lưu ý:</strong> Vui lòng chọn giáo viên khác hoặc thay đổi lịch học để tránh xung đột.
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" wire:click="closeConflictModal">
-                        <i class="bi bi-x-circle mr-2"></i>@lang('general.cancel')
-                    </button>
-                    <button type="button" class="btn btn-warning" wire:click="forceUpdate">
-                        <i class="bi bi-exclamation-triangle mr-2"></i>@lang('general.force_update_despite_conflicts')
+                <div class="modal-footer border-0 bg-light">
+                    <button type="button" class="btn btn-secondary px-4" wire:click="closeConflictModal">
+                        Đóng
                     </button>
                 </div>
             </div>
