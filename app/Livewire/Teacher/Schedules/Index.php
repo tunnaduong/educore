@@ -43,15 +43,25 @@ class Index extends Component
                     $endTime = $timeParts[1] ?? '';
 
                     if ($startTime && $endTime) {
-                        // Tạo events cho 4 tuần tới
-                        for ($week = 0; $week < 4; $week++) {
-                            foreach ($days as $day) {
-                                $startDate = now()->startOfWeek()->addWeeks($week)->addDays($this->getDayNumber($day));
-                                $startDateTime = $startDate->format('Y-m-d').'T'.$startTime;
-                                $endDateTime = $startDate->format('Y-m-d').'T'.$endTime;
+                        // Tạo events cho tháng hiện tại
+                        $currentMonth = now()->month;
+                        $currentYear = now()->year;
+                        $startOfMonth = now()->startOfMonth();
+                        $endOfMonth = now()->endOfMonth();
+                        
+                        // Tạo events cho từng ngày trong tháng
+                        $currentDate = $startOfMonth->copy();
+                        
+                        while ($currentDate->lte($endOfMonth)) {
+                            $dayName = $currentDate->format('l'); // Monday, Tuesday, etc.
+                            
+                            // Kiểm tra xem ngày này có phải là ngày học không
+                            if (in_array($dayName, $days)) {
+                                $startDateTime = $currentDate->format('Y-m-d').'T'.$startTime;
+                                $endDateTime = $currentDate->format('Y-m-d').'T'.$endTime;
 
                                 $events[] = [
-                                    'id' => 'schedule_'.$classroom->id.'_'.$day.'_'.$week,
+                                    'id' => 'schedule_'.$classroom->id.'_'.$dayName.'_'.$currentDate->format('Y-m-d'),
                                     'title' => 'Lịch học - '.$classroom->name,
                                     'start' => $startDateTime,
                                     'end' => $endDateTime,
@@ -62,11 +72,13 @@ class Index extends Component
                                         'classroom' => $classroom->name,
                                         'description' => 'Lịch học định kỳ',
                                         'location' => 'Chưa cập nhật',
-                                        'day' => $day,
+                                        'day' => $dayName,
                                         'time' => $time,
                                     ],
                                 ];
                             }
+                            
+                            $currentDate->addDay();
                         }
                     }
                 }
@@ -139,17 +151,18 @@ class Index extends Component
 
     private function getDayNumber($day)
     {
+        // Mapping theo Carbon's dayOfWeek: Sunday = 0, Monday = 1, ..., Saturday = 6
         $days = [
+            'Sunday' => 0,
             'Monday' => 1,
             'Tuesday' => 2,
             'Wednesday' => 3,
             'Thursday' => 4,
             'Friday' => 5,
             'Saturday' => 6,
-            'Sunday' => 0,
         ];
 
-        return $days[$day] ?? 0;
+        return $days[$day] ?? 1;
     }
 
     public function showEventDetail($eventId, $eventType)

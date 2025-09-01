@@ -23,33 +23,33 @@ class Index extends Component
                 $timeParts = explode(' - ', $schedule['time']);
                 $startTime = $timeParts[0] ?? null;
                 $endTime = $timeParts[1] ?? null;
-                foreach ($schedule['days'] as $day) {
-                    $date = now()->startOfWeek();
-                    $weekdayMap = [
-                        'Monday' => 0,
-                        'Tuesday' => 1,
-                        'Wednesday' => 2,
-                        'Thursday' => 3,
-                        'Friday' => 4,
-                        'Saturday' => 5,
-                        'Sunday' => 6,
-                    ];
-                    if (isset($weekdayMap[$day])) {
-                        $date = $date->addDays($weekdayMap[$day]);
-                        for ($i = 0; $i < 16; $i++) {
-                            $eventDate = $date->copy()->addWeeks($i);
-                            $teacherNames = $classroom->teachers->pluck('name')->join(', ');
-                            $teacherText = $teacherNames ? ' ('.$teacherNames.')' : '';
-                            $events[] = [
-                                'title' => ''.$classroom->name.$teacherText,
-                                'start' => $eventDate->format('Y-m-d').'T'.$startTime,
-                                'end' => $eventDate->format('Y-m-d').($endTime ? 'T'.$endTime : ''),
-                                'allDay' => false,
-                                'backgroundColor' => '#0d6efd',
-                                'borderColor' => '#0d6efd',
-                            ];
-                        }
+                // Tạo events cho tháng hiện tại
+                $currentMonth = now()->month;
+                $currentYear = now()->year;
+                $startOfMonth = now()->startOfMonth();
+                $endOfMonth = now()->endOfMonth();
+                
+                // Tạo events cho từng ngày trong tháng
+                $currentDate = $startOfMonth->copy();
+                
+                while ($currentDate->lte($endOfMonth)) {
+                    $dayName = $currentDate->format('l'); // Monday, Tuesday, etc.
+                    
+                    // Kiểm tra xem ngày này có phải là ngày học không
+                    if (in_array($dayName, $schedule['days'])) {
+                        $teacherNames = $classroom->teachers->pluck('name')->join(', ');
+                        $teacherText = $teacherNames ? ' ('.$teacherNames.')' : '';
+                        $events[] = [
+                            'title' => ''.$classroom->name.$teacherText,
+                            'start' => $currentDate->format('Y-m-d').'T'.$startTime,
+                            'end' => $currentDate->format('Y-m-d').($endTime ? 'T'.$endTime : ''),
+                            'allDay' => false,
+                            'backgroundColor' => '#0d6efd',
+                            'borderColor' => '#0d6efd',
+                        ];
                     }
+                    
+                    $currentDate->addDay();
                 }
             }
             // Lịch bài tập
