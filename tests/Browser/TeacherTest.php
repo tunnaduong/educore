@@ -45,8 +45,8 @@ class TeacherTest extends DuskTestCase
                 ->visit('/teacher/assignments/create')
                 ->type('title', 'Bài tập về nhà số 1')
                 ->type('description', 'Làm bài tập 1-10 trong sách giáo khoa')
-                ->type('due_date', '2024-12-31')
-                ->select('classroom_id', '1')
+                ->type('deadline', '2024-12-31')
+                ->select('class_id', '1')
                 ->press('Tạo bài tập')
                 ->assertSee('Bài tập đã được tạo thành công');
         });
