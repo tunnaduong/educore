@@ -11,21 +11,28 @@
             </a>
         </div>
 
-        @if (session()->has('message'))
+        <!-- Success/Error Alerts -->
+        @if (session()->has('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('message') }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <i class="bi bi-check-circle mr-2"></i>
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
 
         @if (session()->has('error'))
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle mr-2"></i>
                 {{ session('error') }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if (session()->has('message'))
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <i class="bi bi-info-circle mr-2"></i>
+                {{ session('message') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
 
@@ -48,6 +55,7 @@
                             <option value="new">{{ __('general.new_registration') }}</option>
                             <option value="active">{{ __('general.studying') }}</option>
                             <option value="paused">{{ __('general.paused') }}</option>
+                            <option value="suspended">{{ __('general.suspended') }}</option>
                             <option value="dropped">{{ __('general.reserved') }}</option>
                         </select>
                     </div>
@@ -137,12 +145,14 @@
                                                     'new' => 'info',
                                                     'active' => 'success',
                                                     'paused' => 'warning',
+                                                    'suspended' => 'secondary',
                                                     'dropped' => 'danger',
                                                 ];
                                                 $statusLabels = [
                                                     'new' => __('general.new_registration'),
                                                     'active' => __('general.studying'),
                                                     'paused' => __('general.paused'),
+                                                    'suspended' => __('general.suspended'),
                                                     'dropped' => __('general.reserved'),
                                                 ];
                                                 $color = $statusColors[$student->studentProfile->status] ?? 'secondary';
@@ -175,7 +185,7 @@
                                                 title="{{ __('general.edit') }}">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
-                                            @if (!$student->studentProfile || $student->studentProfile->status !== 'active')
+                                            @if (!$student->studentProfile || !in_array($student->studentProfile->status, ['active', 'suspended']))
                                                 <button type="button" data-toggle="modal"
                                                     data-target="#deleteModal{{ $student->id }}"
                                                     class="btn btn-sm btn-outline-danger"
@@ -184,7 +194,7 @@
                                                 </button>
                                             @else
                                                 <button type="button" class="btn btn-sm btn-outline-secondary"
-                                                    title="{{ __('general.cannot_delete_active_student') }}" disabled>
+                                                    title="{{ __('general.cannot_delete_active_or_suspended_student') }}" disabled>
                                                     <i class="bi bi-lock"></i>
                                                 </button>
                                             @endif
@@ -246,4 +256,25 @@
             </div>
         </div>
     </div>
+
+    <!-- Toast Notifications -->
+    @if (session()->has('success'))
+        <div class="position-fixed top-0 end-0 p-3" style="z-index: 1060;">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle mr-2"></i>
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    @endif
+
+    @if (session()->has('error'))
+        <div class="position-fixed top-0 end-0 p-3" style="z-index: 1060;">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle mr-2"></i>
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    @endif
 </x-layouts.dash-admin>
