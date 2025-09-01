@@ -114,7 +114,7 @@ class Index extends Component
 
                 Log::info('Student '.$student->id.' evaluated round '.$round->id.': '.($evaluated ? 'YES' : 'NO'));
 
-                if (!$evaluated) {
+                if (! $evaluated) {
                     // Tìm thấy đợt chưa đánh giá - tạo hoặc lấy evaluation
                     $this->currentEvaluation = Evaluation::firstOrCreate([
                         'student_id' => $student->id,
@@ -132,7 +132,7 @@ class Index extends Component
             }
 
             // Nếu tất cả đợt đều đã được đánh giá, vẫn tạo evaluation cho đợt đầu tiên để hiển thị
-            if (!$this->currentEvaluation && $this->currentRounds->count() > 0) {
+            if (! $this->currentEvaluation && $this->currentRounds->count() > 0) {
                 $firstRound = $this->currentRounds->first();
                 $this->currentEvaluation = Evaluation::firstOrCreate([
                     'student_id' => $student->id,
@@ -144,7 +144,7 @@ class Index extends Component
                     'suggestions' => '',
                 ]);
 
-                Log::info('All rounds evaluated, created evaluation for first round: ID=' . $firstRound->id . ', Name=' . $firstRound->name);
+                Log::info('All rounds evaluated, created evaluation for first round: ID='.$firstRound->id.', Name='.$firstRound->name);
             }
         } else {
             $this->currentEvaluation = null;

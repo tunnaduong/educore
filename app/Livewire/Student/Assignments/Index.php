@@ -23,7 +23,9 @@ class Index extends Component
 
     // Thêm filter thời gian
     public $filterTimeRange = 'all'; // all, today, week, month, custom
+
     public $filterDateFrom = '';
+
     public $filterDateTo = '';
 
     protected $queryString = [
@@ -172,21 +174,21 @@ class Index extends Component
                 case 'week':
                     $query->whereBetween('deadline', [
                         $now->startOfWeek()->toDateTimeString(),
-                        $now->endOfWeek()->toDateTimeString()
+                        $now->endOfWeek()->toDateTimeString(),
                     ]);
                     break;
                 case 'month':
                     $query->whereBetween('deadline', [
                         $now->startOfMonth()->toDateTimeString(),
-                        $now->endOfMonth()->toDateTimeString()
+                        $now->endOfMonth()->toDateTimeString(),
                     ]);
                     break;
                 case 'custom':
                     if ($this->filterDateFrom) {
-                        $query->where('deadline', '>=', $this->filterDateFrom . ' 00:00:00');
+                        $query->where('deadline', '>=', $this->filterDateFrom.' 00:00:00');
                     }
                     if ($this->filterDateTo) {
-                        $query->where('deadline', '<=', $this->filterDateTo . ' 23:59:59');
+                        $query->where('deadline', '<=', $this->filterDateTo.' 23:59:59');
                     }
                     break;
             }
