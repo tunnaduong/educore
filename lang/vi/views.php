@@ -220,7 +220,7 @@ return [
     'manage_classrooms' => 'Quản lý lớp học',
     'filter_by_month' => 'Lọc theo tháng',
     'overview_statistics' => 'Thống kê tổng quan',
-    'total_students' => 'Tổng học viên',
+    'total_students' => 'Tổng học viên :count',
     'active_classes' => 'Lớp đang hoạt động',
     'attendance_sessions' => 'Số lần điểm danh',
     'average_rate' => 'Tỷ lệ trung bình',
@@ -276,6 +276,7 @@ return [
     'late' => 'Trễ hạn',
     'not_submitted' => 'Chưa nộp',
     'no_students' => 'Chưa có học viên nào',
+    'no_students_found_with_filters' => 'Không tìm thấy học viên nào với bộ lọc hiện tại',
     'please_assign_students_to_class' => 'Vui lòng gán học viên vào lớp học.',
 
     // Assignment Create Page
