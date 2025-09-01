@@ -36,7 +36,7 @@ class Index extends Component
     ];
 
     public $questionForm = [
-        'category' => 'teacher',
+        'category' => '',
         'question' => '',
         'order' => 1,
         'is_active' => true,
@@ -57,26 +57,17 @@ class Index extends Component
 
     protected $queryString = ['classroomId', 'roundId', 'activeTab'];
 
-    protected function rules()
-    {
-        return [
-            'questionForm.category' => 'required|in:teacher,course,personal',
-            'questionForm.question' => 'required|min:10',
-            'questionForm.order' => 'required|integer|min:1',
-            'questionForm.is_active' => 'boolean',
-        ];
-    }
-
-    protected function roundRules()
-    {
-        return [
-            'roundForm.name' => 'required|min:3',
-            'roundForm.description' => 'nullable|max:500',
-            'roundForm.start_date' => 'required|date|after_or_equal:today',
-            'roundForm.end_date' => 'required|date|after:roundForm.start_date',
-            'roundForm.is_active' => 'boolean',
-        ];
-    }
+    protected $rules = [
+        'questionForm.category' => 'required|in:teacher,course,personal',
+        'questionForm.question' => 'required|min:10',
+        'questionForm.order' => 'required|integer|min:0',
+        'questionForm.is_active' => 'boolean',
+        'roundForm.name' => 'required|min:3',
+        'roundForm.description' => 'nullable|max:500',
+        'roundForm.start_date' => 'required|date|after_or_equal:today',
+        'roundForm.end_date' => 'required|date|after:start_date',
+        'roundForm.is_active' => 'boolean',
+    ];
 
     protected $messages = [
         'questionForm.category.required' => 'Vui lòng chọn danh mục câu hỏi.',
@@ -85,7 +76,7 @@ class Index extends Component
         'questionForm.question.min' => 'Câu hỏi phải có ít nhất 10 ký tự.',
         'questionForm.order.required' => 'Vui lòng nhập thứ tự hiển thị.',
         'questionForm.order.integer' => 'Thứ tự phải là số nguyên.',
-        'questionForm.order.min' => 'Thứ tự phải lớn hơn hoặc bằng 1.',
+        'questionForm.order.min' => 'Thứ tự phải lớn hơn hoặc bằng 0.',
         'roundForm.name.required' => 'Tên đợt đánh giá không được bỏ trống.',
         'roundForm.name.min' => 'Tên đợt đánh giá phải có ít nhất 3 ký tự.',
         'roundForm.description.max' => 'Mô tả không được quá 500 ký tự.',
@@ -95,20 +86,17 @@ class Index extends Component
         'roundForm.end_date.required' => 'Ngày kết thúc không được bỏ trống.',
         'roundForm.end_date.date' => 'Ngày kết thúc không hợp lệ.',
         'roundForm.end_date.after' => 'Ngày kết thúc phải sau ngày bắt đầu.',
-        'roundForm.time_conflict' => 'Thời gian đợt đánh giá này xung đột với đợt đánh giá khác.',
     ];
 
     public function updatedClassroomId()
     {
         $this->resetPage();
-        $this->resetValidation();
         Log::info('Classroom filter changed to: '.($this->classroomId ?: 'null'));
     }
 
     public function updatedRoundId()
     {
         $this->resetPage();
-        $this->resetValidation();
         Log::info('Round filter changed to: '.($this->roundId ?: 'null'));
     }
 
@@ -117,13 +105,11 @@ class Index extends Component
         $this->classroomId = '';
         $this->roundId = '';
         $this->resetPage();
-        $this->resetValidation();
     }
 
     public function updatedActiveTab()
     {
         $this->resetPage();
-        $this->resetValidation();
     }
 
     public function showEvaluationDetail(int $evaluationId)
@@ -139,7 +125,6 @@ class Index extends Component
     public function showAddQuestionModal()
     {
         $this->editingQuestion = null;
-        $this->resetValidation();
         $this->questionForm = [
             'category' => 'teacher',
             'question' => '',
@@ -154,7 +139,6 @@ class Index extends Component
         $question = EvaluationQuestion::find($questionId);
         if ($question) {
             $this->editingQuestion = $question;
-            $this->resetValidation();
             $this->questionForm = [
                 'category' => $question->category,
                 'question' => $question->question,
@@ -169,7 +153,6 @@ class Index extends Component
     {
         $this->showQuestionModal = false;
         $this->editingQuestion = null;
-        $this->resetValidation();
         $this->questionForm = [
             'category' => 'teacher',
             'question' => '',
@@ -247,13 +230,7 @@ class Index extends Component
     public function saveQuestion()
     {
         try {
-            // Đảm bảo dữ liệu được xử lý đúng cách
-            $this->questionForm['order'] = (int) $this->questionForm['order'];
-            $this->questionForm['is_active'] = (bool) ($this->questionForm['is_active'] ?? false);
-
-            Log::info('Saving question with data:', $this->questionForm);
-
-            $this->validate($this->rules(), $this->messages);
+            $this->validate();
 
             // Kiểm tra giới hạn & thứ tự để đồng bộ với phần student
             if ($this->editingQuestion) {
@@ -528,8 +505,8 @@ class Index extends Component
             $this->roundForm = [
                 'name' => $round->name,
                 'description' => $round->description,
-                'start_date' => $round->start_date->format('Y-m-d'),
-                'end_date' => $round->end_date->format('Y-m-d'),
+                'start_date' => $round->start_date ? Carbon::parse($round->start_date)->format('Y-m-d') : '',
+                'end_date' => $round->end_date ? Carbon::parse($round->end_date)->format('Y-m-d') : '',
                 'is_active' => $round->is_active,
             ];
             $this->showRoundModal = true;
@@ -554,7 +531,7 @@ class Index extends Component
         // Kiểm tra nhanh để hiển thị thông báo lỗi rõ ràng (trước khi validate chuẩn)
         if (! empty($this->roundForm['start_date'])) {
             $start = Carbon::parse($this->roundForm['start_date'])->startOfDay();
-            if ($start->lt(Carbon::today())) {
+            if ($start->lt(Carbon::today()->startOfDay())) {
                 session()->flash('error', 'Không thể tạo đợt ở quá khứ. Ngày bắt đầu phải từ hôm nay trở đi.');
 
                 return;
@@ -562,7 +539,7 @@ class Index extends Component
         }
 
         // Validate cơ bản + cứng ràng buộc ngày bắt đầu >= hôm nay
-        $this->validate($this->roundRules(), $this->messages);
+        $this->validate($this->rules, $this->messages);
 
         $startDate = Carbon::parse($this->roundForm['start_date'])->startOfDay();
         $endDate = Carbon::parse($this->roundForm['end_date'])->endOfDay();
@@ -589,7 +566,7 @@ class Index extends Component
         });
 
         if ($this->editingRound) {
-            $conflictingRounds->where('id', '!=', $this->editingRound->id);
+            $conflictingRounds = $conflictingRounds->where('id', '!=', $this->editingRound->id);
         }
 
         if ($conflictingRounds->exists()) {
