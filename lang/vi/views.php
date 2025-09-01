@@ -282,7 +282,7 @@ return [
     'back' => 'Quay lại',
     'create_new_assignment' => 'Giao bài tập mới',
     'title_placeholder' => 'VD: Bài luyện viết Hán tự - Bài 3',
-    
+
     'select_class' => 'Chọn lớp',
     'max_score' => 'Điểm tối đa (tuỳ chọn)',
     'max_score_placeholder' => 'VD: 10',
@@ -353,10 +353,10 @@ return [
     'course_avg_score' => 'Điểm TB Khóa học',
     'personal_avg_score' => 'Điểm TB Cá nhân',
     'evaluation_list_title' => 'Danh sách đánh giá',
-    
+
     'round' => 'Đợt',
     'avg_score' => 'Điểm TB',
-    
+
     'submission_date' => 'Ngày gửi',
     'actions' => 'Thao tác',
     'not_assigned' => 'Chưa phân lớp',
@@ -973,7 +973,7 @@ return [
             ],
         ],
     ],
-    
+
     'validation_category_required' => 'Vui lòng chọn danh mục câu hỏi.',
     'validation_category_invalid' => 'Danh mục không hợp lệ.',
     'validation_question_required' => 'Câu hỏi không được bỏ trống.',
