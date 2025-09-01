@@ -34,7 +34,7 @@ class AssignStudents extends Component
     {
         $this->classroomId = $classroom;
         $this->classroom = Classroom::findOrFail($this->classroomId);
-        
+
         // Chỉ load selected students nếu chưa có từ queryString
         if (empty($this->selectedStudents)) {
             $this->loadSelectedStudents();
@@ -64,19 +64,19 @@ class AssignStudents extends Component
     public function toggleStudent($studentId)
     {
         // Đảm bảo selectedStudents là array
-        if (!is_array($this->selectedStudents)) {
+        if (! is_array($this->selectedStudents)) {
             $this->selectedStudents = [];
         }
 
         // Convert to integer để tránh type mismatch
         $studentId = (int) $studentId;
-        
+
         if (in_array($studentId, $this->selectedStudents)) {
             $this->selectedStudents = array_diff($this->selectedStudents, [$studentId]);
         } else {
             $this->selectedStudents[] = $studentId;
         }
-        
+
         // Re-index array để tránh gaps
         $this->selectedStudents = array_values($this->selectedStudents);
     }
@@ -84,10 +84,10 @@ class AssignStudents extends Component
     public function selectAll()
     {
         // Đảm bảo selectedStudents là array
-        if (!is_array($this->selectedStudents)) {
+        if (! is_array($this->selectedStudents)) {
             $this->selectedStudents = [];
         }
-        
+
         $availableStudents = $this->getAvailableStudentsQuery()->pluck('id')->toArray();
         $this->selectedStudents = array_unique(array_merge($this->selectedStudents, $availableStudents));
         $this->selectedStudents = array_values($this->selectedStudents);
@@ -101,10 +101,10 @@ class AssignStudents extends Component
     public function toggleSelectAll()
     {
         // Đảm bảo selectedStudents là array
-        if (!is_array($this->selectedStudents)) {
+        if (! is_array($this->selectedStudents)) {
             $this->selectedStudents = [];
         }
-        
+
         $availableStudentIds = $this->getAvailableStudentsQuery()->pluck('id')->toArray();
 
         // Nếu tất cả học viên đã được chọn thì bỏ chọn tất cả
@@ -114,7 +114,7 @@ class AssignStudents extends Component
             // Nếu chưa chọn tất cả thì chọn tất cả
             $this->selectedStudents = array_unique(array_merge($this->selectedStudents, $availableStudentIds));
         }
-        
+
         $this->selectedStudents = array_values($this->selectedStudents);
     }
 
@@ -179,7 +179,7 @@ class AssignStudents extends Component
     public function getSelectedStudentsData()
     {
         // Đảm bảo selectedStudents là array và có giá trị
-        if (!is_array($this->selectedStudents) || empty($this->selectedStudents)) {
+        if (! is_array($this->selectedStudents) || empty($this->selectedStudents)) {
             return collect([]);
         }
 
