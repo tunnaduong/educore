@@ -71,7 +71,7 @@ class OneSmsService
 
             return [
                 'success' => false,
-                'message' => 'Lỗi gửi tin nhắn: ' . $e->getMessage(),
+                'message' => 'Lỗi gửi tin nhắn: '.$e->getMessage(),
                 'code' => 'ERROR',
             ];
         }
@@ -88,7 +88,7 @@ class OneSmsService
             [
                 'customer_name' => $customerName ?? 'Học viên',
                 'mahocvien' => $mahocvien ?? 'N/A',
-                'otp_code' => $otp
+                'otp_code' => $otp,
             ],
             $id,
             [
@@ -359,7 +359,7 @@ class OneSmsService
 
         // Nếu số điện thoại có 11 số và bắt đầu bằng 84, chuyển về 0
         if (strlen($phone) === 11 && substr($phone, 0, 2) === '84') {
-            return '0' . substr($phone, 2);
+            return '0'.substr($phone, 2);
         }
 
         return $phone;
@@ -386,7 +386,7 @@ class OneSmsService
 
             return [
                 'success' => false,
-                'message' => 'Lỗi kiểm tra tài khoản: ' . $e->getMessage(),
+                'message' => 'Lỗi kiểm tra tài khoản: '.$e->getMessage(),
             ];
         }
     }
