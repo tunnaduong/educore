@@ -21,6 +21,21 @@
             </div>
         </div>
 
+        <!-- Success/Error Alerts -->
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                <i class="bi bi-check-circle mr-2"></i>{{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                <i class="bi bi-exclamation-triangle mr-2"></i>{{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
         <div class="row">
             <!-- Thông tin cơ bản -->
             <div class="col-lg-4">
@@ -82,13 +97,17 @@
                                         @if ($student->studentProfile)
                                             @php
                                                 $statusColors = [
+                                                    'new' => 'info',
                                                     'active' => 'success',
                                                     'paused' => 'warning',
+                                                    'suspended' => 'secondary',
                                                     'dropped' => 'danger',
                                                 ];
                                                 $statusLabels = [
+                                                    'new' => __('general.new_registration'),
                                                     'active' => __('general.studying'),
                                                     'paused' => __('general.paused'),
+                                                    'suspended' => __('general.suspended'),
                                                     'dropped' => __('general.reserved'),
                                                 ];
                                                 $color = $statusColors[$student->studentProfile->status] ?? 'secondary';
@@ -226,4 +245,25 @@
             </div>
         </div>
     </div>
+
+    <!-- Toast Notifications -->
+    @if (session()->has('success'))
+        <div class="position-fixed top-0 end-0 p-3" style="z-index: 1060;">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle mr-2"></i>
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    @endif
+
+    @if (session()->has('error'))
+        <div class="position-fixed top-0 end-0 p-3" style="z-index: 1060;">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle mr-2"></i>
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    @endif
 </x-layouts.dash-admin>
