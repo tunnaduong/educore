@@ -136,7 +136,7 @@
                         <!-- Pagination -->
                         @if ($availableStudents->hasPages())
                             <div class="d-flex justify-content-center mt-3">
-                                {{ $availableStudents->links('vendor.pagination.bootstrap-5') }}
+                                {{ $availableStudents->links('livewire.bootstrap-pagination') }}
                             </div>
                         @endif
                     </div>
@@ -184,11 +184,8 @@
 
                         <!-- Học viên chưa gán (đang được chọn để thêm mới) -->
                         @php
-                            $selectedStudentsNotEnrolled = collect($availableStudents->items())->filter(function (
-                                $student,
-                            ) use ($selectedStudents, $enrolledStudents) {
-                                return in_array($student->id, $selectedStudents) &&
-                                    !$enrolledStudents->contains('id', $student->id);
+                            $selectedStudentsNotEnrolled = $selectedStudentsData->filter(function ($student) use ($enrolledStudents) {
+                                return !$enrolledStudents->contains('id', $student->id);
                             });
                         @endphp
 
