@@ -2,20 +2,22 @@
 
 namespace App\Livewire\Admin\Students;
 
-use App\Models\User;
-use App\Models\Attendance;
-use App\Models\Assignment;
 use App\Models\AssignmentSubmission;
+use App\Models\Attendance;
 use App\Models\QuizResult;
-use App\Models\Lesson;
+use App\Models\User;
 use Livewire\Component;
 
 class Show extends Component
 {
     public User $student;
+
     public $studySessions = 0;
+
     public $averageScore = 0;
+
     public $completedAssignments = 0;
+
     public $attendanceRate = 0;
 
     public function mount($student)
@@ -26,7 +28,7 @@ class Show extends Component
 
     public function calculateStatistics()
     {
-        if (!$this->student->studentProfile) {
+        if (! $this->student->studentProfile) {
             return;
         }
 

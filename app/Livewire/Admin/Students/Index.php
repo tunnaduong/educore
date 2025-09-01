@@ -3,11 +3,6 @@
 namespace App\Livewire\Admin\Students;
 
 use App\Models\User;
-use App\Models\Attendance;
-use App\Models\Assignment;
-use App\Models\AssignmentSubmission;
-use App\Models\QuizResult;
-use App\Models\Lesson;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -82,9 +77,9 @@ class Index extends Component
         // Tìm kiếm
         if ($this->search) {
             $query->where(function ($q) {
-                $q->where('name', 'like', '%' . $this->search . '%')
-                    ->orWhere('email', 'like', '%' . $this->search . '%')
-                    ->orWhere('phone', 'like', '%' . $this->search . '%');
+                $q->where('name', 'like', '%'.$this->search.'%')
+                    ->orWhere('email', 'like', '%'.$this->search.'%')
+                    ->orWhere('phone', 'like', '%'.$this->search.'%');
             });
         }
 
@@ -113,7 +108,7 @@ class Index extends Component
                     'studySessions' => 0,
                     'averageScore' => 0,
                     'completedAssignments' => 0,
-                    'attendanceRate' => 0
+                    'attendanceRate' => 0,
                 ];
             }
         }
@@ -129,12 +124,12 @@ class Index extends Component
 
     private function calculateStudentStats($student)
     {
-        if (!$student->studentProfile) {
+        if (! $student->studentProfile) {
             return [
                 'studySessions' => 0,
                 'averageScore' => 0,
                 'completedAssignments' => 0,
-                'attendanceRate' => 0
+                'attendanceRate' => 0,
             ];
         }
 
@@ -146,7 +141,7 @@ class Index extends Component
                 'studySessions' => 0,
                 'averageScore' => 0,
                 'completedAssignments' => 0,
-                'attendanceRate' => 0
+                'attendanceRate' => 0,
             ];
         }
 
@@ -192,7 +187,7 @@ class Index extends Component
             'studySessions' => $studySessions,
             'averageScore' => $averageScore,
             'completedAssignments' => $completedAssignments,
-            'attendanceRate' => $attendanceRate
+            'attendanceRate' => $attendanceRate,
         ];
     }
 }
