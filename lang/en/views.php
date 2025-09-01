@@ -908,7 +908,6 @@ return [
             ],
         ],
     ],
-    'evaluation_management' => 'Evaluation Management',
     'view_evaluations_and_manage_questions' => 'View evaluations and manage questions',
     'evaluation_list' => 'Evaluation List',
     'question_management' => 'Question Management',
