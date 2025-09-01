@@ -21,11 +21,19 @@ class Index extends Component
 
     public $search = '';
 
+    // Thêm filter thời gian
+    public $filterTimeRange = 'all'; // all, today, week, month, custom
+    public $filterDateFrom = '';
+    public $filterDateTo = '';
+
     protected $queryString = [
         'filterStatus' => ['except' => 'all'],
         'filterClassroom' => ['except' => ''],
         'filterTeacher' => ['except' => ''],
         'filterType' => ['except' => ''],
+        'filterTimeRange' => ['except' => 'all'],
+        'filterDateFrom' => ['except' => ''],
+        'filterDateTo' => ['except' => ''],
         'search' => ['except' => ''],
     ];
 
@@ -49,6 +57,26 @@ class Index extends Component
         $this->resetPage();
     }
 
+    public function updatedFilterTimeRange()
+    {
+        $this->resetPage();
+        // Reset custom dates khi chọn preset
+        if ($this->filterTimeRange !== 'custom') {
+            $this->filterDateFrom = '';
+            $this->filterDateTo = '';
+        }
+    }
+
+    public function updatedFilterDateFrom()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedFilterDateTo()
+    {
+        $this->resetPage();
+    }
+
     public function updatedSearch()
     {
         $this->resetPage();
@@ -56,7 +84,7 @@ class Index extends Component
 
     public function resetFilters()
     {
-        $this->reset(['search', 'filterStatus', 'filterClassroom', 'filterTeacher', 'filterType']);
+        $this->reset(['search', 'filterStatus', 'filterClassroom', 'filterTeacher', 'filterType', 'filterTimeRange', 'filterDateFrom', 'filterDateTo']);
         $this->resetPage();
     }
 
@@ -131,6 +159,37 @@ class Index extends Component
                 $q->where('title', 'like', '%'.$this->search.'%')
                     ->orWhere('description', 'like', '%'.$this->search.'%');
             });
+        }
+
+        // Filter by time range
+        if ($this->filterTimeRange !== 'all') {
+            $now = now();
+
+            switch ($this->filterTimeRange) {
+                case 'today':
+                    $query->whereDate('deadline', $now->toDateString());
+                    break;
+                case 'week':
+                    $query->whereBetween('deadline', [
+                        $now->startOfWeek()->toDateTimeString(),
+                        $now->endOfWeek()->toDateTimeString()
+                    ]);
+                    break;
+                case 'month':
+                    $query->whereBetween('deadline', [
+                        $now->startOfMonth()->toDateTimeString(),
+                        $now->endOfMonth()->toDateTimeString()
+                    ]);
+                    break;
+                case 'custom':
+                    if ($this->filterDateFrom) {
+                        $query->where('deadline', '>=', $this->filterDateFrom . ' 00:00:00');
+                    }
+                    if ($this->filterDateTo) {
+                        $query->where('deadline', '<=', $this->filterDateTo . ' 23:59:59');
+                    }
+                    break;
+            }
         }
 
         return $query->orderBy('deadline', 'asc')->paginate(10);

@@ -175,7 +175,7 @@
                                                 title="{{ __('general.edit') }}">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
-                                            @if (!$student->studentProfile || $student->studentProfile->status !== 'active')
+                                            @if (!$student->studentProfile || !in_array($student->studentProfile->status, ['active', 'reserved']))
                                                 <button type="button" data-toggle="modal"
                                                     data-target="#deleteModal{{ $student->id }}"
                                                     class="btn btn-sm btn-outline-danger"
@@ -184,7 +184,7 @@
                                                 </button>
                                             @else
                                                 <button type="button" class="btn btn-sm btn-outline-secondary"
-                                                    title="{{ __('general.cannot_delete_active_student') }}" disabled>
+                                                    title="{{ __('general.cannot_delete_student_with_status', ['status' => $student->studentProfile->status === 'active' ? __('general.active') : __('general.reserved')]) }}" disabled>
                                                     <i class="bi bi-lock"></i>
                                                 </button>
                                             @endif

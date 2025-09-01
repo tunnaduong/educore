@@ -136,7 +136,7 @@
                     </div>
                 @endif
 
-                <!-- Trạng thái nộp bài hiện tại -->
+                <!-- Current submission status -->
                 @php
                     $status = $this->getSubmissionStatus();
                 @endphp
@@ -279,7 +279,7 @@
                                                 <div class="small text-muted mt-1">{{ __('general.video_file_hint_short') }}</div>
                                                 @if ($this->isTypeSubmitted('video'))
                                                     <div class="small text-success mt-1">
-                                                        <i class="bi bi-check-circle"></i> Đã nộp
+                                                        <i class="bi bi-check-circle"></i> {{ __('general.submitted') }}
                                                     </div>
                                                 @endif
                                             </label>

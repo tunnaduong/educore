@@ -22,6 +22,10 @@ class Index extends Component
 
     public $isSubmitted = false;
 
+    public $currentRound = null;
+
+    public $currentRounds;
+
     // Câu hỏi đánh giá sẽ được load từ database
     public $teacherQuestions = [];
 
@@ -54,16 +58,13 @@ class Index extends Component
 
     public function mount()
     {
+        // Khởi tạo các mảng rỗng
+        $this->currentRounds = collect();
+        $this->teacher_ratings = [];
+        $this->course_ratings = [];
+
         $this->loadQuestions();
         $this->loadCurrentEvaluation();
-
-        // Đảm bảo dữ liệu được khởi tạo đúng cách
-        if (empty($this->teacher_ratings)) {
-            $this->teacher_ratings = [];
-        }
-        if (empty($this->course_ratings)) {
-            $this->course_ratings = [];
-        }
     }
 
     public function loadQuestions()
@@ -94,18 +95,18 @@ class Index extends Component
             return;
         }
 
-        // Lấy đợt đánh giá hiện tại chưa được đánh giá
-        $currentRounds = \App\Models\EvaluationRound::current()->get();
+        // Lấy đợt đánh giá hiện tại đang hoạt động
+        $this->currentRounds = \App\Models\EvaluationRound::where('is_active', true)->get();
 
         // Debug: Log thông tin đợt đánh giá hiện tại
-        Log::info('Current evaluation rounds found: '.$currentRounds->count());
-        foreach ($currentRounds as $round) {
+        Log::info('Current evaluation rounds found: '.$this->currentRounds->count());
+        foreach ($this->currentRounds as $round) {
             Log::info('Round ID: '.$round->id.', Name: '.$round->name.', Start: '.$round->start_date.', End: '.$round->end_date);
         }
 
-        if ($currentRounds->count() > 0) {
+        if ($this->currentRounds->count() > 0) {
             // Tìm đợt đầu tiên mà student chưa đánh giá
-            foreach ($currentRounds as $round) {
+            foreach ($this->currentRounds as $round) {
                 $evaluated = Evaluation::where('student_id', $student->id)
                     ->where('evaluation_round_id', $round->id)
                     ->whereNotNull('submitted_at')
@@ -113,15 +114,37 @@ class Index extends Component
 
                 Log::info('Student '.$student->id.' evaluated round '.$round->id.': '.($evaluated ? 'YES' : 'NO'));
 
-                if (! $evaluated) {
-                    // Tìm thấy đợt chưa đánh giá
-                    $this->currentEvaluation = Evaluation::where('student_id', $student->id)
-                        ->where('evaluation_round_id', $round->id)
-                        ->first();
+                if (!$evaluated) {
+                    // Tìm thấy đợt chưa đánh giá - tạo hoặc lấy evaluation
+                    $this->currentEvaluation = Evaluation::firstOrCreate([
+                        'student_id' => $student->id,
+                        'evaluation_round_id' => $round->id,
+                    ], [
+                        'teacher_ratings' => [],
+                        'course_ratings' => [],
+                        'personal_satisfaction' => null,
+                        'suggestions' => '',
+                    ]);
 
-                    Log::info('Found current evaluation: '.($this->currentEvaluation ? 'YES' : 'NO'));
+                    Log::info('Found/created current evaluation: '.($this->currentEvaluation ? 'YES' : 'NO'));
                     break;
                 }
+            }
+
+            // Nếu tất cả đợt đều đã được đánh giá, vẫn tạo evaluation cho đợt đầu tiên để hiển thị
+            if (!$this->currentEvaluation && $this->currentRounds->count() > 0) {
+                $firstRound = $this->currentRounds->first();
+                $this->currentEvaluation = Evaluation::firstOrCreate([
+                    'student_id' => $student->id,
+                    'evaluation_round_id' => $firstRound->id,
+                ], [
+                    'teacher_ratings' => [],
+                    'course_ratings' => [],
+                    'personal_satisfaction' => null,
+                    'suggestions' => '',
+                ]);
+
+                Log::info('All rounds evaluated, created evaluation for first round: ID=' . $firstRound->id . ', Name=' . $firstRound->name);
             }
         } else {
             $this->currentEvaluation = null;
@@ -165,7 +188,7 @@ class Index extends Component
                 ]);
             } else {
                 // Lấy đợt đánh giá hiện tại chưa được đánh giá
-                $currentRounds = \App\Models\EvaluationRound::current()->get();
+                $currentRounds = \App\Models\EvaluationRound::where('is_active', true)->get();
                 $currentRound = null;
 
                 foreach ($currentRounds as $round) {
@@ -241,11 +264,11 @@ class Index extends Component
             return;
         }
 
-        // Lấy tất cả đợt đánh giá hiện tại
-        $currentRounds = \App\Models\EvaluationRound::current()->get();
+        // Lấy tất cả đợt đánh giá đang hoạt động
+        $currentRounds = \App\Models\EvaluationRound::where('is_active', true)->get();
 
         if ($currentRounds->count() == 0) {
-            session()->flash('error', 'Không có đợt đánh giá nào đang diễn ra.');
+            session()->flash('error', 'Không có đợt đánh giá nào đang hoạt động.');
 
             return;
         }
@@ -366,6 +389,16 @@ class Index extends Component
 
     public function render()
     {
-        return view('student.evaluation.index');
+        $currentRound = null;
+        if ($this->currentEvaluation && $this->currentEvaluation->evaluationRound) {
+            $currentRound = $this->currentEvaluation->evaluationRound;
+        } elseif ($this->currentRounds->count() > 0) {
+            $currentRound = $this->currentRounds->first();
+        }
+
+        return view('student.evaluation.index', [
+            'currentRounds' => $this->currentRounds,
+            'currentRound' => $currentRound,
+        ]);
     }
 }
