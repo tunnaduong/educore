@@ -28,19 +28,6 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif
-        @if ($errors->any())
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-triangle mr-2"></i>
-                <div>
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        @endif
 
         <!-- Tabs -->
         <ul class="nav nav-tabs mb-4" id="evaluationTabs" role="tablist">
@@ -336,22 +323,12 @@
                         <h6 class="mb-0">{{ __('views.question_management_title') }}</h6>
                     </div>
                     <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <div>
-                                <button class="btn btn-success" wire:click="loadDefaultQuestions"
-                                    wire:confirm="Bạn có chắc chắn muốn tải câu hỏi mặc định? Hành động này sẽ tạo sẵn các câu hỏi đánh giá chuẩn cho hệ thống."
-                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                    title="Tải câu hỏi mặc định từ seeder">
-                                    <i class="bi bi-download mr-2"></i>Tải câu hỏi mặc định
-                                </button>
-                            </div>
-                            <div>
-                                <button class="btn btn-primary" wire:click="showAddQuestionModal"
-                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                    title="{{ __('views.add_new_question') }}">
-                                    <i class="bi bi-plus-circle mr-2"></i>{{ __('views.add_question') }}
-                                </button>
-                            </div>
+                        <div class="d-flex justify-content-end mb-3">
+                            <button class="btn btn-primary" wire:click="showAddQuestionModal"
+                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="{{ __('views.add_new_question') }}">
+                                <i class="bi bi-plus-circle mr-2"></i>{{ __('views.add_question') }}
+                            </button>
                         </div>
                         @if ($questions->count() > 0)
                             <div class="table-responsive">
@@ -661,24 +638,6 @@
                                         <div>{{ session('error') }}</div>
                                     </div>
                                 @endif
-                                @if ($errors->any())
-                                    <div class="alert alert-danger d-flex align-items-center" role="alert">
-                                        <i class="bi bi-exclamation-triangle-fill mr-2"></i>
-                                        <div>
-                                            <ul class="mb-0">
-                                                @foreach ($errors->all() as $error)
-                                                    <li>{{ $error }}</li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                    </div>
-                                @endif
-                                @if (session()->has('success'))
-                                    <div class="alert alert-success d-flex align-items-center" role="alert">
-                                        <i class="bi bi-check-circle-fill mr-2"></i>
-                                        <div>{{ session('success') }}</div>
-                                    </div>
-                                @endif
                                 <div class="mb-3">
                                     <label for="category" class="form-label">{{ __('views.category') }} <span
                                             class="text-danger">*</span></label>
@@ -761,41 +720,41 @@
                                 <div class="mb-3">
                                     <label for="round_name" class="form-label">{{ __('views.round_name') }} <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" wire:model="roundForm.name" class="form-control @error('roundForm.name') is-invalid @enderror"
+                                    <input type="text" wire:model="roundForm.name" class="form-control"
                                         id="round_name" placeholder="{{ __('views.round_name_input') }}">
                                     @error('roundForm.name')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="round_description"
                                         class="form-label">{{ __('views.description') }}</label>
-                                    <textarea wire:model="roundForm.description" class="form-control @error('roundForm.description') is-invalid @enderror" id="round_description" rows="3"
+                                    <textarea wire:model="roundForm.description" class="form-control" id="round_description" rows="3"
                                         placeholder="{{ __('views.round_description_input') }}"></textarea>
                                     @error('roundForm.description')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="mb-3 position-relative">
+                                        <div class="mb-3">
                                             <label for="start_date" class="form-label">{{ __('views.start_date') }}
                                                 <span class="text-danger">*</span></label>
                                             <input type="date" wire:model="roundForm.start_date"
-                                                class="form-control @error('roundForm.start_date') is-invalid @enderror" id="start_date">
+                                                class="form-control" id="start_date">
                                             @error('roundForm.start_date')
-                                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="mb-3 position-relative">
+                                        <div class="mb-3">
                                             <label for="end_date" class="form-label">{{ __('views.end_date') }}
                                                 <span class="text-danger">*</span></label>
                                             <input type="date" wire:model="roundForm.end_date"
-                                                class="form-control @error('roundForm.end_date') is-invalid @enderror" id="end_date">
+                                                class="form-control" id="end_date">
                                             @error('roundForm.end_date')
-                                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
@@ -849,67 +808,4 @@
             </div>
         </div>
     @endif
-
-    <style>
-        /* CSS để đảm bảo thông báo lỗi hiển thị đúng vị trí */
-        .invalid-feedback {
-            display: block;
-            width: 100%;
-            margin-top: 0.25rem;
-            font-size: 0.875em;
-            color: #dc3545;
-        }
-
-        .form-control.is-invalid {
-            border-color: #dc3545;
-            padding-right: calc(1.5em + 0.75rem);
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='m4.5 6 3 3 3-3m-3-3-3 3 3 3'/%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right calc(0.375em + 0.1875rem) center;
-            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
-        }
-
-        .form-control.is-invalid:focus {
-            border-color: #dc3545;
-            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
-        }
-
-        /* Đảm bảo thông báo lỗi không bị lệch trong row */
-        .row .col-md-6 .invalid-feedback {
-            position: relative;
-            display: block;
-            width: 100%;
-            margin-left: 0;
-            margin-right: 0;
-        }
-
-        /* Đảm bảo thông báo lỗi cho ngày bắt đầu và kết thúc hiển thị đúng vị trí */
-        .row .col-md-6 .mb-3 {
-            position: relative;
-        }
-
-        .row .col-md-6 .mb-3 .invalid-feedback {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            z-index: 1;
-            width: 100%;
-            margin-top: 0.25rem;
-        }
-
-        /* Đảm bảo input field có đủ space cho thông báo lỗi */
-        .row .col-md-6 .mb-3 {
-            margin-bottom: 2.5rem !important;
-        }
-
-        /* Đảm bảo thông báo lỗi hiển thị đúng trong grid */
-        .row .col-md-6 .invalid-feedback.d-block {
-            display: block !important;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-        }
-    </style>
 </x-layouts.dash-admin>

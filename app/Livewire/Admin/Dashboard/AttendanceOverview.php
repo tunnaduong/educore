@@ -16,11 +16,14 @@ class AttendanceOverview extends Component
 
     public $overviewStats = [];
 
+    public $monthlyTrendData = [];
+
     public function mount()
     {
         $this->selectedMonth = (int) now()->month;
         $this->selectedYear = (int) now()->year;
         $this->loadOverviewStats();
+        $this->loadMonthlyTrendData();
     }
 
     public function loadOverviewStats()
@@ -37,6 +40,13 @@ class AttendanceOverview extends Component
 
         // Tính tỷ lệ điểm danh
         $attendanceRate = $totalAttendanceDays > 0 ? round(($totalPresent / $totalAttendanceDays) * 100, 1) : 0;
+
+        // Lấy dữ liệu tháng trước để so sánh
+        $previousMonth = Carbon::create($this->selectedYear, $this->selectedMonth, 1)->subMonth();
+        $previousMonthAttendances = Attendance::forMonth($previousMonth->year, $previousMonth->month)->get();
+        $previousMonthPresent = $previousMonthAttendances->where('present', true)->count();
+        $previousMonthTotal = $previousMonthAttendances->count();
+        $previousMonthRate = $previousMonthTotal > 0 ? round(($previousMonthPresent / $previousMonthTotal) * 100, 1) : 0;
 
         // Phân bố trạng thái trong tháng
         // Hệ thống hiện mới lưu 'present' (boolean), chưa có cột 'late' -> mặc định 0
@@ -115,19 +125,54 @@ class AttendanceOverview extends Component
             'daily_trend' => $dailyTrend,
             'top_students' => $topStudents,
             'top_classes' => $topClasses,
+            'previous_month_present' => $previousMonthPresent,
+            'previous_month_rate' => $previousMonthRate,
         ];
     }
 
-    public function updatedSelectedMonth()
+    protected $listeners = ['updatedSelectedMonth', 'updatedSelectedYear'];
+
+    public function updatedSelectedMonth($month)
     {
-        $this->selectedMonth = (int) $this->selectedMonth;
+        $this->selectedMonth = (int) $month;
         $this->loadOverviewStats();
     }
 
-    public function updatedSelectedYear()
+    public function updatedSelectedYear($year)
     {
-        $this->selectedYear = (int) $this->selectedYear;
+        $this->selectedYear = (int) $year;
         $this->loadOverviewStats();
+    }
+
+    public function loadMonthlyTrendData()
+    {
+        $monthlyData = [];
+        $currentDate = Carbon::now();
+
+        // Lấy dữ liệu cho 12 tháng gần nhất
+        for ($i = 11; $i >= 0; $i--) {
+            $date = $currentDate->copy()->subMonths($i);
+            $year = $date->year;
+            $month = $date->month;
+
+            // Lấy dữ liệu điểm danh cho tháng này
+            $monthlyAttendances = Attendance::forMonth($year, $month)->get();
+            $totalPresent = $monthlyAttendances->where('present', true)->count();
+            $totalCount = $monthlyAttendances->count();
+            $attendanceRate = $totalCount > 0 ? round(($totalPresent / $totalCount) * 100, 1) : 0;
+
+            $monthlyData[] = [
+                'month' => $date->format('M Y'),
+                'month_name' => $date->format('F'),
+                'year' => $year,
+                'month_number' => $month,
+                'rate' => $attendanceRate,
+                'present' => $totalPresent,
+                'total' => $totalCount,
+            ];
+        }
+
+        $this->monthlyTrendData = $monthlyData;
     }
 
     public function getMonthName($month)

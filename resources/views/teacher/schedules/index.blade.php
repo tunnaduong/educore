@@ -69,8 +69,20 @@
             var calendarEl = document.getElementById('calendar');
             var events = @json($events);
             var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'listWeek',
+                initialView: 'dayGridMonth',
                 locale: '{{ app()->getLocale() }}',
+                firstDay: 1, // Bắt đầu tuần từ Thứ 2
+                fixedWeekCount: false, // Không cố định số tuần
+                showNonCurrentDates: false, // Không hiển thị ngày không thuộc tháng hiện tại
+                // Không dùng validRange để vẫn có thể điều hướng giữa các tháng
+                eventDidMount: function(info) {
+                    // Lọc events chỉ hiển thị trong tháng hiện tại
+                    var eventDate = new Date(info.event.start);
+                    var currentDate = new Date();
+                    if (eventDate.getMonth() !== currentDate.getMonth() || eventDate.getFullYear() !== currentDate.getFullYear()) {
+                        info.el.style.display = 'none';
+                    }
+                },
                 buttonText: {
                     today: '{{ __('general.today') }}',
                     month: '{{ __('general.month') }}',
@@ -86,7 +98,7 @@
                 allDayText: '{{ __('general.all_day') }}',
                 noEventsText: '{{ __('general.no_events_to_display') }}',
                 headerToolbar: {
-                    left: 'prev,next today',
+                    left: 'prev,next',
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
                 },

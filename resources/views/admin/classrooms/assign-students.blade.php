@@ -136,7 +136,7 @@
                         <!-- Pagination -->
                         @if ($availableStudents->hasPages())
                             <div class="d-flex justify-content-center mt-3">
-                                {{ $availableStudents->links('vendor.pagination.bootstrap-5') }}
+                                {{ $availableStudents->links('livewire.bootstrap-pagination') }}
                             </div>
                         @endif
                     </div>
@@ -184,11 +184,8 @@
 
                         <!-- Học viên chưa gán (đang được chọn để thêm mới) -->
                         @php
-                            $selectedStudentsNotEnrolled = collect($availableStudents->items())->filter(function (
-                                $student,
-                            ) use ($selectedStudents, $enrolledStudents) {
-                                return in_array($student->id, $selectedStudents) &&
-                                    !$enrolledStudents->contains('id', $student->id);
+                            $selectedStudentsNotEnrolled = $selectedStudentsData->filter(function ($student) use ($enrolledStudents) {
+                                return !$enrolledStudents->contains('id', $student->id);
                             });
                         @endphp
 
@@ -274,52 +271,83 @@
     @if ($showConflictModal)
         <div class="modal fade show" style="display: block;" tabindex="-1">
             <div class="modal-dialog modal-dialog-scrollable modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header bg-warning text-dark">
-                        <h5 class="modal-title">
-                            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
-                            @lang('general.detected_schedule_conflicts_title')
+                <div class="modal-content border-0 shadow-lg">
+                    <div class="modal-header bg-danger text-white border-0">
+                        <h5 class="modal-title fw-bold">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            Cảnh báo xung đột lịch học
                         </h5>
-                        <button type="button" class="btn-close" wire:click="closeConflictModal"></button>
+                        <button type="button" class="btn-close btn-close-white" wire:click="closeConflictModal"></button>
                     </div>
-                    <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
-                        <div class="alert alert-warning">
-                            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
-                            <strong>@lang('general.warning')</strong> @lang('general.selected_students_schedule_conflict_message')
-                        </div>
-
-                        <div class="row">
+                    <div class="modal-body p-4" style="max-height: 70vh; overflow-y: auto;">
+                        <div class="row mb-4">
                             <div class="col-12">
-                                <h6 class="text-danger mb-3">
-                                    <i class="bi bi-people-fill mr-2"></i>
-                                    @lang('general.conflicting_students_list', ['count' => count($scheduleConflicts)])
+                                <h6 class="text-dark fw-bold mb-3">
+                                    <i class="bi bi-people-fill me-3 text-warning"></i>
+                                    Danh sách học sinh xung đột lịch ({{ count($scheduleConflicts) }} học sinh)
                                 </h6>
                             </div>
                         </div>
 
                         @foreach ($scheduleConflicts as $studentId => $conflictData)
-                            <div class="card mb-3 border-warning">
-                                <div class="card-header bg-light">
-                                    <h6 class="mb-0 text-danger">
-                                        <i class="bi bi-person-circle mr-2"></i>
-                                        {{ $conflictData['student']->name }}
-                                        <small class="text-muted">({{ $conflictData['student']->email }})</small>
-                                    </h6>
+                            <div class="card mb-4 border-warning shadow-sm">
+                                <div class="card-header bg-light border-warning">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <i class="bi bi-person-circle text-primary"></i>
+                                        <span class="text-dark">Học sinh: <strong>{{ $conflictData['student']->name }}</strong></span>
+                                        <small class="text-muted ms-2">({{ $conflictData['student']->email }})</small>
+                                    </div>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <strong class="text-primary">@lang('general.current_classes')</strong>
-                                            <div class="mt-2" style="max-height: 150px; overflow-y: auto;">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <i class="bi bi-calendar-event text-primary" style="margin-right: 12px;"></i>
+                                                <strong class="text-primary fw-bold">Lớp học hiện tại: {{ $conflictData['conflicts'][0]['classroom']->name }}</strong>
+                                            </div>
+                                            <div class="mt-2">
+                                                <div class="d-flex align-items-start">
+                                                    <div class="flex-grow-1">
+                                                        <small class="text-muted">
+                                                            @if ($conflictData['conflicts'][0]['classroom']->schedule)
+                                                                @php
+                                                                    $days = $conflictData['conflicts'][0]['classroom']->schedule['days'] ?? [];
+                                                                    $vietnameseDays = [];
+                                                                    foreach ($days as $day) {
+                                                                        switch (strtolower($day)) {
+                                                                            case 'monday': $vietnameseDays[] = 'Thứ 2'; break;
+                                                                            case 'tuesday': $vietnameseDays[] = 'Thứ 3'; break;
+                                                                            case 'wednesday': $vietnameseDays[] = 'Thứ 4'; break;
+                                                                            case 'thursday': $vietnameseDays[] = 'Thứ 5'; break;
+                                                                            case 'friday': $vietnameseDays[] = 'Thứ 6'; break;
+                                                                            case 'saturday': $vietnameseDays[] = 'Thứ 7'; break;
+                                                                            case 'sunday': $vietnameseDays[] = 'Chủ nhật'; break;
+                                                                            default: $vietnameseDays[] = $day;
+                                                                        }
+                                                                    }
+                                                                @endphp
+                                                                {{ implode(', ', $vietnameseDays) }}
+                                                                -
+                                                                {{ $conflictData['conflicts'][0]['classroom']->schedule['time'] ?? '' }}
+                                                            @else
+                                                                Chưa có lịch học
+                                                            @endif
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="mt-3" style="max-height: 150px; overflow-y: auto;">
                                                 @foreach ($conflictData['conflicts'] as $conflict)
-                                                    <div class="border-start border-primary ps-3 mb-2">
+                                                    <div class="border-start border-primary ps-4 mb-3 py-3">
                                                         <div class="d-flex align-items-start">
-                                                            <i class="bi bi-calendar-event text-primary mr-2 mt-1"></i>
                                                             <div class="flex-grow-1">
-                                                                <strong>{{ $conflict['classroom']->name }}</strong><br>
-                                                                <small class="text-muted">
-                                                                    {{ $conflict['message'] }}
-                                                                </small>
+                                                                <div class="d-flex align-items-center">
+                                                                    <i class="bi bi-exclamation-triangle-fill text-danger" style="margin-right: 10px;"></i>
+                                                                    <span class="text-danger fw-semibold">
+                                                                        {{ $conflict['message'] }}
+                                                                    </span>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -327,19 +355,36 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <strong class="text-success">@lang('general.new_class')</strong>
+                                            <div class="d-flex align-items-center mb-3">
+                                                <i class="bi bi-calendar-event text-success" style="margin-right: 12px;"></i>
+                                                <strong class="text-success fw-bold">Lớp học mới: {{ $classroom->name }}</strong>
+                                            </div>
                                             <div class="mt-2">
                                                 <div class="d-flex align-items-start">
-                                                    <i class="bi bi-calendar-event text-success mr-2 mt-1"></i>
                                                     <div class="flex-grow-1">
-                                                        <strong>{{ $classroom->name }}</strong><br>
                                                         <small class="text-muted">
                                                             @if ($classroom->schedule)
-                                                                {{ implode(', ', $classroom->schedule['days'] ?? []) }}
+                                                                @php
+                                                                    $days = $classroom->schedule['days'] ?? [];
+                                                                    $vietnameseDays = [];
+                                                                    foreach ($days as $day) {
+                                                                        switch (strtolower($day)) {
+                                                                            case 'monday': $vietnameseDays[] = 'Thứ 2'; break;
+                                                                            case 'tuesday': $vietnameseDays[] = 'Thứ 3'; break;
+                                                                            case 'wednesday': $vietnameseDays[] = 'Thứ 4'; break;
+                                                                            case 'thursday': $vietnameseDays[] = 'Thứ 5'; break;
+                                                                            case 'friday': $vietnameseDays[] = 'Thứ 6'; break;
+                                                                            case 'saturday': $vietnameseDays[] = 'Thứ 7'; break;
+                                                                            case 'sunday': $vietnameseDays[] = 'Chủ nhật'; break;
+                                                                            default: $vietnameseDays[] = $day;
+                                                                        }
+                                                                    }
+                                                                @endphp
+                                                                {{ implode(', ', $vietnameseDays) }}
                                                                 -
                                                                 {{ $classroom->schedule['time'] ?? '' }}
                                                             @else
-                                                                @lang('general.no_schedule')
+                                                                Chưa có lịch học
                                                             @endif
                                                         </small>
                                                     </div>
@@ -352,21 +397,19 @@
                         @endforeach
 
                         @if (count($scheduleConflicts) > 5)
-                            <div class="alert alert-info">
-                                <i class="bi bi-info-circle mr-2"></i>
-                                <strong>@lang('general.note')</strong> @lang('general.conflicting_students_count', ['count' => count($scheduleConflicts)])
-                                @lang('general.scroll_to_view_all')
+                            <div class="alert alert-info border-0 mt-4">
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="bi bi-info-circle fs-4"></i>
+                                    <div class="flex-grow-1">
+                                        <strong>Lưu ý:</strong> Có {{ count($scheduleConflicts) }} học sinh bị xung đột lịch. Vui lòng cuộn xuống để xem tất cả.
+                                    </div>
+                                </div>
                             </div>
                         @endif
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" wire:click="closeConflictModal">
-                            <i class="bi bi-x-circle mr-2"></i>
-                            @lang('general.cancel')
-                        </button>
-                        <button type="button" class="btn btn-warning" wire:click="forceAssignStudents">
-                            <i class="bi bi-exclamation-triangle mr-2"></i>
-                            @lang('general.force_assign_despite_conflicts')
+                    <div class="modal-footer border-0 bg-light">
+                        <button type="button" class="btn btn-secondary px-4" wire:click="closeConflictModal">
+                            Đóng
                         </button>
                     </div>
                 </div>

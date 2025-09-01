@@ -11,21 +11,6 @@
             </h4>
         </div>
 
-        <!-- Success/Error Alerts -->
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-                <i class="bi bi-check-circle mr-2"></i>{{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-
-        @if (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-                <i class="bi bi-exclamation-triangle mr-2"></i>{{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-
         <!-- Form Card Centered with Illustration -->
         <div class="card shadow-sm p-0">
             <div class="row g-0 align-items-stretch">
@@ -164,10 +149,8 @@
                         <div class="d-flex justify-content-end gap-2">
                             <a href="{{ route('students.index') }}"
                                 class="btn btn-light">{{ __('general.cancel') }}</a>
-                            <button type="submit" class="btn btn-primary" wire:loading.attr="disabled">
-                                <i class="bi bi-person-plus mr-2"></i>
-                                <span wire:loading.remove>{{ __('general.add_student_button') }}</span>
-                                <span wire:loading>{{ __('views.saving') }}...</span>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-person-plus mr-2"></i>{{ __('general.add_student_button') }}
                             </button>
                         </div>
                     </form>
@@ -184,25 +167,4 @@
             </div>
         </div>
     </div>
-
-    <!-- Toast Notifications -->
-    @if (session()->has('success'))
-        <div class="position-fixed top-0 end-0 p-3" style="z-index: 1060;">
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle mr-2"></i>
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        </div>
-    @endif
-
-    @if (session()->has('error'))
-        <div class="position-fixed top-0 end-0 p-3" style="z-index: 1060;">
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-triangle mr-2"></i>
-                {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        </div>
-    @endif
 </x-layouts.dash-admin>

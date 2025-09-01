@@ -165,12 +165,6 @@ class Create extends Component
         return $this->redirect(route('classrooms.index'));
     }
 
-    public function forceCreate()
-    {
-        // Tạo lớp bất chấp trùng lịch
-        $this->performCreate();
-    }
-
     public function closeConflictModal()
     {
         $this->showConflictModal = false;
