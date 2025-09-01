@@ -16,6 +16,23 @@
                 </div>
             </div>
         </div>
+
+        <!-- Success/Error Alerts -->
+        @if (session()->has('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle mr-2"></i>
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if (session()->has('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle mr-2"></i>
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <!-- Filters -->
         <div class="card shadow-sm mb-4">
             <div class="card-body">
@@ -147,5 +164,26 @@
             </div>
         </div>
         <div class="modal-backdrop fade show"></div>
+    @endif
+
+    <!-- Toast Notifications -->
+    @if (session()->has('success'))
+        <div class="position-fixed top-0 end-0 p-3" style="z-index: 1060;">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle mr-2"></i>
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    @endif
+
+    @if (session()->has('error'))
+        <div class="position-fixed top-0 end-0 p-3" style="z-index: 1060;">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle mr-2"></i>
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
     @endif
 </x-layouts.dash-admin>
