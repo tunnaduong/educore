@@ -303,7 +303,7 @@
                                 </table>
                             </div>
                             <div class="d-flex justify-content-center mt-3">
-                                {{ $evaluations->links('vendor.pagination.bootstrap-4') }}
+                                {{ $evaluations->links('vendor.pagination.bootstrap-5') }}
                             </div>
                         @else
                             <div class="text-center py-4">
@@ -426,7 +426,7 @@
                                 </table>
                             </div>
                             <div class="d-flex justify-content-center mt-3">
-                                {{ $questions->links('vendor.pagination.bootstrap-4') }}
+                                {{ $questions->links('vendor.pagination.bootstrap-5') }}
                             </div>
                         @else
                             <div class="text-center py-4">
@@ -555,7 +555,7 @@
                                 </table>
                             </div>
                             <div class="d-flex justify-content-center mt-3">
-                                {{ $evaluationRounds->links('vendor.pagination.bootstrap-4') }}
+                                {{ $evaluationRounds->links('vendor.pagination.bootstrap-5') }}
                             </div>
                         @else
                             <div class="text-center py-4">
