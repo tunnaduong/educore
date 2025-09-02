@@ -18,7 +18,8 @@
                             <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
                                 <i class="bi bi-check-circle-fill me-2"></i>
                                 {{ session('success_message') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
                             </div>
                         @endif
 
@@ -108,4 +109,74 @@
             </div>
         </div>
     </div>
+
+    {{-- Modal Cảnh báo trùng lịch giáo viên (theo logic tương tự trang tạo lớp) --}}
+    @if ($showConflictModal)
+        <div class="modal fade show" style="display: block;" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content border-0 shadow-lg">
+                    <div class="modal-header bg-danger text-white border-0">
+                        <h5 class="modal-title fw-bold">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            Cảnh báo xung đột lịch học
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white"
+                            wire:click="closeConflictModal"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <div class="conflicts-list" style="max-height: 400px; overflow-y: auto;">
+                            @foreach ($teacherConflicts as $teacherId => $conflictData)
+                                <div class="card border-warning mb-4 shadow-sm">
+                                    <div class="card-header bg-light border-warning">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <i class="bi bi-person-circle text-primary"></i>
+                                            <span class="text-dark">Giáo viên:
+                                                <strong>{{ $conflictData['teacher']->name }}</strong></span>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <i class="bi bi-calendar-x me-4 text-warning"></i>
+                                            <span class="text-dark">Các lớp học xung đột:</span>
+                                            @foreach ($conflictData['conflicts'] as $conflict)
+                                                <span class="text-dark">{{ $conflict['classroom']->name }}</span>
+                                                @if (!$loop->last)
+                                                    ,
+                                                @endif
+                                            @endforeach
+                                        </div>
+                                        @foreach ($conflictData['conflicts'] as $conflict)
+                                            @if ($conflict['overlapTime'])
+                                                <div class="mb-3">
+                                                    <i class="bi bi-clock me-3 text-success"></i>
+                                                    <span class="text-success fw-semibold">Thời gian trùng:
+                                                        {{ $conflict['overlapTime'] }}</span>
+                                                </div>
+                                            @endif
+                                            <div class="mb-3">
+                                                <i class="bi bi-exclamation-triangle me-3 text-danger"></i>
+                                                <span class="text-danger">{{ $conflict['message'] }}</span>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle mr-2"></i>
+                            <strong>{{ __('general.note') }}</strong> Vui lòng điều chỉnh lịch học hoặc chọn giáo viên
+                            khác để tránh trùng lịch.
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" wire:click="closeConflictModal">
+                            <i class="bi bi-x-circle mr-2"></i>{{ __('general.cancel') }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-backdrop fade show"></div>
+    @endif
 </x-layouts.dash-admin>

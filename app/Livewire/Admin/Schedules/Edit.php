@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Schedules;
 
 use App\Models\Classroom;
+use App\Helpers\ScheduleConflictHelper;
 use Livewire\Component;
 
 class Edit extends Component
@@ -16,6 +17,12 @@ class Edit extends Component
     public $endTime = '';
 
     public $notes = '';
+
+    public $showConflictModal = false;
+
+    public $teacherConflicts = [];
+
+    public $realTimeValidation = false;
 
     protected $rules = [
         'selectedDays' => 'required|array|min:1',
@@ -59,9 +66,34 @@ class Edit extends Component
     {
         $this->validate();
 
+        // Kiểm tra trùng lịch giáo viên trước khi lưu
+        $tempClassroom = new Classroom([
+            'schedule' => [
+                'days' => $this->selectedDays,
+                'time' => $this->startTime . ' - ' . $this->endTime,
+            ],
+        ]);
+        // Gán id lớp hiện tại để helper loại trừ chính lớp này
+        $tempClassroom->id = $this->classroom->id;
+
+        $teacherIds = $this->classroom->teachers()->pluck('users.id')->toArray();
+
+        if (! empty($teacherIds)) {
+            $conflictCheck = ScheduleConflictHelper::checkMultipleTeachersScheduleConflict(
+                $teacherIds,
+                $tempClassroom
+            );
+
+            if ($conflictCheck['hasConflict']) {
+                $this->teacherConflicts = $conflictCheck['conflicts'];
+                $this->showConflictModal = true;
+                return; // Dừng lưu, hiển thị modal
+            }
+        }
+
         $schedule = [
             'days' => $this->selectedDays,
-            'time' => $this->startTime.' - '.$this->endTime,
+            'time' => $this->startTime . ' - ' . $this->endTime,
         ];
 
         $this->classroom->update([
@@ -89,5 +121,59 @@ class Edit extends Component
         return view('admin.schedules.edit', [
             'availableDays' => $availableDays,
         ]);
+    }
+
+    public function updated($propertyName)
+    {
+        // Validate field thay đổi
+        $this->validateOnly($propertyName);
+
+        // Chạy kiểm tra real-time khi thay đổi ngày/giờ
+        if (in_array($propertyName, ['selectedDays', 'startTime', 'endTime'])) {
+            $this->checkRealTimeConflicts();
+        }
+    }
+
+    public function checkRealTimeConflicts()
+    {
+        if (empty($this->selectedDays) || empty($this->startTime) || empty($this->endTime)) {
+            $this->teacherConflicts = [];
+            $this->realTimeValidation = false;
+            return;
+        }
+
+        $teacherIds = $this->classroom->teachers()->pluck('users.id')->toArray();
+        if (empty($teacherIds)) {
+            $this->teacherConflicts = [];
+            $this->realTimeValidation = false;
+            return;
+        }
+
+        $tempClassroom = new Classroom([
+            'schedule' => [
+                'days' => $this->selectedDays,
+                'time' => $this->startTime . ' - ' . $this->endTime,
+            ],
+        ]);
+        $tempClassroom->id = $this->classroom->id;
+
+        $conflictCheck = ScheduleConflictHelper::checkMultipleTeachersScheduleConflict(
+            $teacherIds,
+            $tempClassroom
+        );
+
+        if ($conflictCheck['hasConflict']) {
+            $this->teacherConflicts = $conflictCheck['conflicts'];
+            $this->realTimeValidation = true;
+        } else {
+            $this->teacherConflicts = [];
+            $this->realTimeValidation = false;
+        }
+    }
+
+    public function closeConflictModal()
+    {
+        $this->showConflictModal = false;
+        $this->teacherConflicts = [];
     }
 }
