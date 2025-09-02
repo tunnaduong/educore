@@ -9,12 +9,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
-use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use Livewire\WithFileUploads;
 
 class Index extends Component
 {
-    use WithFileUploads, WithPagination;
+    use WithPagination, WithFileUploads;
 
     public $selectedUser = null;
 
@@ -242,8 +242,8 @@ class Index extends Component
 
         if ($this->searchTerm) {
             $query->where(function ($q) {
-                $q->where('name', 'like', '%'.$this->searchTerm.'%')
-                    ->orWhere('email', 'like', '%'.$this->searchTerm.'%');
+                $q->where('name', 'like', '%' . $this->searchTerm . '%')
+                    ->orWhere('email', 'like', '%' . $this->searchTerm . '%');
             });
         }
 
@@ -263,7 +263,7 @@ class Index extends Component
         }
 
         if ($this->searchTerm) {
-            $query->where('name', 'like', '%'.$this->searchTerm.'%');
+            $query->where('name', 'like', '%' . $this->searchTerm . '%');
         }
 
         $classes = $query->orderBy('name')->get();
@@ -338,10 +338,10 @@ class Index extends Component
         if (! $this->selectedClass) {
             return;
         }
-        if (! in_array(auth()->user()->role, ['admin', 'teacher'])) {
+        if (! in_array(Auth::user()->role, ['admin', 'teacher'])) {
             return;
         }
-        if ($userId == auth()->id()) {
+        if ($userId == Auth::id()) {
             return;
         }
         $user = User::find($userId);

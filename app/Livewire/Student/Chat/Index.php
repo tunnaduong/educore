@@ -207,8 +207,8 @@ class Index extends Component
 
         if ($this->searchTerm) {
             $query->where(function ($q) {
-                $q->where('name', 'like', '%'.$this->searchTerm.'%')
-                    ->orWhere('email', 'like', '%'.$this->searchTerm.'%');
+                $q->where('name', 'like', '%' . $this->searchTerm . '%')
+                    ->orWhere('email', 'like', '%' . $this->searchTerm . '%');
             });
         }
 
@@ -222,7 +222,7 @@ class Index extends Component
         });
 
         if ($this->searchTerm) {
-            $query->where('name', 'like', '%'.$this->searchTerm.'%');
+            $query->where('name', 'like', '%' . $this->searchTerm . '%');
         }
 
         $classes = $query->orderBy('name')->get();

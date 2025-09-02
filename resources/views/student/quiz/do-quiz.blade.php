@@ -388,7 +388,34 @@
             <script>
                 // Chỉ khởi tạo timer một lần
                 if (!window.quizTimer.initialized) {
-                    window.quizTimer.timeRemaining = {{ $timeRemaining }};
+                    // Lấy thời gian còn lại từ server
+                    const serverTimeRemaining = {{ $timeRemaining }};
+                    const quizId = {{ $quiz->id }};
+                    const storageKey = `quiz_deadline_${quizId}`;
+
+                    // Đọc deadline từ localStorage (millisecond timestamp)
+                    const storedDeadline = localStorage.getItem(storageKey);
+                    let localRemaining = null;
+                    if (storedDeadline) {
+                        const deadlineTs = parseInt(storedDeadline, 10);
+                        if (!Number.isNaN(deadlineTs)) {
+                            localRemaining = Math.floor((deadlineTs - Date.now()) / 1000);
+                        }
+                    }
+
+                    // Nếu có localRemaining hợp lệ thì dùng min(local, server) để tránh reset/gian lận
+                    let effectiveRemaining = serverTimeRemaining;
+                    if (typeof localRemaining === 'number') {
+                        effectiveRemaining = Math.max(0, Math.min(serverTimeRemaining, localRemaining));
+                    }
+
+                    // Nếu chưa có deadline trong localStorage hoặc local > server (có thể do lệch đồng hồ), set lại theo server
+                    if (!storedDeadline || (typeof localRemaining === 'number' && localRemaining > serverTimeRemaining)) {
+                        const newDeadline = Date.now() + serverTimeRemaining * 1000;
+                        localStorage.setItem(storageKey, String(newDeadline));
+                    }
+
+                    window.quizTimer.timeRemaining = effectiveRemaining;
                     window.quizTimer.initialized = true;
 
                     const timerElement = document.getElementById('timer');
@@ -505,7 +532,29 @@
                             @this.call('calculateTimeRemaining').then(function(result) {
                                 // Cập nhật biến local từ server
                                 if (result && result.timeRemaining !== undefined) {
-                                    window.quizTimer.timeRemaining = Math.floor(result.timeRemaining);
+                                    const serverRemain = Math.floor(result.timeRemaining);
+
+                                    // Đọc deadline hiện tại
+                                    const currentStoredDeadline = localStorage.getItem(storageKey);
+                                    let currentLocalRemain = null;
+                                    if (currentStoredDeadline) {
+                                        const dlTs = parseInt(currentStoredDeadline, 10);
+                                        if (!Number.isNaN(dlTs)) {
+                                            currentLocalRemain = Math.floor((dlTs - Date.now()) / 1000);
+                                        }
+                                    }
+
+                                    // Chọn giá trị an toàn: nhỏ hơn giữa server và local
+                                    let nextRemain = serverRemain;
+                                    if (typeof currentLocalRemain === 'number') {
+                                        nextRemain = Math.max(0, Math.min(serverRemain, currentLocalRemain));
+                                    }
+
+                                    window.quizTimer.timeRemaining = nextRemain;
+
+                                    // Ghi đè deadline theo server để ổn định giữa các lần reload
+                                    const newDeadline = Date.now() + serverRemain * 1000;
+                                    localStorage.setItem(storageKey, String(newDeadline));
                                 }
                             });
                         }
@@ -548,6 +597,12 @@
                         submitButton.addEventListener('click', function() {
                             window.quizSubmitted = true;
                             window.onbeforeunload = null;
+                            // Xóa deadline khi đã nộp bài
+                            try {
+                                const quizId = {{ $quiz->id }};
+                                const storageKey = `quiz_deadline_${quizId}`;
+                                localStorage.removeItem(storageKey);
+                            } catch (e) {}
                         });
                     }
 

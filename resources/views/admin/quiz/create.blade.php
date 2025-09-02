@@ -277,10 +277,6 @@
                                         <i class="bi bi-plus-circle mr-2"></i>{{ __('general.add_question_btn') }}
                                     </button>
                                 @endif
-                                =======
-                                <button type="button" class="btn btn-primary" wire:click="addQuestion">
-                                    <i class="bi bi-plus-circle mr-2"></i>Thêm câu hỏi
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -580,6 +576,5 @@
             }, true);
         })();
     </script>
-    =======
-    >>>>>>> 282150b466aa7ba9b73489633ade3712c2eaa82a
+</x-layouts.dash-admin>
 </x-layouts.dash-admin>
