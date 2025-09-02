@@ -103,6 +103,7 @@ class GradeAssignment extends Component
             $submission->score = $score;
             $submission->feedback = $feedback;
             $submission->save();
+
             // Lưu thành công: quay về trang danh sách chấm điểm
             return redirect()->route('teacher.grading.index')
                 ->with('success', 'Đã lưu điểm và nhận xét!');
