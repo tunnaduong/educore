@@ -158,9 +158,11 @@
                                     <td class="text-center">
                                         <div class="small">
                                             <div class="text-muted">{{ __('general.study_sessions') }}: <span
-                                                    class="fw-medium">0</span></div>
+                                                    class="fw-medium">{{ $student->stats['studySessions'] }}</span>
+                                            </div>
                                             <div class="text-muted">{{ __('general.average_score') }}: <span
-                                                    class="fw-medium">-</span></div>
+                                                    class="fw-medium">{{ $student->stats['averageScore'] > 0 ? $student->stats['averageScore'] : '-' }}</span>
+                                            </div>
                                         </div>
                                     </td>
                                     <td class="text-end">

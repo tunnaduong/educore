@@ -36,4 +36,21 @@ return [
         'base_url' => env('GEMINI_BASE_URL', 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent'),
     ],
 
+    'onesms' => [
+        'username' => env('ONESMS_USERNAME'),
+        'password' => env('ONESMS_PASSWORD'),
+        'templates' => [
+            'registration_success' => env('ONESMS_TEMPLATE_REGISTRATION', '123460'),
+            'schedule_reminder' => env('ONESMS_TEMPLATE_SCHEDULE', '123457'),
+            'online_exam' => env('ONESMS_TEMPLATE_EXAM', '123465'),
+            'absent' => env('ONESMS_TEMPLATE_ABSENT', '123461'),
+            'late' => env('ONESMS_TEMPLATE_LATE', '123462'),
+            'assignment_deadline' => env('ONESMS_TEMPLATE_DEADLINE', '123463'),
+            'assignment_result' => env('ONESMS_TEMPLATE_RESULT', '123458'),
+            'payment_confirmation' => env('ONESMS_TEMPLATE_PAYMENT', '123459'),
+            'schedule_change' => env('ONESMS_TEMPLATE_CHANGE', '123464'),
+            'otp_reset' => env('ONESMS_TEMPLATE_OTP', '123456'),
+        ],
+    ],
+
 ];

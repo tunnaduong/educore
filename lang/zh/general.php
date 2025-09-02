@@ -757,6 +757,7 @@ return [
     'view_details' => '查看详情',
     'edit_student' => '编辑',
     'cannot_delete_active_student' => '无法删除活跃学员',
+    'cannot_delete_active_or_suspended_student' => '无法删除正在学习的学员',
     'confirm_delete_student' => '确认删除学员',
     'confirm_delete_student_message' => '您确定要删除学员":name"吗？此操作无法撤销。',
     'no_students_found' => '未找到学员',

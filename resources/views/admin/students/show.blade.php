@@ -178,25 +178,26 @@
                         <div class="row text-center">
                             <div class="col-md-3 mb-3">
                                 <div class="border rounded p-3">
-                                    <div class="fs-4 fw-bold text-primary">0</div>
+                                    <div class="fs-4 fw-bold text-primary">{{ $studySessions }}</div>
                                     <div class="small text-muted">{{ __('general.study_sessions') }}</div>
                                 </div>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <div class="border rounded p-3">
-                                    <div class="fs-4 fw-bold text-success">-</div>
+                                    <div class="fs-4 fw-bold text-success">
+                                        {{ $averageScore > 0 ? $averageScore : '-' }}</div>
                                     <div class="small text-muted">{{ __('general.average_score') }}</div>
                                 </div>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <div class="border rounded p-3">
-                                    <div class="fs-4 fw-bold text-info">0</div>
+                                    <div class="fs-4 fw-bold text-info">{{ $completedAssignments }}</div>
                                     <div class="small text-muted">{{ __('general.completed_assignments') }}</div>
                                 </div>
                             </div>
                             <div class="col-md-3 mb-3">
                                 <div class="border rounded p-3">
-                                    <div class="fs-4 fw-bold text-warning">0%</div>
+                                    <div class="fs-4 fw-bold text-warning">{{ $attendanceRate }}%</div>
                                     <div class="small text-muted">{{ __('general.attendance_rate') }}</div>
                                 </div>
                             </div>

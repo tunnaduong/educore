@@ -43,6 +43,7 @@ Route::get('/lang/{locale}', function ($locale) {
 })->name('lang.switch');
 
 Route::get('/login', Login::class)->name('login');
+Route::get('/forgot-password', \App\Livewire\Auth\ForgotPassword::class)->name('password.request');
 Route::post('/logout', function (Request $request) {
     Auth::logout();
     $request->session()->invalidate();
