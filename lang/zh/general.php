@@ -273,6 +273,7 @@ return [
     'new_teacher_message' => '教师新消息',
     'unread_messages_count' => '有 条未读消息需要查看。',
     'new_notification' => '新通知',
+    'no_data_for_month' => '无数据 :month',
     // Student assignments translations
     'back' => '返回',
     'submitted_assignments' => '已提交作业',

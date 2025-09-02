@@ -87,6 +87,7 @@ return [
     // Schedules
     'teaching_schedule' => '教学时间表',
     'view_teaching_schedule' => '查看教学时间表',
+    'view_teaching_schedule2' => '查看教学时间表',
     'assignments' => '作业',
     'quizzes' => '测验',
     'schedule_for_day' => '当日教学时间表',

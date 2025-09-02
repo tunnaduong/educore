@@ -298,6 +298,7 @@ return [
     'new_teacher_message' => 'Tin nhắn mới từ giáo viên',
     'unread_messages_count' => 'Có tin nhắn chưa đọc cần xem xét.',
     'new_notification' => 'Thông báo mới',
+    'no_data_for_month' => 'Chưa có dữ liệu :month',
     // Student assignments translations
     'back' => 'Quay lại',
     'submitted_assignments' => 'Bài tập đã nộp',

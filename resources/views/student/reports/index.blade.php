@@ -60,116 +60,142 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <div class="card mb-4">
-                    <div class="card-header bg-primary text-white">
-                        <i class="bi bi-journal-check mr-2"></i>{{ __('views.student_pages.reports.index.assignments_scores') }}
-                    </div>
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table table-bordered mb-0">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>{{ __('views.student_pages.reports.index.assignment') }}</th>
-                                        <th>{{ __('views.student_pages.reports.index.class') }}</th>
-                                        <th>{{ __('views.student_pages.reports.index.score') }}</th>
-                                        <th>{{ __('views.student_pages.reports.index.feedback') }}</th>
-                                        <th>{{ __('views.student_pages.reports.index.submission_date') }}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse($assignmentSubmissions as $submission)
-                                        <tr>
-                                            <td>{{ $submission->assignment->title ?? '-' }}</td>
-                                            <td>{{ $submission->assignment->classroom->name ?? '-' }}</td>
-                                            <td>{{ $submission->score ?? '-' }}</td>
-                                            <td>{{ $submission->feedback ?? '-' }}</td>
-                                            <td>{{ $submission->submitted_at ? $submission->submitted_at->format('d/m/Y H:i') : '-' }}
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="5" class="text-center">{{ __('views.student_pages.reports.index.no_assignments') }}</td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="card mb-4">
-                    <div class="card-header bg-success text-white">
-                        <i class="bi bi-clipboard-check mr-2"></i>{{ __('views.student_pages.reports.index.quiz_scores') }}
-                    </div>
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table table-bordered mb-0">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>{{ __('views.student_pages.reports.index.quiz_title') }}</th>
-                                        <th>{{ __('views.student_pages.reports.index.class') }}</th>
-                                        <th>{{ __('views.student_pages.reports.index.score') }}</th>
-                                        <th>{{ __('views.student_pages.reports.index.duration') }}</th>
-                                        <th>{{ __('views.student_pages.reports.index.submission_date') }}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse($quizResults as $result)
-                                        <tr>
-                                            <td>{{ $result->quiz->title ?? '-' }}</td>
-                                            <td>{{ $result->quiz->classroom->name ?? '-' }}</td>
-                                            <td>{{ $result->score ?? '-' }}</td>
-                                            <td>{{ $result->getDurationString() }}</td>
-                                            <td>{{ $result->submitted_at ? $result->submitted_at->format('d/m/Y H:i') : '-' }}
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="5" class="text-center">{{ __('views.student_pages.reports.index.no_quizzes') }}</td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
                 <div class="card">
-                    <div class="card-header bg-info text-white">
-                        <i class="bi bi-calendar-check mr-2"></i>{{ __('views.student_pages.reports.index.attendance_stats') }}
+                    <div class="card-header bg-white border-bottom-0">
+                        <ul class="nav nav-tabs card-header-tabs">
+                            <li class="nav-item">
+                                <button class="nav-link {{ $activeTab === 'assignments' ? 'active' : '' }}"
+                                    wire:click="setTab('assignments')">
+                                    <i
+                                        class="bi bi-journal-check mr-1"></i>{{ __('views.student_pages.reports.index.assignments_scores') }}
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link {{ $activeTab === 'quizzes' ? 'active' : '' }}"
+                                    wire:click="setTab('quizzes')">
+                                    <i
+                                        class="bi bi-clipboard-check mr-1"></i>{{ __('views.student_pages.reports.index.quiz_scores') }}
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link {{ $activeTab === 'attendance' ? 'active' : '' }}"
+                                    wire:click="setTab('attendance')">
+                                    <i
+                                        class="bi bi-calendar-check mr-1"></i>{{ __('views.student_pages.reports.index.attendance_stats') }}
+                                </button>
+                            </li>
+                        </ul>
                     </div>
                     <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table table-bordered mb-0">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>{{ __('views.student_pages.reports.index.date') }}</th>
-                                        <th>{{ __('views.student_pages.reports.index.class') }}</th>
-                                        <th>{{ __('views.student_pages.reports.index.status') }}</th>
-                                        <th>{{ __('views.student_pages.reports.index.absence_reason') }}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @php $attendances = Auth::user()->studentProfile ? Auth::user()->studentProfile->attendances : (Auth::user()->student ? Auth::user()->student->attendances : collect()); @endphp
-                                    @forelse($attendances as $attendance)
+                        @if ($activeTab === 'assignments')
+                            <div class="table-responsive">
+                                <table class="table table-bordered mb-0">
+                                    <thead class="table-light">
                                         <tr>
-                                            <td>{{ $attendance->date->format('d/m/Y') }}</td>
-                                            <td>{{ $attendance->classroom->name ?? '-' }}</td>
-                                            <td>
-                                                @if ($attendance->present)
-                                                    <span class="badge bg-success">{{ __('views.student_pages.reports.index.present') }}</span>
-                                                @else
-                                                    <span class="badge bg-danger">{{ __('views.student_pages.reports.index.absent') }}</span>
-                                                @endif
-                                            </td>
-                                            <td>{{ $attendance->reason ?? '-' }}</td>
+                                            <th>{{ __('views.student_pages.reports.index.assignment') }}</th>
+                                            <th>{{ __('views.student_pages.reports.index.class') }}</th>
+                                            <th>{{ __('views.student_pages.reports.index.score') }}</th>
+                                            <th>{{ __('views.student_pages.reports.index.feedback') }}</th>
+                                            <th>{{ __('views.student_pages.reports.index.submission_date') }}</th>
                                         </tr>
-                                    @empty
+                                    </thead>
+                                    <tbody>
+                                        @forelse($assignmentSubmissionsPaginated as $submission)
+                                            <tr>
+                                                <td>{{ $submission->assignment->title ?? '-' }}</td>
+                                                <td>{{ $submission->assignment->classroom->name ?? '-' }}</td>
+                                                <td>{{ $submission->score ?? '-' }}</td>
+                                                <td>{{ $submission->feedback ?? '-' }}</td>
+                                                <td>{{ $submission->submitted_at ? $submission->submitted_at->format('d/m/Y H:i') : '-' }}
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="5" class="text-center">
+                                                    {{ __('views.student_pages.reports.index.no_assignments') }}</td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="p-3">
+                                {{ $assignmentSubmissionsPaginated->links() }}
+                            </div>
+                        @elseif ($activeTab === 'quizzes')
+                            <div class="table-responsive">
+                                <table class="table table-bordered mb-0">
+                                    <thead class="table-light">
                                         <tr>
-                                            <td colspan="4" class="text-center">{{ __('views.student_pages.reports.index.no_attendance_data') }}</td>
+                                            <th>{{ __('views.student_pages.reports.index.quiz_title') }}</th>
+                                            <th>{{ __('views.student_pages.reports.index.class') }}</th>
+                                            <th>{{ __('views.student_pages.reports.index.score') }}</th>
+                                            <th>{{ __('views.student_pages.reports.index.duration') }}</th>
+                                            <th>{{ __('views.student_pages.reports.index.submission_date') }}</th>
                                         </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
+                                    </thead>
+                                    <tbody>
+                                        @forelse($quizResultsPaginated as $result)
+                                            <tr>
+                                                <td>{{ $result->quiz->title ?? '-' }}</td>
+                                                <td>{{ $result->quiz->classroom->name ?? '-' }}</td>
+                                                <td>{{ $result->score ?? '-' }}</td>
+                                                <td>{{ $result->getDurationString() }}</td>
+                                                <td>{{ $result->submitted_at ? $result->submitted_at->format('d/m/Y H:i') : '-' }}
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="5" class="text-center">
+                                                    {{ __('views.student_pages.reports.index.no_quizzes') }}</td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="p-3">
+                                {{ $quizResultsPaginated->links() }}
+                            </div>
+                        @elseif ($activeTab === 'attendance')
+                            <div class="table-responsive">
+                                <table class="table table-bordered mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>{{ __('views.student_pages.reports.index.date') }}</th>
+                                            <th>{{ __('views.student_pages.reports.index.class') }}</th>
+                                            <th>{{ __('views.student_pages.reports.index.status') }}</th>
+                                            <th>{{ __('views.student_pages.reports.index.absence_reason') }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse($attendancesPaginated as $attendance)
+                                            <tr>
+                                                <td>{{ $attendance->date->format('d/m/Y') }}</td>
+                                                <td>{{ $attendance->classroom->name ?? '-' }}</td>
+                                                <td>
+                                                    @if ($attendance->present)
+                                                        <span
+                                                            class="badge bg-success">{{ __('views.student_pages.reports.index.present') }}</span>
+                                                    @else
+                                                        <span
+                                                            class="badge bg-danger">{{ __('views.student_pages.reports.index.absent') }}</span>
+                                                    @endif
+                                                </td>
+                                                <td>{{ $attendance->reason ?? '-' }}</td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="4" class="text-center">
+                                                    {{ __('views.student_pages.reports.index.no_attendance_data') }}
+                                                </td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="p-3">
+                                {{ $attendancesPaginated->links() }}
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

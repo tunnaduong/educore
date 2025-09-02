@@ -184,20 +184,53 @@
                             </div>
                         @endif
 
-                        <!-- Step 1: Enter Phone Number -->
+                        <!-- Step 1: Choose method and enter identifier -->
                         @if ($step == 1)
                             <form wire:submit.prevent="sendOTP">
+                                <div class="mb-3">
+                                    <label
+                                        class="form-label fw-semibold text-dark mb-2">{{ __('auth.otp_method_title') }}</label>
+                                    <div class="d-flex gap-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" id="method_phone"
+                                                value="phone" wire:model.live="method">
+                                            <label class="form-check-label" for="method_phone">
+                                                {{ __('auth.phone_method') }}
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" id="method_email"
+                                                value="email" wire:model.live="method">
+                                            <label class="form-check-label" for="method_email">
+                                                {{ __('auth.email_method') }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="mb-4">
-                                    <label for="phone" class="form-label fw-semibold text-dark mb-2">
-                                        <i class="fas fa-mobile-alt mr-2 text-primary"></i>{{ __('auth.phone') }}
-                                    </label>
-                                    <input type="text" id="phone"
-                                        class="form-control form-control-lg @error('phone') is-invalid @enderror"
-                                        style="border-radius: 12px; border: 2px solid #e9ecef; padding: 15px 20px;"
-                                        wire:model.defer="phone" placeholder="{{ __('auth.phone_placeholder') }}">
-                                    @error('phone')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                                    @if ($method === 'phone')
+                                        <label for="phone" class="form-label fw-semibold text-dark mb-2">
+                                            <i class="fas fa-mobile-alt mr-2 text-primary"></i>{{ __('auth.phone') }}
+                                        </label>
+                                        <input type="text" id="phone"
+                                            class="form-control form-control-lg @error('phone') is-invalid @enderror"
+                                            style="border-radius: 12px; border: 2px solid #e9ecef; padding: 15px 20px;"
+                                            wire:model.defer="phone" placeholder="{{ __('auth.phone_placeholder') }}">
+                                        @error('phone')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    @else
+                                        <label for="email" class="form-label fw-semibold text-dark mb-2">
+                                            <i class="fas fa-envelope mr-2 text-primary"></i>Email
+                                        </label>
+                                        <input type="email" id="email"
+                                            class="form-control form-control-lg @error('email') is-invalid @enderror"
+                                            style="border-radius: 12px; border: 2px solid #e9ecef; padding: 15px 20px;"
+                                            wire:model.defer="email" placeholder="you@example.com">
+                                        @error('email')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    @endif
                                 </div>
 
                                 <div class="d-grid mb-4">
@@ -400,10 +433,11 @@
             document.getElementById('otp').focus();
         }
 
-        // Auto focus phone input
-        if (document.getElementById('phone')) {
-            document.getElementById('phone').focus();
-        }
+        // Auto focus identifier
+        setTimeout(() => {
+            const el = document.getElementById('phone') || document.getElementById('email');
+            if (el) el.focus();
+        }, 50);
 
         // Xử lý input OTP - chỉ cho phép nhập số
         const otpInput = document.getElementById('otp');
@@ -418,11 +452,15 @@
         }
 
         // Xử lý input phone - chỉ cho phép nhập số
-        const phoneInput = document.getElementById('phone');
-        if (phoneInput) {
-            phoneInput.addEventListener('input', function(e) {
-                this.value = this.value.replace(/[^0-9]/g, '');
-            });
-        }
+        const enforcePhoneNumeric = () => {
+            const phoneInput = document.getElementById('phone');
+            if (phoneInput) {
+                phoneInput.addEventListener('input', function(e) {
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                });
+            }
+        };
+        enforcePhoneNumeric();
+        document.addEventListener('livewire:navigated', enforcePhoneNumeric);
     });
 </script>

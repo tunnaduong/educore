@@ -28,14 +28,9 @@ class User extends Authenticatable
         'is_active' => 'boolean',
     ];
 
-    public function studentProfile()
-    {
-        return $this->hasOne(Student::class);
-    }
-
     public function student()
     {
-        return $this->hasOne(Student::class);
+        return $this->hasOne(Student::class, 'user_id');
     }
 
     public function classrooms(): BelongsToMany

@@ -29,7 +29,29 @@ class Index extends Component
         // Lấy các lớp học của giảng viên
         $classrooms = $teacher->teachingClassrooms;
 
-        // Lấy các bài học từ lịch học của lớp
+        // Xác định khoảng thời gian hiển thị: từ ngày tạo lớp đến 2.5 tháng sau
+        $globalStart = null;
+        $globalEnd = null;
+
+        foreach ($classrooms as $classroom) {
+            if ($classroom->created_at) {
+                $classStart = Carbon::parse($classroom->created_at)->startOfDay();
+                $classEnd = Carbon::parse($classroom->created_at)
+                    ->addMonthsNoOverflow(2)
+                    ->addDays(15)
+                    ->endOfDay();
+
+                $globalStart = $globalStart ? $globalStart->min($classStart) : $classStart;
+                $globalEnd = $globalEnd ? $globalEnd->max($classEnd) : $classEnd;
+            }
+        }
+
+        if (! $globalStart || ! $globalEnd) {
+            $globalStart = now()->startOfMonth();
+            $globalEnd = now()->endOfMonth();
+        }
+
+        // Lấy các bài học từ lịch học của lớp trong khoảng thời gian 2.5 tháng kể từ ngày tạo lớp
         foreach ($classrooms as $classroom) {
             if ($classroom->schedule) {
                 $schedule = $classroom->schedule;
@@ -43,26 +65,26 @@ class Index extends Component
                     $endTime = $timeParts[1] ?? '';
 
                     if ($startTime && $endTime) {
-                        // Tạo events cho tháng hiện tại
-                        $currentMonth = now()->month;
-                        $currentYear = now()->year;
-                        $startOfMonth = now()->startOfMonth();
-                        $endOfMonth = now()->endOfMonth();
+                        // Tạo events cho từng ngày trong khoảng thời gian xác định của lớp
+                        $classStart = Carbon::parse($classroom->created_at)->startOfDay();
+                        $classEnd = Carbon::parse($classroom->created_at)
+                            ->addMonthsNoOverflow(2)
+                            ->addDays(15)
+                            ->endOfDay();
 
-                        // Tạo events cho từng ngày trong tháng
-                        $currentDate = $startOfMonth->copy();
+                        $currentDate = $classStart->copy();
 
-                        while ($currentDate->lte($endOfMonth)) {
+                        while ($currentDate->lte($classEnd)) {
                             $dayName = $currentDate->format('l'); // Monday, Tuesday, etc.
 
                             // Kiểm tra xem ngày này có phải là ngày học không
                             if (in_array($dayName, $days)) {
-                                $startDateTime = $currentDate->format('Y-m-d').'T'.$startTime;
-                                $endDateTime = $currentDate->format('Y-m-d').'T'.$endTime;
+                                $startDateTime = $currentDate->format('Y-m-d') . 'T' . $startTime;
+                                $endDateTime = $currentDate->format('Y-m-d') . 'T' . $endTime;
 
                                 $events[] = [
-                                    'id' => 'schedule_'.$classroom->id.'_'.$dayName.'_'.$currentDate->format('Y-m-d'),
-                                    'title' => 'Lịch học - '.$classroom->name,
+                                    'id' => 'schedule_' . $classroom->id . '_' . $dayName . '_' . $currentDate->format('Y-m-d'),
+                                    'title' => 'Lịch học - ' . $classroom->name,
                                     'start' => $startDateTime,
                                     'end' => $endDateTime,
                                     'backgroundColor' => '#0d6efd',
@@ -87,15 +109,15 @@ class Index extends Component
 
         // Lấy các bài tập
         $assignments = Assignment::whereIn('class_id', $classrooms->pluck('id'))
-            ->where('deadline', '>=', now()->startOfMonth())
-            ->where('deadline', '<=', now()->endOfMonth()->addMonth())
+            ->where('deadline', '>=', $globalStart)
+            ->where('deadline', '<=', $globalEnd)
             ->get();
 
         foreach ($assignments as $assignment) {
             $classroom = $classrooms->where('id', $assignment->class_id)->first();
             $events[] = [
-                'id' => 'assignment_'.$assignment->id,
-                'title' => $assignment->title.' (Bài tập) - '.$classroom->name,
+                'id' => 'assignment_' . $assignment->id,
+                'title' => $assignment->title . ' (Bài tập) - ' . $classroom->name,
                 'start' => $assignment->deadline,
                 'end' => $assignment->deadline,
                 'allDay' => true,
@@ -112,15 +134,15 @@ class Index extends Component
 
         // Lấy các bài kiểm tra
         $quizzes = Quiz::whereIn('class_id', $classrooms->pluck('id'))
-            ->where('deadline', '>=', now()->startOfMonth())
-            ->where('deadline', '<=', now()->endOfMonth()->addMonth())
+            ->where('deadline', '>=', $globalStart)
+            ->where('deadline', '<=', $globalEnd)
             ->get();
 
         foreach ($quizzes as $quiz) {
             $classroom = $classrooms->where('id', $quiz->class_id)->first();
             $events[] = [
-                'id' => 'quiz_'.$quiz->id,
-                'title' => $quiz->title.' (Kiểm tra) - '.$classroom->name,
+                'id' => 'quiz_' . $quiz->id,
+                'title' => $quiz->title . ' (Kiểm tra) - ' . $classroom->name,
                 'start' => $quiz->deadline,
                 'end' => $quiz->deadline,
                 'allDay' => true,

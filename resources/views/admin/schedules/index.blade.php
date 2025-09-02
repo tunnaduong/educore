@@ -19,7 +19,7 @@
             <div class="d-flex gap-2">
                 <a href="{{ route('schedules.calendar') }}" class="btn btn-success">
                     <i class="bi bi-calendar-week mr-0 mr-md-2"></i><span
-                        class="d-none d-md-inline">{{ __('views.view_teaching_schedule') }}</span>
+                        class="d-none d-md-inline">{{ __('views.view_teaching_schedule2') }}</span>
                 </a>
                 <a href="{{ route('schedules.create') }}" class="btn btn-primary">
                     <i class="bi bi-plus-circle mr-0 mr-md-2"></i><span
