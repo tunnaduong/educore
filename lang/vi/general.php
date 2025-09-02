@@ -482,8 +482,8 @@ return [
     'ai_processing_step' => 'Xử lý AI',
     'completing' => 'Hoàn thành',
     // Evaluation Report translations
-    'student_quality_evaluation_report' => 'Báo cáo đánh giá chất lượng học viên',
-    'evaluation_summary' => 'Tổng hợp đánh giá chất lượng học tập từ học viên',
+    'student_quality_evaluation_report' => 'Feedback từ học viên',
+    'evaluation_summary' => 'Tổng hợp đánh giá chất lượng dạy học từ học viên',
     'scoring_guide' => 'Hướng dẫn tính điểm:',
     'teacher_rating_avg' => 'Điểm TB đánh giá giáo viên: Trung bình cộng các câu hỏi nhóm 1 (1-5 điểm/câu).',
     'course_rating_avg' => 'Điểm TB đánh giá khóa học: Trung bình cộng các câu hỏi nhóm 2 (1-5 điểm/câu).',
