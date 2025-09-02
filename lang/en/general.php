@@ -307,6 +307,7 @@ return [
     'unread_messages_count' => 'There are :count unread messages to review.',
     'new_notification' => 'New notification',
     'unread_notifications_count' => 'There are :count unread notifications.',
+    'no_data_for_month' => 'No data :month',
     'present' => 'Present',
     'absent' => 'Absent',
     'late' => 'Late',

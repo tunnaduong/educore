@@ -87,7 +87,7 @@ return [
     // Schedules
     'teaching_schedule' => 'Teaching Schedule',
     'view_teaching_schedule' => 'View teaching schedule',
-
+    'view_teaching_schedule2' => 'View teaching schedule',
     'assignments' => 'Assignments',
     'quizzes' => 'Quizzes',
     'schedule_for_day' => 'Teaching Schedule for the Day',

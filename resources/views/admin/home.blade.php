@@ -283,7 +283,7 @@
     @push('scripts')
         <script>
             // Chart.js for attendance statistics (live data)
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
                 function ensureChartJsLoaded(callback) {
                     if (window.Chart) return callback();
                     var s = document.createElement('script');
@@ -301,40 +301,74 @@
                     const absent = {{ (int) ($attendanceStatusCounts['absent'] ?? 0) }};
                     const late = {{ (int) ($attendanceStatusCounts['late'] ?? 0) }};
 
+                    // Tháng/Năm đang chọn (nếu có) hoặc mặc định tháng/năm hiện tại
+                    const selectedMonth = {{ (int) ($selectedMonth ?? now()->month) }};
+                    const selectedYear = {{ (int) ($selectedYear ?? now()->year) }};
+                    const monthStr = String(selectedMonth).padStart(2, '0') + '/' + selectedYear;
+                    const noDataTemplate = "{{ __('general.no_data_for_month', ['month' => ':month']) }}";
+                    const noDataLabel = noDataTemplate.replace(':month', monthStr);
+
                     if (el._chartInstance) {
                         el._chartInstance.destroy();
                         el._chartInstance = null;
                     }
 
+                    // Nếu không có dữ liệu, hiển thị lát cắt xám "Chưa có dữ liệu MM/YYYY"
+                    const total = present + absent + late;
+                    let labels = ['{{ __('general.present') }}', '{{ __('general.absent') }}'];
+                    let data = [present, absent];
+                    let backgroundColor = ['#28a745', '#dc3545', '#ffc107'];
+
+                    if (total === 0) {
+                        labels = [noDataLabel];
+                        data = [1];
+                        backgroundColor = ['#e9ecef'];
+                    }
+
+                    const isNoData = labels.length === 1 && labels[0] === noDataLabel;
+
                     el._chartInstance = new Chart(ctx, {
                         type: 'doughnut',
                         data: {
-                            labels: ['{{ __('general.present') }}', '{{ __('general.absent') }}', '{{ __('general.late') }}'],
+                            labels: labels,
                             datasets: [{
-                                data: [present, absent, late],
-                                backgroundColor: ['#28a745', '#dc3545', '#ffc107'],
+                                data: data,
+                                backgroundColor: backgroundColor,
                                 borderWidth: 0,
                             }]
                         },
                         options: {
                             responsive: true,
                             maintainAspectRatio: false,
-                            plugins: { legend: { position: 'bottom' } }
+                            plugins: {
+                                legend: {
+                                    position: 'bottom'
+                                },
+                                tooltip: {
+                                    enabled: !isNoData
+                                }
+                            }
                         }
                     });
                 }
 
-                function init() { ensureChartJsLoaded(renderDashboardAttendanceChart); }
+                function init() {
+                    ensureChartJsLoaded(renderDashboardAttendanceChart);
+                }
                 init();
 
                 // Re-render after Livewire updates the DOM
-                document.addEventListener('livewire:load', function () {
+                document.addEventListener('livewire:load', function() {
                     if (window.Livewire) {
-                        window.Livewire.hook('message.processed', function () { init(); });
+                        window.Livewire.hook('message.processed', function() {
+                            init();
+                        });
                     }
                 });
                 if (window.Livewire && window.Livewire.hook) {
-                    window.Livewire.hook('morph.updated', function () { init(); });
+                    window.Livewire.hook('morph.updated', function() {
+                        init();
+                    });
                 }
             });
         </script>

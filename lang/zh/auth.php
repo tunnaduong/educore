@@ -43,4 +43,8 @@ return [
     'otp_sent_to' => '验证码已发送到',
     'enter_phone' => '输入手机号码',
     'set_new_password' => '设置新密码',
+    'email_not_found' => '系统中不存在该邮箱。',
+    'otp_method_title' => 'OTP接收方式',
+    'phone_method' => '手机号码',
+    'email_method' => '邮箱',
 ];
