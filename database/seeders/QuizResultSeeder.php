@@ -67,7 +67,7 @@ class QuizResultSeeder extends Seeder
         $answers = [];
 
         foreach ($questions as $question) {
-            $questionId = $question['id'] ?? 'question_' . rand(1, 10);
+            $questionId = $question['id'] ?? 'question_'.rand(1, 10);
 
             if (isset($question['type'])) {
                 switch ($question['type']) {
