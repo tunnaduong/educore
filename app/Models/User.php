@@ -28,6 +28,11 @@ class User extends Authenticatable
         'is_active' => 'boolean',
     ];
 
+    public function studentProfile()
+    {
+        return $this->hasOne(Student::class, 'user_id');
+    }
+
     public function student()
     {
         return $this->hasOne(Student::class, 'user_id');
@@ -76,6 +81,6 @@ class User extends Authenticatable
      */
     public function getStatusAttribute()
     {
-        return $this->studentProfile ? $this->studentProfile->status : null;
+        return $this->student ? $this->student->status : null;
     }
 }

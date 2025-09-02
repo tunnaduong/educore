@@ -45,7 +45,7 @@ class Index extends Component
     public function mount()
     {
         $user = Auth::user();
-        $student = $user->student;
+        $student = $user->studentProfile;
 
         if ($student) {
             $this->assignmentSubmissions = AssignmentSubmission::with(['assignment.classroom'])
@@ -84,7 +84,7 @@ class Index extends Component
     public function render()
     {
         $user = Auth::user();
-        $student = $user->student;
+        $student = $user->studentProfile;
 
         // Debug: kiểm tra user và student
         Log::info('Student Reports Debug', [
