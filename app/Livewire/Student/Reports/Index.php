@@ -3,8 +3,8 @@
 namespace App\Livewire\Student\Reports;
 
 use App\Models\AssignmentSubmission;
-use App\Models\QuizResult;
 use App\Models\Attendance;
+use App\Models\QuizResult;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
@@ -91,11 +91,11 @@ class Index extends Component
             'user_id' => $user->id,
             'user_role' => $user->role,
             'student_id' => $student?->id,
-            'student_exists' => $student ? 'yes' : 'no'
+            'student_exists' => $student ? 'yes' : 'no',
         ]);
 
         // Nếu user có role student nhưng không có student record, tạo một
-        if (!$student && $user->role === 'student') {
+        if (! $student && $user->role === 'student') {
             $student = \App\Models\Student::create([
                 'user_id' => $user->id,
                 'status' => 'active',
