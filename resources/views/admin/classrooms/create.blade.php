@@ -425,18 +425,14 @@
                         @endforeach
                     </div>
 
-                    <div class="alert alert-info border-0 mt-4">
-                        <div class="d-flex align-items-center gap-2">
-                            <i class="bi bi-info-circle fs-4"></i>
-                            <div class="flex-grow-1">
-                                <strong>Lưu ý:</strong> Vui lòng chọn giáo viên khác hoặc thay đổi lịch học để tránh xung đột.
-                            </div>
-                        </div>
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle mr-2"></i>
+                        <strong>{{ __('general.note') }}</strong> Vui lòng điều chỉnh lịch học hoặc chọn giáo viên khác để tránh trùng lịch.
                     </div>
                 </div>
-                <div class="modal-footer border-0 bg-light">
-                    <button type="button" class="btn btn-secondary px-4" wire:click="closeConflictModal">
-                        Đóng
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" wire:click="closeConflictModal">
+                        <i class="bi bi-x-circle mr-2"></i>{{ __('general.cancel') }}
                     </button>
                 </div>
             </div>

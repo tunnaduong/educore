@@ -190,7 +190,7 @@
                             <div class="d-flex justify-content-between align-items-start mb-3">
                                 <div>
                                     <span class="badge bg-primary mr-2">{{ __('general.question') }} {{ $selectedQuestion + 1 }}</span>
-                                    <span class="badge bg-secondary mr-2">{{ ucfirst($question['type']) }}</span>
+                                    <span class="badge bg-secondary mr-2">{{ __('general.' . $question['type']) }}</span>
                                     <span class="badge bg-{{ $this->getQuestionStatusClass($selectedQuestion) }}">
                                         {{ $this->getQuestionStatusText($selectedQuestion) }}
                                     </span>

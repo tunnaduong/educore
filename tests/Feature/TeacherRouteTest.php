@@ -46,8 +46,8 @@ class TeacherRouteTest extends TestCase
             [
                 'title' => 'Test Assignment',
                 'description' => 'Test Description',
-                'due_date' => now()->addDays(7),
-                'is_active' => true,
+                'deadline' => now()->addDays(7),
+                'class_id' => $classroom->id,
             ]
         );
 
@@ -71,7 +71,15 @@ class TeacherRouteTest extends TestCase
             [
                 'title' => 'Test Quiz',
                 'description' => 'Test Quiz Description',
-                'is_active' => true,
+                'questions' => [
+                    [
+                        'question' => 'Câu hỏi test 1',
+                        'type' => 'multiple_choice',
+                        'options' => ['A', 'B', 'C', 'D'],
+                        'correct_answer' => 'A',
+                        'score' => 1,
+                    ],
+                ],
                 'class_id' => $classroom->id,
             ]
         );

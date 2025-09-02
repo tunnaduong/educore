@@ -241,7 +241,7 @@
                                 <div class="d-flex justify-content-between align-items-start mb-2">
                                     <div>
                                         <span class="badge bg-primary mr-2">{{ __('views.question_number', ['number' => $index + 1]) }}</span>
-                                        <span class="badge bg-secondary">{{ ucfirst($question['type']) }}</span>
+                                        <span class="badge bg-secondary">{{ __('general.' . $question['type']) }}</span>
                                         <span class="badge {{ $isCorrect ? 'bg-success' : 'bg-danger' }}">
                                             {{ $isCorrect ? __('views.correct') : __('views.incorrect') }}
                                         </span>

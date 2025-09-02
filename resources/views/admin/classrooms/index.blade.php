@@ -105,6 +105,7 @@
                                 <tr>
                                     <th class="text-center" style="width: 50px;">#</th>
                                     <th>@lang('general.classroom_name')</th>
+                                    <th class="text-center" style="width: 150px;">@lang('general.study_time')</th>
                                     <th>@lang('general.teacher')</th>
                                     <th class="text-center" style="width: 100px;">@lang('general.student_count')</th>
                                     <th class="text-center" style="width: 120px;">@lang('general.status')</th>
@@ -127,6 +128,25 @@
                                                     @endif
                                                 </div>
                                             </div>
+                                        </td>
+                                        <td class="text-center">
+                                            @if ($classroom->schedule && isset($classroom->schedule['days']) && isset($classroom->schedule['time']))
+                                                <div class="d-flex flex-column align-items-center">
+                                                    <div class="badge badge-info mb-1" style="font-size: 0.75rem;">
+                                                        <i class="fas fa-calendar-alt mr-1"></i>
+                                                        {{ implode(', ', \App\Helpers\DateHelper::translateDays($classroom->schedule['days'])) }}
+                                                    </div>
+                                                    <div class="badge badge-success" style="font-size: 0.75rem;">
+                                                        <i class="fas fa-clock mr-1"></i>
+                                                        {{ $classroom->schedule['time'] }}
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <span class="text-muted" style="font-size: 0.8rem;">
+                                                    <i class="fas fa-calendar-times mr-1"></i>
+                                                    @lang('general.no_schedule')
+                                                </span>
+                                            @endif
                                         </td>
                                         <td>
                                             @if ($classroom->teachers->count())

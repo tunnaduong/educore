@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Teacher\MyClass;
 
+use App\Models\Attendance;
 use App\Models\Classroom;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -59,9 +61,24 @@ class Show extends Component
 
     public function render()
     {
+        // Tính tổng hợp lịch sử điểm danh theo ngày (mỗi ngày 1 dòng)
+        $attendanceSessions = Attendance::forClass($this->classroom->id)
+            ->orderByDesc('date')
+            ->get()
+            ->groupBy('date')
+            ->map(function ($records, $date) {
+                return [
+                    'date' => Carbon::parse($date),
+                    'present_count' => $records->where('present', true)->count(),
+                    'absent_count' => $records->where('present', false)->count(),
+                ];
+            })
+            ->values();
+
         return view('teacher.my-class.show', [
             'classroom' => $this->classroom,
             'teacher' => Auth::user(),
+            'attendanceSessions' => $attendanceSessions,
         ]);
     }
 }
