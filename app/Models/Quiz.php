@@ -116,4 +116,93 @@ class Quiz extends Model
     {
         return $this->ai_suggestions ?? [];
     }
+
+    /**
+     * Kiểm tra xem quiz có đang được làm bài không
+     */
+    public function isInProgress(): bool
+    {
+        return $this->results()->whereNotNull('started_at')->whereNull('submitted_at')->exists();
+    }
+
+    /**
+     * Kiểm tra xem quiz có học viên nào đã bắt đầu làm chưa
+     */
+    public function hasStartedStudents(): bool
+    {
+        return $this->results()->whereNotNull('started_at')->exists();
+    }
+
+    /**
+     * Kiểm tra xem quiz có học viên nào đã hoàn thành chưa
+     */
+    public function hasCompletedStudents(): bool
+    {
+        return $this->results()->whereNotNull('submitted_at')->exists();
+    }
+
+    /**
+     * Kiểm tra xem quiz có thể chỉnh sửa được không
+     */
+    public function isEditable(): bool
+    {
+        // Không thể chỉnh sửa nếu có học viên đang làm bài
+        return ! $this->isInProgress();
+    }
+
+    /**
+     * Lấy số học viên đang làm bài
+     */
+    public function getActiveStudentsCount(): int
+    {
+        return $this->results()->whereNotNull('started_at')->whereNull('submitted_at')->count();
+    }
+
+    /**
+     * Lấy số học viên đã hoàn thành
+     */
+    public function getCompletedStudentsCount(): int
+    {
+        return $this->results()->whereNotNull('submitted_at')->count();
+    }
+
+    /**
+     * Lấy tổng số học viên được giao bài
+     */
+    public function getTotalAssignedStudentsCount(): int
+    {
+        return $this->results()->count();
+    }
+
+    /**
+     * Lấy trạng thái khóa của quiz
+     */
+    public function getLockStatus(): array
+    {
+        $activeCount = $this->getActiveStudentsCount();
+        $completedCount = $this->getCompletedStudentsCount();
+        $totalCount = $this->getTotalAssignedStudentsCount();
+
+        if ($activeCount > 0) {
+            return [
+                'status' => 'locked',
+                'message' => "Đang khóa: {$activeCount} học viên đang làm bài",
+                'can_edit' => false,
+            ];
+        }
+
+        if ($completedCount > 0) {
+            return [
+                'status' => 'completed',
+                'message' => "Đã hoàn thành: {$completedCount}/{$totalCount} học viên",
+                'can_edit' => false,
+            ];
+        }
+
+        return [
+            'status' => 'editable',
+            'message' => 'Có thể chỉnh sửa',
+            'can_edit' => true,
+        ];
+    }
 }

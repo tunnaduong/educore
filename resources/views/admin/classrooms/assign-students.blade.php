@@ -279,8 +279,14 @@
                         </h5>
                         <button type="button" class="btn-close btn-close-white" wire:click="closeConflictModal"></button>
                     </div>
-                    <div class="modal-body p-4" style="max-height: 70vh; overflow-y: auto;">
-                        <div class="row mb-4">
+                    
+                    <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                        <div class="alert alert-warning">
+                            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                            <strong>@lang('general.warning')</strong> Một số học sinh đã được chọn có lịch học trùng với lớp này. Vui lòng điều chỉnh lịch học hoặc chọn học sinh khác để tránh trùng lịch.
+                        </div>
+
+                        <div class="row">
                             <div class="col-12">
                                 <h6 class="text-dark fw-bold mb-3">
                                     <i class="bi bi-people-fill me-3 text-warning"></i>
@@ -407,9 +413,10 @@
                             </div>
                         @endif
                     </div>
-                    <div class="modal-footer border-0 bg-light">
-                        <button type="button" class="btn btn-secondary px-4" wire:click="closeConflictModal">
-                            Đóng
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" wire:click="closeConflictModal">
+                            <i class="bi bi-x-circle mr-2"></i>
+                            @lang('general.cancel')
                         </button>
                     </div>
                 </div>

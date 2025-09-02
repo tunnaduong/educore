@@ -414,22 +414,21 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($classroom->attendances as $attendance)
+                                @forelse($attendanceSessions as $session)
                                     <tr>
-                                        <td>{{ $attendance->created_at->format('d/m/Y') }}</td>
-                                        <td>{{ __('general.session_label') }} {{ $attendance->session_number }}</td>
+                                        <td>{{ $session['date']->format('d/m/Y') }}</td>
+                                        <td>{{ __('general.session_label') }}</td>
                                         <td>{{ $classroom->students->count() }}</td>
                                         <td>
-                                            <span
-                                                class="badge bg-success">{{ $attendance->present_count ?? 0 }}</span>
+                                            <span class="badge bg-success">{{ $session['present_count'] }}</span>
                                         </td>
                                         <td>
-                                            <span class="badge bg-danger">{{ $attendance->absent_count ?? 0 }}</span>
+                                            <span class="badge bg-danger">{{ $session['absent_count'] }}</span>
                                         </td>
                                         <td>
-                                            <button class="btn btn-outline-primary btn-sm">
+                                            <a href="{{ route('teacher.attendance.take', $classroom) }}?date={{ $session['date']->format('Y-m-d') }}" class="btn btn-outline-primary btn-sm">
                                                 <i class="bi bi-eye"></i>
-                                            </button>
+                                            </a>
                                         </td>
                                     </tr>
                                 @empty

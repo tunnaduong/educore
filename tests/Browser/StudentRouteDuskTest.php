@@ -33,9 +33,8 @@ class StudentRouteDuskTest extends DuskTestCase
             [
                 'title' => 'Test Assignment',
                 'description' => 'Test Description',
-                'due_date' => now()->addDays(7),
-                'is_active' => true,
-                'classroom_id' => $classroom->id,
+                'deadline' => now()->addDays(7),
+                'class_id' => $classroom->id,
             ]
         );
 
@@ -54,8 +53,16 @@ class StudentRouteDuskTest extends DuskTestCase
             [
                 'title' => 'Test Quiz',
                 'description' => 'Test Quiz Description',
-                'is_active' => true,
-                'classroom_id' => $classroom->id,
+                'questions' => [
+                    [
+                        'question' => 'Câu hỏi test 1',
+                        'type' => 'multiple_choice',
+                        'options' => ['A', 'B', 'C', 'D'],
+                        'correct_answer' => 'A',
+                        'score' => 1,
+                    ],
+                ],
+                'class_id' => $classroom->id,
             ]
         );
 
@@ -70,7 +77,7 @@ class StudentRouteDuskTest extends DuskTestCase
         );
 
         // Gán assignment vào classroom
-        $assignment->update(['classroom_id' => $classroom->id]);
+        $assignment->update(['class_id' => $classroom->id]);
 
         // Gán student vào classroom
         $classroom->users()->syncWithoutDetaching([

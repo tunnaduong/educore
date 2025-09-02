@@ -97,20 +97,8 @@
                                             class="form-label fw-bold text-muted">{{ __('general.study_days') }}</label>
                                         <div class="mt-2">
                                             @if (isset($classroom->schedule['days']) && is_array($classroom->schedule['days']))
-                                                @foreach ($classroom->schedule['days'] as $day)
-                                                    @php
-                                                        $dayNames = [
-                                                            'Monday' => __('general.monday'),
-                                                            'Tuesday' => __('general.tuesday'),
-                                                            'Wednesday' => __('general.wednesday'),
-                                                            'Thursday' => __('general.thursday'),
-                                                            'Friday' => __('general.friday'),
-                                                            'Saturday' => __('general.saturday'),
-                                                            'Sunday' => __('general.sunday'),
-                                                        ];
-                                                    @endphp
-                                                    <span
-                                                        class="badge bg-primary mr-2 mb-2">{{ $dayNames[$day] ?? $day }}</span>
+                                                @foreach (\App\Helpers\DateHelper::translateDays($classroom->schedule['days']) as $day)
+                                                    <span class="badge bg-primary mr-2 mb-2">{{ $day }}</span>
                                                 @endforeach
                                             @else
                                                 <span class="text-muted">{{ __('general.no_schedule_info') }}</span>

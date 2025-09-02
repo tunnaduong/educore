@@ -296,7 +296,7 @@
                                         <i class="bi bi-question-circle mr-2"></i>
                                         {{ __('general.question') }} {{ $currentQuestionIndex + 1 }} / {{ count($questions) }}
                                     </h6>
-                                    <span class="badge bg-primary">{{ ucfirst($currentQuestion['type']) }}</span>
+                                    <span class="badge bg-primary">{{ __('general.' . $currentQuestion['type']) }}</span>
                                 </div>
                             </div>
                             <div class="card-body">

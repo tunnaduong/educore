@@ -3,13 +3,40 @@
     <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
-            <a href="{{ route('quizzes.show', $quiz) }}" class="text-decoration-none text-secondary d-inline-block mb-3">
-                <i class="bi bi-arrow-left mr-2"></i>{{ __('views.back_to_quiz_detail') }}
+            <a href="{{ route('quizzes.show', $quiz) }}"
+                class="text-decoration-none text-secondary d-inline-block mb-3">
+                <i class="bi bi-arrow-left mr-2"></i>{{ __('general.back') }}
             </a>
             <h4 class="mb-0 text-primary fs-4">
                 <i class="bi bi-pencil mr-2"></i>{{ __('general.edit_quiz') }}
             </h4>
             <p class="text-muted mb-0">{{ $quiz->title }}</p>
+            
+            <!-- Hiển thị trạng thái khóa -->
+            @if(isset($lockStatus))
+                <div class="mt-3">
+                    @if($lockStatus['status'] === 'locked')
+                        <div class="alert alert-warning mb-0">
+                            <i class="bi bi-lock-fill mr-2"></i>
+                            <strong>{{ $lockStatus['message'] }}</strong>
+                            <br>
+                            <small class="text-muted">Quiz đã bị khóa chỉnh sửa để đảm bảo tính công bằng cho học viên đang làm bài.</small>
+                        </div>
+                    @elseif($lockStatus['status'] === 'completed')
+                        <div class="alert alert-info mb-0">
+                            <i class="bi bi-check-circle-fill mr-2"></i>
+                            <strong>{{ $lockStatus['message'] }}</strong>
+                            <br>
+                            <small class="text-muted">Quiz đã hoàn thành và không thể chỉnh sửa.</small>
+                        </div>
+                    @else
+                        <div class="alert alert-success mb-0">
+                            <i class="bi bi-unlock-fill mr-2"></i>
+                            <strong>{{ $lockStatus['message'] }}</strong>
+                        </div>
+                    @endif
+                </div>
+            @endif
         </div>
 
         <form wire:submit="save">
@@ -186,7 +213,8 @@
                                         <i class="bi bi-x-circle mr-2"></i>{{ __('general.cancel_edit') }}
                                     </button>
                                 @endif
-                                <button type="button" class="btn btn-primary" wire:click="addQuestion">
+                                <button type="button" class="btn btn-primary" wire:click="addQuestion" 
+                                    @if(!$lockStatus['can_edit']) disabled @endif>
                                     @if ($editingIndex !== null)
                                         <i class="bi bi-check-circle mr-2"></i>{{ __('general.update_question') }}
                                     @else
@@ -214,7 +242,7 @@
                                                 <span
                                                     class="badge bg-primary mr-2">{{ __('views.question_number', ['number' => $index + 1]) }}</span>
                                                 <span
-                                                    class="badge bg-secondary">{{ ucfirst($question['type']) }}</span>
+                                                    class="badge bg-secondary">{{ __('general.' . $question['type']) }}</span>
                                                 <span
                                                     class="badge bg-info">{{ $question['score'] ?? ($question['points'] ?? 1) }}
                                                     {{ __('views.points') }}</span>
@@ -222,26 +250,30 @@
                                             <div class="btn-group btn-group-sm">
                                                 <button type="button" class="btn btn-outline-warning"
                                                     wire:click="editQuestion({{ $index }})"
-                                                    title="{{ __('general.edit') }}">
+                                                    title="{{ __('general.edit') }}"
+                                                    @if(!$lockStatus['can_edit']) disabled @endif>
                                                     <i class="bi bi-pencil"></i>
                                                 </button>
                                                 @if ($index > 0)
                                                     <button type="button" class="btn btn-outline-secondary"
                                                         wire:click="moveQuestionUp({{ $index }})"
-                                                        title="{{ __('views.move_up') }}">
+                                                        title="{{ __('views.move_up') }}"
+                                                        @if(!$lockStatus['can_edit']) disabled @endif>
                                                         <i class="bi bi-arrow-up"></i>
                                                     </button>
                                                 @endif
                                                 @if ($index < count($questions) - 1)
                                                     <button type="button" class="btn btn-outline-secondary"
                                                         wire:click="moveQuestionDown({{ $index }})"
-                                                        title="{{ __('views.move_down') }}">
+                                                        title="{{ __('views.move_down') }}"
+                                                        @if(!$lockStatus['can_edit']) disabled @endif>
                                                         <i class="bi bi-arrow-down"></i>
                                                     </button>
                                                 @endif
                                                 <button type="button" class="btn btn-outline-danger"
                                                     wire:click="removeQuestion({{ $index }})"
-                                                    title="{{ __('general.delete') }}">
+                                                    title="{{ __('general.delete') }}"
+                                                    @if(!$lockStatus['can_edit']) disabled @endif>
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </div>
@@ -270,7 +302,7 @@
                                 <i class="bi bi-x-circle mr-2"></i>{{ __('general.cancel') }}
                             </a>
                             <button type="submit" class="btn btn-primary"
-                                @if (count($questions) === 0) disabled @endif>
+                                @if (count($questions) === 0 || !$lockStatus['can_edit']) disabled @endif>
                                 <i class="bi bi-check-circle mr-2"></i>{{ __('views.update_quiz') }}
                             </button>
                         </div>
