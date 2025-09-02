@@ -5,6 +5,9 @@
         <div class="card-header bg-light">
             <h6 class="mb-0 text-primary">
                 <i class="bi bi-filter-circle-fill mr-2"></i>{{ __('views.student_filter_title') }}
+                @if ($filterClass || $filterStatus || $searchTerm)
+                    <span class="badge bg-primary ms-2">{{ __('general.active_filters') }}</span>
+                @endif
             </h6>
         </div>
         <div class="card-body">
@@ -13,7 +16,7 @@
                     <label class="form-label fw-semibold">
                         <i class="bi bi-building text-primary mr-1"></i>{{ __('general.filter_by_class') }}
                     </label>
-                    <select class="form-control form-control-lg" wire:model="filterClass">
+                    <select class="form-control form-control-lg" wire:model.live="filterClass">
                         <option value="">{{ __('general.all_classes') }}</option>
                         @foreach ($students->flatMap(fn($s) => $s['classes'])->unique('class_id') as $class)
                             <option value="{{ $class['class_name'] }}">{{ $class['class_name'] }}</option>
@@ -24,7 +27,7 @@
                     <label class="form-label fw-semibold">
                         <i class="bi bi-cash text-success mr-1"></i>{{ __('views.tuition_status_label') }}
                     </label>
-                    <select class="form-control form-control-lg" wire:model="filterStatus">
+                    <select class="form-control form-control-lg" wire:model.live="filterStatus">
                         <option value="">{{ __('views.all_statuses') }}</option>
                         <option value="paid">
                             <i class="bi bi-check-circle-fill"></i> {{ __('views.paid_full') }}
@@ -37,11 +40,29 @@
                         </option>
                     </select>
                 </div>
-                <div class="col-md-12 d-flex align-items-end">
-                    <div class="text-muted small">
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">
+                        <i class="bi bi-search text-info mr-1"></i>{{ __('general.search') }}
+                    </label>
+                    <input type="text" class="form-control form-control-lg"
+                        wire:model.live.debounce.300ms="searchTerm" placeholder="{{ __('general.search_students') }}">
+                </div>
+                <div class="col-md-12 d-flex align-items-end mt-3">
+                    <div class="text-muted small mr-auto">
                         <i class="bi bi-info-circle mr-1"></i>
                         {{ __('views.total_students', ['count' => count($students)]) }}
+                        @if ($filterClass || $filterStatus || $searchTerm)
+                            <span class="text-primary">({{ __('general.filtered_results') }})</span>
+                        @endif
                     </div>
+                    @if ($filterClass || $filterStatus || $searchTerm)
+                        <button class="btn btn-outline-secondary btn-sm" wire:click="resetFilters"
+                            wire:loading.attr="disabled">
+                            <i class="bi bi-arrow-clockwise mr-1"></i>
+                            <span wire:loading.remove>{{ __('general.reset_filters') }}</span>
+                            <span wire:loading>{{ __('general.loading') }}</span>
+                        </button>
+                    @endif
                 </div>
             </div>
         </div>
@@ -73,7 +94,7 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody wire:loading.class="opacity-50">
                     @forelse($students as $student)
                         <tr class="align-middle">
                             <td class="text-center fw-bold text-primary">{{ $student['id'] }}</td>
@@ -112,7 +133,8 @@
                                             </span>
                                         @else
                                             <span class="badge bg-danger">
-                                                <i class="bi bi-x-circle-fill mr-1"></i>{{ $class['class_name'] }}: {{ __('views.unpaid') }}
+                                                <i class="bi bi-x-circle-fill mr-1"></i>{{ $class['class_name'] }}:
+                                                {{ __('views.unpaid') }}
                                             </span>
                                         @endif
                                     </div>
@@ -128,9 +150,22 @@
                     @empty
                         <tr>
                             <td colspan="5" class="text-center py-5">
-                                <i class="bi bi-people text-muted" style="font-size: 3rem;"></i>
-                                <div class="mt-2 text-muted fs-5">{{ __('views.no_students') }}</div>
-                                <small class="text-muted">{{ __('views.try_change_filters') }}</small>
+                                <i class="bi bi-search text-muted" style="font-size: 3rem;"></i>
+                                <div class="mt-2 text-muted fs-5">
+                                    @if ($filterClass || $filterStatus || $searchTerm)
+                                        {{ __('views.no_students_found_with_filters') }}
+                                    @else
+                                        {{ __('views.no_students') }}
+                                    @endif
+                                </div>
+                                @if ($filterClass || $filterStatus || $searchTerm)
+                                    <small class="text-muted">{{ __('views.try_change_filters') }}</small>
+                                    <div class="mt-2">
+                                        <button class="btn btn-outline-primary btn-sm" wire:click="resetFilters">
+                                            <i class="bi bi-arrow-clockwise mr-1"></i>{{ __('general.reset_filters') }}
+                                        </button>
+                                    </div>
+                                @endif
                             </td>
                         </tr>
                     @endforelse

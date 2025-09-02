@@ -1033,5 +1033,4 @@ return [
     'student_creation_failed' => 'Failed to create student. Please try again.',
     'student_update_failed' => 'Failed to update student information. Please try again.',
     'student_deletion_failed' => 'Failed to delete student. Please try again.',
-    'cannot_delete_active_or_suspended_student' => 'Cannot delete active or suspended student',
 ];

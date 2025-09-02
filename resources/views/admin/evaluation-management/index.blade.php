@@ -1,6 +1,6 @@
 <x-layouts.dash-admin active="evaluation-management">
     @include('components.language')
-    <div class="container-fluid py-4">
+    <div class="container-fluid">
         <!-- Header -->
         <div class="mb-4">
             <div class="d-flex justify-content-between align-items-center">
