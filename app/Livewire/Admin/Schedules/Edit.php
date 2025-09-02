@@ -2,8 +2,8 @@
 
 namespace App\Livewire\Admin\Schedules;
 
-use App\Models\Classroom;
 use App\Helpers\ScheduleConflictHelper;
+use App\Models\Classroom;
 use Livewire\Component;
 
 class Edit extends Component
@@ -70,7 +70,7 @@ class Edit extends Component
         $tempClassroom = new Classroom([
             'schedule' => [
                 'days' => $this->selectedDays,
-                'time' => $this->startTime . ' - ' . $this->endTime,
+                'time' => $this->startTime.' - '.$this->endTime,
             ],
         ]);
         // Gán id lớp hiện tại để helper loại trừ chính lớp này
@@ -87,13 +87,14 @@ class Edit extends Component
             if ($conflictCheck['hasConflict']) {
                 $this->teacherConflicts = $conflictCheck['conflicts'];
                 $this->showConflictModal = true;
+
                 return; // Dừng lưu, hiển thị modal
             }
         }
 
         $schedule = [
             'days' => $this->selectedDays,
-            'time' => $this->startTime . ' - ' . $this->endTime,
+            'time' => $this->startTime.' - '.$this->endTime,
         ];
 
         $this->classroom->update([
@@ -139,6 +140,7 @@ class Edit extends Component
         if (empty($this->selectedDays) || empty($this->startTime) || empty($this->endTime)) {
             $this->teacherConflicts = [];
             $this->realTimeValidation = false;
+
             return;
         }
 
@@ -146,13 +148,14 @@ class Edit extends Component
         if (empty($teacherIds)) {
             $this->teacherConflicts = [];
             $this->realTimeValidation = false;
+
             return;
         }
 
         $tempClassroom = new Classroom([
             'schedule' => [
                 'days' => $this->selectedDays,
-                'time' => $this->startTime . ' - ' . $this->endTime,
+                'time' => $this->startTime.' - '.$this->endTime,
             ],
         ]);
         $tempClassroom->id = $this->classroom->id;
