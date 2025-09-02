@@ -102,3 +102,5 @@
     </footer>
 </div>
 <!-- ./wrapper -->
+
+@livewireScripts

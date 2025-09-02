@@ -1212,6 +1212,57 @@ return [
     'student' => 'Học sinh',
     'teacher' => 'Giáo viên',
 
+    // Thêm các key mới cho filter thời gian
+    'time_range' => 'Khoảng thời gian',
+    'all_time' => 'Tất cả thời gian',
+    'today' => 'Hôm nay',
+    'this_week' => 'Tuần này',
+    'this_month' => 'Tháng này',
+    'custom_range' => 'Tùy chỉnh',
+    'from_date' => 'Từ ngày',
+    'to_date' => 'Đến ngày',
+    'reset_filters' => 'Đặt lại bộ lọc',
+
+    // Thêm các key mới cho submit assignment
+    'submit_assignment' => 'Nộp bài tập',
+    'current_submission_status' => 'Trạng thái nộp bài hiện tại',
+    'progress' => 'Tiến độ',
+    'assignment_types' => 'loại bài tập',
+    'submitted' => 'Đã nộp',
+    'missing' => 'Thiếu',
+    'no_type_submitted' => 'Chưa có loại nào được nộp',
+    'submitted_all_types' => 'Đã nộp tất cả loại',
+    'select_submission_type' => 'Chọn loại bài nộp',
+    'short_answer' => 'Trả lời ngắn gọn',
+    'long_essay' => 'Bài luận dài',
+    'image_file_hint' => 'Upload file ảnh',
+    'audio_file_hint_short' => 'Upload file âm thanh',
+    'video_file_hint_short' => 'Upload file video',
+    'submission_content' => 'Nội dung bài nộp',
+    'enter_your_answer' => 'Nhập câu trả lời của bạn',
+    'write_your_essay' => 'Viết bài luận của bạn',
+    'essay_detail_hint' => 'Viết chi tiết, có thể sử dụng nhiều đoạn văn',
+    'upload_image_submission' => 'Upload ảnh bài nộp',
+    'image_file_hint_long' => 'Hỗ trợ: JPG, PNG, GIF (tối đa 5MB)',
+    'upload_audio_file' => 'Upload file âm thanh',
+    'audio_file_hint_long' => 'Hỗ trợ: MP3, WAV, M4A (tối đa 10MB)',
+    'upload_video_file' => 'Upload file video',
+    'video_file_hint_long' => 'Hỗ trợ: MP4, AVI, MOV (tối đa 100MB)',
+    'submit' => 'Nộp bài',
+    'loading' => 'Đang tải...',
+    'submitted_all_assignments' => 'Đã nộp tất cả bài tập',
+    'completed_all_required_types' => 'Hoàn thành tất cả loại yêu cầu',
+
+    // Thêm các key mới cho show assignment
+    'submission_information' => 'Thông tin bài nộp',
+    'cannot_submit_anymore' => 'Không thể nộp bài nữa',
+    'redo_submission' => 'Làm lại bài nộp',
+    'your_submission' => 'Bài nộp của bạn',
+
+    // Thêm các key mới cho student deletion
+    'cannot_delete_student_with_status' => 'Không thể xóa học viên có trạng thái :status',
+    'reserved' => 'Bảo lưu',
+
     // Quiz related translations
     'answered' => 'Đã trả lời',
     'current_question' => 'Câu hỏi hiện tại',
