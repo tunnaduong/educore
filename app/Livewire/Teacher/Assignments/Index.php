@@ -133,10 +133,10 @@ class Index extends Component
             $this->loadStats();
 
             // Đóng modal bằng JavaScript
-            $this->dispatch('closeModal', 'deleteAssignmentModal' . $assignmentId);
+            $this->dispatch('closeModal', 'deleteAssignmentModal'.$assignmentId);
 
         } catch (\Exception $e) {
-            session()->flash('error', 'Có lỗi xảy ra khi xóa bài tập: ' . $e->getMessage());
+            session()->flash('error', 'Có lỗi xảy ra khi xóa bài tập: '.$e->getMessage());
         }
     }
 
