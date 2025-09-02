@@ -23,17 +23,26 @@ class Index extends Component
 
     // New properties for enhanced reports
     public $activeTab = 'assignments';
+
     public $studentClasses = [];
+
     public $totalLessons = 0;
+
     public $totalAssignments = 0;
+
     public $totalStudents = 0;
+
     public $totalSessions = 0;
+
     public $classStudents = [];
 
     // Pagination properties
     public $perPage = 10;
+
     public $assignmentPage = 1;
+
     public $quizPage = 1;
+
     public $attendancePage = 1;
 
     public function mount()
@@ -91,20 +100,20 @@ class Index extends Component
     {
         if ($this->studentClasses->count() > 0) {
             $classIds = $this->studentClasses->pluck('id');
-            
+
             // Total lessons across all classes
             $this->totalLessons = \App\Models\Lesson::whereIn('classroom_id', $classIds)->count();
-            
+
             // Total assignments across all classes
             $this->totalAssignments = \App\Models\Assignment::whereIn('class_id', $classIds)->count();
-            
+
             // Total students across all classes (unique)
-            $this->totalStudents = \App\Models\Student::whereHas('classrooms', function($query) use ($classIds) {
+            $this->totalStudents = \App\Models\Student::whereHas('classrooms', function ($query) use ($classIds) {
                 $query->whereIn('class_id', $classIds);
             })->distinct()->count();
-            
+
             // Total sessions (lessons + assignments + quizzes)
-            $this->totalSessions = $this->totalLessons + $this->totalAssignments + 
+            $this->totalSessions = $this->totalLessons + $this->totalAssignments +
                 \App\Models\Quiz::whereIn('classroom_id', $classIds)->count();
         }
     }
@@ -113,14 +122,14 @@ class Index extends Component
     {
         if ($this->studentClasses->count() > 0) {
             $classIds = $this->studentClasses->pluck('id');
-            
+
             foreach ($this->studentClasses as $class) {
                 $students = \App\Models\Student::with(['user', 'assignmentSubmissions', 'quizResults'])
-                    ->whereHas('classrooms', function($query) use ($class) {
+                    ->whereHas('classrooms', function ($query) use ($class) {
                         $query->where('class_id', $class->id);
                     })->get();
-                
-                $this->classStudents[$class->id] = $students->map(function($student) use ($class) {
+
+                $this->classStudents[$class->id] = $students->map(function ($student) use ($class) {
                     // Calculate student statistics for this class
                     $assignments = \App\Models\Assignment::where('class_id', $class->id)->get();
                     $submissions = $student->assignmentSubmissions->filter(function ($sub) use ($class) {
@@ -129,10 +138,10 @@ class Index extends Component
                     $quizResults = $student->quizResults->filter(function ($qr) use ($class) {
                         return $qr->quiz && $qr->quiz->classroom_id == $class->id;
                     });
-                    
+
                     $avgScore = $quizResults->count() > 0 ? round($quizResults->avg('score'), 2) : 0;
                     $submitRate = $assignments->count() > 0 ? round($submissions->count() / $assignments->count() * 100) : 0;
-                    
+
                     return [
                         'id' => $student->id,
                         'name' => $student->user->name,
@@ -208,12 +217,14 @@ class Index extends Component
     public function getPaginatedAssignments()
     {
         $start = ($this->assignmentPage - 1) * $this->perPage;
+
         return $this->assignmentSubmissions->slice($start, $this->perPage);
     }
 
     public function getPaginatedQuizzes()
     {
         $start = ($this->quizPage - 1) * $this->perPage;
+
         return $this->quizResults->slice($start, $this->perPage);
     }
 
@@ -221,6 +232,7 @@ class Index extends Component
     {
         $attendances = Auth::user()->studentProfile ? Auth::user()->studentProfile->attendances : (Auth::user()->student ? Auth::user()->student->attendances : collect());
         $start = ($this->attendancePage - 1) * $this->perPage;
+
         return $attendances->slice($start, $this->perPage);
     }
 
@@ -233,6 +245,7 @@ class Index extends Component
                 return max(1, (int) ceil($this->quizResults->count() / $this->perPage));
             case 'attendance':
                 $attendances = Auth::user()->studentProfile ? Auth::user()->studentProfile->attendances : (Auth::user()->student ? Auth::user()->student->attendances : collect());
+
                 return max(1, (int) ceil($attendances->count() / $this->perPage));
             default:
                 return 1;
