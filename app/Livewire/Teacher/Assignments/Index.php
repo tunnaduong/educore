@@ -127,13 +127,18 @@ class Index extends Component
                 Storage::disk('public')->delete($assignment->video_path);
             }
 
+            // Xóa các bài nộp liên quan (phòng khi DB chưa bật cascade)
+            if (method_exists($assignment, 'submissions')) {
+                $assignment->submissions()->delete();
+            }
+
             $assignment->delete();
 
             session()->flash('success', 'Đã xóa bài tập thành công!');
             $this->loadStats();
 
             // Đóng modal bằng JavaScript
-            $this->dispatch('closeModal', 'deleteAssignmentModal'.$assignmentId);
+            $this->dispatch('closeModal', modalId: 'deleteAssignmentModal'.$assignmentId);
 
         } catch (\Exception $e) {
             session()->flash('error', 'Có lỗi xảy ra khi xóa bài tập: '.$e->getMessage());

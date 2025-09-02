@@ -214,8 +214,8 @@
                                                         class="btn btn-sm btn-outline-warning">
                                                         <i class="bi bi-pencil-square"></i>
                                                     </a>
-                                                    <button type="button" data-bs-toggle="modal"
-                                                        data-bs-target="#deleteAssignmentModal{{ $assignment->id }}"
+                                                    <button type="button" data-toggle="modal"
+                                                        data-target="#deleteAssignmentModal{{ $assignment->id }}"
                                                         class="btn btn-sm btn-outline-danger">
                                                         <i class="bi bi-trash"></i>
                                                     </button>
@@ -223,7 +223,7 @@
                                             </tr>
 
                                             <!-- Delete Confirmation Modal -->
-                                            <div class="modal fade" id="deleteAssignmentModal{{ $assignment->id }}"
+                                            <div class="modal fade" id="deleteAssignmentModal{{ $assignment->id }}" wire:ignore.self
                                                 tabindex="-1"
                                                 aria-labelledby="deleteAssignmentModalLabel{{ $assignment->id }}"
                                                 aria-hidden="true">
@@ -234,8 +234,9 @@
                                                             <h5 class="modal-title"
                                                                 id="deleteAssignmentModalLabel{{ $assignment->id }}">
                                                                 Xác nhận xóa bài tập</h5>
-                                                            <button type="button" class="btn-close"
-                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
                                                         </div>
                                                         <div class="modal-body">
                                                             Bạn có chắc chắn muốn xóa bài tập
@@ -244,15 +245,13 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">Hủy</button>
+                                                                data-dismiss="modal">Hủy</button>
                                                             <button type="button" class="btn btn-danger"
-                                                                wire:click="deleteAssignment({{ $assignment->id }})"
+                                                                wire:click.prevent="deleteAssignment({{ $assignment->id }})"
                                                                 wire:loading.attr="disabled"
                                                                 wire:target="deleteAssignment">
                                                                 <span wire:loading.remove wire:target="deleteAssignment">Xóa</span>
-                                                                <span wire:loading wire:target="deleteAssignment">
-                                                                    <i class="spinner-border spinner-border-sm me-2"></i>Đang xóa...
-                                                                </span>
+                                                                
                                                             </button>
                                                         </div>
                                                     </div>
@@ -316,16 +315,21 @@
     </div>
 
     <script>
-        document.addEventListener('livewire:init', () => {
-            Livewire.on('closeModal', (modalId) => {
+        // Đóng modal theo browser event (tương thích Bootstrap 4)
+        window.addEventListener('closeModal', (event) => {
+            const detail = event && event.detail;
+            const modalId = Array.isArray(detail) ? detail[0] : (detail && (detail.modalId || detail));
+            if (!modalId) return;
+            const selector = `#${modalId}`;
+            if (window.$) {
+                $(selector).modal('hide');
+            } else {
                 const modal = document.getElementById(modalId);
-                if (modal) {
-                    const modalInstance = bootstrap.Modal.getInstance(modal);
-                    if (modalInstance) {
-                        modalInstance.hide();
-                    }
-                }
-            });
+                if (!modal) return;
+                // Fallback: trigger click on close button
+                const btn = modal.querySelector('[data-dismiss="modal"], .close');
+                if (btn) btn.click();
+            }
         });
     </script>
 </x-layouts.dash-teacher>

@@ -66,33 +66,29 @@ class GradeAssignment extends Component
         if ($score !== null && $score !== '') {
             // Kiểm tra xem có phải là số hợp lệ không
             if (! is_numeric($score) || ! is_finite($score)) {
-                session()->flash('error', 'Điểm phải là số hợp lệ!');
-
-                return;
+                return redirect()->route('teacher.grading.grade-assignment', $this->assignmentId)
+                    ->with('error', 'Điểm phải là số hợp lệ!');
             }
 
             // Chuyển đổi thành float để so sánh chính xác
             $score = (float) $score;
 
             if ($score < 0) {
-                session()->flash('error', 'Điểm không được nhỏ hơn 0!');
-
-                return;
+                return redirect()->route('teacher.grading.grade-assignment', $this->assignmentId)
+                    ->with('error', 'Điểm không được nhỏ hơn 0!');
             }
 
             if ($score > 10) {
-                session()->flash('error', 'Điểm không được vượt quá 10!');
-
-                return;
+                return redirect()->route('teacher.grading.grade-assignment', $this->assignmentId)
+                    ->with('error', 'Điểm không được vượt quá 10!');
             }
 
             // Kiểm tra số thập phân (chỉ cho phép tối đa 1 chữ số thập phân)
             if (strpos((string) $score, '.') !== false) {
                 $decimalPlaces = strlen(substr(strrchr((string) $score, '.'), 1));
                 if ($decimalPlaces > 1) {
-                    session()->flash('error', 'Điểm chỉ được có tối đa 1 chữ số thập phân!');
-
-                    return;
+                    return redirect()->route('teacher.grading.grade-assignment', $this->assignmentId)
+                        ->with('error', 'Điểm chỉ được có tối đa 1 chữ số thập phân!');
                 }
             }
         }
@@ -107,13 +103,13 @@ class GradeAssignment extends Component
             $submission->score = $score;
             $submission->feedback = $feedback;
             $submission->save();
-            session()->flash('success', 'Đã lưu điểm và nhận xét!');
+            // Lưu thành công: quay về trang danh sách chấm điểm
+            return redirect()->route('teacher.grading.index')
+                ->with('success', 'Đã lưu điểm và nhận xét!');
+        } else {
+            return redirect()->route('teacher.grading.grade-assignment', $this->assignmentId)
+                ->with('error', 'Không tìm thấy bài nộp để lưu!');
         }
-
-        // Làm mới submissions để cập nhật giao diện
-        $this->submissions = AssignmentSubmission::where('assignment_id', $this->assignmentId)
-            ->with(['student.user'])
-            ->get();
     }
 
     public function getSubmissionTypeLabel($type)
