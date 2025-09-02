@@ -44,6 +44,7 @@ class Index extends Component
     public $quizPage = 1;
 
     public $attendancePage = 1;
+
     public function mount()
     {
         $user = Auth::user();
@@ -67,7 +68,6 @@ class Index extends Component
             $attendances = $student->attendances;
             $this->attendancePresent = $attendances->where('present', true)->count();
             $this->attendanceAbsent = $attendances->where('present', false)->count();
-
 
             // Get student classes and calculate statistics
             $this->studentClasses = $student->classrooms;
