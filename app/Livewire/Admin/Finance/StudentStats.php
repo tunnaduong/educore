@@ -16,6 +16,8 @@ class StudentStats extends Component
 
     public $filterCourse = '';
 
+    public $searchTerm = '';
+
     public function mount()
     {
         $this->loadStudents();
@@ -36,38 +38,54 @@ class StudentStats extends Component
         $this->loadStudents();
     }
 
+    public function updatedSearchTerm()
+    {
+        $this->loadStudents();
+    }
+
+    public function resetFilters()
+    {
+        $this->filterClass = '';
+        $this->filterStatus = '';
+        $this->searchTerm = '';
+        $this->loadStudents();
+    }
+
     public function loadStudents()
     {
         $query = User::where('role', 'student');
+
+        // Tìm kiếm theo tên học viên
+        if ($this->searchTerm) {
+            $query->where('name', 'like', '%'.$this->searchTerm.'%');
+        }
+
+        // Lọc theo lớp học
         if ($this->filterClass) {
             $query->whereHas('enrolledClassrooms', function ($q) {
                 $q->where('name', $this->filterClass);
             });
         }
+
         $students = $query->with('enrolledClassrooms')->get();
+
         $this->students = $students->map(function ($student) {
             $classrooms = $student->enrolledClassrooms->map(function ($class) use ($student) {
-                // Tính tổng số tiền đã thanh toán (bao gồm cả paid và partial)
-                $totalPaid = Payment::where('user_id', $student->id)
+                // Ưu tiên trạng thái theo mức độ: paid > partial > unpaid
+                $hasPaid = Payment::where('user_id', $student->id)
                     ->where('class_id', $class->id)
-                    ->whereIn('status', ['paid', 'partial'])
-                    ->sum('amount');
+                    ->where('status', 'paid')
+                    ->exists();
 
-                // Tính tổng số tiền cần đóng (tất cả payments của học viên trong lớp)
-                $totalRequired = Payment::where('user_id', $student->id)
+                $hasPartial = Payment::where('user_id', $student->id)
                     ->where('class_id', $class->id)
-                    ->sum('amount');
+                    ->where('status', 'partial')
+                    ->exists();
 
-                // Xác định trạng thái dựa trên tỷ lệ đã đóng
-                if ($totalRequired == 0) {
-                    $status = 'unpaid'; // Chưa có payment nào
-                } elseif ($totalPaid >= $totalRequired) {
-                    $status = 'paid'; // Đã đóng đủ
-                } elseif ($totalPaid > 0) {
-                    $status = 'partial'; // Đã đóng một phần
-                } else {
-                    $status = 'unpaid'; // Chưa đóng gì
-                }
+                // Nếu có bất kỳ bản ghi 'paid' => paid
+                // Nếu không có 'paid' nhưng có 'partial' => partial
+                // Ngược lại => unpaid
+                $status = $hasPaid ? 'paid' : ($hasPartial ? 'partial' : 'unpaid');
 
                 return [
                     'class_id' => $class->id,
@@ -82,6 +100,13 @@ class StudentStats extends Component
                 'classes' => $classrooms,
             ];
         });
+
+        // Lọc theo trạng thái thanh toán
+        if ($this->filterStatus) {
+            $this->students = $this->students->filter(function ($student) {
+                return $student['classes']->contains('status', $this->filterStatus);
+            })->values();
+        }
     }
 
     public function render()

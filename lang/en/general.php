@@ -662,6 +662,7 @@ return [
     'view_details' => 'View Details',
     'edit_student' => 'Edit Student',
     'cannot_delete_active_student' => 'Cannot delete active student',
+    'cannot_delete_active_or_suspended_student' => 'Cannot delete active student',
     'confirm_delete_student' => 'Confirm Delete Student',
     'confirm_delete_student_message' => 'Are you sure you want to delete student ":name"? This action cannot be undone.',
     'no_students_found' => 'No students found',
