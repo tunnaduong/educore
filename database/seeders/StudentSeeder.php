@@ -49,8 +49,8 @@ class StudentSeeder extends Seeder
         foreach ($studentNames as $index => $name) {
             $student = User::create([
                 'name' => $name,
-                'email' => strtolower(str_replace(' ', '', $name)).'@educore.test',
-                'phone' => '09'.str_pad(rand(10000000, 99999999), 8, '0', STR_PAD_LEFT),
+                'email' => strtolower(str_replace(' ', '', $name)) . '@educore.test',
+                'phone' => '09' . str_pad(rand(10000000, 99999999), 8, '0', STR_PAD_LEFT),
                 'password' => bcrypt('password'),
                 'role' => 'student',
                 'is_active' => true,
@@ -68,5 +68,26 @@ class StudentSeeder extends Seeder
 
         // Lưu students vào cache để các seeder khác có thể sử dụng
         cache(['students' => $students], 3600);
+
+        // Tạo tài khoản mặc định: student / 123123
+        $defaultStudent = User::firstOrCreate(
+            ['email' => 'student@educore.test'],
+            [
+                'name' => 'Student',
+                'phone' => '0900000000',
+                'password' => bcrypt('123123'),
+                'role' => 'student',
+                'is_active' => true,
+            ]
+        );
+
+        // Đảm bảo có hồ sơ Student tương ứng
+        Student::firstOrCreate(
+            ['user_id' => $defaultStudent->id],
+            [
+                'status' => 'active',
+                'joined_at' => now(),
+            ]
+        );
     }
 }

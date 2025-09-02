@@ -28,8 +28,8 @@ class TeacherSeeder extends Seeder
         foreach ($teacherNames as $index => $name) {
             $teacher = User::create([
                 'name' => $name,
-                'email' => strtolower(str_replace(' ', '', $name)).'@educore.test',
-                'phone' => '09'.str_pad(rand(10000000, 99999999), 8, '0', STR_PAD_LEFT),
+                'email' => strtolower(str_replace(' ', '', $name)) . '@educore.test',
+                'phone' => '09' . str_pad(rand(10000000, 99999999), 8, '0', STR_PAD_LEFT),
                 'password' => bcrypt('password'),
                 'role' => 'teacher',
                 'is_active' => true,
@@ -39,5 +39,17 @@ class TeacherSeeder extends Seeder
 
         // Lưu teachers vào cache để các seeder khác có thể sử dụng
         cache(['teachers' => $teachers], 3600);
+
+        // Tạo tài khoản mặc định: teacher / 123123
+        $defaultTeacher = User::firstOrCreate(
+            ['email' => 'teacher@educore.test'],
+            [
+                'name' => 'Teacher',
+                'phone' => '0910000000',
+                'password' => bcrypt('123123'),
+                'role' => 'teacher',
+                'is_active' => true,
+            ]
+        );
     }
 }
