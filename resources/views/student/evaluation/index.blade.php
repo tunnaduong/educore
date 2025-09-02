@@ -27,8 +27,6 @@
             }
 
             // Debug: Chuẩn bị dữ liệu hiển thị gọn đẹp trên giao diện
-            $debugCount = $currentRounds->count();
-            $debugRounds = $currentRounds;
 
             if ($student && $currentRounds->count() > 0) {
                 // Tìm đợt đầu tiên mà student chưa đánh giá
