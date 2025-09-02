@@ -61,7 +61,7 @@ class Index extends Component
         $user = Auth::user();
         $query = Assignment::query();
         if ($user->role === 'teacher') {
-            $classIds = $this->classrooms->pluck('id');
+            $classIds = collect($this->classrooms)->pluck('id');
             $query->whereIn('class_id', $classIds);
         }
         $assignments = $query->whereYear('created_at', $year)->whereMonth('created_at', $month)->get();
@@ -116,24 +116,36 @@ class Index extends Component
 
     public function deleteAssignment($assignmentId)
     {
-        $assignment = \App\Models\Assignment::findOrFail($assignmentId);
-        // Xóa file đính kèm nếu có
-        if ($assignment->attachment_path) {
-            Storage::disk('public')->delete($assignment->attachment_path);
+        try {
+            $assignment = \App\Models\Assignment::findOrFail($assignmentId);
+
+            // Xóa file đính kèm nếu có
+            if ($assignment->attachment_path) {
+                Storage::disk('public')->delete($assignment->attachment_path);
+            }
+            if ($assignment->video_path) {
+                Storage::disk('public')->delete($assignment->video_path);
+            }
+
+            $assignment->delete();
+
+            session()->flash('success', 'Đã xóa bài tập thành công!');
+            $this->loadStats();
+
+            // Đóng modal bằng JavaScript
+            $this->dispatch('closeModal', 'deleteAssignmentModal' . $assignmentId);
+
+        } catch (\Exception $e) {
+            session()->flash('error', 'Có lỗi xảy ra khi xóa bài tập: ' . $e->getMessage());
         }
-        if ($assignment->video_path) {
-            Storage::disk('public')->delete($assignment->video_path);
-        }
-        $assignment->delete();
-        session()->flash('success', 'Đã xóa bài tập thành công!');
-        $this->loadStats();
     }
 
     public function render()
     {
         $user = Auth::user();
+        $classIds = collect($this->classrooms)->pluck('id');
         $query = Assignment::with(['classroom', 'submissions'])
-            ->whereIn('class_id', $this->classrooms->pluck('id'));
+            ->whereIn('class_id', $classIds);
 
         if ($this->search) {
             $query->where(function ($q) {

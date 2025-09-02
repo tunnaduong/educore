@@ -8,7 +8,7 @@
         </h4>
         @php
             $student = Auth::user()->student;
-            $currentRounds = \App\Models\EvaluationRound::where('is_active', true)->get();
+            $currentRounds = \App\Models\EvaluationRound::current()->get();
             $currentRound = null;
 
             // Debug: Log thông tin đợt đánh giá
@@ -26,16 +26,9 @@
                 );
             }
 
-            // Debug: Hiển thị thông tin đợt đánh giá trực tiếp trên trang
-            echo '<div class="alert alert-info mb-3">';
-            echo '<strong>Debug Info:</strong><br>';
-            echo 'Số đợt đánh giá đang hoạt động: ' . $currentRounds->count() . '<br>';
-            if ($currentRounds->count() > 0) {
-                foreach ($currentRounds as $round) {
-                    echo '• ID: ' . $round->id . ', Tên: ' . $round->name . ', Start: ' . $round->start_date . ', End: ' . $round->end_date . '<br>';
-                }
-            }
-            echo '</div>';
+            // Debug: Chuẩn bị dữ liệu hiển thị gọn đẹp trên giao diện
+            $debugCount = $currentRounds->count();
+            $debugRounds = $currentRounds;
 
             if ($student && $currentRounds->count() > 0) {
                 // Tìm đợt đầu tiên mà student chưa đánh giá
@@ -69,14 +62,11 @@
             }
         @endphp
 
+
         @if ($currentRound)
             <div class="alert alert-primary">
                 <i class="bi bi-calendar-event mr-2"></i>
                 <strong>Đợt đánh giá:</strong> {{ $currentRound->name }}
-                @if ($currentRound->description)
-                    <br><small class="text-white">{{ $currentRound->description }}</small>
-                @endif
-                <br><small class="text-white">Thời gian: {{ \Carbon\Carbon::parse($currentRound->start_date)->format('d/m/Y') }} - {{ \Carbon\Carbon::parse($currentRound->end_date)->format('d/m/Y') }}</small>
             </div>
         @else
             <div class="alert alert-warning">
@@ -109,7 +99,7 @@
         @php
             // Tính xem còn đợt chưa đánh giá không
             $student = Auth::user()->student;
-            $currentRounds = \App\Models\EvaluationRound::where('is_active', true)->get();
+            $currentRounds = \App\Models\EvaluationRound::current()->get();
             $remainingCountView = 0;
             if ($student) {
                 foreach ($currentRounds as $r) {
@@ -311,6 +301,12 @@
                 @endif
                 </form>
             @endif
+        @else
+            <div class="alert alert-warning">
+                <i class="bi bi-exclamation-triangle mr-2"></i>
+                <strong>Không có đợt đánh giá nào đang hoạt động!</strong>
+                <br><small>Vui lòng đợi admin tạo đợt đánh giá mới hoặc liên hệ quản trị viên.</small>
+            </div>
         @endif
 
         <style>

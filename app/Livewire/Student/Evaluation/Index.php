@@ -95,8 +95,8 @@ class Index extends Component
             return;
         }
 
-        // Lấy đợt đánh giá hiện tại đang hoạt động
-        $this->currentRounds = \App\Models\EvaluationRound::where('is_active', true)->get();
+        // Lấy đợt đánh giá hiện tại đang hoạt động (đúng theo thời gian)
+        $this->currentRounds = \App\Models\EvaluationRound::current()->get();
 
         // Debug: Log thông tin đợt đánh giá hiện tại
         Log::info('Current evaluation rounds found: '.$this->currentRounds->count());
@@ -188,7 +188,7 @@ class Index extends Component
                 ]);
             } else {
                 // Lấy đợt đánh giá hiện tại chưa được đánh giá
-                $currentRounds = \App\Models\EvaluationRound::where('is_active', true)->get();
+                $currentRounds = \App\Models\EvaluationRound::current()->get();
                 $currentRound = null;
 
                 foreach ($currentRounds as $round) {
@@ -232,10 +232,12 @@ class Index extends Component
                 }
             }
 
-            // Đảm bảo dữ liệu được cập nhật trong component
-            $this->teacher_ratings = $this->teacher_ratings;
-            $this->course_ratings = $this->course_ratings;
-            $this->personal_satisfaction = $this->personal_satisfaction;
+            // Đồng bộ lại dữ liệu từ bản ghi hiện tại (sau khi lưu)
+            if ($this->currentEvaluation) {
+                $this->teacher_ratings = $this->currentEvaluation->teacher_ratings ?? [];
+                $this->course_ratings = $this->currentEvaluation->course_ratings ?? [];
+                $this->personal_satisfaction = $this->currentEvaluation->personal_satisfaction;
+            }
 
             session()->flash('success', 'Đánh giá đã được lưu thành công!');
 
@@ -264,8 +266,8 @@ class Index extends Component
             return;
         }
 
-        // Lấy tất cả đợt đánh giá đang hoạt động
-        $currentRounds = \App\Models\EvaluationRound::where('is_active', true)->get();
+        // Lấy tất cả đợt đánh giá đang hoạt động (đúng theo thời gian)
+        $currentRounds = \App\Models\EvaluationRound::current()->get();
 
         if ($currentRounds->count() == 0) {
             session()->flash('error', 'Không có đợt đánh giá nào đang hoạt động.');
