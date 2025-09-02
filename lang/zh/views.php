@@ -1030,4 +1030,5 @@ return [
     'student_creation_failed' => '创建学生失败，请重试。',
     'student_update_failed' => '更新学生信息失败，请重试。',
     'student_deletion_failed' => '删除学生失败，请重试。',
+    'cannot_delete_active_or_suspended_student' => '无法删除正在学习或暂停的学生',
 ];
