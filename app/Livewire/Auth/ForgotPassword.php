@@ -88,12 +88,14 @@ class ForgotPassword extends Component
 
             if ($recentAttempts >= 3) {
                 $this->showMessage(__('auth.otp_limit_exceeded'), 'error');
+
                 return;
             }
 
             $user = User::where('phone', $this->phone)->first();
             if (! $user) {
                 $this->showMessage(__('auth.phone_not_found'), 'error');
+
                 return;
             }
 
@@ -123,6 +125,7 @@ class ForgotPassword extends Component
             } else {
                 $this->showMessage(__('auth.send_otp_error'), 'error');
             }
+
             return;
         }
 
@@ -134,6 +137,7 @@ class ForgotPassword extends Component
         $user = User::whereNotNull('email')->where('email', $this->email)->first();
         if (! $user) {
             $this->showMessage(__('auth.email_not_found') ?? 'Email không tồn tại', 'error');
+
             return;
         }
 
@@ -150,7 +154,8 @@ class ForgotPassword extends Component
         try {
             Mail::to($this->email)->send(new ResetOtpMail($otp, $user->name));
         } catch (\Throwable $e) {
-            $this->showMessage('Không thể gửi email: ' . $e->getMessage(), 'error');
+            $this->showMessage('Không thể gửi email: '.$e->getMessage(), 'error');
+
             return;
         }
 
@@ -319,7 +324,7 @@ class ForgotPassword extends Component
 
         // Nếu số điện thoại có 11 số và bắt đầu bằng 84, chuyển về 0
         if (strlen($phone) === 11 && substr($phone, 0, 2) === '84') {
-            return '0' . substr($phone, 2);
+            return '0'.substr($phone, 2);
         }
 
         return $phone;

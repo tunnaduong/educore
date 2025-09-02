@@ -79,12 +79,12 @@ class Index extends Component
 
                             // Kiểm tra xem ngày này có phải là ngày học không
                             if (in_array($dayName, $days)) {
-                                $startDateTime = $currentDate->format('Y-m-d') . 'T' . $startTime;
-                                $endDateTime = $currentDate->format('Y-m-d') . 'T' . $endTime;
+                                $startDateTime = $currentDate->format('Y-m-d').'T'.$startTime;
+                                $endDateTime = $currentDate->format('Y-m-d').'T'.$endTime;
 
                                 $events[] = [
-                                    'id' => 'schedule_' . $classroom->id . '_' . $dayName . '_' . $currentDate->format('Y-m-d'),
-                                    'title' => 'Lịch học - ' . $classroom->name,
+                                    'id' => 'schedule_'.$classroom->id.'_'.$dayName.'_'.$currentDate->format('Y-m-d'),
+                                    'title' => 'Lịch học - '.$classroom->name,
                                     'start' => $startDateTime,
                                     'end' => $endDateTime,
                                     'backgroundColor' => '#0d6efd',
@@ -116,8 +116,8 @@ class Index extends Component
         foreach ($assignments as $assignment) {
             $classroom = $classrooms->where('id', $assignment->class_id)->first();
             $events[] = [
-                'id' => 'assignment_' . $assignment->id,
-                'title' => $assignment->title . ' (Bài tập) - ' . $classroom->name,
+                'id' => 'assignment_'.$assignment->id,
+                'title' => $assignment->title.' (Bài tập) - '.$classroom->name,
                 'start' => $assignment->deadline,
                 'end' => $assignment->deadline,
                 'allDay' => true,
@@ -141,8 +141,8 @@ class Index extends Component
         foreach ($quizzes as $quiz) {
             $classroom = $classrooms->where('id', $quiz->class_id)->first();
             $events[] = [
-                'id' => 'quiz_' . $quiz->id,
-                'title' => $quiz->title . ' (Kiểm tra) - ' . $classroom->name,
+                'id' => 'quiz_'.$quiz->id,
+                'title' => $quiz->title.' (Kiểm tra) - '.$classroom->name,
                 'start' => $quiz->deadline,
                 'end' => $quiz->deadline,
                 'allDay' => true,
