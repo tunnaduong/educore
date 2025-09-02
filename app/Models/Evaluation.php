@@ -73,13 +73,21 @@ class Evaluation extends Model
     }
 
     /**
+     * Lấy điểm đánh giá tổng thể
+     */
+    public function getPersonalSatisfaction(): float
+    {
+        return $this->personal_satisfaction ?? 0;
+    }
+
+    /**
      * Lấy tổng điểm đánh giá tổng thể
      */
     public function getOverallRating(): float
     {
         $teacherAvg = $this->getTeacherAverageRating();
         $courseAvg = $this->getCourseAverageRating();
-        $personal = $this->personal_satisfaction ?? 0;
+        $personal = $this->getPersonalSatisfaction();
 
         $total = $teacherAvg + $courseAvg + $personal;
         $count = 3;

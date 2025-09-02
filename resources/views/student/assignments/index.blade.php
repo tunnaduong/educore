@@ -61,6 +61,35 @@
                         </select>
                     </div>
                 </div>
+
+                <!-- Thêm row mới cho filter thời gian -->
+                <div class="row g-3 mt-2">
+                    <div class="col-md-3">
+                        <label class="form-label">{{ __('general.time_range') }}</label>
+                        <select class="form-control" wire:model.live="filterTimeRange">
+                            <option value="all">{{ __('general.all_time') }}</option>
+                            <option value="today">{{ __('general.today') }}</option>
+                            <option value="week">{{ __('general.this_week') }}</option>
+                            <option value="month">{{ __('general.this_month') }}</option>
+                            <option value="custom">{{ __('general.custom_range') }}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">{{ __('general.from_date') }}</label>
+                        <input type="date" class="form-control" wire:model.live="filterDateFrom"
+                               {{ $filterTimeRange !== 'custom' ? 'disabled' : '' }}>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">{{ __('general.to_date') }}</label>
+                        <input type="date" class="form-control" wire:model.live="filterDateTo"
+                               {{ $filterTimeRange !== 'custom' ? 'disabled' : '' }}>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end">
+                        <button type="button" class="btn btn-outline-secondary" wire:click="resetFilters">
+                            <i class="bi bi-arrow-clockwise"></i> {{ __('general.reset_filters') }}
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
