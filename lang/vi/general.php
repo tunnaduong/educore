@@ -1262,7 +1262,7 @@ return [
     // Thêm các key mới cho student deletion
     'cannot_delete_student_with_status' => 'Không thể xóa học viên có trạng thái :status',
     'reserved' => 'Bảo lưu',
-  
+
     // Quiz related translations
     'answered' => 'Đã trả lời',
     'current_question' => 'Câu hỏi hiện tại',

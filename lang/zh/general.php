@@ -1256,7 +1256,7 @@ return [
     // Thêm các key mới cho student deletion
     'cannot_delete_student_with_status' => '无法删除状态为 :status 的学生',
     'reserved' => '保留',
-  
+
     // Quiz related translations
     'answered' => '已回答',
     'current_question' => '当前题目',
