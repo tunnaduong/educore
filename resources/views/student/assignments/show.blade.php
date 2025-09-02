@@ -201,7 +201,7 @@
                                         @if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp']))
                                             <div class="border rounded p-3 bg-light">
                                                 <h6 class="font-weight-bold mb-2">{{ __('general.image_submission') }}</h6>
-                                                <img src="{{ Storage::url($content) }}" alt="Bài viết"
+                                                <img src="{{ Storage::url($content) }}" alt="{{ __('general.image_submission') }}"
                                                     class="img-fluid rounded shadow-sm">
                                             </div>
                                         @elseif(in_array($extension, ['mp3', 'wav', 'm4a']))

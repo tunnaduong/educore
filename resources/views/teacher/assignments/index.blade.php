@@ -16,6 +16,21 @@
             </div>
         </div>
 
+        <!-- Flash Messages -->
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle me-2"></i>{{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
         <!-- Bộ lọc tháng/năm (nếu cần) -->
         <div class="card shadow-sm mb-4">
             <div class="card-body">
@@ -232,7 +247,13 @@
                                                                 data-bs-dismiss="modal">Hủy</button>
                                                             <button type="button" class="btn btn-danger"
                                                                 wire:click="deleteAssignment({{ $assignment->id }})"
-                                                                data-bs-dismiss="modal">Xóa</button>
+                                                                wire:loading.attr="disabled"
+                                                                wire:target="deleteAssignment">
+                                                                <span wire:loading.remove wire:target="deleteAssignment">Xóa</span>
+                                                                <span wire:loading wire:target="deleteAssignment">
+                                                                    <i class="spinner-border spinner-border-sm me-2"></i>Đang xóa...
+                                                                </span>
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -293,4 +314,18 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('closeModal', (modalId) => {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    const modalInstance = bootstrap.Modal.getInstance(modal);
+                    if (modalInstance) {
+                        modalInstance.hide();
+                    }
+                }
+            });
+        });
+    </script>
 </x-layouts.dash-teacher>

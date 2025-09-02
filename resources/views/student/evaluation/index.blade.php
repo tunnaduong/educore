@@ -26,6 +26,8 @@
                 );
             }
 
+            // Debug: Chuẩn bị dữ liệu hiển thị gọn đẹp trên giao diện
+
             if ($student && $currentRounds->count() > 0) {
                 // Tìm đợt đầu tiên mà student chưa đánh giá
                 foreach ($currentRounds as $round) {
@@ -49,16 +51,26 @@
                         break;
                     }
                 }
+
+                // Nếu tất cả đợt đều đã được đánh giá, vẫn hiển thị đợt đầu tiên để student có thể xem
+                if (!$currentRound && $currentRounds->count() > 0) {
+                    $currentRound = $currentRounds->first();
+                    \Log::info('All rounds evaluated, showing first round for reference: ID=' . $currentRound->id . ', Name=' . $currentRound->name);
+                }
             }
         @endphp
+
 
         @if ($currentRound)
             <div class="alert alert-primary">
                 <i class="bi bi-calendar-event mr-2"></i>
                 <strong>Đợt đánh giá:</strong> {{ $currentRound->name }}
-                @if ($currentRound->description)
-                    <br><small class="text-white">{{ $currentRound->description }}</small>
-                @endif
+            </div>
+        @else
+            <div class="alert alert-warning">
+                <i class="bi bi-exclamation-triangle mr-2"></i>
+                <strong>Không có đợt đánh giá nào đang hoạt động!</strong>
+                <br><small>Vui lòng đợi admin tạo đợt đánh giá mới hoặc liên hệ quản trị viên.</small>
             </div>
         @endif
 
@@ -100,18 +112,19 @@
             }
         @endphp
 
-        @if ($isSubmitted && $remainingCountView === 0)
-            <div class="alert alert-success">
-                <i class="bi bi-check2-circle mr-2"></i>
-                <strong>Cảm ơn bạn!</strong> Bạn đã hoàn thành đánh giá cho tất cả đợt hiện tại.
-                <div class="mt-3">
-                    <button type="button" class="btn btn-success" onclick="location.reload()">
-                        <i class="bi bi-arrow-right mr-2"></i>Tiếp tục sử dụng hệ thống
-                    </button>
+        @if ($currentRound)
+            @if ($isSubmitted && $remainingCountView === 0)
+                <div class="alert alert-success">
+                    <i class="bi bi-check2-circle mr-2"></i>
+                    <strong>Cảm ơn bạn!</strong> Bạn đã hoàn thành đánh giá cho tất cả đợt hiện tại.
+                    <div class="mt-3">
+                        <button type="button" class="btn btn-success" onclick="location.reload()">
+                            <i class="bi bi-arrow-right mr-2"></i>Tiếp tục sử dụng hệ thống
+                        </button>
+                    </div>
                 </div>
-            </div>
-        @else
-            <form wire:submit.prevent="saveEvaluation">
+            @else
+                <form wire:submit.prevent="saveEvaluation">
                 <!-- Nhóm 1: Đánh giá về giáo viên -->
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-primary text-white">
@@ -284,7 +297,14 @@
                         @endif
                     </div>
                 @endif
-            </form>
+                </form>
+            @endif
+        @else
+            <div class="alert alert-warning">
+                <i class="bi bi-exclamation-triangle mr-2"></i>
+                <strong>Không có đợt đánh giá nào đang hoạt động!</strong>
+                <br><small>Vui lòng đợi admin tạo đợt đánh giá mới hoặc liên hệ quản trị viên.</small>
+            </div>
         @endif
 
         <style>
