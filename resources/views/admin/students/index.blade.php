@@ -191,7 +191,8 @@
                                                 </button>
                                             @else
                                                 <button type="button" class="btn btn-sm btn-outline-secondary"
-                                                    title="{{ __('general.cannot_delete_student_with_status', ['status' => $student->studentProfile->status === 'active' ? __('general.active') : __('general.reserved')]) }}" disabled>
+                                                    title="{{ __('general.cannot_delete_student_with_status', ['status' => $student->studentProfile->status === 'active' ? __('general.active') : __('general.reserved')]) }}"
+                                                    disabled>
                                                     <i class="bi bi-lock"></i>
                                                 </button>
                                             @endif

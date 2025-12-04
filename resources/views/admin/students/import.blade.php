@@ -1,7 +1,8 @@
-<!-- Import Modal -->
-@if ($showModal)
-    <div class="modal fade show" style="display: block;" tabindex="-1" role="dialog" aria-labelledby="importModalLabel"
-        aria-hidden="true">
+<div>
+    <!-- Import Modal -->
+    @if ($showModal)
+        <div class="modal fade show" style="display: block;" tabindex="-1" role="dialog" aria-labelledby="importModalLabel"
+            aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
@@ -128,6 +129,7 @@
             </div>
         </div>
         <div class="modal-backdrop fade show" wire:click="closeModal"></div>
-    </div>
-@endif
+        </div>
+    @endif
+</div>
 
