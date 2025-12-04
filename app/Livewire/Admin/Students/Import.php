@@ -13,7 +13,9 @@ class Import extends Component
     use WithFileUploads;
 
     public $file;
+
     public $showModal = false;
+
     public $importResult = null;
 
     protected $listeners = ['openImportModal' => 'openModal'];
@@ -91,4 +93,3 @@ class Import extends Component
         return view('admin.students.import');
     }
 }
-
