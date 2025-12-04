@@ -43,4 +43,8 @@ return [
     'otp_sent_to' => 'OTP code has been sent to',
     'enter_phone' => 'Enter phone number',
     'set_new_password' => 'Set new password',
+    'email_not_found' => 'Email does not exist in the system.',
+    'otp_method_title' => 'OTP Reception Method',
+    'phone_method' => 'Phone Number',
+    'email_method' => 'Email',
 ];

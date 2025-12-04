@@ -75,14 +75,7 @@
                 fixedWeekCount: false, // Không cố định số tuần
                 showNonCurrentDates: false, // Không hiển thị ngày không thuộc tháng hiện tại
                 // Không dùng validRange để vẫn có thể điều hướng giữa các tháng
-                eventDidMount: function(info) {
-                    // Lọc events chỉ hiển thị trong tháng hiện tại
-                    var eventDate = new Date(info.event.start);
-                    var currentDate = new Date();
-                    if (eventDate.getMonth() !== currentDate.getMonth() || eventDate.getFullYear() !== currentDate.getFullYear()) {
-                        info.el.style.display = 'none';
-                    }
-                },
+                // Hiển thị đầy đủ sự kiện theo dữ liệu, không giới hạn trong tháng hiện tại
                 buttonText: {
                     today: '{{ __('general.today') }}',
                     month: '{{ __('general.month') }}',
@@ -144,21 +137,28 @@
                                 .title + '</b></div>';
 
                             if (ev.extendedProps && ev.extendedProps.classroom) {
-                                html += '<small class="text-muted">{{ __('general.class') }}: ' + ev.extendedProps
+                                html +=
+                                    '<small class="text-muted">{{ __('general.class') }}: ' +
+                                    ev.extendedProps
                                     .classroom + '</small><br>';
                             }
 
                             if (ev.start && ev.end && !ev.allDay) {
                                 var start = ev.start.substring(11, 16);
                                 var end = ev.end.substring(11, 16);
-                                html += '<small class="text-muted">{{ __('general.time') }}: ' + start +
+                                html +=
+                                    '<small class="text-muted">{{ __('general.time') }}: ' +
+                                    start +
                                     ' - ' + end + '</small>';
                             } else if (ev.allDay) {
-                                html += '<small class="text-muted">{{ __('general.all_day') }}</small>';
+                                html +=
+                                    '<small class="text-muted">{{ __('general.all_day') }}</small>';
                             }
 
                             if (ev.extendedProps && ev.extendedProps.location) {
-                                html += '<br><small class="text-muted">{{ __('general.location') }}: ' + ev
+                                html +=
+                                    '<br><small class="text-muted">{{ __('general.location') }}: ' +
+                                    ev
                                     .extendedProps.location + '</small>';
                             }
 

@@ -44,4 +44,8 @@ return [
     'enter_phone' => 'Nhập số điện thoại',
     'set_new_password' => 'Đặt mật khẩu mới',
     'verify_otp' => 'Xác thực OTP',
+    'email_not_found' => 'Email không tồn tại trong hệ thống.',
+    'otp_method_title' => 'Phương thức nhận OTP',
+    'phone_method' => 'Số điện thoại',
+    'email_method' => 'Email',
 ];

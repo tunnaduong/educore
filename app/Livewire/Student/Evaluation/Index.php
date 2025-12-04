@@ -91,7 +91,7 @@ class Index extends Component
     public function loadCurrentEvaluation()
     {
         $student = Auth::user()->student;
-        if (! $student) {
+        if (!$student) {
             return;
         }
 
@@ -99,9 +99,9 @@ class Index extends Component
         $this->currentRounds = \App\Models\EvaluationRound::current()->get();
 
         // Debug: Log thông tin đợt đánh giá hiện tại
-        Log::info('Current evaluation rounds found: '.$this->currentRounds->count());
+        Log::info('Current evaluation rounds found: ' . $this->currentRounds->count());
         foreach ($this->currentRounds as $round) {
-            Log::info('Round ID: '.$round->id.', Name: '.$round->name.', Start: '.$round->start_date.', End: '.$round->end_date);
+            Log::info('Round ID: ' . $round->id . ', Name: ' . $round->name . ', Start: ' . $round->start_date . ', End: ' . $round->end_date);
         }
 
         if ($this->currentRounds->count() > 0) {
@@ -112,9 +112,9 @@ class Index extends Component
                     ->whereNotNull('submitted_at')
                     ->exists();
 
-                Log::info('Student '.$student->id.' evaluated round '.$round->id.': '.($evaluated ? 'YES' : 'NO'));
+                Log::info('Student ' . $student->id . ' evaluated round ' . $round->id . ': ' . ($evaluated ? 'YES' : 'NO'));
 
-                if (! $evaluated) {
+                if (!$evaluated) {
                     // Tìm thấy đợt chưa đánh giá - tạo hoặc lấy evaluation
                     $this->currentEvaluation = Evaluation::firstOrCreate([
                         'student_id' => $student->id,
@@ -126,13 +126,13 @@ class Index extends Component
                         'suggestions' => '',
                     ]);
 
-                    Log::info('Found/created current evaluation: '.($this->currentEvaluation ? 'YES' : 'NO'));
+                    Log::info('Found/created current evaluation: ' . ($this->currentEvaluation ? 'YES' : 'NO'));
                     break;
                 }
             }
 
             // Nếu tất cả đợt đều đã được đánh giá, vẫn tạo evaluation cho đợt đầu tiên để hiển thị
-            if (! $this->currentEvaluation && $this->currentRounds->count() > 0) {
+            if (!$this->currentEvaluation && $this->currentRounds->count() > 0) {
                 $firstRound = $this->currentRounds->first();
                 $this->currentEvaluation = Evaluation::firstOrCreate([
                     'student_id' => $student->id,
@@ -144,7 +144,7 @@ class Index extends Component
                     'suggestions' => '',
                 ]);
 
-                Log::info('All rounds evaluated, created evaluation for first round: ID='.$firstRound->id.', Name='.$firstRound->name);
+                Log::info('All rounds evaluated, created evaluation for first round: ID=' . $firstRound->id . ', Name=' . $firstRound->name);
             }
         } else {
             $this->currentEvaluation = null;
@@ -172,7 +172,7 @@ class Index extends Component
         $this->validate();
 
         $student = Auth::user()->student;
-        if (! $student) {
+        if (!$student) {
             session()->flash('error', 'Không tìm thấy thông tin học viên.');
 
             return;
@@ -197,7 +197,7 @@ class Index extends Component
                         ->whereNotNull('submitted_at')
                         ->exists();
 
-                    if (! $evaluated) {
+                    if (!$evaluated) {
                         $currentRound = $round;
                         break;
                     }
@@ -260,7 +260,7 @@ class Index extends Component
         $this->validate();
 
         $student = Auth::user()->student;
-        if (! $student) {
+        if (!$student) {
             session()->flash('error', 'Không tìm thấy thông tin học viên.');
 
             return;
@@ -283,13 +283,13 @@ class Index extends Component
                 ->whereNotNull('submitted_at')
                 ->exists();
 
-            if (! $evaluated) {
+            if (!$evaluated) {
                 $currentRound = $round;
                 break;
             }
         }
 
-        if (! $currentRound) {
+        if (!$currentRound) {
             session()->flash('error', 'Bạn đã đánh giá tất cả đợt hiện tại rồi.');
 
             return;
@@ -311,7 +311,7 @@ class Index extends Component
             return;
         }
 
-        if (! $this->personal_satisfaction) {
+        if (!$this->personal_satisfaction) {
             session()->flash('error', 'Vui lòng đánh giá mức độ hài lòng cá nhân.');
 
             return;
@@ -323,8 +323,8 @@ class Index extends Component
                 ->where('evaluation_round_id', $currentRound->id)
                 ->first();
 
-            Log::info('Current round ID: '.$currentRound->id.', Name: '.$currentRound->name);
-            Log::info('Existing evaluation found: '.($existingEvaluation ? 'YES' : 'NO'));
+            Log::info('Current round ID: ' . $currentRound->id . ', Name: ' . $currentRound->name);
+            Log::info('Existing evaluation found: ' . ($existingEvaluation ? 'YES' : 'NO'));
 
             if ($existingEvaluation) {
                 // Cập nhật evaluation hiện có
@@ -338,7 +338,7 @@ class Index extends Component
                 Log::info('Updated existing evaluation');
             } else {
                 // Tạo evaluation mới
-                Log::info('Creating new evaluation for student '.$student->id.' and round '.$currentRound->id);
+                Log::info('Creating new evaluation for student ' . $student->id . ' and round ' . $currentRound->id);
                 $this->currentEvaluation = Evaluation::create([
                     'student_id' => $student->id,
                     'evaluation_round_id' => $currentRound->id,
@@ -347,11 +347,11 @@ class Index extends Component
                     'personal_satisfaction' => $this->personal_satisfaction,
                     'suggestions' => $this->suggestions,
                 ]);
-                Log::info('Created new evaluation with ID: '.$this->currentEvaluation->id);
+                Log::info('Created new evaluation with ID: ' . $this->currentEvaluation->id);
             }
 
             // Kiểm tra xem currentEvaluation có tồn tại không
-            if (! $this->currentEvaluation) {
+            if (!$this->currentEvaluation) {
                 session()->flash('error', 'Không thể tạo đánh giá. Vui lòng thử lại.');
 
                 return;
@@ -371,13 +371,13 @@ class Index extends Component
                     ->whereNotNull('submitted_at')
                     ->exists();
 
-                if (! $evaluated) {
+                if (!$evaluated) {
                     $remainingCount++;
                 }
             }
 
             if ($remainingCount > 0) {
-                session()->flash('success', 'Đánh giá đã được gửi thành công! Còn '.$remainingCount.' đợt đánh giá nữa.');
+                session()->flash('success', 'Đánh giá đã được gửi thành công! Còn ' . $remainingCount . ' đợt đánh giá nữa.');
                 // Reload để hiện đợt tiếp theo
                 $this->loadCurrentEvaluation();
                 $this->reset(['teacher_ratings', 'course_ratings', 'personal_satisfaction', 'suggestions']);
@@ -385,7 +385,7 @@ class Index extends Component
                 session()->flash('success', 'Đánh giá đã được gửi thành công! Bạn có thể tiếp tục sử dụng hệ thống.');
             }
         } catch (\Exception $e) {
-            session()->flash('error', 'Có lỗi xảy ra khi gửi đánh giá: '.$e->getMessage());
+            session()->flash('error', 'Có lỗi xảy ra khi gửi đánh giá: ' . $e->getMessage());
         }
     }
 

@@ -13,13 +13,21 @@
             $needEvaluation = $evaluatedRounds < $currentRounds->count();
         }
     }
+
+    // Debug information
+    \Log::info('Evaluation component debug:', [
+        'student' => $student ? $student->id : 'null',
+        'currentRounds' => $currentRounds->count() ?? 0,
+        'needEvaluation' => $needEvaluation,
+        'user_id' => Auth::id(),
+    ]);
 @endphp
 
 @if ($student && $needEvaluation)
     <!-- Modal đánh giá bắt buộc - không thể đóng -->
     <div class="modal fade show d-block" id="requiredEvaluationModal" tabindex="-1"
         style="background-color: rgba(0,0,0,0.8); overflow-y: auto; z-index: 1050;">
-        <div class="modal-dialog modal-dialog-scrollable modal-xl modal-dialog-centered">
+        <div class="modal-dialog modal-lg modal-dialog-centered" style="max-width: 90%;">
             <div class="modal-content">
                 <div class="modal-header bg-warning text-dark">
                     <h5 class="modal-title">
@@ -45,4 +53,29 @@
             </div>
         </div>
     </div>
+
+    <style>
+        /* Đảm bảo modal hiển thị đúng */
+        #requiredEvaluationModal {
+            display: block !important;
+            background-color: rgba(0, 0, 0, 0.8) !important;
+            z-index: 1050 !important;
+        }
+
+        #requiredEvaluationModal .modal-dialog {
+            max-width: 90% !important;
+            margin: 1.75rem auto !important;
+        }
+
+        #requiredEvaluationModal .modal-content {
+            border: none !important;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+        }
+
+        /* Đảm bảo nội dung bị khóa hiển thị đúng */
+        .container-fluid.py-5 {
+            opacity: 0.3 !important;
+            pointer-events: none !important;
+        }
+    </style>
 @endif

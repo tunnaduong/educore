@@ -318,7 +318,7 @@
                             ])
                         </div>
                         <div>
-                            {{ $classrooms->links('vendor.pagination.bootstrap-4') }}
+                            {{ $classrooms->links('vendor.pagination.bootstrap-5') }}
                         </div>
                     </div>
                 </div>

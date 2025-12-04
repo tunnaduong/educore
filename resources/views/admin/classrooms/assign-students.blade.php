@@ -67,7 +67,7 @@
                                                     count(array_intersect($availableStudentIds, $selectedStudents)) ==
                                                         count($availableStudentIds);
                                             @endphp
-                                            <input type="checkbox" class="form-check-input" wire:click="toggleSelectAll"
+                                            <input type="checkbox" wire:click="toggleSelectAll"
                                                 wire:key="select-all-{{ count($selectedStudents) }}"
                                                 {{ $allSelected ? 'checked' : '' }}>
                                         </th>
@@ -81,8 +81,7 @@
                                     @forelse ($availableStudents as $student)
                                         <tr>
                                             <td class="text-center">
-                                                <input type="checkbox" class="form-check-input"
-                                                    wire:click="toggleStudent({{ $student->id }})"
+                                                <input type="checkbox" wire:click="toggleStudent({{ $student->id }})"
                                                     wire:key="student-{{ $student->id }}-{{ in_array($student->id, $selectedStudents) ? 'selected' : 'unselected' }}"
                                                     {{ in_array($student->id, $selectedStudents) ? 'checked' : '' }}>
                                             </td>
@@ -94,7 +93,8 @@
                                                     <div>
                                                         <div class="fw-medium">{{ $student->name }}</div>
                                                         @if ($student->studentProfile)
-                                                            <small class="text-muted">{{ $student->studentProfile->level ?? __('general.no_level_assigned') }}</small>
+                                                            <small
+                                                                class="text-muted">{{ $student->studentProfile->level ?? __('general.no_level_assigned') }}</small>
                                                         @endif
                                                     </div>
                                                 </div>
@@ -135,9 +135,7 @@
 
                         <!-- Pagination -->
                         @if ($availableStudents->hasPages())
-                            <div class="d-flex justify-content-center mt-3">
-                                {{ $availableStudents->links('livewire.bootstrap-pagination') }}
-                            </div>
+                            {{ $availableStudents->links('vendor.pagination.bootstrap-5') }}
                         @endif
                     </div>
                 </div>
@@ -184,7 +182,9 @@
 
                         <!-- Học viên chưa gán (đang được chọn để thêm mới) -->
                         @php
-                            $selectedStudentsNotEnrolled = $selectedStudentsData->filter(function ($student) use ($enrolledStudents) {
+                            $selectedStudentsNotEnrolled = $selectedStudentsData->filter(function ($student) use (
+                                $enrolledStudents,
+                            ) {
                                 return !$enrolledStudents->contains('id', $student->id);
                             });
                         @endphp
@@ -277,13 +277,15 @@
                             <i class="bi bi-exclamation-triangle-fill me-2"></i>
                             Cảnh báo xung đột lịch học
                         </h5>
-                        <button type="button" class="btn-close btn-close-white" wire:click="closeConflictModal"></button>
+                        <button type="button" class="btn-close btn-close-white"
+                            wire:click="closeConflictModal"></button>
                     </div>
-                    
+
                     <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
                         <div class="alert alert-warning">
                             <i class="bi bi-exclamation-triangle-fill mr-2"></i>
-                            <strong>@lang('general.warning')</strong> Một số học sinh đã được chọn có lịch học trùng với lớp này. Vui lòng điều chỉnh lịch học hoặc chọn học sinh khác để tránh trùng lịch.
+                            <strong>@lang('general.warning')</strong> Một số học sinh đã được chọn có lịch học trùng với lớp
+                            này. Vui lòng điều chỉnh lịch học hoặc chọn học sinh khác để tránh trùng lịch.
                         </div>
 
                         <div class="row">
@@ -300,7 +302,8 @@
                                 <div class="card-header bg-light border-warning">
                                     <div class="d-flex align-items-center gap-2">
                                         <i class="bi bi-person-circle text-primary"></i>
-                                        <span class="text-dark">Học sinh: <strong>{{ $conflictData['student']->name }}</strong></span>
+                                        <span class="text-dark">Học sinh:
+                                            <strong>{{ $conflictData['student']->name }}</strong></span>
                                         <small class="text-muted ms-2">({{ $conflictData['student']->email }})</small>
                                     </div>
                                 </div>
@@ -308,8 +311,10 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="d-flex align-items-center mb-3">
-                                                <i class="bi bi-calendar-event text-primary" style="margin-right: 12px;"></i>
-                                                <strong class="text-primary fw-bold">Lớp học hiện tại: {{ $conflictData['conflicts'][0]['classroom']->name }}</strong>
+                                                <i class="bi bi-calendar-event text-primary"
+                                                    style="margin-right: 12px;"></i>
+                                                <strong class="text-primary fw-bold">Lớp học hiện tại:
+                                                    {{ $conflictData['conflicts'][0]['classroom']->name }}</strong>
                                             </div>
                                             <div class="mt-2">
                                                 <div class="d-flex align-items-start">
@@ -317,18 +322,35 @@
                                                         <small class="text-muted">
                                                             @if ($conflictData['conflicts'][0]['classroom']->schedule)
                                                                 @php
-                                                                    $days = $conflictData['conflicts'][0]['classroom']->schedule['days'] ?? [];
+                                                                    $days =
+                                                                        $conflictData['conflicts'][0]['classroom']
+                                                                            ->schedule['days'] ?? [];
                                                                     $vietnameseDays = [];
                                                                     foreach ($days as $day) {
                                                                         switch (strtolower($day)) {
-                                                                            case 'monday': $vietnameseDays[] = 'Thứ 2'; break;
-                                                                            case 'tuesday': $vietnameseDays[] = 'Thứ 3'; break;
-                                                                            case 'wednesday': $vietnameseDays[] = 'Thứ 4'; break;
-                                                                            case 'thursday': $vietnameseDays[] = 'Thứ 5'; break;
-                                                                            case 'friday': $vietnameseDays[] = 'Thứ 6'; break;
-                                                                            case 'saturday': $vietnameseDays[] = 'Thứ 7'; break;
-                                                                            case 'sunday': $vietnameseDays[] = 'Chủ nhật'; break;
-                                                                            default: $vietnameseDays[] = $day;
+                                                                            case 'monday':
+                                                                                $vietnameseDays[] = 'Thứ 2';
+                                                                                break;
+                                                                            case 'tuesday':
+                                                                                $vietnameseDays[] = 'Thứ 3';
+                                                                                break;
+                                                                            case 'wednesday':
+                                                                                $vietnameseDays[] = 'Thứ 4';
+                                                                                break;
+                                                                            case 'thursday':
+                                                                                $vietnameseDays[] = 'Thứ 5';
+                                                                                break;
+                                                                            case 'friday':
+                                                                                $vietnameseDays[] = 'Thứ 6';
+                                                                                break;
+                                                                            case 'saturday':
+                                                                                $vietnameseDays[] = 'Thứ 7';
+                                                                                break;
+                                                                            case 'sunday':
+                                                                                $vietnameseDays[] = 'Chủ nhật';
+                                                                                break;
+                                                                            default:
+                                                                                $vietnameseDays[] = $day;
                                                                         }
                                                                     }
                                                                 @endphp
@@ -342,14 +364,15 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="mt-3" style="max-height: 150px; overflow-y: auto;">
                                                 @foreach ($conflictData['conflicts'] as $conflict)
                                                     <div class="border-start border-primary ps-4 mb-3 py-3">
                                                         <div class="d-flex align-items-start">
                                                             <div class="flex-grow-1">
                                                                 <div class="d-flex align-items-center">
-                                                                    <i class="bi bi-exclamation-triangle-fill text-danger" style="margin-right: 10px;"></i>
+                                                                    <i class="bi bi-exclamation-triangle-fill text-danger"
+                                                                        style="margin-right: 10px;"></i>
                                                                     <span class="text-danger fw-semibold">
                                                                         {{ $conflict['message'] }}
                                                                     </span>
@@ -362,8 +385,10 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="d-flex align-items-center mb-3">
-                                                <i class="bi bi-calendar-event text-success" style="margin-right: 12px;"></i>
-                                                <strong class="text-success fw-bold">Lớp học mới: {{ $classroom->name }}</strong>
+                                                <i class="bi bi-calendar-event text-success"
+                                                    style="margin-right: 12px;"></i>
+                                                <strong class="text-success fw-bold">Lớp học mới:
+                                                    {{ $classroom->name }}</strong>
                                             </div>
                                             <div class="mt-2">
                                                 <div class="d-flex align-items-start">
@@ -375,14 +400,29 @@
                                                                     $vietnameseDays = [];
                                                                     foreach ($days as $day) {
                                                                         switch (strtolower($day)) {
-                                                                            case 'monday': $vietnameseDays[] = 'Thứ 2'; break;
-                                                                            case 'tuesday': $vietnameseDays[] = 'Thứ 3'; break;
-                                                                            case 'wednesday': $vietnameseDays[] = 'Thứ 4'; break;
-                                                                            case 'thursday': $vietnameseDays[] = 'Thứ 5'; break;
-                                                                            case 'friday': $vietnameseDays[] = 'Thứ 6'; break;
-                                                                            case 'saturday': $vietnameseDays[] = 'Thứ 7'; break;
-                                                                            case 'sunday': $vietnameseDays[] = 'Chủ nhật'; break;
-                                                                            default: $vietnameseDays[] = $day;
+                                                                            case 'monday':
+                                                                                $vietnameseDays[] = 'Thứ 2';
+                                                                                break;
+                                                                            case 'tuesday':
+                                                                                $vietnameseDays[] = 'Thứ 3';
+                                                                                break;
+                                                                            case 'wednesday':
+                                                                                $vietnameseDays[] = 'Thứ 4';
+                                                                                break;
+                                                                            case 'thursday':
+                                                                                $vietnameseDays[] = 'Thứ 5';
+                                                                                break;
+                                                                            case 'friday':
+                                                                                $vietnameseDays[] = 'Thứ 6';
+                                                                                break;
+                                                                            case 'saturday':
+                                                                                $vietnameseDays[] = 'Thứ 7';
+                                                                                break;
+                                                                            case 'sunday':
+                                                                                $vietnameseDays[] = 'Chủ nhật';
+                                                                                break;
+                                                                            default:
+                                                                                $vietnameseDays[] = $day;
                                                                         }
                                                                     }
                                                                 @endphp
@@ -407,7 +447,8 @@
                                 <div class="d-flex align-items-center gap-2">
                                     <i class="bi bi-info-circle fs-4"></i>
                                     <div class="flex-grow-1">
-                                        <strong>Lưu ý:</strong> Có {{ count($scheduleConflicts) }} học sinh bị xung đột lịch. Vui lòng cuộn xuống để xem tất cả.
+                                        <strong>Lưu ý:</strong> Có {{ count($scheduleConflicts) }} học sinh bị xung đột
+                                        lịch. Vui lòng cuộn xuống để xem tất cả.
                                     </div>
                                 </div>
                             </div>

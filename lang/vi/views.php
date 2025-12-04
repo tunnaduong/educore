@@ -87,6 +87,7 @@ return [
     // Schedules
     'teaching_schedule' => 'Lịch giảng dạy',
     'view_teaching_schedule' => 'Xem thời khóa biểu các buổi giảng dạy, bài tập, kiểm tra',
+    'view_teaching_schedule2' => 'Xem lịch dạy',
     'assignments' => 'Bài tập',
     'quizzes' => 'Kiểm tra',
     'schedule_for_day' => 'Lịch giảng dạy trong ngày',
