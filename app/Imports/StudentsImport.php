@@ -14,7 +14,9 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 class StudentsImport implements ToCollection, WithHeadingRow
 {
     public $errors = [];
+
     public $successCount = 0;
+
     public $errorCount = 0;
 
     public function collection(Collection $rows)
@@ -68,11 +70,12 @@ class StudentsImport implements ToCollection, WithHeadingRow
                         'errors' => $validator->errors()->all(),
                     ];
                     $rowNumber++;
+
                     continue;
                 }
 
                 // Kiểm tra email trùng (nếu có)
-                if (!empty($data['email']) && User::where('email', $data['email'])->exists()) {
+                if (! empty($data['email']) && User::where('email', $data['email'])->exists()) {
                     $this->errorCount++;
                     $this->errors[] = [
                         'row' => $rowNumber,
@@ -80,12 +83,13 @@ class StudentsImport implements ToCollection, WithHeadingRow
                         'errors' => ['Email này đã được sử dụng.'],
                     ];
                     $rowNumber++;
+
                     continue;
                 }
 
                 // Parse ngày tháng
                 $dateOfBirth = null;
-                if (!empty($data['date_of_birth'])) {
+                if (! empty($data['date_of_birth'])) {
                     try {
                         $dateOfBirth = $this->parseDate($data['date_of_birth']);
                     } catch (\Exception $e) {
@@ -96,12 +100,13 @@ class StudentsImport implements ToCollection, WithHeadingRow
                             'errors' => ['Ngày sinh không đúng định dạng.'],
                         ];
                         $rowNumber++;
+
                         continue;
                     }
                 }
 
                 $joinedAt = null;
-                if (!empty($data['joined_at'])) {
+                if (! empty($data['joined_at'])) {
                     try {
                         $joinedAt = $this->parseDate($data['joined_at']);
                     } catch (\Exception $e) {
@@ -198,4 +203,3 @@ class StudentsImport implements ToCollection, WithHeadingRow
         }
     }
 }
-
