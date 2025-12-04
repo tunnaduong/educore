@@ -63,8 +63,7 @@
                                     <button type="button" class="btn btn-secondary mr-2" wire:click="closeModal">
                                         Hủy
                                     </button>
-                                    <button type="submit" class="btn btn-primary"
-                                        @if (!$file) disabled @endif>
+                                    <button type="submit" class="btn btn-primary">
                                         <i class="bi bi-upload mr-2"></i>Import
                                     </button>
                                 </div>
