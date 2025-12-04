@@ -6,9 +6,14 @@
             <h4 class="mb-0 text-primary fs-4">
                 <i class="bi bi-people-fill mr-2"></i>{{ __('general.student_management') }}
             </h4>
-            <a href="{{ route('students.create') ?? '#' }}" class="btn btn-primary">
-                <i class="bi bi-plus-circle mr-2"></i>{{ __('general.add_student') }}
-            </a>
+            <div class="d-flex gap-2">
+                <button type="button" class="btn btn-success" wire:click="$dispatch('openImportModal')">
+                    <i class="bi bi-file-earmark-excel mr-2"></i>Nhập từ file Excel
+                </button>
+                <a href="{{ route('students.create') ?? '#' }}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle mr-2"></i>{{ __('general.add_student') }}
+                </a>
+            </div>
         </div>
 
         @if (session()->has('message'))
@@ -248,4 +253,7 @@
             </div>
         </div>
     </div>
+
+    <!-- Import Component -->
+    @livewire('admin.students.import')
 </x-layouts.dash-admin>
