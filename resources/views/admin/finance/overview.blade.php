@@ -38,7 +38,8 @@
                 <div class="card-body text-white p-4">
                     <div class="row align-items-center">
                         <div class="col">
-                            <div class="small fw-bold text-white-50 text-uppercase mb-1">{{ __('views.total_income') }}</div>
+                            <div class="small fw-bold text-white-50 text-uppercase mb-1">{{ __('views.total_income') }}
+                            </div>
                             <div class="h4 mb-0 text-white">{{ number_format($totalIncome) }}₫</div>
                         </div>
                         <div class="col-auto">
@@ -59,7 +60,8 @@
                 <div class="card-body text-white p-4">
                     <div class="row align-items-center">
                         <div class="col">
-                            <div class="small fw-bold text-white-50 text-uppercase mb-1">{{ __('views.total_expense') }}</div>
+                            <div class="small fw-bold text-white-50 text-uppercase mb-1">{{ __('views.total_expense') }}
+                            </div>
                             <div class="h4 mb-0 text-white">{{ number_format($totalExpense) }}₫</div>
                         </div>
                         <div class="col-auto">

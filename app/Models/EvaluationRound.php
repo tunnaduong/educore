@@ -36,7 +36,7 @@ class EvaluationRound extends Model
 
     public function scopeCurrent($query)
     {
-        $now = now()->toDateString();
+        $now = now()->startOfDay();
 
         return $query->where('start_date', '<=', $now)
             ->where('end_date', '>=', $now)
@@ -45,16 +45,16 @@ class EvaluationRound extends Model
 
     public function isCurrent(): bool
     {
-        $now = now()->toDateString();
+        $now = now()->startOfDay();
 
         return $this->is_active &&
-               $this->start_date->toDateString() <= $now &&
-               $this->end_date->toDateString() >= $now;
+            $this->start_date->startOfDay() <= $now &&
+            $this->end_date->startOfDay() >= $now;
     }
 
     public function getStatusAttribute(): string
     {
-        if (! $this->is_active) {
+        if (!$this->is_active) {
             return 'inactive';
         }
 

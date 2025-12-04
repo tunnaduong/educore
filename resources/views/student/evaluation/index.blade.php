@@ -55,7 +55,12 @@
                 // Nếu tất cả đợt đều đã được đánh giá, vẫn hiển thị đợt đầu tiên để student có thể xem
                 if (!$currentRound && $currentRounds->count() > 0) {
                     $currentRound = $currentRounds->first();
-                    \Log::info('All rounds evaluated, showing first round for reference: ID=' . $currentRound->id . ', Name=' . $currentRound->name);
+                    \Log::info(
+                        'All rounds evaluated, showing first round for reference: ID=' .
+                            $currentRound->id .
+                            ', Name=' .
+                            $currentRound->name,
+                    );
                 }
             }
         @endphp
@@ -125,178 +130,181 @@
                 </div>
             @else
                 <form wire:submit.prevent="saveEvaluation">
-                <!-- Nhóm 1: Đánh giá về giáo viên -->
-                <div class="card shadow-sm mb-4">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">
-                            <i class="bi bi-person-workspace mr-2"></i>
-                            Nhóm 1: Đánh giá về giáo viên
-                            <span class="badge bg-light text-primary ml-2">{{ count($teacherQuestions) }} câu
-                                hỏi</span>
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        @foreach ($teacherQuestions as $key => $question)
-                            <div class="mb-4">
-                                <label class="form-label fw-bold">
-                                    {{ $loop->iteration }}. {{ $question }}
-                                </label>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="text-muted small">Rất không đồng ý</span>
-                                    <div class="star-rating" data-question="teacher_{{ $key }}" wire:ignore>
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            <input type="radio" class="star-input"
-                                                wire:model="teacher_ratings.{{ $key }}"
-                                                value="{{ $i }}"
-                                                id="teacher_{{ $key }}_{{ $i }}"
-                                                {{ ($teacher_ratings[$key] ?? 0) == $i ? 'checked' : '' }}>
-                                            <label class="star-label"
-                                                for="teacher_{{ $key }}_{{ $i }}"
-                                                data-rating="{{ $i }}">
-                                                <i class="bi bi-star"></i>
-                                            </label>
-                                        @endfor
+                    <!-- Nhóm 1: Đánh giá về giáo viên -->
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">
+                                <i class="bi bi-person-workspace mr-2"></i>
+                                Nhóm 1: Đánh giá về giáo viên
+                                <span class="badge bg-light text-primary ml-2">{{ count($teacherQuestions) }} câu
+                                    hỏi</span>
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            @foreach ($teacherQuestions as $key => $question)
+                                <div class="mb-4">
+                                    <label class="form-label fw-bold">
+                                        {{ $loop->iteration }}. {{ $question }}
+                                    </label>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="text-muted small">Rất không đồng ý</span>
+                                        <div class="star-rating" data-question="teacher_{{ $key }}"
+                                            wire:ignore>
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <input type="radio" class="star-input"
+                                                    wire:model="teacher_ratings.{{ $key }}"
+                                                    value="{{ $i }}"
+                                                    id="teacher_{{ $key }}_{{ $i }}"
+                                                    {{ ($teacher_ratings[$key] ?? 0) == $i ? 'checked' : '' }}>
+                                                <label class="star-label"
+                                                    for="teacher_{{ $key }}_{{ $i }}"
+                                                    data-rating="{{ $i }}">
+                                                    <i class="bi bi-star"></i>
+                                                </label>
+                                            @endfor
+                                        </div>
+                                        <span class="text-muted small">Rất đồng ý</span>
                                     </div>
-                                    <span class="text-muted small">Rất đồng ý</span>
+                                    @error("teacher_ratings.{$key}")
+                                        <div class="text-danger small mt-1">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                                @error("teacher_ratings.{$key}")
-                                    <div class="text-danger small mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-
-                <!-- Nhóm 2: Đánh giá về chất lượng khóa học -->
-                <div class="card shadow-sm mb-4">
-                    <div class="card-header bg-success text-white">
-                        <h5 class="mb-0">
-                            <i class="bi bi-book mr-2"></i>
-                            Nhóm 2: Đánh giá về chất lượng khóa học
-                            <span class="badge bg-light text-success ml-2">{{ count($courseQuestions) }} câu
-                                hỏi</span>
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        @foreach ($courseQuestions as $key => $question)
-                            <div class="mb-4">
-                                <label class="form-label fw-bold">
-                                    {{ $loop->iteration + count($teacherQuestions) }}. {{ $question }}
-                                </label>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="text-muted small">Rất không đồng ý</span>
-                                    <div class="star-rating" data-question="course_{{ $key }}" wire:ignore>
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            <input type="radio" class="star-input"
-                                                wire:model="course_ratings.{{ $key }}"
-                                                value="{{ $i }}"
-                                                id="course_{{ $key }}_{{ $i }}"
-                                                {{ ($course_ratings[$key] ?? 0) == $i ? 'checked' : '' }}>
-                                            <label class="star-label"
-                                                for="course_{{ $key }}_{{ $i }}"
-                                                data-rating="{{ $i }}">
-                                                <i class="bi bi-star"></i>
-                                            </label>
-                                        @endfor
-                                    </div>
-                                    <span class="text-muted small">Rất đồng ý</span>
-                                </div>
-                                @error("course_ratings.{$key}")
-                                    <div class="text-danger small mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-
-                <!-- Nhóm 3: Cảm nhận cá nhân -->
-                <div class="card shadow-sm mb-4">
-                    <div class="card-header bg-warning text-dark">
-                        <h5 class="mb-0">
-                            <i class="bi bi-emoji-smile mr-2"></i>
-                            Nhóm 3: Cảm nhận cá nhân
-                            <span class="badge bg-light text-warning ml-2">{{ count($personalQuestions) }} câu
-                                hỏi</span>
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        @foreach ($personalQuestions as $key => $question)
-                            <div class="mb-4">
-                                <label class="form-label fw-bold">
-                                    {{ $loop->iteration + count($teacherQuestions) + count($courseQuestions) }}.
-                                    {{ $question }}
-                                </label>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="text-muted small">Rất không hài lòng</span>
-                                    <div class="star-rating" data-question="personal_{{ $key }}" wire:ignore>
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            <input type="radio" class="star-input" wire:model="personal_satisfaction"
-                                                value="{{ $i }}"
-                                                id="personal_{{ $key }}_{{ $i }}"
-                                                {{ ($personal_satisfaction ?? 0) == $i ? 'checked' : '' }}>
-                                            <label class="star-label"
-                                                for="personal_{{ $key }}_{{ $i }}"
-                                                data-rating="{{ $i }}">
-                                                <i class="bi bi-star"></i>
-                                            </label>
-                                        @endfor
-                                    </div>
-                                    <span class="text-muted small">Rất hài lòng</span>
-                                </div>
-                                @error('personal_satisfaction')
-                                    <div class="text-danger small mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        @endforeach
-
-                        <div class="mb-3">
-                            <label for="suggestions" class="form-label fw-bold">
-                                {{ count($teacherQuestions) + count($courseQuestions) + count($personalQuestions) + 1 }}.
-                                Bạn có đề xuất gì để cải thiện chất lượng giảng dạy hoặc môn học không?
-                            </label>
-                            <textarea wire:model="suggestions" class="form-control" id="suggestions" rows="4"
-                                placeholder="Nhập đề xuất của bạn (không bắt buộc)..."></textarea>
-                            @error('suggestions')
-                                <div class="text-danger small mt-1">{{ $message }}</div>
-                            @enderror
+                            @endforeach
                         </div>
                     </div>
-                </div>
 
-                <!-- Buttons -->
-                <div class="d-flex justify-content-between">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-save mr-2"></i>Lưu đánh giá
-                    </button>
-                    @php
-                        $teacherAnswered = count($teacher_ratings) >= count($teacherQuestions);
-                        $courseAnswered = count($course_ratings) >= count($courseQuestions);
-                        $personalAnswered = !empty($personal_satisfaction);
-                        $allAnswered = $teacherAnswered && $courseAnswered && $personalAnswered;
-                    @endphp
-                    <button type="button" wire:click="submitEvaluation"
-                        class="btn btn-success {{ !$allAnswered ? 'disabled' : '' }}"
-                        {{ !$allAnswered ? 'disabled' : '' }}>
-                        <i class="bi bi-send mr-2"></i>Gửi đánh giá
-                    </button>
-                </div>
-
-                @if (!$allAnswered)
-                    <div class="alert alert-warning mt-3">
-                        <i class="bi bi-exclamation-triangle mr-2"></i>
-                        <strong>Lưu ý:</strong> Bạn cần trả lời đầy đủ tất cả câu hỏi bắt buộc trước khi có thể
-                        gửi đánh giá.
-                        @if (!$teacherAnswered)
-                            <br><small class="text-muted">• Chưa trả lời đầy đủ câu hỏi về giáo viên</small>
-                        @endif
-                        @if (!$courseAnswered)
-                            <br><small class="text-muted">• Chưa trả lời đầy đủ câu hỏi về khóa học</small>
-                        @endif
-                        @if (!$personalAnswered)
-                            <br><small class="text-muted">• Chưa đánh giá mức độ hài lòng cá nhân</small>
-                        @endif
+                    <!-- Nhóm 2: Đánh giá về chất lượng khóa học -->
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">
+                                <i class="bi bi-book mr-2"></i>
+                                Nhóm 2: Đánh giá về chất lượng khóa học
+                                <span class="badge bg-light text-success ml-2">{{ count($courseQuestions) }} câu
+                                    hỏi</span>
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            @foreach ($courseQuestions as $key => $question)
+                                <div class="mb-4">
+                                    <label class="form-label fw-bold">
+                                        {{ $loop->iteration + count($teacherQuestions) }}. {{ $question }}
+                                    </label>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="text-muted small">Rất không đồng ý</span>
+                                        <div class="star-rating" data-question="course_{{ $key }}"
+                                            wire:ignore>
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <input type="radio" class="star-input"
+                                                    wire:model="course_ratings.{{ $key }}"
+                                                    value="{{ $i }}"
+                                                    id="course_{{ $key }}_{{ $i }}"
+                                                    {{ ($course_ratings[$key] ?? 0) == $i ? 'checked' : '' }}>
+                                                <label class="star-label"
+                                                    for="course_{{ $key }}_{{ $i }}"
+                                                    data-rating="{{ $i }}">
+                                                    <i class="bi bi-star"></i>
+                                                </label>
+                                            @endfor
+                                        </div>
+                                        <span class="text-muted small">Rất đồng ý</span>
+                                    </div>
+                                    @error("course_ratings.{$key}")
+                                        <div class="text-danger small mt-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
-                @endif
+
+                    <!-- Nhóm 3: Cảm nhận cá nhân -->
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-warning text-dark">
+                            <h5 class="mb-0">
+                                <i class="bi bi-emoji-smile mr-2"></i>
+                                Nhóm 3: Cảm nhận cá nhân
+                                <span class="badge bg-light text-warning ml-2">{{ count($personalQuestions) }} câu
+                                    hỏi</span>
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            @foreach ($personalQuestions as $key => $question)
+                                <div class="mb-4">
+                                    <label class="form-label fw-bold">
+                                        {{ $loop->iteration + count($teacherQuestions) + count($courseQuestions) }}.
+                                        {{ $question }}
+                                    </label>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="text-muted small">Rất không hài lòng</span>
+                                        <div class="star-rating" data-question="personal_{{ $key }}"
+                                            wire:ignore>
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <input type="radio" class="star-input"
+                                                    wire:model="personal_satisfaction" value="{{ $i }}"
+                                                    id="personal_{{ $key }}_{{ $i }}"
+                                                    {{ ($personal_satisfaction ?? 0) == $i ? 'checked' : '' }}>
+                                                <label class="star-label"
+                                                    for="personal_{{ $key }}_{{ $i }}"
+                                                    data-rating="{{ $i }}">
+                                                    <i class="bi bi-star"></i>
+                                                </label>
+                                            @endfor
+                                        </div>
+                                        <span class="text-muted small">Rất hài lòng</span>
+                                    </div>
+                                    @error('personal_satisfaction')
+                                        <div class="text-danger small mt-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            @endforeach
+
+                            <div class="mb-3">
+                                <label for="suggestions" class="form-label fw-bold">
+                                    {{ count($teacherQuestions) + count($courseQuestions) + count($personalQuestions) + 1 }}.
+                                    Bạn có đề xuất gì để cải thiện chất lượng giảng dạy hoặc môn học không?
+                                </label>
+                                <textarea wire:model="suggestions" class="form-control" id="suggestions" rows="4"
+                                    placeholder="Nhập đề xuất của bạn (không bắt buộc)..."></textarea>
+                                @error('suggestions')
+                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-save mr-2"></i>Lưu đánh giá
+                        </button>
+                        @php
+                            $teacherAnswered = count($teacher_ratings) >= count($teacherQuestions);
+                            $courseAnswered = count($course_ratings) >= count($courseQuestions);
+                            $personalAnswered = !empty($personal_satisfaction);
+                            $allAnswered = $teacherAnswered && $courseAnswered && $personalAnswered;
+                        @endphp
+                        <button type="button" wire:click="submitEvaluation"
+                            class="btn btn-success {{ !$allAnswered ? 'disabled' : '' }}"
+                            {{ !$allAnswered ? 'disabled' : '' }}>
+                            <i class="bi bi-send mr-2"></i>Gửi đánh giá
+                        </button>
+                    </div>
+
+                    @if (!$allAnswered)
+                        <div class="alert alert-warning mt-3">
+                            <i class="bi bi-exclamation-triangle mr-2"></i>
+                            <strong>Lưu ý:</strong> Bạn cần trả lời đầy đủ tất cả câu hỏi bắt buộc trước khi có thể
+                            gửi đánh giá.
+                            @if (!$teacherAnswered)
+                                <br><small class="text-muted">• Chưa trả lời đầy đủ câu hỏi về giáo viên</small>
+                            @endif
+                            @if (!$courseAnswered)
+                                <br><small class="text-muted">• Chưa trả lời đầy đủ câu hỏi về khóa học</small>
+                            @endif
+                            @if (!$personalAnswered)
+                                <br><small class="text-muted">• Chưa đánh giá mức độ hài lòng cá nhân</small>
+                            @endif
+                        </div>
+                    @endif
                 </form>
             @endif
         @else
@@ -459,7 +467,7 @@
                 });
             }
 
-                                    function updateStarDisplay() {
+            function updateStarDisplay() {
                 // Cập nhật hiển thị sao cho tất cả các container
                 document.querySelectorAll('.star-rating').forEach(function(container) {
                     const questionType = container.getAttribute('data-question');
@@ -502,7 +510,7 @@
                 });
             }
 
-                        // Khởi tạo khi trang load
+            // Khởi tạo khi trang load
             document.addEventListener('DOMContentLoaded', function() {
                 initStarRatings();
                 updateStarDisplay();
