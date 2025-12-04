@@ -22,7 +22,7 @@ jobs:
 
       - name: Merge main into other branches
         run: |
-          branches=("tunganh" "tuananh" "ducduy" "linhchi" "hoduc" "duyhai")
+          branches=("tunganh" "tuananh")
 
           for branch in "${branches[@]}"; do
             echo "----- Đang merge vào $branch -----"
