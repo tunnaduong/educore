@@ -84,9 +84,6 @@
                                     <p class="text-muted small">{{ __('views.quiz_check_desc') }}</p>
                                     <button type="button" class="btn btn-warning" wire:click="validateQuizWithAI">
                                         <i class="fas fa-check-circle mr-1"></i>{{ __('views.quiz_check_button') }}
-                                        <div wire:loading.remove>
-                                            <i class="fas fa-check-circle mr-1"></i>{{ __('views.quiz_check_button') }}
-                                        </div>
                                         <div wire:loading class="loading-overlay">
                                             <div class="spinner-border spinner-border-sm text-light me-2"
                                                 role="status">
