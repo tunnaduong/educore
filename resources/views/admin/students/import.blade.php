@@ -39,7 +39,7 @@
                                 <label for="file" class="form-label">Chọn file Excel <span
                                         class="text-danger">*</span></label>
                                 <div class="input-group">
-                                    <input type="file" wire:model.live="file"
+                                    <input type="file" wire:model="file"
                                         class="form-control @error('file') is-invalid @enderror" id="file"
                                         accept=".xlsx,.xls">
                                     @error('file')
