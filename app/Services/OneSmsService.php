@@ -18,8 +18,8 @@ class OneSmsService
 
     public function __construct()
     {
-        $this->username = config('services.onesms.username');
-        $this->password = config('services.onesms.password');
+        $this->username = (string) (config('services.onesms.username') ?? '');
+        $this->password = (string) (config('services.onesms.password') ?? '');
     }
 
     /**
