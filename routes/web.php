@@ -16,6 +16,7 @@ use App\Livewire\Admin\Schedules\Show as SchedulesShow;
 use App\Livewire\Admin\Students\Create as StudentsCreate;
 use App\Livewire\Admin\Students\Edit as StudentsEdit;
 use App\Livewire\Admin\Students\Index as StudentsIndex;
+use App\Livewire\Admin\Students\Import as StudentsImport;
 use App\Livewire\Admin\Students\Show as StudentsShow;
 use App\Livewire\Admin\Users\Create as UsersCreate;
 use App\Livewire\Admin\Users\Edit as UsersEdit;
@@ -70,6 +71,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/classrooms/{classroom}/attendance-history', \App\Livewire\Admin\Attendance\AttendanceHistory::class)->name('classrooms.attendance-history');
     Route::get('/admin/students', StudentsIndex::class)->name('students.index');
     Route::get('/admin/students/create', StudentsCreate::class)->name('students.create');
+    Route::get('/admin/students/import', StudentsImport::class)->name('students.import');
     Route::get('/admin/students/{student}/edit', StudentsEdit::class)->name('students.edit');
     Route::get('/admin/students/{student}', StudentsShow::class)->name('students.show');
     Route::get('/admin/attendances', AttendanceOverview::class)->name('attendances.overview');
