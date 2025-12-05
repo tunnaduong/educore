@@ -25,15 +25,8 @@ class Import extends Component
         // Component được mount nhưng modal đóng
     }
 
-    protected $rules = [
-        'file' => 'required|mimes:xlsx,xls|max:10240', // 10MB
-    ];
-
-    protected $messages = [
-        'file.required' => 'Vui lòng chọn file Excel để import.',
-        'file.mimes' => 'File phải có định dạng .xlsx hoặc .xls.',
-        'file.max' => 'File không được vượt quá 10MB.',
-    ];
+    // Không đặt rules ở đây để tránh validate tự động khi chọn file
+    // Chỉ validate khi submit form
 
     public function openModal()
     {
@@ -45,6 +38,13 @@ class Import extends Component
     {
         $this->showModal = false;
         $this->reset(['file', 'importResult']);
+        $this->resetValidation();
+    }
+
+    public function updatedFile()
+    {
+        // Clear validation errors khi file được chọn
+        $this->resetValidation('file');
     }
 
     public function downloadTemplate()
@@ -54,7 +54,14 @@ class Import extends Component
 
     public function import()
     {
-        $this->validate();
+        // Validate chỉ khi submit
+        $this->validate([
+            'file' => 'required|mimes:xlsx,xls|max:10240',
+        ], [
+            'file.required' => 'Vui lòng chọn file Excel để import.',
+            'file.mimes' => 'File phải có định dạng .xlsx hoặc .xls.',
+            'file.max' => 'File không được vượt quá 10MB.',
+        ]);
 
         try {
             $import = new StudentsImport;

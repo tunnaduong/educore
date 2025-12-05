@@ -1,4 +1,20 @@
 <div>
+    <style>
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .spin {
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+    </style>
     <!-- Import Modal -->
     @if ($showModal)
         <!-- Modal Backdrop -->
@@ -7,11 +23,12 @@
         </div>
 
         <!-- Modal -->
-        <div class="modal fade show" style="display: block; z-index: 1050;" tabindex="-1" role="dialog"
+        <div class="modal fade show" style="display: block; z-index: 1050; overflow-y: auto;" tabindex="-1" role="dialog"
             aria-labelledby="importModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header bg-primary text-white">
+            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document"
+                style="max-height: 90vh; margin: 1.75rem auto;">
+                <div class="modal-content" style="max-height: 90vh; display: flex; flex-direction: column;">
+                    <div class="modal-header bg-primary text-white" style="flex-shrink: 0;">
                         <h5 class="modal-title" id="importModalLabel">
                             <i class="bi bi-file-earmark-excel mr-2"></i>Nhập học viên từ file Excel
                         </h5>
@@ -19,7 +36,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" style="overflow-y: auto; flex: 1 1 auto;">
                         <!-- Hướng dẫn -->
                         <div class="alert alert-info mb-4">
                             <h6 class="alert-heading"><i class="bi bi-info-circle mr-2"></i>Hướng dẫn:</h6>
@@ -43,11 +60,14 @@
                                         class="form-control @error('file') is-invalid @enderror" id="file"
                                         accept=".xlsx,.xls">
                                     @error('file')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                @if ($file)
-                                    <small class="text-muted mt-1 d-block">
+                                <div wire:loading wire:target="file" class="text-muted small mt-1">
+                                    <i class="bi bi-arrow-repeat spin mr-1"></i>Đang tải file...
+                                </div>
+                                @if ($file && !$errors->has('file'))
+                                    <small class="text-success mt-1 d-block">
                                         <i class="bi bi-file-earmark-check mr-1"></i>
                                         Đã chọn: {{ $file->getClientOriginalName() }}
                                         ({{ number_format($file->getSize() / 1024, 2) }} KB)
@@ -63,8 +83,14 @@
                                     <button type="button" class="btn btn-secondary mr-2" wire:click="closeModal">
                                         Hủy
                                     </button>
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="bi bi-upload mr-2"></i>Import
+                                    <button type="submit" class="btn btn-primary" wire:loading.attr="disabled"
+                                        wire:target="import,file">
+                                        <span wire:loading.remove wire:target="import,file">
+                                            <i class="bi bi-upload mr-2"></i>Import
+                                        </span>
+                                        <span wire:loading wire:target="import,file">
+                                            <i class="bi bi-arrow-repeat spin mr-2"></i>Đang xử lý...
+                                        </span>
                                     </button>
                                 </div>
                             </div>
