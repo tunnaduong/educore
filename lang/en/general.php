@@ -1262,4 +1262,7 @@ return [
     'time_limit_minutes' => 'Time limit (minutes)',
     'cancel_edit' => 'Cancel edit',
     'add_question_btn' => 'Add question',
+    'quiz_completed_title' => 'Quiz Completed',
+    'quiz_duration' => 'Duration',
+    'back_to_home' => 'Back to Home',
 ];

@@ -1290,4 +1290,7 @@ return [
     'time_limit_minutes' => 'Thời gian làm bài (phút)',
     'cancel_edit' => 'Hủy sửa',
     'add_question_btn' => 'Thêm câu hỏi',
+    'quiz_completed_title' => 'Hoàn thành bài kiểm tra',
+    'quiz_duration' => 'Thời gian làm bài',
+    'back_to_home' => 'Về trang chủ',
 ];
