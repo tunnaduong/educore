@@ -75,6 +75,7 @@ return [
             'svg',
             'wav',
             'mp4',
+            'm4a',
             'mov',
             'avi',
             'wmv',
