@@ -53,12 +53,20 @@ Route::post('/logout', function (Request $request) {
     return redirect()->route('login');
 })->name('logout');
 
-Route::middleware(['auth', 'role:admin,teacher,student'])->group(function () {
+// Upgrade page - không cần middleware license
+Route::middleware(['auth'])->group(function () {
+    Route::get('/upgrade', \App\Livewire\Upgrade\Index::class)->name('upgrade.index');
+});
+
+// SEPay webhook được xử lý tự động bởi package sepayvn/laravel-sepay
+// Route: /api/sepay/webhook (không cần định nghĩa thủ công)
+
+Route::middleware(['auth', 'role:admin,teacher,student', 'license'])->group(function () {
     Route::get('/dashboard', Home::class)->name('dashboard');
 });
 
 // Admin routes
-Route::middleware(['auth', 'role:admin'])->group(function () {
+Route::middleware(['auth', 'role:admin', 'license'])->group(function () {
     Route::get('/admin/users', UsersIndex::class)->name('users.index');
     Route::get('/admin/users/{user}/edit', UsersEdit::class)->name('users.edit');
     Route::get('/admin/users/create', UsersCreate::class)->name('users.create');
@@ -135,7 +143,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 });
 
 // Teacher routes
-Route::middleware(['auth', 'role:teacher'])->name('teacher.')->group(function () {
+Route::middleware(['auth', 'role:teacher', 'license'])->name('teacher.')->group(function () {
     // My Class routes
     Route::get('/teacher/my-class', \App\Livewire\Teacher\MyClass\Index::class)->name('my-class.index');
     Route::get('/teacher/my-class/{classroomId}', \App\Livewire\Teacher\MyClass\Show::class)->name('my-class.show');
@@ -199,7 +207,7 @@ Route::middleware(['auth', 'role:teacher'])->name('teacher.')->group(function ()
 });
 
 // Student routes
-Route::middleware(['auth', 'verified', 'role:student'])->name('student.')->prefix('student')->group(function () {
+Route::middleware(['auth', 'verified', 'role:student', 'license'])->name('student.')->prefix('student')->group(function () {
     // Other student routes...
     Route::get('/lessons', \App\Livewire\Student\Lessons\Index::class)->name('lessons.index');
     Route::get('/lessons/{lessonId}', \App\Livewire\Student\Lessons\Show::class)->name('lessons.show');
@@ -224,7 +232,7 @@ Route::middleware(['auth', 'verified', 'role:student'])->name('student.')->prefi
     Route::get('/evaluation', \App\Livewire\Student\Evaluation\Index::class)->name('evaluation');
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'license'])->group(function () {
     // Chat file upload
     Route::post('/chat/upload', [App\Http\Controllers\ChatController::class, 'uploadAttachment'])->name('chat.upload');
 });

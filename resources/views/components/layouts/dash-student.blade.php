@@ -17,6 +17,7 @@
         </ul>
         <ul class="navbar-nav ml-auto">
             <x-language-switcher />
+            <livewire:components.license-badge />
             <li class="nav-item"><livewire:components.notification-bell /></li>
             <li class="nav-item">
                 <livewire:components.logout />
