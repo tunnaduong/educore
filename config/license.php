@@ -1,7 +1,7 @@
 <?php
 
 return [
-  /*
+    /*
   |--------------------------------------------------------------------------
   | Free Trial Configuration
   |--------------------------------------------------------------------------
@@ -10,8 +10,8 @@ return [
   |
   */
 
-  'free_trial_duration_days' => env('FREE_TRIAL_DURATION_DAYS', 7),
+    'free_trial_duration_days' => env('FREE_TRIAL_DURATION_DAYS', 7),
 
-  'free_trial_auto_activate' => env('FREE_TRIAL_AUTO_ACTIVATE', true),
+    'free_trial_auto_activate' => env('FREE_TRIAL_AUTO_ACTIVATE', true),
 
 ];
