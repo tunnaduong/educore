@@ -9,105 +9,105 @@ use SePay\SePay\Events\SePayWebhookEvent;
 
 class SePayWebhookListener
 {
-  protected $licenseService;
+    protected $licenseService;
 
-  /**
-   * Create the event listener.
-   */
-  public function __construct(LicenseService $licenseService)
-  {
-    $this->licenseService = $licenseService;
-  }
-
-  /**
-   * Handle the event.
-   * Xử lý webhook từ SEPay và kích hoạt license
-   */
-  public function handle(SePayWebhookEvent $event): void
-  {
-    // Chỉ xử lý giao dịch tiền vào
-    if ($event->sePayWebhookData->transferType !== 'in') {
-      return;
+    /**
+     * Create the event listener.
+     */
+    public function __construct(LicenseService $licenseService)
+    {
+        $this->licenseService = $licenseService;
     }
 
-    try {
-      // $event->info chứa thông tin được parse từ pattern (ví dụ: user_id)
-      // Pattern mặc định là "SE" nên nội dung "SE123456" sẽ parse được "123456"
-      $userId = $event->info;
+    /**
+     * Handle the event.
+     * Xử lý webhook từ SEPay và kích hoạt license
+     */
+    public function handle(SePayWebhookEvent $event): void
+    {
+        // Chỉ xử lý giao dịch tiền vào
+        if ($event->sePayWebhookData->transferType !== 'in') {
+            return;
+        }
 
-      if (!$userId) {
-        Log::warning('SePayWebhookListener: Không tìm thấy user ID từ webhook', [
-          'content' => $event->sePayWebhookData->content ?? null,
-          'code' => $event->sePayWebhookData->code ?? null,
-        ]);
-        return;
-      }
+        try {
+            // $event->info chứa thông tin được parse từ pattern (ví dụ: user_id)
+            // Pattern mặc định là "SE" nên nội dung "SE123456" sẽ parse được "123456"
+            $userId = $event->info;
 
-      // Tìm user
-      $user = User::find($userId);
-      if (!$user) {
-        Log::warning("SePayWebhookListener: Không tìm thấy user với ID: {$userId}");
-        return;
-      }
+            if (! $userId) {
+                Log::warning('SePayWebhookListener: Không tìm thấy user ID từ webhook', [
+                    'content' => $event->sePayWebhookData->content ?? null,
+                    'code' => $event->sePayWebhookData->code ?? null,
+                ]);
 
-      // Parse plan type từ nội dung chuyển khoản
-      $content = $event->sePayWebhookData->content ?? '';
-      $planType = $this->parsePlanTypeFromContent($content);
+                return;
+            }
 
-      if (!$planType) {
-        Log::warning("SePayWebhookListener: Không thể xác định plan type từ content: {$content}");
-        return;
-      }
+            // Tìm user
+            $user = User::find($userId);
+            if (! $user) {
+                Log::warning("SePayWebhookListener: Không tìm thấy user với ID: {$userId}");
 
-      // Tạo payment record
-      $payment = \App\Models\Payment::create([
-        'user_id' => $user->id,
-        'class_id' => 1, // Default class
-        'amount' => $event->sePayWebhookData->transferAmount ?? 0,
-        'type' => $planType,
-        'status' => 'paid',
-        'paid_at' => isset($event->sePayWebhookData->transactionDate)
-          ? \Carbon\Carbon::parse($event->sePayWebhookData->transactionDate)
-          : \Carbon\Carbon::now(),
-      ]);
+                return;
+            }
 
-      // Kích hoạt license
-      $license = $this->licenseService->activateLicense($user, $planType, $payment->id);
+            // Parse plan type từ nội dung chuyển khoản
+            $content = $event->sePayWebhookData->content ?? '';
+            $planType = $this->parsePlanTypeFromContent($content);
 
-      Log::info("SePayWebhookListener: License activated successfully", [
-        'user_id' => $user->id,
-        'license_id' => $license->id,
-        'plan_type' => $planType,
-        'transaction_id' => $event->sePayWebhookData->id ?? null,
-      ]);
-    } catch (\Exception $e) {
-      Log::error("SePayWebhookListener: Error processing webhook", [
-        'error' => $e->getMessage(),
-        'trace' => $e->getTraceAsString(),
-      ]);
-    }
-  }
+            if (! $planType) {
+                Log::warning("SePayWebhookListener: Không thể xác định plan type từ content: {$content}");
 
-  /**
-   * Parse plan type từ nội dung chuyển khoản
-   *
-   * @param  string  $content
-   * @return string|null
-   */
-  private function parsePlanTypeFromContent(string $content): ?string
-  {
-    $contentLower = strtolower($content);
+                return;
+            }
 
-    // Kiểm tra monthly
-    if (str_contains($contentLower, 'monthly') || str_contains($contentLower, 'thang')) {
-      return 'vip_monthly';
-    }
+            // Tạo payment record
+            $payment = \App\Models\Payment::create([
+                'user_id' => $user->id,
+                'class_id' => 1, // Default class
+                'amount' => $event->sePayWebhookData->transferAmount ?? 0,
+                'type' => $planType,
+                'status' => 'paid',
+                'paid_at' => isset($event->sePayWebhookData->transactionDate)
+                  ? \Carbon\Carbon::parse($event->sePayWebhookData->transactionDate)
+                  : \Carbon\Carbon::now(),
+            ]);
 
-    // Kiểm tra yearly
-    if (str_contains($contentLower, 'yearly') || str_contains($contentLower, 'nam')) {
-      return 'vip_yearly';
+            // Kích hoạt license
+            $license = $this->licenseService->activateLicense($user, $planType, $payment->id);
+
+            Log::info('SePayWebhookListener: License activated successfully', [
+                'user_id' => $user->id,
+                'license_id' => $license->id,
+                'plan_type' => $planType,
+                'transaction_id' => $event->sePayWebhookData->id ?? null,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('SePayWebhookListener: Error processing webhook', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+        }
     }
 
-    return null;
-  }
+    /**
+     * Parse plan type từ nội dung chuyển khoản
+     */
+    private function parsePlanTypeFromContent(string $content): ?string
+    {
+        $contentLower = strtolower($content);
+
+        // Kiểm tra monthly
+        if (str_contains($contentLower, 'monthly') || str_contains($contentLower, 'thang')) {
+            return 'vip_monthly';
+        }
+
+        // Kiểm tra yearly
+        if (str_contains($contentLower, 'yearly') || str_contains($contentLower, 'nam')) {
+            return 'vip_yearly';
+        }
+
+        return null;
+    }
 }

@@ -1284,4 +1284,7 @@ return [
     'time_limit_minutes' => '时间限制（分钟）',
     'cancel_edit' => '取消编辑',
     'add_question_btn' => '添加题目',
+    'quiz_completed_title' => '测验完成',
+    'quiz_duration' => '持续时间',
+    'back_to_home' => '返回首页',
 ];

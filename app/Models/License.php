@@ -8,194 +8,182 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class License extends Model
 {
-  /**
-   * Các trường có thể gán hàng loạt
-   *
-   * @var array<int, string>
-   */
-  protected $fillable = [
-    'user_id',
-    'plan_type',
-    'status',
-    'started_at',
-    'expires_at',
-    'is_lifetime',
-    'payment_id',
-    'auto_renew',
-  ];
+    /**
+     * Các trường có thể gán hàng loạt
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'user_id',
+        'plan_type',
+        'status',
+        'started_at',
+        'expires_at',
+        'is_lifetime',
+        'payment_id',
+        'auto_renew',
+    ];
 
-  /**
-   * Các trường được cast
-   *
-   * @var array<string, string>
-   */
-  protected $casts = [
-    'started_at' => 'datetime',
-    'expires_at' => 'datetime',
-    'is_lifetime' => 'boolean',
-    'auto_renew' => 'boolean',
-  ];
+    /**
+     * Các trường được cast
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'started_at' => 'datetime',
+        'expires_at' => 'datetime',
+        'is_lifetime' => 'boolean',
+        'auto_renew' => 'boolean',
+    ];
 
-  /**
-   * Relationship với User
-   */
-  public function user(): BelongsTo
-  {
-    return $this->belongsTo(User::class);
-  }
-
-  /**
-   * Relationship với Payment
-   */
-  public function payment(): BelongsTo
-  {
-    return $this->belongsTo(Payment::class);
-  }
-
-  /**
-   * Kiểm tra license có đang active không
-   *
-   * @return bool
-   */
-  public function isActive(): bool
-  {
-    if ($this->status !== 'active') {
-      return false;
+    /**
+     * Relationship với User
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
-    // Nếu là lifetime thì luôn active
-    if ($this->is_lifetime) {
-      return true;
+    /**
+     * Relationship với Payment
+     */
+    public function payment(): BelongsTo
+    {
+        return $this->belongsTo(Payment::class);
     }
 
-    // Kiểm tra ngày hết hạn
-    if ($this->expires_at && $this->expires_at->isPast()) {
-      return false;
+    /**
+     * Kiểm tra license có đang active không
+     */
+    public function isActive(): bool
+    {
+        if ($this->status !== 'active') {
+            return false;
+        }
+
+        // Nếu là lifetime thì luôn active
+        if ($this->is_lifetime) {
+            return true;
+        }
+
+        // Kiểm tra ngày hết hạn
+        if ($this->expires_at && $this->expires_at->isPast()) {
+            return false;
+        }
+
+        return true;
     }
 
-    return true;
-  }
+    /**
+     * Kiểm tra license đã hết hạn chưa
+     */
+    public function isExpired(): bool
+    {
+        if ($this->status === 'expired') {
+            return true;
+        }
 
-  /**
-   * Kiểm tra license đã hết hạn chưa
-   *
-   * @return bool
-   */
-  public function isExpired(): bool
-  {
-    if ($this->status === 'expired') {
-      return true;
+        // Nếu là lifetime thì không bao giờ hết hạn
+        if ($this->is_lifetime) {
+            return false;
+        }
+
+        // Kiểm tra ngày hết hạn
+        if ($this->expires_at && $this->expires_at->isPast()) {
+            return true;
+        }
+
+        return false;
     }
 
-    // Nếu là lifetime thì không bao giờ hết hạn
-    if ($this->is_lifetime) {
-      return false;
+    /**
+     * Tính số ngày còn lại của license
+     */
+    public function daysRemaining(): ?int
+    {
+        if ($this->is_lifetime) {
+            return null; // Lifetime không có ngày hết hạn
+        }
+
+        if (! $this->expires_at) {
+            return null;
+        }
+
+        $now = Carbon::now();
+        $expiresAt = Carbon::parse($this->expires_at);
+
+        if ($expiresAt->isPast()) {
+            return 0;
+        }
+
+        return $now->diffInDays($expiresAt, false);
     }
 
-    // Kiểm tra ngày hết hạn
-    if ($this->expires_at && $this->expires_at->isPast()) {
-      return true;
+    /**
+     * Kiểm tra có phải gói dùng thử không
+     */
+    public function isFreeTrial(): bool
+    {
+        return $this->plan_type === 'free_trial';
     }
 
-    return false;
-  }
+    /**
+     * Gia hạn license
+     */
+    public function renew(string $planType, ?int $paymentId = null): self
+    {
+        $this->status = 'active';
+        $this->plan_type = $planType;
+        $this->started_at = Carbon::now();
 
-  /**
-   * Tính số ngày còn lại của license
-   *
-   * @return int|null
-   */
-  public function daysRemaining(): ?int
-  {
-    if ($this->is_lifetime) {
-      return null; // Lifetime không có ngày hết hạn
+        // Tính ngày hết hạn dựa trên plan type
+        if ($planType === 'vip_monthly') {
+            $this->expires_at = Carbon::now()->addMonth();
+        } elseif ($planType === 'vip_yearly') {
+            $this->expires_at = Carbon::now()->addYear();
+        }
+
+        if ($paymentId) {
+            $this->payment_id = $paymentId;
+        }
+
+        $this->save();
+
+        return $this;
     }
 
-    if (!$this->expires_at) {
-      return null;
+    /**
+     * Scope: Lấy các license đang active
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'active')
+            ->where(function ($q) {
+                $q->where('is_lifetime', true)
+                    ->orWhere(function ($q2) {
+                        $q2->whereNotNull('expires_at')
+                            ->where('expires_at', '>', now());
+                    });
+            });
     }
 
-    $now = Carbon::now();
-    $expiresAt = Carbon::parse($this->expires_at);
-
-    if ($expiresAt->isPast()) {
-      return 0;
+    /**
+     * Scope: Lấy các license đã hết hạn
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeExpired($query)
+    {
+        return $query->where('status', 'expired')
+            ->orWhere(function ($q) {
+                $q->where('status', 'active')
+                    ->where('is_lifetime', false)
+                    ->whereNotNull('expires_at')
+                    ->where('expires_at', '<=', now());
+            });
     }
-
-    return $now->diffInDays($expiresAt, false);
-  }
-
-  /**
-   * Kiểm tra có phải gói dùng thử không
-   *
-   * @return bool
-   */
-  public function isFreeTrial(): bool
-  {
-    return $this->plan_type === 'free_trial';
-  }
-
-  /**
-   * Gia hạn license
-   *
-   * @param  string  $planType
-   * @param  int|null  $paymentId
-   * @return self
-   */
-  public function renew(string $planType, ?int $paymentId = null): self
-  {
-    $this->status = 'active';
-    $this->plan_type = $planType;
-    $this->started_at = Carbon::now();
-
-    // Tính ngày hết hạn dựa trên plan type
-    if ($planType === 'vip_monthly') {
-      $this->expires_at = Carbon::now()->addMonth();
-    } elseif ($planType === 'vip_yearly') {
-      $this->expires_at = Carbon::now()->addYear();
-    }
-
-    if ($paymentId) {
-      $this->payment_id = $paymentId;
-    }
-
-    $this->save();
-
-    return $this;
-  }
-
-  /**
-   * Scope: Lấy các license đang active
-   *
-   * @param  \Illuminate\Database\Eloquent\Builder  $query
-   * @return \Illuminate\Database\Eloquent\Builder
-   */
-  public function scopeActive($query)
-  {
-    return $query->where('status', 'active')
-      ->where(function ($q) {
-        $q->where('is_lifetime', true)
-          ->orWhere(function ($q2) {
-            $q2->whereNotNull('expires_at')
-              ->where('expires_at', '>', now());
-          });
-      });
-  }
-
-  /**
-   * Scope: Lấy các license đã hết hạn
-   *
-   * @param  \Illuminate\Database\Eloquent\Builder  $query
-   * @return \Illuminate\Database\Eloquent\Builder
-   */
-  public function scopeExpired($query)
-  {
-    return $query->where('status', 'expired')
-      ->orWhere(function ($q) {
-        $q->where('status', 'active')
-          ->where('is_lifetime', false)
-          ->whereNotNull('expires_at')
-          ->where('expires_at', '<=', now());
-      });
-  }
 }
