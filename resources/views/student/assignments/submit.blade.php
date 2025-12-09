@@ -334,7 +334,7 @@
 
                                 @case('audio')
                                     <label for="audioFile" class="font-weight-bold">{{ __('general.upload_audio_file') }}</label>
-                                    <input type="file" wire:model.live="audioFile" id="audioFile" accept="audio/*"
+                                    <input type="file" wire:model.live="audioFile" id="audioFile" accept=".mp3,.wav,.m4a,.mp4,.aac,.ogg,.webm,.weba,audio/*"
                                         class="form-control @error('audioFile') is-invalid @enderror">
                                     <div class="form-text">{{ __('general.audio_file_hint_long') }}</div>
                                     @error('audioFile')

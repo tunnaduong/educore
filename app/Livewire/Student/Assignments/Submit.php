@@ -46,7 +46,7 @@ class Submit extends Component
                 ];
             case 'audio':
                 return [
-                    'audioFile' => 'required|file|mimes:mp3,wav,m4a|max:51200', // 50MB
+                    'audioFile' => 'required|file|mimes:mp3,wav,m4a,mp4,aac,ogg,webm,weba|max:51200', // 50MB
                 ];
             case 'video':
                 return [
@@ -66,7 +66,7 @@ class Submit extends Component
         'imageFile.mimes' => 'File phải có định dạng: jpg, jpeg, png, gif, webp',
         'imageFile.max' => 'Kích thước ảnh không được vượt quá 10MB',
         'audioFile.required_if' => 'Vui lòng tải lên file âm thanh',
-        'audioFile.mimes' => 'File âm thanh phải có định dạng mp3, wav, hoặc m4a',
+        'audioFile.mimes' => 'File âm thanh phải có định dạng mp3, wav, m4a, mp4, aac, ogg, webm',
         'audioFile.max' => 'Kích thước file âm thanh không được vượt quá 50MB',
         'videoFile.required_if' => 'Vui lòng tải lên file video',
         'videoFile.mimes' => 'File video phải có định dạng mp4, avi, hoặc mov',
