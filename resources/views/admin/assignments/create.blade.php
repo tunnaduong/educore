@@ -1,4 +1,4 @@
-<x-layouts.dash-admin active="assignments">
+<x-layouts.admin active="assignments">
     @include('components.language')
     <div class="container py-4">
         <!-- Header -->
@@ -161,4 +161,4 @@
             </div>
         </div>
     </div>
-</x-layouts.dash-admin>
+</x-layouts.admin>

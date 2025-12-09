@@ -16,12 +16,13 @@
                         class="fas fa-bars"></i></a>
             </li>
         </ul>
-
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
             <x-language-switcher />
-            <livewire:components.license-badge />
-            <li class="nav-item">
+            <li class="nav-item" wire:ignore>
+                <livewire:components.license-badge />
+            </li>
+            <li class="nav-item" wire:ignore>
                 <livewire:components.notification-bell />
             </li>
             <li class="nav-item">
