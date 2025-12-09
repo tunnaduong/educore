@@ -235,6 +235,6 @@ class AIQuizGenerator extends Component
       'generatedQuiz' => $this->generatedQuiz,
       'isProcessing' => $this->isProcessing,
       'showPreview' => $this->showPreview,
-    ])->layout('components.layouts.dash-admin', ['active' => 'ai']);
+    ])->layout('components.layouts.admin', ['active' => 'ai']);
   }
 }
