@@ -76,9 +76,9 @@
                     });
 
                     // Đồng bộ dữ liệu từ CKEditor về Livewire
-                    editor.on('change', function() {
-                        @this.set('description', editor.getData());
-                    });
+                    // editor.on('change', function() {
+                    //     @this.set('description', editor.getData());
+                    // });
                 }
             }
 
@@ -128,14 +128,15 @@
         <div class="card shadow-sm p-0">
             <div class="row g-0 align-items-stretch">
                 <div class="col-md-7 p-4">
-                    <form wire:submit.prevent="save">
+                    <form action="{{ route('lessons.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
                         <!-- Thông tin bài học -->
                         <div class="mb-4">
                             <h5 class="text-success mb-3">{{ __('general.lesson_info') }}</h5>
                             <div class="mb-3">
                                 <label for="number" class="form-label">{{ __('general.lesson_number') }} <span
                                         class="text-danger">*</span></label>
-                                <input wire:model="number" type="text"
+                                <input name="number" value="{{ old('number') }}" type="text"
                                     class="form-control @error('number') is-invalid @enderror" id="number"
                                     placeholder="{{ __('views.example_lesson_number') }}">
                                 @error('number')
@@ -145,7 +146,7 @@
                             <div class="mb-3">
                                 <label for="title" class="form-label">{{ __('general.title') }} <span
                                         class="text-danger">*</span></label>
-                                <input wire:model="title" type="text"
+                                <input name="title" value="{{ old('title') }}" type="text"
                                     class="form-control @error('title') is-invalid @enderror" id="title"
                                     placeholder="{{ __('views.enter_lesson_title') }}">
                                 @error('title')
@@ -155,11 +156,11 @@
                             <div class="mb-3">
                                 <label for="classroom_id" class="form-label">{{ __('general.classroom') }} <span
                                         class="text-danger">*</span></label>
-                                <select wire:model="classroom_id"
+                                <select name="classroom_id"
                                     class="form-control @error('classroom_id') is-invalid @enderror" id="classroom_id">
                                     <option value="">{{ __('views.select_classroom') }}</option>
                                     @foreach ($classrooms as $class)
-                                        <option value="{{ $class->id }}">{{ $class->name }}</option>
+                                        <option value="{{ $class->id }}" {{ old('classroom_id') == $class->id ? 'selected' : '' }}>{{ $class->name }}</option>
                                     @endforeach
                                 </select>
                                 @error('classroom_id')
@@ -169,8 +170,8 @@
                             <div class="mb-3">
                                 <label for="description" class="form-label">{{ __('general.description') }}</label>
                                 <div wire:ignore>
-                                    <textarea wire:model="description" class="form-control @error('description') is-invalid @enderror" id="description"
-                                        rows="3" placeholder="{{ __('views.enter_lesson_description') }}"></textarea>
+                                    <textarea name="description" class="form-control @error('description') is-invalid @enderror" id="description"
+                                        rows="3" placeholder="{{ __('views.enter_lesson_description') }}">{{ old('description') }}</textarea>
                                 </div>
                                 @error('description')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -178,7 +179,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="video" class="form-label">{{ __('views.video_link_label') }}</label>
-                                <input wire:model="video" type="text"
+                                <input name="video" value="{{ old('video') }}" type="text"
                                     class="form-control @error('video') is-invalid @enderror" id="video"
                                     placeholder="{{ __('views.paste_lesson_video_link') }}">
                                 <small
@@ -189,7 +190,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="attachment" class="form-label">{{ __('views.attachment_label') }}</label>
-                                <input wire:model="attachment" type="file"
+                                <input name="attachment" type="file"
                                     class="form-control @error('attachment') is-invalid @enderror" id="attachment">
                                 @error('attachment')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -200,10 +201,9 @@
                         <div class="d-flex justify-content-end gap-2">
                             <a href="{{ route('lessons.index') }}"
                                 class="btn btn-light">{{ __('general.cancel') }}</a>
-                            <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
+                            <button type="submit" class="btn btn-success">
                                 <i class="bi bi-folder-plus mr-2"></i>
-                                <span wire:loading.remove>{{ __('views.save_lesson') }}</span>
-                                <span wire:loading>{{ __('views.saving') }}...</span>
+                                <span>{{ __('views.save_lesson') }}</span>
                             </button>
                         </div>
                     </form>
