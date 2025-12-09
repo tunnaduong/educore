@@ -205,7 +205,7 @@
         </style>
 
         <!-- AI Loading Modal -->
-        <div wire:loading class="ai-loading-modal">
+        <div wire:loading wire:target="generateQuestionBank" class="ai-loading-modal" style="display: none;">
             <div class="ai-loading-content">
                 <div class="ai-loading-animation">
                     <div class="ai-brain">
@@ -314,19 +314,18 @@
                                             </div>
 
                                             <button type="submit" class="btn btn-primary w-100 position-relative"
-                                                {{ $isProcessing ? 'disabled' : '' }}>
-                                                @if ($isProcessing)
-                                                    <div class="loading-overlay">
-                                                        <div class="spinner-border spinner-border-sm text-light mr-2"
-                                                            role="status">
-                                                            <span class="visually-hidden">{{ __('views.loading') }}</span>
-                                                        </div>
-                                                        <span class="loading-text">{{ __('views.creating_question_bank') }}</span>
+                                                wire:loading.attr="disabled">
+                                                <div wire:loading wire:target="generateQuestionBank" class="loading-overlay">
+                                                    <div class="spinner-border spinner-border-sm text-light mr-2"
+                                                        role="status">
+                                                        <span class="visually-hidden">{{ __('views.loading') }}</span>
                                                     </div>
-                                                @else
+                                                    <span class="loading-text">{{ __('views.creating_question_bank') }}</span>
+                                                </div>
+                                                <div wire:loading.remove wire:target="generateQuestionBank">
                                                     <i class="fas fa-magic mr-2"></i>
                                                     {{ __('views.create_chinese_question_bank_with_ai') }}
-                                                @endif
+                                                </div>
                                             </button>
                                         </form>
                                     </div>
@@ -335,7 +334,7 @@
 
                             <!-- Preview ngân hàng câu hỏi -->
                             <div class="col-md-8">
-                                @if ($isProcessing)
+                                <div wire:loading wire:target="generateQuestionBank" class="w-100">
                                     <div class="card">
                                         <div class="card-body text-center py-5">
                                             <div class="ai-loading-animation">
@@ -358,177 +357,180 @@
                                             </div>
                                         </div>
                                     </div>
-                                @elseif ($showPreview && $generatedBank)
-                                    <div class="card">
-                                        <div class="card-header d-flex justify-content-between align-items-center">
-                                            <h5 class="card-title">{{ __('general.preview_chinese_quiz') }}</h5>
-                                            <div class="btn-group">
-                                                <button wire:click="createQuizFromBank"
-                                                    class="btn btn-outline-info btn-sm">
-                                                    <i class="fas fa-plus"></i> {{ __('views.create_quiz_from_bank') }}
-                                                </button>
-                                                <button wire:click="saveQuestionBank" class="btn btn-success btn-sm">
-                                                    <i class="fas fa-save"></i> {{ __('views.save_question_bank') }}
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <!-- Thống kê -->
-                                            <div class="row mb-4">
-                                                <div class="col-md-3">
-                                                    <div class="card bg-primary text-white">
-                                                        <div class="card-body text-center">
-                                                            <h4>{{ $generatedBank['statistics']['total_questions'] ?? 0 }}
-                                                            </h4>
-                                                            <small>{{ __('views.total_questions') }}</small>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="card bg-success text-white">
-                                                        <div class="card-body text-center">
-                                                            <h4>{{ $generatedBank['statistics']['easy_count'] ?? 0 }}
-                                                            </h4>
-                                                            <small>{{ __('views.easy_count') }}</small>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="card bg-warning text-white">
-                                                        <div class="card-body text-center">
-                                                            <h4>{{ $generatedBank['statistics']['medium_count'] ?? 0 }}
-                                                            </h4>
-                                                            <small>{{ __('views.medium_count') }}</small>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="card bg-danger text-white">
-                                                        <div class="card-body text-center">
-                                                            <h4>{{ $generatedBank['statistics']['hard_count'] ?? 0 }}
-                                                            </h4>
-                                                            <small>{{ __('views.hard_count') }}</small>
-                                                        </div>
-                                                    </div>
+                                </div>
+                                <div wire:loading.remove wire:target="generateQuestionBank">
+                                    @if ($showPreview && $generatedBank)
+                                        <div class="card">
+                                            <div class="card-header d-flex justify-content-between align-items-center">
+                                                <h5 class="card-title">{{ __('general.preview_chinese_quiz') }}</h5>
+                                                <div class="btn-group">
+                                                    <button wire:click="createQuizFromBank"
+                                                        class="btn btn-outline-info btn-sm">
+                                                        <i class="fas fa-plus"></i> {{ __('views.create_quiz_from_bank') }}
+                                                    </button>
+                                                    <button wire:click="saveQuestionBank" class="btn btn-success btn-sm">
+                                                        <i class="fas fa-save"></i> {{ __('views.save_question_bank') }}
+                                                    </button>
                                                 </div>
                                             </div>
-
-                                            <!-- Thống kê theo loại -->
-                                            <div class="row mb-4">
-                                                <div class="col-md-6">
-                                                    <h6>{{ __('views.question_distribution') }}</h6>
-                                                    <ul class="list-group">
-                                                        <li class="list-group-item d-flex justify-content-between">
-                                                            <span>{{ __('views.multiple_choice_count') }}</span>
-                                                            <span
-                                                                class="badge bg-primary">{{ $generatedBank['statistics']['multiple_choice_count'] ?? 0 }}</span>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <h6>{{ __('views.difficulty_distribution') }}</h6>
-                                                    <div class="progress mb-2" style="height: 25px;">
-                                                        <div class="progress-bar bg-success"
-                                                            style="width: {{ (($generatedBank['statistics']['easy_count'] ?? 0) / ($generatedBank['statistics']['total_questions'] ?? 1)) * 100 }}%">
-                                                            {{ __('general.easy_hsk_1_2') }} ({{ $generatedBank['statistics']['easy_count'] ?? 0 }})
-                                                        </div>
-                                                    </div>
-                                                    <div class="progress mb-2" style="height: 25px;">
-                                                        <div class="progress-bar bg-warning"
-                                                            style="width: {{ (($generatedBank['statistics']['medium_count'] ?? 0) / ($generatedBank['statistics']['total_questions'] ?? 1)) * 100 }}%">
-                                                            {{ __('general.medium_hsk_3_4') }}
-                                                            ({{ $generatedBank['statistics']['medium_count'] ?? 0 }})
-                                                        </div>
-                                                    </div>
-                                                    <div class="progress mb-2" style="height: 25px;">
-                                                        <div class="progress-bar bg-danger"
-                                                            style="width: {{ (($generatedBank['statistics']['hard_count'] ?? 0) / ($generatedBank['statistics']['total_questions'] ?? 1)) * 100 }}%">
-                                                            {{ __('general.hard_hsk_5_6') }} ({{ $generatedBank['statistics']['hard_count'] ?? 0 }})
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Danh sách câu hỏi mẫu -->
-                                            <h6>{{ __('views.sample_questions') }}</h6>
-                                            <div class="questions-preview"
-                                                style="max-height: 400px; overflow-y: auto;">
-                                                @foreach ($generatedBank['questions'] as $index => $question)
-                                                    <div class="card mb-3">
-                                                        <div
-                                                            class="card-header d-flex justify-content-between align-items-center">
-                                                            <strong>{{ __('views.question_number', ['number' => $index + 1]) }}</strong>
-                                                            <div>
-                                                                <span
-                                                                    class="badge bg-{{ $question['difficulty'] === 'easy' ? 'success' : ($question['difficulty'] === 'medium' ? 'warning' : 'danger') }}">
-                                                                    {{ ucfirst($question['difficulty']) }}
-                                                                </span>
-                                                                <span
-                                                                    class="badge bg-secondary">{{ __('general.' . $question['type']) }}</span>
+                                            <div class="card-body">
+                                                <!-- Thống kê -->
+                                                <div class="row mb-4">
+                                                    <div class="col-md-3">
+                                                        <div class="card bg-primary text-white">
+                                                            <div class="card-body text-center">
+                                                                <h4>{{ $generatedBank['statistics']['total_questions'] ?? 0 }}
+                                                                </h4>
+                                                                <small>{{ __('views.total_questions') }}</small>
                                                             </div>
                                                         </div>
-                                                        <div class="card-body">
-                                                            <p class="mb-2">{{ $question['question'] }}</p>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="card bg-success text-white">
+                                                            <div class="card-body text-center">
+                                                                <h4>{{ $generatedBank['statistics']['easy_count'] ?? 0 }}
+                                                                </h4>
+                                                                <small>{{ __('views.easy_count') }}</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="card bg-warning text-white">
+                                                            <div class="card-body text-center">
+                                                                <h4>{{ $generatedBank['statistics']['medium_count'] ?? 0 }}
+                                                                </h4>
+                                                                <small>{{ __('views.medium_count') }}</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="card bg-danger text-white">
+                                                            <div class="card-body text-center">
+                                                                <h4>{{ $generatedBank['statistics']['hard_count'] ?? 0 }}
+                                                                </h4>
+                                                                <small>{{ __('views.hard_count') }}</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-                                                            @if ($question['type'] === 'multiple_choice' && !empty($question['options']))
-                                                                <div class="options">
-                                                                    @foreach ($question['options'] as $optionIndex => $option)
-                                                                        <div class="form-check">
-                                                                            <input class="form-check-input"
-                                                                                type="radio" disabled>
-                                                                            <label class="form-check-label">
-                                                                                {{ chr(65 + $optionIndex) }}.
-                                                                                {{ $option }}
-                                                                            </label>
-                                                                        </div>
-                                                                    @endforeach
+                                                <!-- Thống kê theo loại -->
+                                                <div class="row mb-4">
+                                                    <div class="col-md-6">
+                                                        <h6>{{ __('views.question_distribution') }}</h6>
+                                                        <ul class="list-group">
+                                                            <li class="list-group-item d-flex justify-content-between">
+                                                                <span>{{ __('views.multiple_choice_count') }}</span>
+                                                                <span
+                                                                    class="badge bg-primary">{{ $generatedBank['statistics']['multiple_choice_count'] ?? 0 }}</span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <h6>{{ __('views.difficulty_distribution') }}</h6>
+                                                        <div class="progress mb-2" style="height: 25px;">
+                                                            <div class="progress-bar bg-success"
+                                                                style="width: {{ (($generatedBank['statistics']['easy_count'] ?? 0) / ($generatedBank['statistics']['total_questions'] ?? 1)) * 100 }}%">
+                                                                {{ __('general.easy_hsk_1_2') }} ({{ $generatedBank['statistics']['easy_count'] ?? 0 }})
+                                                            </div>
+                                                        </div>
+                                                        <div class="progress mb-2" style="height: 25px;">
+                                                            <div class="progress-bar bg-warning"
+                                                                style="width: {{ (($generatedBank['statistics']['medium_count'] ?? 0) / ($generatedBank['statistics']['total_questions'] ?? 1)) * 100 }}%">
+                                                                {{ __('general.medium_hsk_3_4') }}
+                                                                ({{ $generatedBank['statistics']['medium_count'] ?? 0 }})
+                                                            </div>
+                                                        </div>
+                                                        <div class="progress mb-2" style="height: 25px;">
+                                                            <div class="progress-bar bg-danger"
+                                                                style="width: {{ (($generatedBank['statistics']['hard_count'] ?? 0) / ($generatedBank['statistics']['total_questions'] ?? 1)) * 100 }}%">
+                                                                {{ __('general.hard_hsk_5_6') }} ({{ $generatedBank['statistics']['hard_count'] ?? 0 }})
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Danh sách câu hỏi mẫu -->
+                                                <h6>{{ __('views.sample_questions') }}</h6>
+                                                <div class="questions-preview"
+                                                    style="max-height: 400px; overflow-y: auto;">
+                                                    @foreach ($generatedBank['questions'] as $index => $question)
+                                                        <div class="card mb-3">
+                                                            <div
+                                                                class="card-header d-flex justify-content-between align-items-center">
+                                                                <strong>{{ __('views.question_number', ['number' => $index + 1]) }}</strong>
+                                                                <div>
+                                                                    <span
+                                                                        class="badge bg-{{ $question['difficulty'] === 'easy' ? 'success' : ($question['difficulty'] === 'medium' ? 'warning' : 'danger') }}">
+                                                                        {{ ucfirst($question['difficulty']) }}
+                                                                    </span>
+                                                                    <span
+                                                                        class="badge bg-secondary">{{ __('general.' . $question['type']) }}</span>
                                                                 </div>
-                                                            @endif
-
-                                                            <div class="mt-2">
-                                                                <strong>{{ __('views.correct_answer') }}</strong>
-                                                                <span
-                                                                    class="text-success">{{ $question['correct_answer'] }}</span>
                                                             </div>
+                                                            <div class="card-body">
+                                                                <p class="mb-2">{{ $question['question'] }}</p>
 
-                                                            @if (!empty($question['explanation']))
+                                                                @if ($question['type'] === 'multiple_choice' && !empty($question['options']))
+                                                                    <div class="options">
+                                                                        @foreach ($question['options'] as $optionIndex => $option)
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input"
+                                                                                    type="radio" disabled>
+                                                                                <label class="form-check-label">
+                                                                                    {{ chr(65 + $optionIndex) }}.
+                                                                                    {{ $option }}
+                                                                                </label>
+                                                                            </div>
+                                                                        @endforeach
+                                                                    </div>
+                                                                @endif
+
                                                                 <div class="mt-2">
-                                                                    <strong>{{ __('views.explanation') }}</strong>
-                                                                    <p class="text-muted mb-0">
-                                                                        {{ $question['explanation'] }}</p>
+                                                                    <strong>{{ __('views.correct_answer') }}</strong>
+                                                                    <span
+                                                                        class="text-success">{{ $question['correct_answer'] }}</span>
                                                                 </div>
-                                                            @endif
 
-                                                            @if (!empty($question['tags']))
+                                                                @if (!empty($question['explanation']))
+                                                                    <div class="mt-2">
+                                                                        <strong>{{ __('views.explanation') }}</strong>
+                                                                        <p class="text-muted mb-0">
+                                                                            {{ $question['explanation'] }}</p>
+                                                                    </div>
+                                                                @endif
+
+                                                                @if (!empty($question['tags']))
+                                                                    <div class="mt-2">
+                                                                        <strong>{{ __('views.tags') }}</strong>
+                                                                        @foreach ($question['tags'] as $tag)
+                                                                            <span
+                                                                                class="badge bg-light text-dark">{{ $tag }}</span>
+                                                                        @endforeach
+                                                                    </div>
+                                                                @endif
+
                                                                 <div class="mt-2">
-                                                                    <strong>{{ __('views.tags') }}</strong>
-                                                                    @foreach ($question['tags'] as $tag)
-                                                                        <span
-                                                                            class="badge bg-light text-dark">{{ $tag }}</span>
-                                                                    @endforeach
+                                                                    <strong>{{ __('views.score') }}</strong> {{ $question['score'] ?? 1 }}
                                                                 </div>
-                                                            @endif
-
-                                                            <div class="mt-2">
-                                                                <strong>{{ __('views.score') }}</strong> {{ $question['score'] ?? 1 }}
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                @endforeach
+                                                    @endforeach
+                                                </div>
+
+
                                             </div>
-
-
                                         </div>
-                                    </div>
-                                @else
-                                    <div class="card">
-                                        <div class="card-body text-center text-muted">
-                                            <i class="fas fa-database fa-5x mb-4"></i>
-                                            <h5>{{ __('views.no_question_bank_created') }}</h5>
-                                            <p>{{ __('views.no_question_bank_created_description') }}</p>
+                                    @else
+                                        <div class="card">
+                                            <div class="card-body text-center text-muted">
+                                                <i class="fas fa-database fa-5x mb-4"></i>
+                                                <h5>{{ __('views.no_question_bank_created') }}</h5>
+                                                <p>{{ __('views.no_question_bank_created_description') }}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                @endif
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </div>
