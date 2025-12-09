@@ -3,21 +3,14 @@
 namespace App\Services;
 
 use App\Models\License;
-use App\Models\Payment;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class LicenseService
 {
     /**
      * Kích hoạt license cho user
-     *
-     * @param  User  $user
-     * @param  string  $planType
-     * @param  int|null  $paymentId
-     * @return License
      */
     public function activateLicense(User $user, string $planType, ?int $paymentId = null): License
     {
@@ -46,9 +39,6 @@ class LicenseService
 
     /**
      * Kích hoạt gói dùng thử (Free Trial)
-     *
-     * @param  User  $user
-     * @return License
      */
     public function activateFreeTrial(User $user): License
     {
@@ -69,15 +59,12 @@ class LicenseService
 
     /**
      * Kiểm tra trạng thái license của user
-     *
-     * @param  User  $user
-     * @return array
      */
     public function checkLicenseStatus(User $user): array
     {
         $license = $user->getCurrentLicense();
 
-        if (!$license) {
+        if (! $license) {
             return [
                 'has_license' => false,
                 'is_active' => false,
@@ -105,11 +92,6 @@ class LicenseService
 
     /**
      * Gia hạn license
-     *
-     * @param  User  $user
-     * @param  string  $planType
-     * @param  int|null  $paymentId
-     * @return License
      */
     public function renewLicense(User $user, string $planType, ?int $paymentId = null): License
     {
@@ -135,9 +117,6 @@ class LicenseService
 
     /**
      * Tính số ngày còn lại của license
-     *
-     * @param  License  $license
-     * @return int|null
      */
     public function getDaysRemaining(License $license): ?int
     {
@@ -146,9 +125,6 @@ class LicenseService
 
     /**
      * Đánh dấu license hết hạn
-     *
-     * @param  License  $license
-     * @return License
      */
     public function expireLicense(License $license): License
     {
@@ -161,13 +137,8 @@ class LicenseService
         return $license;
     }
 
-
     /**
      * Tính ngày hết hạn dựa trên plan type
-     *
-     * @param  string  $planType
-     * @param  Carbon|null  $currentExpiresAt
-     * @return Carbon|null
      */
     private function calculateExpiresAt(string $planType, ?Carbon $currentExpiresAt = null): ?Carbon
     {
@@ -185,9 +156,6 @@ class LicenseService
 
     /**
      * Đóng license cũ của user
-     *
-     * @param  User  $user
-     * @return void
      */
     private function deactivateOldLicense(User $user): void
     {
@@ -195,5 +163,4 @@ class LicenseService
             ->where('status', 'active')
             ->update(['status' => 'cancelled']);
     }
-
 }
